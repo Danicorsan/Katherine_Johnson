@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ok_button">Aceptar</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="delete_dialog_positive_text">Eliminar</string>
+
+    <string name="discard_button">Descartar</string>
+    <string name="discard_message">¿Desea descartar los cambios realizados?</string>
+
+    <!--Descripciones de contenido-->
+    <string name="up">Ir hacia arriba</string>
+    <string name="action_more">Ver más acciones</string>
+
+    <!-- Dominio -->
+    <string name="invoice_in_list_number">Factura #%d</string>
+    <string name="value_status_pending">Pendiente</string>
+    <string name="value_status_paid">Pagada</string>
+    <string name="value_status_overdue">Vencida</string>
+    <string name="value_estimate_status_open">Abierta</string>
+    <string name="value_estimate_status_invoiced">Facturada</string>
+
+    <string name="empty_state_title">Aun no hay %s</string>
+    <string name="empty_state_support_text">Toca el botón \'+\' para crear un nuevo %s</string>
+</resources>

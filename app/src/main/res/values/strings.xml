@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">App Facturación</string>
+
+    <string name="menu_invoices">Facturas</string>
+    <string name="menu_estimates">Estimaciones</string>
+    <string name="menu_customers">Clientes</string>
+    <string name="menu_items">Artículos</string>
+    <string name="menu_settings">Configuración</string>
+    <string name="section_others">Otros</string>
+    <string name="section_business">Negocio</string>
+
+
+</resources>
