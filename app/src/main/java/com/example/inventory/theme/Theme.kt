@@ -10,75 +10,76 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val LightColors = lightColorScheme(
-    primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
-    primaryContainer = md_theme_light_primaryContainer,
-    onPrimaryContainer = md_theme_light_onPrimaryContainer,
-    secondary = md_theme_light_secondary,
-    onSecondary = md_theme_light_onSecondary,
-    secondaryContainer = md_theme_light_secondaryContainer,
-    onSecondaryContainer = md_theme_light_onSecondaryContainer,
-    tertiary = md_theme_light_tertiary,
-    onTertiary = md_theme_light_onTertiary,
-    tertiaryContainer = md_theme_light_tertiaryContainer,
-    onTertiaryContainer = md_theme_light_onTertiaryContainer,
-    error = md_theme_light_error,
-    errorContainer = md_theme_light_errorContainer,
-    onError = md_theme_light_onError,
-    onErrorContainer = md_theme_light_onErrorContainer,
-    background = md_theme_light_background,
-    onBackground = md_theme_light_onBackground,
-    surface = md_theme_light_surface,
-    onSurface = md_theme_light_onSurface,
-    surfaceVariant = md_theme_light_surfaceVariant,
-    onSurfaceVariant = md_theme_light_onSurfaceVariant,
-    outline = md_theme_light_outline,
-    inverseOnSurface = md_theme_light_inverseOnSurface,
-    inverseSurface = md_theme_light_inverseSurface,
-    inversePrimary = md_theme_light_inversePrimary,
-    surfaceTint = md_theme_light_surfaceTint,
-    outlineVariant = md_theme_light_outlineVariant,
-    scrim = md_theme_light_scrim,
+    primary = pastel_light_primary,
+    onPrimary = pastel_light_onPrimary,
+    primaryContainer = pastel_light_primaryContainer,
+    onPrimaryContainer = pastel_light_onPrimaryContainer,
+    secondary = pastel_light_secondary,
+    onSecondary = pastel_light_onSecondary,
+    secondaryContainer = pastel_light_secondaryContainer,
+    onSecondaryContainer = pastel_light_onSecondaryContainer,
+    tertiary = pastel_light_tertiary,
+    onTertiary = pastel_light_onTertiary,
+    tertiaryContainer = pastel_light_tertiaryContainer,
+    onTertiaryContainer = pastel_light_onTertiaryContainer,
+    error = Color(0xFFBA1A1A), // Rojo para errores
+    errorContainer = Color(0xFFFFDAD6), // Fondo para errores
+    onError = Color(0xFFFFFFFF), // Texto blanco sobre error
+    onErrorContainer = Color(0xFF410002), // Texto oscuro sobre contenedor de error
+    background = pastel_light_background,
+    onBackground = pastel_light_onBackground,
+    surface = pastel_light_surface,
+    onSurface = pastel_light_onSurface,
+    surfaceVariant = Color(0xFFDDE3EA), // Variante de superficie más suave
+    onSurfaceVariant = Color(0xFF41474D), // Texto oscuro sobre variante de superficie
+    outline = pastel_light_outline,
+    inverseOnSurface = Color(0xFFF0F0F3),
+    inverseSurface = Color(0xFF2E3133),
+    inversePrimary = Color(0xFF8DCDFF), // Pastel invertido
+    surfaceTint = pastel_light_primary,
+    outlineVariant = Color(0xFFC1C7CE),
+    scrim = Color(0xFF000000)
 )
-
 
 private val DarkColors = darkColorScheme(
-    primary = md_theme_dark_primary,
-    onPrimary = md_theme_dark_onPrimary,
-    primaryContainer = md_theme_dark_primaryContainer,
-    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
-    secondary = md_theme_dark_secondary,
-    onSecondary = md_theme_dark_onSecondary,
-    secondaryContainer = md_theme_dark_secondaryContainer,
-    onSecondaryContainer = md_theme_dark_onSecondaryContainer,
-    tertiary = md_theme_dark_tertiary,
-    onTertiary = md_theme_dark_onTertiary,
-    tertiaryContainer = md_theme_dark_tertiaryContainer,
-    onTertiaryContainer = md_theme_dark_onTertiaryContainer,
-    error = md_theme_dark_error,
-    errorContainer = md_theme_dark_errorContainer,
-    onError = md_theme_dark_onError,
-    onErrorContainer = md_theme_dark_onErrorContainer,
-    background = md_theme_dark_background,
-    onBackground = md_theme_dark_onBackground,
-    surface = md_theme_dark_surface,
-    onSurface = md_theme_dark_onSurface,
-    surfaceVariant = md_theme_dark_surfaceVariant,
-    onSurfaceVariant = md_theme_dark_onSurfaceVariant,
-    outline = md_theme_dark_outline,
-    inverseOnSurface = md_theme_dark_inverseOnSurface,
-    inverseSurface = md_theme_dark_inverseSurface,
-    inversePrimary = md_theme_dark_inversePrimary,
-    surfaceTint = md_theme_dark_surfaceTint,
-    outlineVariant = md_theme_dark_outlineVariant,
-    scrim = md_theme_dark_scrim,
+    primary = pastel_dark_primary,
+    onPrimary = pastel_dark_onPrimary,
+    primaryContainer = pastel_dark_primaryContainer,
+    onPrimaryContainer = pastel_dark_onPrimaryContainer,
+    secondary = pastel_dark_secondary,
+    onSecondary = pastel_dark_onSecondary,
+    secondaryContainer = pastel_dark_secondaryContainer,
+    onSecondaryContainer = pastel_dark_onSecondaryContainer,
+    tertiary = pastel_dark_tertiary,
+    onTertiary = pastel_dark_onTertiary,
+    tertiaryContainer = pastel_dark_tertiaryContainer,
+    onTertiaryContainer = pastel_dark_onTertiaryContainer,
+    error = Color(0xFFFFB4AB),
+    errorContainer = Color(0xFF93000A),
+    onError = Color(0xFF690005),
+    onErrorContainer = Color(0xFFFFDAD6),
+    background = pastel_dark_background,
+    onBackground = pastel_dark_onBackground,
+    surface = pastel_dark_surface,
+    onSurface = pastel_dark_onSurface,
+    surfaceVariant = Color(0xFF41474D),
+    onSurfaceVariant = Color(0xFFC1C7CE),
+    outline = pastel_dark_outline,
+    inverseOnSurface = Color(0xFF1A1C1E),
+    inverseSurface = Color(0xFFE2E2E5),
+    inversePrimary = pastel_light_primary,
+    surfaceTint = pastel_dark_primary,
+    outlineVariant = Color(0xFF41474D),
+    scrim = Color(0xFF000000)
 )
+
 
 @Composable
 fun InventoryTheme(
