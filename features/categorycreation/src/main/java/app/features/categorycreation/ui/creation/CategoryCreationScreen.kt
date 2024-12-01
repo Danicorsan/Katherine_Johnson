@@ -19,9 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.features.categorycreation.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,11 +37,11 @@ fun CategoryCreationScreen() {
         // TopAppBar en la parte superior
         TopAppBar(
             title = {
-                Text(text = "Crear Categoría")
+                Text(text = stringResource(R.string.crear_categoria))
             },
             navigationIcon = {
                 IconButton(onClick = { /* Acción para volver */ }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.volver))
                 }
             },
         )
@@ -47,8 +49,10 @@ fun CategoryCreationScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Crear Categoría",
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+            text = stringResource(R.string.crear_categoria),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -56,7 +60,7 @@ fun CategoryCreationScreen() {
         OutlinedTextField(
             value = "",
             onValueChange = {},
-            label = { Text("Nombre de la Categoría") },
+            label = { Text(stringResource(R.string.nombre_de_la_categoria)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -65,7 +69,7 @@ fun CategoryCreationScreen() {
         OutlinedTextField(
             value = "",
             onValueChange = {},
-            label = { Text("Descripción de la Categoría") },
+            label = { Text(stringResource(R.string.descripcion_de_la_categoria)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -75,15 +79,14 @@ fun CategoryCreationScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween // Espacia los elementos a los extremos
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(
                 onClick = {
-                    // Acción para descartar cambios
                     println("Cambios descartados")
                 }
             ) {
-                Text("Descartar Cambios")
+                Text(stringResource(R.string.descartar_cambios))
             }
 
             Button(
@@ -91,7 +94,7 @@ fun CategoryCreationScreen() {
                     print("Categoria Creada")
                 }
             ) {
-                Text("Crear Categoria")
+                Text(stringResource(R.string.crear_categoria))
             }
         }
     }
