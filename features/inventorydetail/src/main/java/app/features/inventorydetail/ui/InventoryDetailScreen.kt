@@ -20,9 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.features.inventorydetail.R
 
 data class Item(val name: String, val description: String)
 
@@ -42,13 +44,13 @@ fun InventoryDetailScreen(items: List<Item>, onBackClick: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Volver",
+                contentDescription = stringResource(R.string.volver),
             )
         }
 
         // Título de la pantalla
         Text(
-            text = "Detalle del Inventario",
+            text = stringResource(R.string.detalle_del_inventario),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
                 .padding(bottom = 16.dp)
