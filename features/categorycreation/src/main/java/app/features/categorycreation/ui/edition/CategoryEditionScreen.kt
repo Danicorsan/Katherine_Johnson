@@ -24,8 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.features.categorycreation.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,11 +45,11 @@ fun CategoryEditionScreen() {
         // TopAppBar en la parte superior
         TopAppBar(
             title = {
-                Text(text = "Editar Categoría")
+                Text(text = stringResource(R.string.editar_categoria))
             },
             navigationIcon = {
                 IconButton(onClick = { /* Acción para volver */ }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.volver))
                 }
             },
         )
@@ -64,7 +66,7 @@ fun CategoryEditionScreen() {
         OutlinedTextField(
             value = oldCategoryName,
             onValueChange = { oldCategoryName = it },
-            label = { Text("Nombre Antiguo de la Categoría") },
+            label = { Text(stringResource(R.string.nombre_antiguo_de_la_categoria)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -74,7 +76,7 @@ fun CategoryEditionScreen() {
         OutlinedTextField(
             value = newCategoryName,
             onValueChange = { newCategoryName = it },
-            label = { Text("Nuevo Nombre de la Categoría") },
+            label = { Text(stringResource(R.string.nuevo_nombre_de_la_categoria)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -84,7 +86,7 @@ fun CategoryEditionScreen() {
         OutlinedTextField(
             value = description,
             onValueChange = { description = it },
-            label = { Text("Descripción de la Categoría") },
+            label = { Text(stringResource(R.string.descripcion_de_la_categoria)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -102,7 +104,7 @@ fun CategoryEditionScreen() {
                     println("Cambios descartados")
                 }
             ) {
-                Text("Descartar Cambios")
+                Text(stringResource(R.string.descartar_cambios))
             }
 
             Button(
@@ -111,7 +113,7 @@ fun CategoryEditionScreen() {
                     println("Antiguo: $oldCategoryName, Nuevo: $newCategoryName, Descripción: $description")
                 }
             ) {
-                Text("Guardar Cambios")
+                Text(stringResource(R.string.guardar_cambios))
             }
         }
 

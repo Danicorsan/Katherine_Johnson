@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--CategoryCreatinScreen!-->
+    <string name="crear_categoria">Crear Categoría</string>
+    <string name="volver">Volver</string>
+    <string name="nombre_de_la_categoria">Nombre de la Categoría</string>
+    <string name="descripcion_de_la_categoria">Descripción de la Categoría</string>
+    <string name="descartar_cambios">Descartar Cambios</string>
+    <string name="editar_categoria">Editar Categoría</string>
+    <string name="nombre_antiguo_de_la_categoria">Nombre Antiguo de la Categoría</string>
+    <string name="nuevo_nombre_de_la_categoria">Nuevo Nombre de la Categoría</string>
+    <string name="guardar_cambios">Guardar Cambios</string>
 </resources>

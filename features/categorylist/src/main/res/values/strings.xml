@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="lista_de_categoria">Lista de Categoría</string>
+    <string name="volver">Volver</string>
+    <string name="categorias">Categorías</string>
+    <string name="nueva_categoria">Nueva Categoría</string>
 </resources>
