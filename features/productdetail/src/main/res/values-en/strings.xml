@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="titulo_appbar">Product details</string>
+    <string name="campo_sin_valor">No data</string>
+    <string name="codigo_etiqueta">Code</string>
+    <string name="nombre_etiqueta">Name</string>
+    <string name="nombre_corto_etiqueta">Short name</string>
+    <string name="descripcion_etiqueta">Description</string>
+    <string name="numero_serie_etiqueta">Serial number</string>
+    <string name="codigo_modelo_etiqueta">Model code</string>
+    <string name="tipo_producto_etiqueta">Product type</string>
+    <string name="categoria_etiqueta">Category</string>
+    <string name="seccion_etiqueta">Section</string>
+    <string name="estado_etiqueta">State</string>
+    <string name="cantidad_etiqueta">Stock</string>
+    <string name="precio_etiqueta">Price</string>
+    <string name="fecha_adquisicion_etiqueta">Acquisition date</string>
+    <string name="fecha_modificacion_etiqueta">Modification date</string>
+    <string name="estado_producto_nuevo_texto">New</string>
+    <string name="estado_producto_modificado_texto">Modified</string>
+    <string name="estado_producto_verificado_texto">Verified</string>
+    <string name="stock_minimo_etiqueta">Minimun stock</string>
+    <string name="etiquetas_etiqueta">Tags</string>
+    <string name="notas_etiqueta">Notes</string>
+</resources>
