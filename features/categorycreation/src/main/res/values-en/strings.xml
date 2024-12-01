@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- IDIOMA INGLES!-->
+    <!--CategoryCreatinScreen!-->
+    <string name="crear_categoria">New category</string>
+    <string name="volver">Back</string>
+    <string name="nombre_de_la_categoria">Name of the category</string>
+    <string name="descripcion_de_la_categoria">Description of the category</string>
+    <string name="descartar_cambios">Discard changes</string>
+    <string name="editar_categoria">Edit Category</string>
+    <string name="nombre_antiguo_de_la_categoria">Old Name of the Category</string>
+    <string name="nuevo_nombre_de_la_categoria">New Name of the Category</string>
+    <string name="guardar_cambios">Save Changes</string>
+</resources>

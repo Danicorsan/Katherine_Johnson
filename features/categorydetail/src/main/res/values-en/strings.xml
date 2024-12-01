@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="categoria">Category</string>
+    <string name="volver">Back</string>
+    <string name="detalle_de_la_categoria">Details of the category</string>
+    <string name="nombre">Name:</string>
+    <string name="descripcion">Description:</string>
+    <string name="editar_categoria">Edit Category</string>
+</resources>

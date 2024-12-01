@@ -16,11 +16,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.features.categorydetail.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,11 +30,11 @@ fun CategoryDetailScreen() {
 // TopAppBar en la parte superior
     TopAppBar(
         title = {
-            Text(text = "Categoría")
+            Text(text = stringResource(R.string.categoria))
         },
         navigationIcon = {
             IconButton(onClick = { /* Acción para volver */ }) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.volver))
             }
         },
     )
@@ -49,14 +51,14 @@ fun CategoryDetailScreen() {
         ) {
 
             Text(
-                text = "Detalle de la Categoría",
+                text = stringResource(R.string.detalle_de_la_categoria),
                 fontSize = 24.sp, // Título más grande
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
             Text(
-                text = "Nombre:",
+                text = stringResource(R.string.nombre),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(top = 8.dp)
@@ -69,7 +71,7 @@ fun CategoryDetailScreen() {
             )
 
             Text(
-                text = "Descripción:",
+                text = stringResource(R.string.descripcion),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(top = 8.dp)
@@ -88,7 +90,7 @@ fun CategoryDetailScreen() {
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth(0.8f) // Botón más ancho, ocupa 80% del ancho de la pantalla
             ) {
-                Text("Editar Categoría")
+                Text(stringResource(R.string.editar_categoria))
             }
         }
     }
