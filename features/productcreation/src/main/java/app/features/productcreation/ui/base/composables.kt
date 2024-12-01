@@ -12,11 +12,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Appbar(modifier: Modifier = Modifier, titleText : String, accionNavegacion : () -> Unit = {}){
+fun Appbar( titleText : String, accionNavegacion : () -> Unit = {}){
     CenterAlignedTopAppBar(
         title = {
             Text(text = titleText)
