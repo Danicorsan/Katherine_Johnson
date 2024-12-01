@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="titulo_creacion_producto_appbar">Crear Producto</string>
-    <string name="titulo_edicion_producto_appbar">Editar Producto</string>
-    <string name="codigo_etiqueta">Código</string>
+    <string name="titulo_edicion_producto_appbar">Editar producto</string>
     <string name="nombre_etiqueta">Nombre</string>
     <string name="nombre_corto_etiqueta">Nombre corto</string>
     <string name="descripcion_etiqueta">Descripcion</string>
@@ -23,4 +22,5 @@
     <string name="etiquetas_etiqueta">Etiquetas</string>
     <string name="notas_etiqueta">Notas</string>
     <string name="boton_aceptar">Aceptar</string>
+    <string name="codigo_etiqueta">Código</string>
 </resources>
