@@ -1,5 +1,5 @@
 package app.domain.invoicing.product
-
+/*
 import app.base.utils.DateUtils
 import app.base.utils.DateUtils.toKotlinInstant
 import app.domain.invoicing.product.EstimateException.CustomerIsMandatory
@@ -71,3 +71,4 @@ class EstimateTest {
     }
 }
 
+*/

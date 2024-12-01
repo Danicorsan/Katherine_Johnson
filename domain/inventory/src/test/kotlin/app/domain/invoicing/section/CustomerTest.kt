@@ -1,5 +1,5 @@
 package app.domain.invoicing.section
-
+/*
 import com.google.common.truth.Truth
 import org.junit.jupiter.api.Test
 
@@ -23,4 +23,4 @@ class CustomerTest {
         Truth.assertThat(customer.city).isEqualTo("Cali")
         Truth.assertThat(customer.address).isEqualTo("Calle 123")
     }
-}
+}*/

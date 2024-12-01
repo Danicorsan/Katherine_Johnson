@@ -31,6 +31,9 @@ data class Producto(
 {
     private var _alarmaStockMinimo = AlarmaProducto.StockMinimo(this)
 
+    val AlarmaStockMinimo : AlarmaProducto.StockMinimo
+        get() = _alarmaStockMinimo
+
     val id : UInt?
         get() = _id
 

@@ -1,9 +1,13 @@
 package app.domain.invoicing.product.complements.tags
 
 data class Etiqueta(
-    val etiqueta : String,
+    val contenido : String,
 ){
     fun equals(etiqueta: Etiqueta, ignoreCase : Boolean = false) : Boolean{
-        return this.etiqueta.equals(etiqueta.etiqueta, ignoreCase)
+        return this.contenido.equals(etiqueta.contenido, ignoreCase)
+    }
+
+    override fun toString(): String {
+        return contenido
     }
 }

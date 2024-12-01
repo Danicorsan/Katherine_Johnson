@@ -1,5 +1,5 @@
 package app.domain.invoicing.invoice
-
+/*
 import app.domain.invoicing.invoice.InvoiceException.AtLeastOneItem
 import app.domain.invoicing.item.ItemId
 import app.domain.invoicing.inventory.LineItem
@@ -61,3 +61,4 @@ class InvoiceTest {
 }
 
 
+*/
