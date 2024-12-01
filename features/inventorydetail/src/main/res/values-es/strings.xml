@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="volver">Back</string>
+    <string name="detalle_del_inventario">Detail of the inventory</string>
+</resources>

@@ -11,9 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.features.inventorylist.R
 
 data class Inventory(val name: String, val quantity: Int, val price: Double)
 
@@ -33,13 +35,13 @@ fun InventoryListScreen(inventories: List<Inventory>, onBackClick: () -> Unit, o
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Volver",
+                contentDescription = stringResource(R.string.volver),
             )
         }
 
         // Título de la pantalla
         Text(
-            text = "Lista de Inventarios",
+            text = stringResource(R.string.lista_de_inventarios),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
                 .padding(bottom = 16.dp)
@@ -82,7 +84,7 @@ fun InventoryCard(inventory: Inventory, onClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Cantidad: ${inventory.quantity}",
+                    text = stringResource(R.string.cantidad, inventory.quantity),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         letterSpacing = 0.5.sp
                     )

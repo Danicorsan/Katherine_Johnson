@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="volver">Volver</string>
+    <string name="lista_de_inventarios">Lista de Inventarios</string>
+    <string name="cantidad">Cantidad: %1$s</string>
 </resources>
