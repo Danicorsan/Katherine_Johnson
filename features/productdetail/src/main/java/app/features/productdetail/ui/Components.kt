@@ -7,7 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.base.ui.composables.SmallSpace
-import app.domain.invoicing.product.EstadoProducto
+import app.domain.invoicing.data.product.EstadoProducto
 import app.features.productdetail.R
 
 @Composable

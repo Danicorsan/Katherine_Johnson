@@ -1,4 +1,4 @@
-package app.domain.invoicing.product.complements.tags
+package app.domain.invoicing.data.product.complements.tags
 
 
 class Etiquetas(listaEtiquetas: Iterable<Etiqueta>? = null) : Iterable<Etiqueta>, Collection<Etiqueta> {

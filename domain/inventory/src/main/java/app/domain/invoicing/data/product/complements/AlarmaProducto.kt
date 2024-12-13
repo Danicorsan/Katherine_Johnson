@@ -1,6 +1,6 @@
-package app.domain.invoicing.product.complements
+package app.domain.invoicing.data.product.complements
 
-import app.domain.invoicing.product.Producto
+import app.domain.invoicing.data.product.Producto
 
 abstract class AlarmaProducto(
     private val _producto: Producto

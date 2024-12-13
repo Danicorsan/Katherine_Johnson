@@ -1,4 +1,4 @@
-package app.domain.invoicing.product.complements.notes
+package app.domain.invoicing.data.product.complements.notes
 
 class Notas(listaNotas : Iterable<Nota>? = null) : Iterable<Nota>{
     val size: Int
@@ -10,7 +10,7 @@ class Notas(listaNotas : Iterable<Nota>? = null) : Iterable<Nota>{
         return listaNotas.iterator()
     }
 
-    operator fun get(indice: Int) : Nota{
+    operator fun get(indice: Int) : Nota {
         return listaNotas[indice]
     }
 

@@ -1,4 +1,4 @@
-package app.domain.invoicing.product
+package app.domain.invoicing.data.product
 
 enum class EstadoProducto {
     new,
