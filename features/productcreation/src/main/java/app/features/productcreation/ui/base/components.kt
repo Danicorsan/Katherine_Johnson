@@ -13,77 +13,77 @@ import app.base.ui.composables.NormalButton
 import app.features.productcreation.R
 
 @Composable
-fun FormularioProducto(
-    estadoProducto: ProductoEstado,
-    eventos : EventosProducto,
-    desplegables : Desplegables,
-    textoBoton : String,
-    botonPulsado : () -> Unit = {}
+fun ProductForm(
+    ProductViewState: ProductViewState,
+    events : ProductEvents,
+    dropDownItems : DropDownItems,
+    textButton : String,
+    buttonPressed : () -> Unit = {}
 ){
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextoEditableUnaLinea(
-            texto = estadoProducto.nombre,
-            cambio = eventos.nombreCambiado,
-            etiqueta = stringResource(R.string.nombre_etiqueta)
+        OneLineEditText(
+            text = ProductViewState.name,
+            change = events.onNameChange,
+            tag = stringResource(R.string.nombre_etiqueta)
         )
 
-        TextoEditableUnaLinea(
-            texto = estadoProducto.nombreCorto,
-            cambio = eventos.nombreCambiado,
-            etiqueta = stringResource(R.string.nombre_corto_etiqueta)
+        OneLineEditText(
+            text = ProductViewState.shortName,
+            change = events.onNameChange,
+            tag = stringResource(R.string.nombre_corto_etiqueta)
         )
 
-        TextoEditableUnaLinea(
-            texto = estadoProducto.codigo,
-            cambio = eventos.nombreCambiado,
-            etiqueta = stringResource(R.string.codigo_etiqueta)
+        OneLineEditText(
+            text = ProductViewState.code,
+            change = events.onNameChange,
+            tag = stringResource(R.string.codigo_etiqueta)
         )
 
-        TextoEditableUnaLinea(
-            texto = estadoProducto.numeroSerie,
-            cambio = eventos.nombreCambiado,
-            etiqueta = stringResource(R.string.numero_serie_etiqueta)
+        OneLineEditText(
+            text = ProductViewState.serialNumber,
+            change = events.onNameChange,
+            tag = stringResource(R.string.numero_serie_etiqueta)
         )
 
-        TextoEditableUnaLinea(
-            texto = estadoProducto.codigoModelo,
-            cambio = eventos.nombreCambiado,
-            etiqueta = stringResource(R.string.codigo_modelo_etiqueta)
+        OneLineEditText(
+            text = ProductViewState.modelCode,
+            change = events.onNameChange,
+            tag = stringResource(R.string.codigo_modelo_etiqueta)
         )
 
-        TextoEditableUnaLinea(
-            texto = estadoProducto.tipoProducto,
-            cambio = eventos.nombreCambiado,
-            etiqueta = stringResource(R.string.tipo_producto_etiqueta)
+        OneLineEditText(
+            text = ProductViewState.productType,
+            change = events.onNameChange,
+            tag = stringResource(R.string.tipo_producto_etiqueta)
         )
 
-        MenuDesplegable(
-            expandido = desplegables.categoriasDesplegada ,
-            tocarFuera = {},
-            listaElementos = desplegables.categorias,
-            alPulsarApartado = {}
+        DropDownMenuTemplate(
+            expanded = dropDownItems.categoryExpanded ,
+            onDismiss = {},
+            elementsList = dropDownItems.categories,
+            touchedItem = {}
         ) {
             Text(it)
         }
 
-        TextoEditableUnaLinea(
-            texto = estadoProducto.precio,
-            cambio = eventos.nombreCambiado,
-            etiqueta = stringResource(R.string.precio_etiqueta)
+        OneLineEditText(
+            text = ProductViewState.price,
+            change = events.onNameChange,
+            tag = stringResource(R.string.precio_etiqueta)
         )
 
-        TextoEditableLineaMultiple(
-            texto = estadoProducto.descripcion,
-            cambio = eventos.nombreCambiado,
-            etiqueta = stringResource(R.string.descripcion_etiqueta)
+        MultipleLineEditText(
+            text = ProductViewState.description,
+            change = events.onNameChange,
+            tag = stringResource(R.string.descripcion_etiqueta)
         )
         MediumSpace()
         NormalButton(
-            text = textoBoton,
-            onClick = botonPulsado
+            text = textButton,
+            onClick = buttonPressed
         )
     }
 }

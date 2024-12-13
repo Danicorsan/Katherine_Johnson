@@ -15,17 +15,17 @@ import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace
 import app.base.utils.toCurrency
 import app.domain.invoicing.category.Category
-import app.domain.invoicing.data.product.EstadoProducto
-import app.domain.invoicing.data.product.Producto
-import app.domain.invoicing.data.product.complements.notes.Nota
+import app.domain.invoicing.product.Product
+import app.domain.invoicing.product.ProductState
+import app.domain.invoicing.product.complements.notes.Note
 import app.features.productdetail.R
 import kotlinx.datetime.Instant
 import java.util.Date
 
 @Preview(showBackground = true)
 @Composable
-fun PantallaDetallesProducto(){
-    val categoria = Category (
+fun ProductDetailScreen(){
+    val category = Category (
         id = 3,
         name = "Nombre Categoria",
         shortName = "cat",
@@ -34,37 +34,37 @@ fun PantallaDetallesProducto(){
         typeCategory = "Categoria",
         createdAt = Date(342422424)
     )
-    val seccion = "Nombre Seccion"
-    val producto : Producto = Producto(
-        codigo = "dependenciaSeccion3",
-        nombre = "Esponja duradera max",
-        nombreCorto = "Esponja",
-        descripcion = "Algo descripcionfffffffffffffffffffffffffffffffffffffffff",
-        numeroSerie = "424D4234CD",
-        codigoModelo = "97878DFWEFw",
-        tipoProducto = "Aseo e Higiene",
-        categoria = categoria,
-        seccion = seccion,
-        estado = EstadoProducto.new,
-        cantidad = 32u,
-        precio = 23.44,
-        fechaAdquisicion = Instant.parse("2023-06-10T15:00:00Z"),
+    val section = "Nombre Seccion"
+    val product : Product = Product(
+        code = "dependenciaSeccion3",
+        name = "Esponja duradera max",
+        shortName = "Esponja",
+        description = "Algo descripcionfffffffffffffffffffffffffffffffffffffffff",
+        serialNumber = "424D4234CD",
+        modelCode = "97878DFWEFw",
+        productType = "Aseo e Higiene",
+        category = category,
+        section = section,
+        state = ProductState.new,
+        stock = 32u,
+        price = 23.44,
+        acquisitionDate = Instant.parse("2023-06-10T15:00:00Z"),
     )
-    producto.notas.añadir(Nota("Un titulo genial", "Un cuerpo muy pobreeeeee"))
-    ContenidoDetallesProducto(Modifier, producto)
+    product.notes.add(Note("Un titulo genial", "Un cuerpo muy pobreeeeee"))
+    ProductDetailContent(Modifier, product)
 }
 
 @Composable
-private fun ContenidoDetallesProducto(modifier: Modifier, producto : Producto){
+private fun ProductDetailContent(modifier: Modifier, product : Product){
 
     Column {
         Appbar(titleText = stringResource(R.string.titulo_appbar))
-        ColumnaDeContenidoScroleable(modifier = modifier ,producto = producto)
+        ScrollableContentColumn(modifier = modifier ,product = product)
     }
 }
 
 @Composable
-fun ColumnaDeContenidoScroleable(modifier: Modifier = Modifier, producto: Producto){
+fun ScrollableContentColumn(modifier: Modifier = Modifier, product: Product){
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -74,98 +74,98 @@ fun ColumnaDeContenidoScroleable(modifier: Modifier = Modifier, producto: Produc
 
         ){
 
-        TextoTitulo(modifier.padding(Separations.Medium), producto.nombre)
+        TitleText(modifier.padding(Separations.Medium), product.name)
 
-        MeterEnFila(
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.codigo_etiqueta), dato = producto.codigo
+        MakeInRow(
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.codigo_etiqueta), data = product.code
             )},
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.nombre_corto_etiqueta), dato = producto.nombreCorto
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.nombre_corto_etiqueta), data = product.shortName
             )}
         )
         MediumSpace()
-        MeterEnFila(
-            { DetallesProductoColumna(
-                tipoDato = stringResource(R.string.categoria_etiqueta), dato = producto.categoria.name
+        MakeInRow(
+            { ProductDetailsColumn(
+                dataType = stringResource(R.string.categoria_etiqueta), data = product.category.name
             )},
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.numero_serie_etiqueta), dato = producto.numeroSerie
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.numero_serie_etiqueta), data = product.serialNumber
             )}
         )
 
         MediumSpace()
-        MeterEnFila(
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.codigo_modelo_etiqueta), dato = producto.codigoModelo
+        MakeInRow(
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.codigo_modelo_etiqueta), data = product.modelCode
             )},
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.tipo_producto_etiqueta), dato = producto.tipoProducto
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.tipo_producto_etiqueta), data = product.productType
             )}
         )
         MediumSpace()
 
-        MeterEnFila(
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.seccion_etiqueta), dato = producto.seccion
+        MakeInRow(
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.seccion_etiqueta), data = product.section
             )},
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.estado_etiqueta), estado = producto.estado
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.estado_etiqueta), state = product.state
             )}
         )
         MediumSpace()
-        MeterEnFila(
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.cantidad_etiqueta), dato = producto.cantidad.toString()
+        MakeInRow(
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.cantidad_etiqueta), data = product.stock.toString()
             )},
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.precio_etiqueta), dato = producto.precio.toCurrency()
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.precio_etiqueta), data = product.price.toCurrency()
             )}
         )
         MediumSpace()
-        MeterEnFila(
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.fecha_adquisicion_etiqueta), dato = producto.fechaAdquisicion.toString()
+        MakeInRow(
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.fecha_adquisicion_etiqueta), data = product.acquisitionDate.toString()
             )},
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.fecha_modificacion_etiqueta), dato = producto.fechaBaja?.toString()
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.fecha_modificacion_etiqueta), data = product.discontinuationDate?.toString()
             )}
         )
         MediumSpace()
-        MeterEnFila(
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.stock_minimo_etiqueta), dato = producto.stockMinimo?.toString()
+        MakeInRow(
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.stock_minimo_etiqueta), data = product.minimunStock?.toString()
             )},
-            {DetallesProductoColumna(
-                tipoDato = stringResource(R.string.etiquetas_etiqueta), dato = if (producto.etiquetas.isEmpty()) null else producto.etiquetas.toString()
+            {ProductDetailsColumn(
+                dataType = stringResource(R.string.etiquetas_etiqueta), data = if (product.tags.isEmpty()) null else product.tags.toString()
             )}
         )
         MediumSpace()
-        DetallesProductoColumna(
-            tipoDato = stringResource(R.string.descripcion_etiqueta)
+        ProductDetailsColumn(
+            dataType = stringResource(R.string.descripcion_etiqueta)
         ){
-            val contenidoAMostrar = when(producto.descripcion){
+            val contenidoAMostrar = when(product.description){
                 null -> stringResource(R.string.campo_sin_valor)
-                else -> producto.descripcion!!
+                else -> product.description!!
             }
             TextoDescripcion(contenido = contenidoAMostrar)
         }
         MediumSpace()
-        DetallesProductoColumna(
-            tipoDato = stringResource(R.string.notas_etiqueta)
+        ProductDetailsColumn(
+            dataType = stringResource(R.string.notas_etiqueta)
         ){
-            FilaDeContenidoScrolleable(producto.notas) {
-                    nota -> MotrarNota(nota)
+            FilaDeContenidoScrolleable(product.notes) {
+                    nota -> ShowNote(nota)
             }
         }
     }
 }
 
 @Composable
-private fun MotrarNota(nota: Nota){
+private fun ShowNote(note: Note){
     Column {
-        TextoInformativo(texto = nota.titulo)
+        InformativeText(text = note.title)
         SmallSpace()
-        TextoInformativo(texto = nota.titulo)
+        InformativeText(text = note.title)
     }
 }

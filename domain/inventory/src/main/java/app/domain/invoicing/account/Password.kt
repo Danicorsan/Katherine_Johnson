@@ -1,4 +1,4 @@
-package app.domain.invoicing.data.account
+package app.domain.invoicing.account
 
 data class Password(val value: String) {
 

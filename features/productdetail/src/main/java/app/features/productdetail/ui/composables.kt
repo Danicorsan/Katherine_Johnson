@@ -19,23 +19,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import app.base.ui.composables.MediumTitleText
 import app.base.ui.composables.Separations
 import app.base.ui.composables.TitleText
 
 
 @Composable
-fun TextoEtiqueta(modifier: Modifier = Modifier, texto : String){
-    CajaPastel(
+fun TextTag(modifier: Modifier = Modifier, text : String){
+    CakeColorBox(
         modifier = Modifier.width(150.dp)
     ) {
         Text(
-            texto,
+            text,
             modifier = modifier.padding(Separations.Small),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
@@ -44,8 +41,8 @@ fun TextoEtiqueta(modifier: Modifier = Modifier, texto : String){
 }
 
 @Composable
-fun TextoTitulo(modifier: Modifier = Modifier , text: String){
-    CajaPastel(
+fun TitleText(modifier: Modifier = Modifier, text: String){
+    CakeColorBox(
         modifier = modifier
     ) {
         TitleText(
@@ -55,11 +52,11 @@ fun TextoTitulo(modifier: Modifier = Modifier , text: String){
 }
 
 @Composable
-fun TextoInformativo(
+fun InformativeText(
     modifier : Modifier = Modifier,
-    texto: String){
+    text: String){
     Text(
-        texto,
+        text,
         modifier = modifier
             .width(150.dp),
         textAlign = TextAlign.Center
@@ -68,13 +65,13 @@ fun TextoInformativo(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Appbar(modifier: Modifier = Modifier, titleText : String, accionNavegacion : () -> Unit = {}){
+fun Appbar(modifier: Modifier = Modifier, titleText : String, navigationAction : () -> Unit = {}){
     CenterAlignedTopAppBar(
         title = {
             Text(text = titleText)
         },
         navigationIcon = {
-            IconButton(onClick = accionNavegacion) {
+            IconButton(onClick = navigationAction) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
             }
         },
@@ -87,7 +84,7 @@ fun LargeSpace(){
 }
 
 @Composable
-fun CajaPastel(modifier: Modifier = Modifier, contenido : @Composable () -> Unit){
+fun CakeColorBox(modifier: Modifier = Modifier, contenido : @Composable () -> Unit){
     Box(
         modifier = modifier.background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center

@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
-class ListadoProductoViewModel : ViewModel() {
-    var productos by mutableStateOf(listOf(
+class ProductListViewModel : ViewModel() {
+    var products by mutableStateOf(listOf(
         "Esponjas",
         "Radios",
         "Manzanas",
@@ -15,11 +15,11 @@ class ListadoProductoViewModel : ViewModel() {
     ))
     private set
 
-    fun añadirProducto(){
+    fun addProduct(){
 
     }
 
-    fun verDetallesProducto(producto: String){
+    fun seeProductDetails(product: String){
 
     }
 }

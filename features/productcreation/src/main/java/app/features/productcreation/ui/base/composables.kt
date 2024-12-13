@@ -29,53 +29,53 @@ fun Appbar( titleText : String, accionNavegacion : () -> Unit = {}){
 }
 
 @Composable
-fun TextoEditableUnaLinea(
-    texto: String,
-    cambio : (String) -> Unit,
-    etiqueta : String,
+fun OneLineEditText(
+    text: String,
+    change : (String) -> Unit,
+    tag : String,
     error : Boolean = false,
     opcionesTeclado : KeyboardOptions = KeyboardOptions.Default
     ){
     OutlinedTextField(
-        texto,
-        cambio,
+        text,
+        change,
         isError = error,
-        label = @Composable { Text(etiqueta) },
+        label = @Composable { Text(tag) },
         singleLine = true,
         keyboardOptions = opcionesTeclado,
     )
 }
 
 @Composable
-fun TextoEditableLineaMultiple(
-    texto: String,
-    cambio : (String) -> Unit,
-    etiqueta : String,
+fun MultipleLineEditText(
+    text: String,
+    change : (String) -> Unit,
+    tag : String,
     error : Boolean = false){
     OutlinedTextField(
-        texto,
-        cambio,
+        text,
+        change,
         isError = error,
-        label = @Composable { Text(etiqueta) },
+        label = @Composable { Text(tag) },
     )
 }
 
 @Composable
-fun <T> MenuDesplegable(
-    expandido : Boolean = false,
-    tocarFuera : () -> Unit,
-    listaElementos : Iterable<T>,
-    alPulsarApartado : () -> Unit,
-    mostrarContenido : @Composable (T) -> Unit
+fun <T> DropDownMenuTemplate(
+    expanded : Boolean = false,
+    onDismiss : () -> Unit,
+    elementsList : Iterable<T>,
+    touchedItem : () -> Unit,
+    howShowItem : @Composable (T) -> Unit
 ){
     DropdownMenu(
-        expandido,
-        onDismissRequest = tocarFuera
+        expanded,
+        onDismissRequest = onDismiss
         ) {
-        listaElementos.forEach {
+        elementsList.forEach {
             DropdownMenuItem(
-                text = {mostrarContenido.invoke(it)},
-                onClick = alPulsarApartado
+                text = {howShowItem.invoke(it)},
+                onClick = touchedItem
             )
         }
     }

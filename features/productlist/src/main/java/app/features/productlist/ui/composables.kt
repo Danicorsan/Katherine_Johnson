@@ -14,13 +14,13 @@ import app.base.ui.composables.Separations
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Appbar( titleText : String, accionNavegacion : () -> Unit = {}){
+fun Appbar(titleText : String, navigationAction : () -> Unit = {}){
     CenterAlignedTopAppBar(
         title = {
             Text(text = titleText)
         },
         navigationIcon = {
-            IconButton(onClick = accionNavegacion) {
+            IconButton(onClick = navigationAction) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
             }
         },
@@ -28,9 +28,9 @@ fun Appbar( titleText : String, accionNavegacion : () -> Unit = {}){
 }
 
 @Composable
-fun MostrarProducto (producto : String){
+fun ShowProduct (product : String){
     Text(
-        producto,
+        product,
         modifier = Modifier.padding(Separations.Small)
     )
 }

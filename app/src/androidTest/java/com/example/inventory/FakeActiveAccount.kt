@@ -1,8 +1,8 @@
 package com.example.inventory
 
-import app.domain.invoicing.data.account.Account
-import app.domain.invoicing.data.account.Email
-import app.domain.invoicing.data.account.Password
+import app.domain.invoicing.account.Account
+import app.domain.invoicing.account.Email
+import app.domain.invoicing.account.Password
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
