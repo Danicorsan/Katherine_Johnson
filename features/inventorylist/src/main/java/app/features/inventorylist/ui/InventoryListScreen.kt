@@ -8,19 +8,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.domain.invoicing.inventory.Inventory
 import app.features.inventorylist.R
 
-data class Inventory(val name: String, val quantity: Int, val price: Double)
-
 @Composable
-fun InventoryListScreen(inventories: List<Inventory>, onBackClick: () -> Unit, onInventoryClick: (Inventory) -> Unit) {
+fun InventoryListScreen(
+    viewModel: InventoryListViewModel,
+    onBackClick: () -> Unit,
+    onInventoryClick: (Inventory) -> Unit
+) {
+    // Obtenemos el estado actual del ViewModel
+    val uiState = viewModel.uiState.collectAsState().value
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +59,7 @@ fun InventoryListScreen(inventories: List<Inventory>, onBackClick: () -> Unit, o
 
         // Lista de inventarios
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(inventories) { inventory ->
+            items(uiState.inventories) { inventory ->
                 InventoryCard(inventory = inventory, onClick = { onInventoryClick(inventory) })
             }
         }
@@ -91,9 +99,9 @@ fun InventoryCard(inventory: Inventory, onClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "$${inventory.price}",
+                    text = stringResource(R.string.valor_acumulado, inventory.price),
                     style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        fontWeight = FontWeight.Bold,
                         letterSpacing = 0.5.sp
                     )
                 )
@@ -105,13 +113,25 @@ fun InventoryCard(inventory: Inventory, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun InventoryListScreenPreview() {
+    // Creamos una lista de inventarios para la vista previa
     val inventories = listOf(
-        Inventory("Inventario 1", 20, 99.99),
-        Inventory("Inventario 2", 15, 149.99),
-        Inventory("Inventario 3", 30, 199.99)
+        Inventory(1, "Camisa", "Camisa grande", 45, 15.99, emptyList()),
+        Inventory(2, "Pantalón", "Pantalón de mezclilla", 30, 25.99, emptyList()),
+        Inventory(3, "Zapatos", "Zapatos deportivos", 20, 35.99, emptyList())
     )
 
-    InventoryListScreen(inventories = inventories, onBackClick = {}, onInventoryClick = { inventory ->
-        // Lógica para manejar la selección de un inventario
-    })
+    // Creamos un ViewModel de prueba
+    val previewViewModel = object : InventoryListViewModel() {
+        override fun loadInventoryList() {
+            val sampleItems = listOf(
+                Inventory(1, "Camisa", "Camisa grande", 45, 15.99, emptyList()),
+                Inventory(2, "Pantalón", "Pantalón de mezclilla", 30, 25.99, emptyList()),
+                Inventory(3, "Zapatos", "Zapatos deportivos", 20, 35.99, emptyList())
+            )
+            _uiState.value = InventoryListState(inventories = sampleItems)
+        }
+    }
+
+    // Llamamos a la pantalla con los datos de muestra
+    InventoryListScreen(viewModel = previewViewModel, onBackClick = {}, onInventoryClick = {})
 }

@@ -7,7 +7,7 @@ Este proyecto es una aplicación móvil para gestionar el inventario de producto
 
 - Daniel Cortés Sánchez
 - Leandro Orellana Martos
-- Sergio aguilera ibarra
+- Sergio Aguilera Ibarra
 - 
 
 ----------------

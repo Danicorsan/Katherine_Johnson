@@ -9,4 +9,5 @@ android {
 
 dependencies {
     implementation(projects.domain.inventory)
+    implementation(project(":features:inventorylist"))
 }

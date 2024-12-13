@@ -3,4 +3,5 @@
     <string name="volver">Back</string>
     <string name="lista_de_inventarios">List of inventories</string>
     <string name="cantidad">Quantity: %1$s</string>
+    <string name="valor_acumulado">Acumulated value: %1$s USD</string>
 </resources>
