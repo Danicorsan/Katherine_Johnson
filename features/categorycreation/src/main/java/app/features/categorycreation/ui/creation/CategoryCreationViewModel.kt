@@ -26,9 +26,11 @@ class CategoryCreationViewModel(private val repository: CategoryRepository = Cat
                 image = state.image,
                 createdAt = Date()
             )
+            repository.addCategory(newCategory)
+            state = CategoryCreationState()
             println("Categoría creada: ${newCategory}")
         }else {
-            state.isError = true
+            state = state.copy(isError = true)
         }
 
     }

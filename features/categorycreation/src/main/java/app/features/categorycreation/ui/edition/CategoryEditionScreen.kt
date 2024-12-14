@@ -31,7 +31,7 @@ import app.features.categorycreation.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryEditionScreen() {
+fun CategoryEditionScreen(categoryEditionViewModel: CategoryEditionViewModel, onClick: () -> Unit) {
     // Estados para los campos de texto
     var oldCategoryName by remember { mutableStateOf("") }
     var newCategoryName by remember { mutableStateOf("") }
@@ -109,7 +109,7 @@ fun CategoryEditionScreen() {
 
             Button(
                 onClick = {
-                    // Acción para guardar cambios
+                    onClick()
                     println("Antiguo: $oldCategoryName, Nuevo: $newCategoryName, Descripción: $description")
                 }
             ) {
@@ -121,9 +121,10 @@ fun CategoryEditionScreen() {
     }
 }
 
-
+/*
 @Preview(showSystemUi = true)
 @Composable
 fun Preview() {
-    CategoryEditionScreen()
+    CategoryEditionScreen(categoryEditionViewModel)
 }
+*/
