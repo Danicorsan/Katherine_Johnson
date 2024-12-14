@@ -28,101 +28,115 @@ import app.base.ui.composables.MediumSpace
 import app.base.ui.composables.SmallSpace
 import app.features.categorycreation.R
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryCreationScreen(viewModel: CategoryCreationViewModel = CategoryCreationViewModel()) {
+fun CategoryCreationScreen(
+    viewModel: CategoryCreationViewModel = CategoryCreationViewModel(),
+    onClickNewCategory: () -> Unit
+) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        TopAppBar(
-            title = {
-                Text(text = stringResource(R.string.crear_categoria))
-            },
-            navigationIcon = {
-                IconButton(onClick = { /* Acción para volver */ }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.volver))
-                }
-            },
-        )
-
-        MediumSpace()
-
-        Text(
-            text = stringResource(R.string.crear_categoria),
+    if (viewModel.state.isError) {
+        BaseAlertDialog(title = "Error", confirmText = "Confirmar", text = "Hola", onConfirm = {}, onDismiss = {})
+    } else {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            textAlign = TextAlign.Center
-        )
-        MediumSpace()
-
-        OutlinedTextField(
-            value = viewModel.state.name,
-            onValueChange = {viewModel.onNameChange(it)},
-            label = { Text(stringResource(R.string.nombre_de_la_categoria)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        SmallSpace()
-
-        OutlinedTextField(
-            value = viewModel.state.description,
-            onValueChange = {viewModel.onDescriptionChange(it)},
-            label = { Text(stringResource(R.string.descripcion_de_la_categoria)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        SmallSpace()
-
-        OutlinedTextField(
-            value = viewModel.state.shortName,
-            onValueChange = {viewModel.onShortNameChange(it)},
-            label = { Text(stringResource(R.string.nombre_corto)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        SmallSpace()
-
-        OutlinedTextField(
-            value = viewModel.state.image ?: "",
-            onValueChange = {viewModel.onImageChange(it)},
-            label = { Text(stringResource(R.string.imagen)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        MediumSpace()
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Button(
-                onClick = {
-                    println("Cambios descartados")
-                }
-            ) {
-                Text(stringResource(R.string.descartar_cambios))
-            }
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.crear_categoria))
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /* Acción para volver */ }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.volver)
+                        )
+                    }
+                },
+            )
 
-            Button(
-                onClick = {
-                    viewModel.createCategory(viewModel.state.name, viewModel.state.description)
-                }
+            MediumSpace()
+
+            Text(
+                text = stringResource(R.string.crear_categoria),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                textAlign = TextAlign.Center
+            )
+            MediumSpace()
+
+            OutlinedTextField(
+                value = viewModel.state.name,
+                onValueChange = { viewModel.onNameChange(it) },
+                label = { Text(stringResource(R.string.nombre_de_la_categoria)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            SmallSpace()
+
+            OutlinedTextField(
+                value = viewModel.state.description,
+                onValueChange = { viewModel.onDescriptionChange(it) },
+                label = { Text(stringResource(R.string.descripcion_de_la_categoria)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            SmallSpace()
+
+            OutlinedTextField(
+                value = viewModel.state.shortName,
+                onValueChange = { viewModel.onShortNameChange(it) },
+                label = { Text(stringResource(R.string.nombre_corto)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            SmallSpace()
+
+            OutlinedTextField(
+                value = viewModel.state.image ?: "",
+                onValueChange = { viewModel.onImageChange(it) },
+                label = { Text(stringResource(R.string.imagen)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            MediumSpace()
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(stringResource(R.string.crear_categoria))
+                Button(
+                    onClick = {
+                        println("Cambios descartados")
+                    }
+                ) {
+                    Text(stringResource(R.string.descartar_cambios))
+                }
+
+                Button(
+                    onClick = {
+                        viewModel.createCategory(viewModel.state.name, viewModel.state.description)
+                        if(viewModel.state.isError)
+                            onClickNewCategory()
+                    }
+                ) {
+                    Text(stringResource(R.string.crear_categoria))
+                }
             }
         }
     }
 }
 
-
+/*
 @Preview(showSystemUi = true)
 @Composable
 fun Preview() {
     CategoryCreationScreen()
 }
+*/

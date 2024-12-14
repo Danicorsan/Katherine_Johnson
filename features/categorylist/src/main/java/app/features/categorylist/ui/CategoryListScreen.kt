@@ -29,7 +29,7 @@ import app.features.categorylist.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryListScreen(viewModel: CategoryListViewModel = CategoryListViewModel()) {
+fun CategoryListScreen(viewModel: CategoryListViewModel = CategoryListViewModel(), onClickNewCategory:()->Unit,) {
 
     Column(
         modifier = Modifier
@@ -61,8 +61,7 @@ fun CategoryListScreen(viewModel: CategoryListViewModel = CategoryListViewModel(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
-                        .clickable { //TODO HACER NAVEGACION A DETALLE DE CATEGORIA
-                             }
+                        .clickable {}
                 ) {
                     Text(
                         text = category.name,
@@ -75,16 +74,18 @@ fun CategoryListScreen(viewModel: CategoryListViewModel = CategoryListViewModel(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* Acción para agregar nueva categoría */ },
+            onClick = { onClickNewCategory() },
             modifier = Modifier.align(Alignment.End)
         ) {
             Text(stringResource(R.string.nueva_categoria))
         }
     }
 }
-
+/*
 @Preview(showSystemUi = true)
 @Composable
 fun Preview() {
     CategoryListScreen()
 }
+
+ */
