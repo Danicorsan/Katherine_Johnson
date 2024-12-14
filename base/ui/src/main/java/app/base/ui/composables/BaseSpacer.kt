@@ -11,3 +11,6 @@ fun SmallSpace() = Spacer(modifier = Modifier.size(Separations.Small))
 
 @Composable
 fun MediumSpace() = Spacer(modifier = Modifier.size(Separations.Medium))
+
+@Composable
+fun HighSpace() = Spacer(modifier = Modifier.size(Separations.High))
