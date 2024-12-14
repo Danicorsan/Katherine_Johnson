@@ -14,48 +14,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.composables.NormalButton
 import app.features.productlist.R
 
-data class Eventos(
-    val añadirProducto : () -> Unit,
-    val verDetallesProducto : (String) -> Unit
+data class ProductListEvents(
+    val addProduct : () -> Unit,
+    val seeProductDetails : (String) -> Unit
 )
 
 @Preview(showSystemUi = true)
 @Composable
-fun ListadoProductoPantalla(viewModel: ListadoProductoViewModel = ListadoProductoViewModel()){
-    ListadoProductosContenido(
-        listaProductos = viewModel.productos,
-        eventos = Eventos(
-            añadirProducto = viewModel::añadirProducto,
-            verDetallesProducto = viewModel::verDetallesProducto
+fun ProductListScreen(viewModel: ProductListViewModel = ProductListViewModel()){
+    ProductListContent(
+        productList = viewModel.products,
+        productListEvents = ProductListEvents(
+            addProduct = viewModel::addProduct,
+            seeProductDetails = viewModel::seeProductDetails
         )
     )
 }
 
 @Composable
-private fun ListadoProductosContenido(listaProductos : List<String>, eventos: Eventos){
+private fun ProductListContent(productList : List<String>, productListEvents: ProductListEvents){
     Column {
         Appbar(stringResource(R.string.titulo_appbar))
-        BotonAñadirProductos(eventos.añadirProducto)
-        ProductosListados(listaProductos, eventos)
+        AddProductButton(productListEvents.addProduct)
+        ListedProducts(productList, productListEvents)
     }
 }
 
 @Composable
-private fun ProductosListados(listaProductos: List<String>, eventos: Eventos){
+private fun ListedProducts(listaProductos: List<String>, productListEvents: ProductListEvents){
     LazyColumn {
         items(listaProductos) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = {eventos.verDetallesProducto(it)}
+                onClick = {productListEvents.seeProductDetails(it)}
             ) {
-                MostrarProducto(it)
+                ShowProduct(it)
             }
         }
     }
 }
 
 @Composable
-private fun BotonAñadirProductos(añadirProducto: () -> Unit){
+private fun AddProductButton(añadirProducto: () -> Unit){
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
