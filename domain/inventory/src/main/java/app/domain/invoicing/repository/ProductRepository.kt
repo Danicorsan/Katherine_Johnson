@@ -33,8 +33,7 @@ object ProductRepository {
                     name = "Electronics",
                     shortName = "Elec",
                     description = "Devices and gadgets for everyday use",
-                    image = ByteArray(0), // Imagen vacía como ejemplo
-                    typeCategory = "Technology",
+                    image = ByteArray(0).toString(), // Imagen vacía como ejemplo
                     createdAt = Date()
                 ),
                 section = "Tecnología",
@@ -61,8 +60,7 @@ object ProductRepository {
                     name = "Books",
                     shortName = "Books",
                     description = "Printed and digital books of various genres",
-                    image = ByteArray(0), // Imagen vacía como ejemplo
-                    typeCategory = "Media",
+                    image = ByteArray(0).toString(), // Imagen vacía como ejemplo
                     createdAt = Date()
                 ),
                 section = "Accesorios",
@@ -88,8 +86,7 @@ object ProductRepository {
                     name = "Clothing",
                     shortName = "Cloth",
                     description = "Apparel for men, women, and kids",
-                    image = ByteArray(0), // Imagen vacía como ejemplo
-                    typeCategory = "Fashion",
+                    image = ByteArray(0).toString(), // Imagen vacía como ejemplo
                     createdAt = Date()
                 ),
                 section = "Mobiliario",
@@ -116,8 +113,7 @@ object ProductRepository {
                     name = "Groceries",
                     shortName = "Groc",
                     description = "Daily essentials and food items",
-                    image = ByteArray(0), // Imagen vacía como ejemplo
-                    typeCategory = "Essentials",
+                    image = ByteArray(0).toString(), // Imagen vacía como ejemplo
                     createdAt = Date()
                 ),
                 section = "Tecnología",
@@ -144,8 +140,7 @@ object ProductRepository {
                     name = "Furniture",
                     shortName = "Furn",
                     description = "Home and office furniture",
-                    image = ByteArray(0), // Imagen vacía como ejemplo
-                    typeCategory = "Home",
+                    image = ByteArray(0).toString(), // Imagen vacía como ejemplo
                     createdAt = Date()
                 ),
                 section = "Tecnología",

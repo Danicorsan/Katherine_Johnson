@@ -30,8 +30,7 @@ fun ProductDetailScreen(){
         name = "Nombre Categoria",
         shortName = "cat",
         description = "",
-        image = byteArrayOf(12,23,14),
-        typeCategory = "Categoria",
+        image = byteArrayOf(12,23,14).toString(),
         createdAt = Date(342422424)
     )
     val section = "Nombre Seccion"

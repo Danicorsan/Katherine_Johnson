@@ -23,18 +23,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.base.ui.composables.BaseAlertDialog
+import app.base.ui.composables.MediumSpace
+import app.base.ui.composables.SmallSpace
 import app.features.categorycreation.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryCreationScreen() {
+fun CategoryCreationScreen(viewModel: CategoryCreationViewModel = CategoryCreationViewModel()) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // TopAppBar en la parte superior
         TopAppBar(
             title = {
                 Text(text = stringResource(R.string.crear_categoria))
@@ -46,7 +48,7 @@ fun CategoryCreationScreen() {
             },
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        MediumSpace()
 
         Text(
             text = stringResource(R.string.crear_categoria),
@@ -55,25 +57,43 @@ fun CategoryCreationScreen() {
                 .padding(bottom = 16.dp),
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        MediumSpace()
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = viewModel.state.name,
+            onValueChange = {viewModel.onNameChange(it)},
             label = { Text(stringResource(R.string.nombre_de_la_categoria)) },
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        SmallSpace()
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = viewModel.state.description,
+            onValueChange = {viewModel.onDescriptionChange(it)},
             label = { Text(stringResource(R.string.descripcion_de_la_categoria)) },
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        SmallSpace()
+
+        OutlinedTextField(
+            value = viewModel.state.shortName,
+            onValueChange = {viewModel.onShortNameChange(it)},
+            label = { Text(stringResource(R.string.nombre_corto)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        SmallSpace()
+
+        OutlinedTextField(
+            value = viewModel.state.image ?: "",
+            onValueChange = {viewModel.onImageChange(it)},
+            label = { Text(stringResource(R.string.imagen)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        MediumSpace()
 
         Row(
             modifier = Modifier
@@ -91,7 +111,7 @@ fun CategoryCreationScreen() {
 
             Button(
                 onClick = {
-                    print("Categoria Creada")
+                    viewModel.createCategory(viewModel.state.name, viewModel.state.description)
                 }
             ) {
                 Text(stringResource(R.string.crear_categoria))
