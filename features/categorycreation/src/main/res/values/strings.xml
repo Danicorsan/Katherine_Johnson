@@ -11,4 +11,6 @@
     <string name="nombre_antiguo_de_la_categoria">Nombre Antiguo de la Categoría</string>
     <string name="nuevo_nombre_de_la_categoria">Nuevo Nombre de la Categoría</string>
     <string name="guardar_cambios">Guardar Cambios</string>
+    <string name="imagen">Imagen</string>
+    <string name="nombre_corto">Nombre corto</string>
 </resources>

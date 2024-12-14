@@ -23,8 +23,7 @@ object CategoryRepository {
                 name = "Electronics",
                 shortName = "ELEC",
                 description = "Category for electronic products",
-                image = imageToByteArray("path/to/electronics.png"),
-                typeCategory = "Goods",
+                image = null,
                 createdAt = Date()
             )
         )
@@ -34,8 +33,7 @@ object CategoryRepository {
                 name = "Books",
                 shortName = "BOOK",
                 description = "Category for books and literature",
-                image = imageToByteArray("path/to/books.png"),
-                typeCategory = "Goods",
+                image = null,
                 createdAt = Date()
             )
         )
@@ -45,8 +43,7 @@ object CategoryRepository {
                 name = "Services",
                 shortName = "SERV",
                 description = "Category for service offerings",
-                image = imageToByteArray("path/to/services.png"),
-                typeCategory = "Services",
+                image = null,
                 createdAt = Date()
             )
         )
@@ -79,6 +76,7 @@ object CategoryRepository {
     fun deleteCategory(id: Int): Boolean {
         return dataSet.removeIf { it.id == id }
     }
+
 
     private fun imageToByteArray(imagePath: String): ByteArray {
         val image = ImageIcon(imagePath).image

@@ -29,16 +29,7 @@ import app.features.categorylist.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryListScreen() {
-    val categories = listOf(
-        "Electrónica",
-        "Hogar",
-        "Deportes",
-        "Ropa",
-        "Electrónica",
-        "Hogar",
-        "Deportes",
-    )
+fun CategoryListScreen(viewModel: CategoryListViewModel = CategoryListViewModel()) {
 
     Column(
         modifier = Modifier
@@ -65,15 +56,16 @@ fun CategoryListScreen() {
         )
 
         LazyColumn {
-            items(categories) { category ->
+            items(viewModel.state.categories) { category ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
-                        .clickable { /* Acción al seleccionar */ }
+                        .clickable { //TODO HACER NAVEGACION A DETALLE DE CATEGORIA
+                             }
                 ) {
                     Text(
-                        text = category,
+                        text = category.name,
                         modifier = Modifier.padding(16.dp)
                     )
                 }
