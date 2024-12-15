@@ -1,5 +1,7 @@
 package app.features.productcreation.ui.base
 
+import kotlinx.datetime.Instant
+
 data class ProductViewState(
     val code : String = "",
     val name : String = "",
@@ -10,5 +12,10 @@ data class ProductViewState(
     val productType : String = "",
     val stock : String = "",
     val price : String = "",
-    var minimunStock: String = "",
+    val minimunStock: String = "",
+    val adquisitionDate : Instant? = null,
+    val adquisitionDateRepresentation : String? = null,
+    val discontinuationDate : Instant? = null,
+    val discontinuationDateRepresentation : String? = null,
+    val isLoading : Boolean = false
 )

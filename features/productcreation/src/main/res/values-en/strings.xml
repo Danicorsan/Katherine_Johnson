@@ -23,4 +23,5 @@
     <string name="notas_etiqueta">Notes</string>
     <string name="boton_aceptar">Accept</string>
     <string name="titulo_edicion_producto_appbar">Edit product</string>
+    <string name="no_selected_option">Not selected</string>
 </resources>

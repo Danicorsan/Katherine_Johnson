@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.composables.MediumSpace
 import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace
+import app.base.utils.format
 import app.base.utils.toCurrency
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.Product
@@ -125,10 +126,10 @@ fun ScrollableContentColumn(modifier: Modifier = Modifier, product: Product){
         MediumSpace()
         MakeInRow(
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.fecha_adquisicion_etiqueta), data = product.acquisitionDate.toString()
+                dataType = stringResource(R.string.fecha_adquisicion_etiqueta), data = product.acquisitionDate.format()
             )},
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.fecha_modificacion_etiqueta), data = product.discontinuationDate?.toString()
+                dataType = stringResource(R.string.fecha_modificacion_etiqueta), data = product.discontinuationDate?.format()
             )}
         )
         MediumSpace()
