@@ -59,13 +59,13 @@ private fun ProductEditionContent(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Appbar(titleText = stringResource(R.string.titulo_edicion_producto_appbar))
+        Appbar(titleText = stringResource(R.string.product_edition_title_appbar))
         ProductForm(
             productState,
             productEvents,
             dropDownItemsState,
             dropDownItemsEvents,
-            stringResource(R.string.boton_aceptar)
+            stringResource(R.string.accept_button_label)
         )
     }
 }

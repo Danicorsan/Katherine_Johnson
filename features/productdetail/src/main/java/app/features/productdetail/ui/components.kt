@@ -20,16 +20,16 @@ fun ProductDetailsColumn(modifier: Modifier = Modifier, dataType : String, data 
         SmallSpace()
         data?.let {
             InformativeText(text = data)
-        } ?: InformativeText(text = stringResource(R.string.campo_sin_valor))
+        } ?: InformativeText(text = stringResource(R.string.field_without_value))
     }
 }
 
 @Composable
 fun ProductDetailsColumn(modifier: Modifier = Modifier, dataType : String, state : ProductState){
     val textoMostrar = when(state){
-        ProductState.new -> stringResource(R.string.estado_producto_nuevo_texto)
-        ProductState.modified -> stringResource(R.string.estado_producto_modificado_texto)
-        ProductState.verified -> stringResource(R.string.estado_producto_verificado_texto)
+        ProductState.new -> stringResource(R.string.state_as_new)
+        ProductState.modified -> stringResource(R.string.state_as_modified)
+        ProductState.verified -> stringResource(R.string.state_as_verified)
     }
 
     ProductDetailsColumn(dataType = dataType, data = textoMostrar)

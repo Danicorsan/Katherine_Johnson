@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="titulo_appbar">Product List</string>
-    <string name="texto_boton">New Product</string>
+    <string name="title_appbar">Product List</string>
+    <string name="new_product_button_label">New Product</string>
 </resources>

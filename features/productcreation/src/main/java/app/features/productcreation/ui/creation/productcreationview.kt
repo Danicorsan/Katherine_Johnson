@@ -59,13 +59,13 @@ fun ProductCreationContent(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Appbar(titleText = stringResource(R.string.titulo_creacion_producto_appbar))
+        Appbar(titleText = stringResource(R.string.creation_product_title_appbar))
         ProductForm(
             productState,
             productEvents,
             dropDownItemsState,
             dropDownItemsEvents,
-            stringResource(R.string.boton_aceptar)
+            stringResource(R.string.accept_button_label)
         )
     }
 

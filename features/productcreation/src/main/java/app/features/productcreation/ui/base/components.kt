@@ -40,37 +40,37 @@ fun ProductForm(
             OneLineEditText(
                 text = productViewState.name,
                 change = productEvents.onNameChange,
-                tag = stringResource(R.string.nombre_etiqueta)
+                tag = stringResource(R.string.name_label)
             )
 
             OneLineEditText(
                 text = productViewState.shortName,
                 change = productEvents.onShortNameChange,
-                tag = stringResource(R.string.nombre_corto_etiqueta)
+                tag = stringResource(R.string.short_name_label)
             )
 
             OneLineEditText(
                 text = productViewState.code,
                 change = productEvents.onCodeChange,
-                tag = stringResource(R.string.codigo_etiqueta)
+                tag = stringResource(R.string.code_label)
             )
 
             OneLineEditText(
                 text = productViewState.serialNumber,
                 change = productEvents.onSerialNumberChange,
-                tag = stringResource(R.string.numero_serie_etiqueta)
+                tag = stringResource(R.string.serial_number_label)
             )
 
             OneLineEditText(
                 text = productViewState.modelCode,
                 change = productEvents.onModelCodeChange,
-                tag = stringResource(R.string.codigo_modelo_etiqueta)
+                tag = stringResource(R.string.model_code_label)
             )
 
             OneLineEditText(
                 text = productViewState.productType,
                 change = productEvents.onProductTypeChange,
-                tag = stringResource(R.string.tipo_producto_etiqueta)
+                tag = stringResource(R.string.product_type_label)
             )
 
             SmallSpace()
@@ -90,27 +90,27 @@ fun ProductForm(
             OneLineEditText(
                 text = productViewState.price,
                 change = productEvents.onPriceChange,
-                tag = stringResource(R.string.precio_etiqueta),
+                tag = stringResource(R.string.price_label),
                 opcionesTeclado = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
             MultipleLineEditText(
                 text = productViewState.description,
                 change = productEvents.onDescriptionChange,
-                tag = stringResource(R.string.descripcion_etiqueta)
+                tag = stringResource(R.string.description_label)
             )
 
             SmallSpace()
             DatePickerDocked(
                 selectedDateText = productViewState.adquisitionDateRepresentation ?: stringResource(R.string.no_selected_option),
-                label = stringResource(R.string.fecha_adquisicion_etiqueta),
+                label = stringResource(R.string.acquisition_date_label),
                 onNewDateSelected = productEvents.onNewAcquisitionDateSelected
             )
 
             SmallSpace()
             DatePickerDocked(
                 selectedDateText = productViewState.discontinuationDateRepresentation ?: stringResource(R.string.no_selected_option),
-                label = stringResource(R.string.fecha_modificacion_etiqueta),
+                label = stringResource(R.string.discontinuation_date_label),
                 onNewDateSelected = productEvents.onNewDiscontinuationDateSelected
             )
         }

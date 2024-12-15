@@ -108,7 +108,7 @@ fun DropDownMenuForCategory(
                 onValueChange = {},
             )
         },
-        label = stringResource(R.string.categoria_etiqueta)
+        label = stringResource(R.string.category_label)
     )
 }
 
@@ -134,7 +134,7 @@ fun DropDownMenuForSection(
                 onValueChange = {},
             )
         },
-        label = stringResource(R.string.seccion_etiqueta)
+        label = stringResource(R.string.section_label)
     )
 }
 

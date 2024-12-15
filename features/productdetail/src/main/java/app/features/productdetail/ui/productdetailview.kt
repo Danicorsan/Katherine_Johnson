@@ -59,7 +59,7 @@ fun ProductDetailScreen(){
 private fun ProductDetailContent(modifier: Modifier, product : Product){
 
     Column {
-        Appbar(titleText = stringResource(R.string.titulo_appbar))
+        Appbar(titleText = stringResource(R.string.title_appbar))
         ScrollableContentColumn(modifier = modifier ,product = product)
     }
 }
@@ -79,81 +79,81 @@ fun ScrollableContentColumn(modifier: Modifier = Modifier, product: Product){
 
         MakeInRow(
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.codigo_etiqueta), data = product.code
+                dataType = stringResource(R.string.code_label), data = product.code
             )},
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.nombre_corto_etiqueta), data = product.shortName
+                dataType = stringResource(R.string.short_name_label), data = product.shortName
             )}
         )
         MediumSpace()
         MakeInRow(
             { ProductDetailsColumn(
-                dataType = stringResource(R.string.categoria_etiqueta), data = product.category.name
+                dataType = stringResource(R.string.category_label), data = product.category.name
             )},
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.numero_serie_etiqueta), data = product.serialNumber
+                dataType = stringResource(R.string.serial_number_label), data = product.serialNumber
             )}
         )
 
         MediumSpace()
         MakeInRow(
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.codigo_modelo_etiqueta), data = product.modelCode
+                dataType = stringResource(R.string.model_code_label), data = product.modelCode
             )},
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.tipo_producto_etiqueta), data = product.productType
+                dataType = stringResource(R.string.product_type_label), data = product.productType
             )}
         )
         MediumSpace()
 
         MakeInRow(
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.seccion_etiqueta), data = product.section
+                dataType = stringResource(R.string.section_label), data = product.section
             )},
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.estado_etiqueta), state = product.state
+                dataType = stringResource(R.string.state_label), state = product.state
             )}
         )
         MediumSpace()
         MakeInRow(
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.cantidad_etiqueta), data = product.stock.toString()
+                dataType = stringResource(R.string.stock_label), data = product.stock.toString()
             )},
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.precio_etiqueta), data = product.price.toCurrency()
+                dataType = stringResource(R.string.price_label), data = product.price.toCurrency()
             )}
         )
         MediumSpace()
         MakeInRow(
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.fecha_adquisicion_etiqueta), data = product.acquisitionDate.format()
+                dataType = stringResource(R.string.acquisition_date_label), data = product.acquisitionDate.format()
             )},
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.fecha_modificacion_etiqueta), data = product.discontinuationDate?.format()
+                dataType = stringResource(R.string.discontinuation_date_label), data = product.discontinuationDate?.format()
             )}
         )
         MediumSpace()
         MakeInRow(
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.stock_minimo_etiqueta), data = product.minimunStock?.toString()
+                dataType = stringResource(R.string.minimun_stock_label), data = product.minimunStock?.toString()
             )},
             {ProductDetailsColumn(
-                dataType = stringResource(R.string.etiquetas_etiqueta), data = if (product.tags.isEmpty()) null else product.tags.toString()
+                dataType = stringResource(R.string.labels_label), data = if (product.tags.isEmpty()) null else product.tags.toString()
             )}
         )
         MediumSpace()
         ProductDetailsColumn(
-            dataType = stringResource(R.string.descripcion_etiqueta)
+            dataType = stringResource(R.string.description_label)
         ){
             val contenidoAMostrar = when(product.description){
-                null -> stringResource(R.string.campo_sin_valor)
+                null -> stringResource(R.string.field_without_value)
                 else -> product.description!!
             }
             TextoDescripcion(contenido = contenidoAMostrar)
         }
         MediumSpace()
         ProductDetailsColumn(
-            dataType = stringResource(R.string.notas_etiqueta)
+            dataType = stringResource(R.string.notes_label)
         ){
             FilaDeContenidoScrolleable(product.notes) {
                     nota -> ShowNote(nota)

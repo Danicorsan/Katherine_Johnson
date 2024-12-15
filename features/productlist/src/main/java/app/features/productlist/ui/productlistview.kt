@@ -34,7 +34,7 @@ fun ProductListScreen(viewModel: ProductListViewModel = ProductListViewModel()){
 @Composable
 private fun ProductListContent(productList : List<String>, productListEvents: ProductListEvents){
     Column {
-        Appbar(stringResource(R.string.titulo_appbar))
+        Appbar(stringResource(R.string.title_appbar))
         AddProductButton(productListEvents.addProduct)
         ListedProducts(productList, productListEvents)
     }
@@ -61,7 +61,7 @@ private fun AddProductButton(añadirProducto: () -> Unit){
         contentAlignment = Alignment.Center
     ){
         NormalButton(
-            text = stringResource(R.string.texto_boton),
+            text = stringResource(R.string.new_product_button_label),
             onClick = añadirProducto
         )
     }
