@@ -9,4 +9,6 @@ data class Category(
     val description: String,
     val image: String?,
     val createdAt: Date,
+    val typeCategory: TypeCategory = TypeCategory.BASICOS,
+    val fungible: Boolean
 )

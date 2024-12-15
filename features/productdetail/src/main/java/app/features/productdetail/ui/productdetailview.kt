@@ -31,7 +31,8 @@ fun ProductDetailScreen(){
         shortName = "cat",
         description = "",
         image = byteArrayOf(12,23,14).toString(),
-        createdAt = Date(342422424)
+        createdAt = Date(342422424),
+        fungible = false
     )
     val section = "Nombre Seccion"
     val product : Product = Product(

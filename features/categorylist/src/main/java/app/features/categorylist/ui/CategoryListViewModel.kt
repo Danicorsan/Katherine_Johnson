@@ -8,12 +8,8 @@ import app.domain.invoicing.repository.CategoryRepository
 
 class CategoryListViewModel : ViewModel() {
 
-    var state by mutableStateOf(CategoryListState())
+    var state by mutableStateOf(CategoryListState(CategoryRepository.getAllCategories()))
         private set
-
-    init {
-        state = state.copy(categories = CategoryRepository.getAllCategories())
-    }
 
     fun newCategory(){
 

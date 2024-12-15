@@ -34,7 +34,8 @@ object ProductRepository {
                     shortName = "Elec",
                     description = "Devices and gadgets for everyday use",
                     image = ByteArray(0).toString(), // Imagen vacía como ejemplo
-                    createdAt = Date()
+                    createdAt = Date(),
+                    fungible = true
                 ),
                 section = "Tecnología",
                 state = ProductState.new,
@@ -61,7 +62,8 @@ object ProductRepository {
                     shortName = "Books",
                     description = "Printed and digital books of various genres",
                     image = ByteArray(0).toString(), // Imagen vacía como ejemplo
-                    createdAt = Date()
+                    createdAt = Date(),
+                    fungible = false
                 ),
                 section = "Accesorios",
                 state = ProductState.verified,
@@ -87,7 +89,8 @@ object ProductRepository {
                     shortName = "Cloth",
                     description = "Apparel for men, women, and kids",
                     image = ByteArray(0).toString(), // Imagen vacía como ejemplo
-                    createdAt = Date()
+                    createdAt = Date(),
+                    fungible = false
                 ),
                 section = "Mobiliario",
                 state = ProductState.modified,
@@ -114,7 +117,8 @@ object ProductRepository {
                     shortName = "Groc",
                     description = "Daily essentials and food items",
                     image = ByteArray(0).toString(), // Imagen vacía como ejemplo
-                    createdAt = Date()
+                    createdAt = Date(),
+                    fungible = false
                 ),
                 section = "Tecnología",
                 state = ProductState.verified,
@@ -141,7 +145,8 @@ object ProductRepository {
                     shortName = "Furn",
                     description = "Home and office furniture",
                     image = ByteArray(0).toString(), // Imagen vacía como ejemplo
-                    createdAt = Date()
+                    createdAt = Date(),
+                    fungible = false
                 ),
                 section = "Tecnología",
                 state = ProductState.new,
