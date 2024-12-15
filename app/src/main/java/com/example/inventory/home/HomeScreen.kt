@@ -2,114 +2,139 @@ package com.example.inventory.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.base.ui.composables.HighSpace
-import app.base.ui.composables.MediumSpace
+import com.example.inventory.theme.InventoryTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(onNavigateProducts: () -> Unit, onNavigateCategories: () -> Unit, onNavigateInventory: () -> Unit) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween // Espacio distribuido uniformemente
-        ) {
-            // Título "Bienvenido"
-            Box(
+fun HomeScreen(
+    onNavigateProducts: () -> Unit,
+    onNavigateCategories: () -> Unit,
+    onNavigateInventory: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Inicio") },
+            )
+        },
+        content = { innerPadding ->
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(2f),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Título de bienvenida
                 Text(
                     text = "Bienvenido",
-                    fontSize = 40.sp,
-                    textAlign = TextAlign.Center
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                )
+
+                // Sección Productos
+                HomeMenuCard(
+                    icon = Icons.Default.ShoppingCart,
+                    title = "Productos",
+                    description = "Explora y gestiona tus productos",
+                    onClick = onNavigateProducts
+                )
+
+                // Sección Categorías
+                HomeMenuCard(
+                    icon = Icons.AutoMirrored.Filled.List,
+                    title = "Categorías",
+                    description = "Organiza tus productos por categorías",
+                    onClick = onNavigateCategories
+                )
+
+                // Sección Inventario
+                HomeMenuCard(
+                    icon = Icons.Filled.Build,
+                    title = "Inventario",
+                    description = "Consulta y gestiona el inventario",
+                    onClick = onNavigateInventory
                 )
             }
+        }
+    )
+}
 
-            HighSpace()
-            HorizontalDivider()
-            MediumSpace()
+@Composable
+fun HomeMenuCard(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    description: String,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        elevation = CardDefaults.cardElevation(2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Icono
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                modifier = Modifier.size(48.dp),
+                tint = MaterialTheme.colorScheme.primary // Color del icono
+            )
 
-            // Sección "Productos"
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f), // Define cuánto espacio ocupa este texto
-                contentAlignment = Alignment.CenterStart // Centra el contenido en su espacio
+            // Texto
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = "- Productos",
-                    fontSize = 30.sp,
-                    modifier = Modifier.clickable { onNavigateProducts() }
+                    text = title,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
-            }
-
-            MediumSpace()
-            HorizontalDivider()
-            MediumSpace()
-
-            // Sección "Categorias"
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                contentAlignment = Alignment.CenterStart // Centra el contenido en su espacio
-            ) {
                 Text(
-                    text = "- Categorias",
-                    fontSize = 30.sp,
-                    modifier = Modifier.clickable { onNavigateCategories() }
+                    text = description,
+                    fontSize = 16.sp,
+                    color = Color.Gray
                 )
             }
-
-            MediumSpace()
-            HorizontalDivider()
-            MediumSpace()
-
-            // Sección "Inventario"
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                contentAlignment = Alignment.CenterStart // Centra el contenido en su espacio
-            ) {
-                Text(
-                    text = "- Inventario",
-                    fontSize = 30.sp,
-                    modifier = Modifier.clickable { onNavigateInventory() }
-                )
-            }
-
-            MediumSpace()
-            HorizontalDivider()
-            MediumSpace()
         }
     }
 }
-/*
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    val navController = rememberNavController()
-    HomeScreen(navController)
-}
-
- */

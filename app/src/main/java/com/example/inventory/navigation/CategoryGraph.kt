@@ -21,7 +21,10 @@ object CategoryGraph {
     fun categoryEditionRoute() = "$ROUTE/categoryEdition"
 }
 
-fun NavGraphBuilder.categoryGraph(navController: NavController, categoryViewModels: CategoryViewModels){
+fun NavGraphBuilder.categoryGraph(
+    navController: NavController,
+    categoryViewModels: CategoryViewModels
+) {
 
     navigation(startDestination = CategoryGraph.categoryListRoute(), route = CategoryGraph.ROUTE) {
         categoryListRoute(navController, categoryViewModels.categoryListViewModel)
@@ -30,20 +33,37 @@ fun NavGraphBuilder.categoryGraph(navController: NavController, categoryViewMode
     }
 }
 
-private fun NavGraphBuilder.categoryListRoute(navController: NavController, categoryListViewModel: CategoryListViewModel) {
+private fun NavGraphBuilder.categoryListRoute(
+    navController: NavController,
+    categoryListViewModel: CategoryListViewModel
+) {
     composable(route = CategoryGraph.categoryListRoute()) {
-        CategoryListScreen(viewModel = categoryListViewModel, onClickNewCategory = { navController.navigate(categoryCreationRoute()) } )
+        CategoryListScreen(
+            viewModel = categoryListViewModel,
+            onClickBack = { navController.popBackStack() },
+            onClickNewCategory = { navController.navigate(categoryCreationRoute()) } )
     }
 }
 
-private fun NavGraphBuilder.categoryCreationRoute(navController: NavController, categoryCreationViewModel: CategoryCreationViewModel) {
+private fun NavGraphBuilder.categoryCreationRoute(
+    navController: NavController,
+    categoryCreationViewModel: CategoryCreationViewModel
+) {
     composable(route = categoryCreationRoute()) {
-        CategoryCreationScreen(categoryCreationViewModel, onClickNewCategory = { navController.popBackStack() })
+        CategoryCreationScreen(
+            viewModel = categoryCreationViewModel,
+            onClickBack = { navController.popBackStack() },
+            onClickNewCategory = { navController.popBackStack() })
     }
 }
 
-private fun NavGraphBuilder.categoryEditionRoute(navController: NavController, categoryEditionViewModel: CategoryEditionViewModel) {
+private fun NavGraphBuilder.categoryEditionRoute(
+    navController: NavController,
+    categoryEditionViewModel: CategoryEditionViewModel
+) {
     composable(route = CategoryGraph.categoryEditionRoute()) {
-        CategoryEditionScreen(categoryEditionViewModel, onClick = { navController.popBackStack() })
+        CategoryEditionScreen(
+            categoryEditionViewModel = categoryEditionViewModel,
+            onClick = { navController.popBackStack() })
     }
 }

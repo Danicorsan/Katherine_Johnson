@@ -24,7 +24,8 @@ object CategoryRepository {
                 shortName = "ELEC",
                 description = "Category for electronic products",
                 image = null,
-                createdAt = Date()
+                createdAt = Date(),
+                fungible = true
             )
         )
         dataSet.add(
@@ -34,7 +35,8 @@ object CategoryRepository {
                 shortName = "BOOK",
                 description = "Category for books and literature",
                 image = null,
-                createdAt = Date()
+                createdAt = Date(),
+                fungible = false
             )
         )
         dataSet.add(
@@ -44,7 +46,8 @@ object CategoryRepository {
                 shortName = "SERV",
                 description = "Category for service offerings",
                 image = null,
-                createdAt = Date()
+                createdAt = Date(),
+                fungible = false
             )
         )
     }

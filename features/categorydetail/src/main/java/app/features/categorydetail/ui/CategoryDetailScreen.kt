@@ -5,40 +5,48 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.features.categorydetail.R
+import app.domain.invoicing.category.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryDetailScreen() {
-// TopAppBar en la parte superior
-    TopAppBar(
-        title = {
-            Text(text = stringResource(R.string.categoria))
-        },
-        navigationIcon = {
-            IconButton(onClick = { /* Acción para volver */ }) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.volver))
-            }
-        },
-    )
+fun CategoryDetailScreen(
+    viewModel: CategoryDetailViewModel,
+    category: Category
+) {
+    // Cargar la categoría en el estado del ViewModel
+    viewModel.loadCategory(category)
 
+    // Observar el estado actual de la categoría
+    val currentCategory = viewModel.category.value
+
+    // Llamar a la vista tonta con los datos del estado
+    if (currentCategory != null) {
+        CategoryDetailContent(
+            category = currentCategory,
+            onEditCategory = {
+                // Lógica para manejar la edición
+            }
+        )
+    } else {
+        // Mostrar un mensaje de carga o error
+        Text(text = "Cargando detalles de la categoría...")
+    }
+}
+@Composable
+fun CategoryDetailContent(
+    category: Category,
+    onEditCategory: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -47,58 +55,59 @@ fun CategoryDetailScreen() {
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally, // Centra el contenido horizontalmente
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Text(
-                text = stringResource(R.string.detalle_de_la_categoria),
-                fontSize = 24.sp, // Título más grande
+                text = "Detalle de la Categoría",
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
             Text(
-                text = stringResource(R.string.nombre),
+                text = "Nombre:",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(top = 8.dp)
             )
             Text(
-                text = "Nombre de ejemplo",
+                text = category.name,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
             Text(
-                text = stringResource(R.string.descripcion),
+                text = "Descripción:",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(top = 8.dp)
             )
             Text(
-                text = "Esta es una descripción de ejemplo de una categoría.",
+                text = category.description,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
-                textAlign = TextAlign.Center, // Alinea el texto al centro si es multilineal
+                textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
             Button(
-                onClick = { /* Acción para editar categoría */ },
+                onClick = onEditCategory,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth(0.8f) // Botón más ancho, ocupa 80% del ancho de la pantalla
+                    .fillMaxWidth(0.8f)
             ) {
-                Text(stringResource(R.string.editar_categoria))
+                Text("Editar Categoría")
             }
         }
     }
 }
 
-
+/*
 @Preview(showSystemUi = true)
 @Composable
 fun Preview() {
     CategoryDetailScreen()
 }
+
+ */
