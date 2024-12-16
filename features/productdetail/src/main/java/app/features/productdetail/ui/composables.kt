@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -53,11 +52,12 @@ fun TextTag(text : String){
 }
 
 @Composable
-fun TitleText(text: String){
-    CakeColorBox(
-        modifier = Modifier
-    ) {
-        TitleText(text)
+fun DetailsProductScreenTitle(text: String){
+    CakeColorBox{
+        TitleText(
+            text,
+            modifier = Modifier.padding(Separations.Medium)
+        )
     }
 }
 

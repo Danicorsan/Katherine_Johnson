@@ -22,6 +22,9 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
 
     private val isReady = AtomicBoolean()
 
+    protected lateinit var onGoBackNav : () -> Unit
+        private set
+
     fun onCodeChange(newCode : String){
         productViewState = productViewState.copy(code = newCode)
     }
@@ -100,9 +103,10 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         }
     }
 
-    fun getReady(){
+    fun getReady(onGoBackNav : () -> Unit){
         if (!isReady.get()) {
             productViewState = productViewState.copy(isLoading = true)
+            this.onGoBackNav = onGoBackNav
             viewModelScope.launch {
                 delay(2000)//Simulacion de tiempo de espera
                 val categories = CategoryRepository.getAllCategories()
@@ -113,8 +117,9 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         }
     }
 
-    open fun onLeavePage(){
+    fun onLeavePage(){
         isReady.set(false)
+        onGoBackNav()
     }
 
     open fun onAcceptChanges(){

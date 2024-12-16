@@ -24,4 +24,5 @@
     <string name="accept_button_label">Accept</string>
     <string name="product_edition_title_appbar">Edit product</string>
     <string name="no_selected_option">Not selected</string>
+    <string name="on_go_previus_screen_iconButton">Go to previous page</string>
 </resources>

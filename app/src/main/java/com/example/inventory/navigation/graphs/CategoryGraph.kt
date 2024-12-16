@@ -1,4 +1,4 @@
-package com.example.inventory.navigation
+package com.example.inventory.navigation.graphs
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -10,7 +10,8 @@ import app.features.categorycreation.ui.edition.CategoryEditionScreen
 import app.features.categorycreation.ui.edition.CategoryEditionViewModel
 import app.features.categorylist.ui.CategoryListScreen
 import app.features.categorylist.ui.CategoryListViewModel
-import com.example.inventory.navigation.CategoryGraph.categoryCreationRoute
+import com.example.inventory.navigation.CategoryViewModels
+import com.example.inventory.navigation.graphs.CategoryGraph.categoryCreationRoute
 
 
 object CategoryGraph {

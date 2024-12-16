@@ -35,13 +35,13 @@ import app.features.productcreation.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Appbar( titleText : String, accionNavegacion : () -> Unit = {}){
+fun Appbar(titleText : String, onGoBack : () -> Unit){
     CenterAlignedTopAppBar(
         title = {
             Text(text = titleText)
         },
         navigationIcon = {
-            IconButton(onClick = accionNavegacion) {
+            IconButton(onClick = onGoBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
             }
         },

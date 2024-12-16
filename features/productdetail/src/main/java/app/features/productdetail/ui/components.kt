@@ -1,7 +1,6 @@
 package app.features.productdetail.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,7 +35,7 @@ fun ScrollableContentColumn(product: Product){
         horizontalAlignment = Alignment.CenterHorizontally,
 
         ){
-        TitleText(product.name)
+        DetailsProductScreenTitle(product.name)
         MediumSpace()
         MakeInRow(
             {ProductDetailsColumn(
@@ -134,7 +133,7 @@ private fun ShowNote(note: Note){
 
 
 @Composable
-fun ProductDetailsColumn(dataType : String, data : String?){
+private fun ProductDetailsColumn(dataType : String, data : String?){
     Column (
         modifier = Modifier.width(175.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -148,7 +147,7 @@ fun ProductDetailsColumn(dataType : String, data : String?){
 }
 
 @Composable
-fun ProductDetailsColumn(dataType : String, state : ProductState){
+private fun ProductDetailsColumn(dataType : String, state : ProductState){
     val textoMostrar = when(state){
         ProductState.new -> stringResource(R.string.state_as_new)
         ProductState.modified -> stringResource(R.string.state_as_modified)
@@ -159,7 +158,7 @@ fun ProductDetailsColumn(dataType : String, state : ProductState){
 }
 
 @Composable
-fun ProductDetailsColumn(modifier: Modifier = Modifier, dataType : String, content : @Composable () -> Unit){
+private fun ProductDetailsColumn(modifier: Modifier = Modifier, dataType : String, content : @Composable () -> Unit){
     Column (
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -171,7 +170,7 @@ fun ProductDetailsColumn(modifier: Modifier = Modifier, dataType : String, conte
 }
 
 @Composable
-fun MakeInRow(
+private fun MakeInRow(
     productDetail1 : @Composable () -> Unit,
     productDetail2: @Composable () -> Unit
 ){
