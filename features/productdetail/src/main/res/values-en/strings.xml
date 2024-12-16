@@ -15,7 +15,7 @@
     <string name="stock_label">Stock</string>
     <string name="price_label">Price</string>
     <string name="acquisition_date_label">Acquisition date</string>
-    <string name="discontinuation_date_label">Modification date</string>
+    <string name="discontinuation_date_label">Discontinuation date</string>
     <string name="state_as_new">New</string>
     <string name="state_as_modified">Modified</string>
     <string name="state_as_verified">Verified</string>

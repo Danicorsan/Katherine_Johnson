@@ -15,7 +15,7 @@
     <string name="stock_label">Cantidad</string>
     <string name="price_label">Precio</string>
     <string name="acquisition_date_label">Fecha adquisición</string>
-    <string name="discontinuation_date_label">Fecha modificacion</string>
+    <string name="discontinuation_date_label">Fecha de baja</string>
     <string name="state_as_new">Nuevo</string>
     <string name="state_as_modified">Modificado</string>
     <string name="state_as_verified">Verificado</string>
