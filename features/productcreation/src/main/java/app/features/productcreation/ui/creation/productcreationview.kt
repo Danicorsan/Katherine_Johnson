@@ -13,8 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.Appbar
-import app.features.productcreation.ui.base.DropDownItemsEvents
-import app.features.productcreation.ui.base.DropDownItemsState
 import app.features.productcreation.ui.base.ProductForm
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.ProductEvents
@@ -29,18 +27,14 @@ fun ProductCreationScreen(
     viewModel.getReady(onGoBack)
     ProductCreationHost(
         productState = viewModel.productViewState,
-        productEvents = ProductEvents.build(viewModel),
-        dropDownItemsState = viewModel.dropDownItemsState,
-        dropDownItemsEvents = DropDownItemsEvents.build(viewModel)
+        productEvents = ProductEvents.build(viewModel)
     )
 }
 
 @Composable
 fun ProductCreationHost(
     productState: ProductViewState,
-    productEvents : ProductEvents,
-    dropDownItemsState: DropDownItemsState,
-    dropDownItemsEvents: DropDownItemsEvents
+    productEvents : ProductEvents
 ){
     Scaffold(
         topBar = @Composable { Appbar(
@@ -53,9 +47,7 @@ fun ProductCreationHost(
             else -> ProductCreationContent(
                 modifier = Modifier.padding(contentPadding),
                 productState = productState,
-                productEvents = productEvents,
-                dropDownItemsState = dropDownItemsState,
-                dropDownItemsEvents = dropDownItemsEvents
+                productEvents = productEvents
             )
         }
     }
@@ -65,9 +57,7 @@ fun ProductCreationHost(
 fun ProductCreationContent(
     modifier: Modifier,
     productState: ProductViewState,
-    productEvents : ProductEvents,
-    dropDownItemsState: DropDownItemsState,
-    dropDownItemsEvents: DropDownItemsEvents
+    productEvents : ProductEvents
 ){
     Column(
         modifier = modifier.fillMaxSize(),
@@ -76,8 +66,6 @@ fun ProductCreationContent(
         ProductForm(
             productState,
             productEvents,
-            dropDownItemsState,
-            dropDownItemsEvents,
             stringResource(R.string.accept_button_label)
         )
     }

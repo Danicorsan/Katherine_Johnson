@@ -17,73 +17,122 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
     var productViewState by mutableStateOf(ProductViewState())
         private set
 
-    var dropDownItemsState by mutableStateOf(DropDownItemsState())
-        private set
-
     private val isReady = AtomicBoolean()
 
     protected lateinit var onGoBackNav : () -> Unit
         private set
 
     fun onCodeChange(newCode : String){
-        productViewState = productViewState.copy(code = newCode)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                code = newCode
+            )
+        )
     }
 
     fun onNameChange(newName : String){
-        productViewState = productViewState.copy(name = newName)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                name = newName
+            )
+        )
     }
 
     fun onShortNameChange(newShort : String){
-        productViewState = productViewState.copy(shortName = newShort)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                shortName = newShort
+            )
+        )
     }
 
     fun onDescriptionChange(newDescription : String){
-        productViewState = productViewState.copy(description = newDescription)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                description = newDescription
+            )
+        )
     }
 
     fun onSerialNumberChange(newSerialNumber : String){
-        productViewState = productViewState.copy(serialNumber = newSerialNumber)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                serialNumber = newSerialNumber
+            )
+        )
     }
 
     fun onModelCodeChange(newModelCode : String){
-        productViewState = productViewState.copy(modelCode = newModelCode)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                modelCode = newModelCode
+            )
+        )
     }
 
     fun onProductTypeChange(newProductType : String){
-        productViewState = productViewState.copy(productType = newProductType)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                productType = newProductType
+            )
+        )
     }
 
     fun onStockChange(newStock : String){
-        productViewState = productViewState.copy(stock = newStock)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                stock = newStock
+            )
+        )
     }
 
     fun onPriceChange(newPrice : String){
-        productViewState = productViewState.copy(price = newPrice)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                price = newPrice
+            )
+        )
     }
 
     fun onMinimunStockChange(newMinimunStock : String){
-        productViewState = productViewState.copy(minimunStock = newMinimunStock)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                minimunStock = newMinimunStock
+            )
+        )
     }
 
     fun onNewCategorySelected(newCategory : Category){
-        dropDownItemsState = dropDownItemsState.copy(selectedCategory = newCategory)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                selectedCategory = newCategory
+            )
+        )
     }
 
     fun onNewSectionSelected(newSection : String){
-        dropDownItemsState = dropDownItemsState.copy(selectedSection = newSection)
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                selectedSection = newSection
+            )
+        )
     }
 
     fun onAcquisitonDateChange(newAcquisitionDate : Long?){
         newAcquisitionDate?.let {
             val adquisitionDate = Instant.fromEpochMilliseconds(newAcquisitionDate)
             productViewState = productViewState.copy(
-                adquisitionDate = adquisitionDate,
-                adquisitionDateRepresentation = adquisitionDate.format()
+                inputDataState = productViewState.inputDataState.copy(
+                    adquisitionDate = adquisitionDate,
+                    adquisitionDateRepresentation = adquisitionDate.format()
+                ),
             )
         } ?: run {
             productViewState = productViewState.copy(
-                adquisitionDate = null,
-                adquisitionDateRepresentation = null
+                inputDataState = productViewState.inputDataState.copy(
+                    adquisitionDate = null,
+                    adquisitionDateRepresentation = null
+                ),
             )
         }
     }
@@ -92,13 +141,17 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         newDiscontinuationDate?.let {
             val discontinuationDate = Instant.fromEpochMilliseconds(newDiscontinuationDate)
             productViewState = productViewState.copy(
-                discontinuationDate = discontinuationDate,
-                discontinuationDateRepresentation = discontinuationDate.format()
+                inputDataState = productViewState.inputDataState.copy(
+                    discontinuationDate = discontinuationDate,
+                    discontinuationDateRepresentation = discontinuationDate.format()
+                )
             )
         } ?: run {
             productViewState = productViewState.copy(
-                discontinuationDate = null,
-                discontinuationDateRepresentation = null
+                inputDataState = productViewState.inputDataState.copy(
+                    discontinuationDate = null,
+                    discontinuationDateRepresentation = null
+                )
             )
         }
     }
@@ -111,8 +164,10 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
                 delay(2000)//Simulacion de tiempo de espera
                 val categories = CategoryRepository.getAllCategories()
                 isReady.set(true)
-                dropDownItemsState = dropDownItemsState.copy(categoriesList = categories)
-                productViewState = productViewState.copy(isLoading = false)
+                productViewState = productViewState.copy(
+                    isLoading = false,
+                    categoriesList = categories
+                )
             }
         }
     }

@@ -1,5 +1,7 @@
 package app.features.productcreation.ui.base
 
+import app.domain.invoicing.category.Category
+
 data class ProductEvents(
     val onAcceptProduct : () -> Unit,
     val onLeavePage : () -> Unit,
@@ -14,7 +16,9 @@ data class ProductEvents(
     val onPriceChange : (String) -> Unit,
     val onMinimunStock : (String) -> Unit,
     val onNewAcquisitionDateSelected : (Long?) -> Unit,
-    val onNewDiscontinuationDateSelected : (Long?) -> Unit
+    val onNewDiscontinuationDateSelected : (Long?) -> Unit,
+    val onNewCategorySelected : (Category) -> Unit,
+    val onNewSectionSelected : (String) -> Unit
     ){
     companion object{
         fun build(viewModel : ProductBaseCreationViewModel) : ProductEvents{
@@ -32,7 +36,9 @@ data class ProductEvents(
                 onPriceChange = viewModel::onPriceChange,
                 onMinimunStock = viewModel::onMinimunStockChange,
                 onNewAcquisitionDateSelected = viewModel::onAcquisitonDateChange,
-                onNewDiscontinuationDateSelected = viewModel::onDiscontinuationDateChange
+                onNewDiscontinuationDateSelected = viewModel::onDiscontinuationDateChange,
+                onNewCategorySelected = viewModel::onNewCategorySelected,
+                onNewSectionSelected = viewModel::onNewSectionSelected
             )
         }
     }

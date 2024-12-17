@@ -21,12 +21,9 @@ import app.features.productcreation.R
 fun ProductForm(
     productViewState: ProductViewState,
     productEvents : ProductEvents,
-    dropDownItemsState: DropDownItemsState,
-    dropDownitemsEvents : DropDownItemsEvents,
     textButton : String,
     buttonPressed : () -> Unit = {}
 ){
-
     Box(
         modifier = Modifier
             .fillMaxHeight(80/100f)
@@ -38,78 +35,78 @@ fun ProductForm(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OneLineEditText(
-                text = productViewState.name,
+                text = productViewState.inputDataState.name,
                 change = productEvents.onNameChange,
                 tag = stringResource(R.string.name_label)
             )
 
             OneLineEditText(
-                text = productViewState.shortName,
+                text = productViewState.inputDataState.shortName,
                 change = productEvents.onShortNameChange,
                 tag = stringResource(R.string.short_name_label)
             )
 
             OneLineEditText(
-                text = productViewState.code,
+                text = productViewState.inputDataState.code,
                 change = productEvents.onCodeChange,
                 tag = stringResource(R.string.code_label)
             )
 
             OneLineEditText(
-                text = productViewState.serialNumber,
+                text = productViewState.inputDataState.serialNumber,
                 change = productEvents.onSerialNumberChange,
                 tag = stringResource(R.string.serial_number_label)
             )
 
             OneLineEditText(
-                text = productViewState.modelCode,
+                text = productViewState.inputDataState.modelCode,
                 change = productEvents.onModelCodeChange,
                 tag = stringResource(R.string.model_code_label)
             )
 
             OneLineEditText(
-                text = productViewState.productType,
+                text = productViewState.inputDataState.productType,
                 change = productEvents.onProductTypeChange,
                 tag = stringResource(R.string.product_type_label)
             )
 
             SmallSpace()
             DropDownMenuForCategory(
-                dropDownItemsState.categoriesList,
-                dropDownItemsState.selectedCategory,
-                dropDownitemsEvents.onNewCategorySelected
+                productViewState.categoriesList,
+                productViewState.inputDataState.selectedCategory,
+                productEvents.onNewCategorySelected
             )
 
             SmallSpace()
             DropDownMenuForSection(
-                dropDownItemsState.sectionList,
-                dropDownItemsState.selectedSection,
-                dropDownitemsEvents.onNewSectionSelected
+                productViewState.sectionsList,
+                productViewState.inputDataState.selectedSection,
+                productEvents.onNewSectionSelected
             )
 
             OneLineEditText(
-                text = productViewState.price,
+                text = productViewState.inputDataState.price,
                 change = productEvents.onPriceChange,
                 tag = stringResource(R.string.price_label),
                 opcionesTeclado = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
             MultipleLineEditText(
-                text = productViewState.description,
+                text = productViewState.inputDataState.description,
                 change = productEvents.onDescriptionChange,
                 tag = stringResource(R.string.description_label)
             )
 
             SmallSpace()
             DatePickerDocked(
-                selectedDateText = productViewState.adquisitionDateRepresentation ?: stringResource(R.string.no_selected_option),
+                selectedDateText = productViewState.inputDataState.adquisitionDateRepresentation ?: stringResource(R.string.no_selected_option),
                 label = stringResource(R.string.acquisition_date_label),
                 onNewDateSelected = productEvents.onNewAcquisitionDateSelected
             )
 
             SmallSpace()
             DatePickerDocked(
-                selectedDateText = productViewState.discontinuationDateRepresentation ?: stringResource(R.string.no_selected_option),
+                selectedDateText = productViewState.inputDataState.discontinuationDateRepresentation ?: stringResource(R.string.no_selected_option),
                 label = stringResource(R.string.discontinuation_date_label),
                 onNewDateSelected = productEvents.onNewDiscontinuationDateSelected
             )
