@@ -29,7 +29,6 @@ Se ha implementado de forma general:
   hacia las pantallas de listar y creación de productos.
 - Pantallas de carga para las pantallas de creación, edición y lista de productos mientras se accede a
   los repositorios correspondientes.
--
 
 ### Detalles a tener en cuenta
 De cara a la clase productos se han ido implementado los campos correspondientes, sin embargo, cabe resaltar:
