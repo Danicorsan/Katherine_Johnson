@@ -38,10 +38,22 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onShortNameChange(newShort : String){
+    fun onShortNameChange(newShort : String) {
+        val noSpecialCharacter = Regex("[^a-zA-Z0-9]")
+        if (newShort.length <= 3 || noSpecialCharacter.containsMatchIn(newShort)) {
+            shortNameChanged(newShort, true)
+        } else {
+            shortNameChanged(newShort, false)
+        }
+    }
+
+    private fun shortNameChanged(newShortName: String, error : Boolean) {
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
-                shortName = newShort
+                shortName = newShortName
+            ),
+            errorDataState = productViewState.errorDataState.copy(
+                shortNameError = error
             )
         )
     }
@@ -79,17 +91,40 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
     }
 
     fun onStockChange(newStock : String){
+        if (newStock.contains(".") || newStock.toInt() <= 1){
+            stockChanged(newStock, true)
+        } else{
+            stockChanged(newStock, false)
+        }
+    }
+
+    private fun stockChanged(newStock : String, error : Boolean){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 stock = newStock
+            ),
+            errorDataState = productViewState.errorDataState.copy(
+                stockError = error
             )
         )
     }
 
     fun onPriceChange(newPrice : String){
+        val price = newPrice.toDoubleOrNull()
+        if (price == null || price <= 0){
+            priceChanged(newPrice, true)
+        } else {
+            priceChanged(newPrice, false)
+        }
+    }
+
+    fun priceChanged(newPrice : String, error: Boolean){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 price = newPrice
+            ),
+            errorDataState = productViewState.errorDataState.copy(
+                priceError = error
             )
         )
     }

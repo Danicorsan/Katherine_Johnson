@@ -43,7 +43,8 @@ fun ProductForm(
             OneLineEditText(
                 text = productViewState.inputDataState.shortName,
                 change = productEvents.onShortNameChange,
-                tag = stringResource(R.string.short_name_label)
+                tag = stringResource(R.string.short_name_label),
+                error = productViewState.errorDataState.shortNameError
             )
 
             OneLineEditText(
@@ -88,6 +89,7 @@ fun ProductForm(
                 text = productViewState.inputDataState.price,
                 change = productEvents.onPriceChange,
                 tag = stringResource(R.string.price_label),
+                error = productViewState.errorDataState.priceError,
                 opcionesTeclado = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 

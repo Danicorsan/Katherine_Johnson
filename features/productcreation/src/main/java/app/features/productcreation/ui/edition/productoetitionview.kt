@@ -66,7 +66,8 @@ private fun ProductEditionContent(
         ProductForm(
             productState,
             productEvents,
-            stringResource(R.string.accept_button_label)
+            stringResource(R.string.accept_button_label),
+            productEvents.onAcceptProduct
         )
     }
 }
