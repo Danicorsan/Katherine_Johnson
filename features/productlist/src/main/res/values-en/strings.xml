@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="titulo_appbar">Product List</string>
-    <string name="texto_boton">New Product</string>
+    <string name="title_appbar">Product List</string>
+    <string name="new_product_button_label">New Product</string>
+    <string name="add_product_floatingbutton_description">Add product</string>
+    <string name="product_image_description">Product image</string>
+    <string name="delete_iconbutton_description">Delete product</string>
+    <string name="edit_product_iconbutton">Edit product</string>
+    <string name="go_back_iconbutton">Go back to previous screen</string>
 </resources>
