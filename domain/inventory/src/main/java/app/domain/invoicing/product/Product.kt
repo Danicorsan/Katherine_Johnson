@@ -3,7 +3,6 @@ package app.domain.invoicing.product
 
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.complements.ProductAlarm
-import app.domain.invoicing.product.complements.notes.Notes
 import app.domain.invoicing.product.complements.tags.Tags
 import kotlinx.datetime.Instant
 
@@ -12,7 +11,7 @@ data class Product(
     var code : String,
     var name : String,
     var shortName : String,
-    var description : String?,
+    var description : String = "",
     var serialNumber : String,
     var modelCode : String,
     var productType : String,
@@ -24,7 +23,7 @@ data class Product(
     var productImage : String? = null,
     val acquisitionDate : Instant,
     var discontinuationDate : Instant? = null,
-    val notes : Notes = Notes(),
+    val notes : String = "",
     val tags : Tags = Tags(),
     var minimunStock : UInt? = null
 )

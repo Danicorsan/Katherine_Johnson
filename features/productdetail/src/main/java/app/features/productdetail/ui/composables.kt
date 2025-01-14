@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -80,20 +78,9 @@ fun CakeColorBox(modifier: Modifier = Modifier, contenido : @Composable () -> Un
 }
 
 @Composable
-fun DescriptionText(contenido : String){
+fun LargeTextBox(contenido : String){
     Text(
         contenido,
         modifier = Modifier.fillMaxWidth(80/100f)
     )
-}
-
-@Composable
-fun <T> ScrollabelRow(
-    listaDeObjetos : Iterable<T>,
-    formaDeMostrar : @Composable (objeto : T) -> Unit){
-    LazyRow {
-        items(listaDeObjetos.toList()){
-                objetoAMostrar -> formaDeMostrar.invoke(objetoAMostrar)
-        }
-    }
 }

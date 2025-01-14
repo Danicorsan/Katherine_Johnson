@@ -3,8 +3,6 @@ package app.domain.invoicing.repository
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.ProductState
 import app.domain.invoicing.product.Product
-import app.domain.invoicing.product.complements.notes.Note
-import app.domain.invoicing.product.complements.notes.Notes
 import app.domain.invoicing.product.complements.tags.Tag
 import app.domain.invoicing.product.complements.tags.Tags
 import kotlinx.coroutines.delay
@@ -43,7 +41,7 @@ object ProductRepository {
                 price = 1500.99,
                 acquisitionDate = Instant.parse("2022-05-20T10:15:30Z"),
                 discontinuationDate = null,
-                notes = Notes(listOf(Note("Garantía", "Revisar estado de la garantía"))),
+                notes = "Ordenadores algo viejos\nIgual no vale",
                 tags = Tags(listOf(Tag("tecnología"), Tag("gaming"))),
                 minimunStock = 5u
             ),
@@ -71,7 +69,7 @@ object ProductRepository {
                 price = 200.00,
                 acquisitionDate = Instant.parse("2023-03-15T12:30:00Z"),
                 discontinuationDate = null,
-                notes = Notes(listOf(Note("Promoción", "Producto en promoción por temporada"))),
+                notes = "-Promocion\nProducto de temporada",
                 tags = Tags(listOf(Tag("audio"), Tag("inalámbrico"))),
             ),
             3 to Product(
@@ -98,7 +96,7 @@ object ProductRepository {
                 price = 120.50,
                 acquisitionDate = Instant.parse("2021-10-10T08:00:00Z"),
                 discontinuationDate = null,
-                notes = Notes(listOf(Note("Estado", "Producto en buen estado, requiere limpieza"))),
+                notes = "Estado:\nProducto en buen estado, requiere limpieza",
                 tags = Tags(listOf(Tag("ergonómica"), Tag("oficina"))),
                 minimunStock = 5u
             ),
@@ -126,7 +124,7 @@ object ProductRepository {
                 price = 899.99,
                 acquisitionDate = Instant.parse("2023-01-05T09:00:00Z"),
                 discontinuationDate = null,
-                notes = Notes(listOf(Note("Lanzamiento", "Edición especial limitada"))),
+                notes = "Lanzamiento: Edición especial limitada",
                 tags = Tags(listOf(Tag("smartphone"), Tag("OLED"))),
                 minimunStock = 10u
             ),
@@ -154,7 +152,7 @@ object ProductRepository {
                 price = 499.99,
                 acquisitionDate = Instant.parse("2023-06-10T15:00:00Z"),
                 discontinuationDate = null,
-                notes = Notes(listOf(Note("Accesorios", "Incluye cables HDMI y DisplayPort"))),
+                notes = "Accesorios\nIncluye cables HDMI y DisplayPort",
                 tags = Tags(listOf(Tag("monitor"), Tag("curvo"))),
             )
         )

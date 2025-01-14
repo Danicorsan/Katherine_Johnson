@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.base.ui.composables.MediumSpace
 import app.base.ui.composables.MediumTitleText
 import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace

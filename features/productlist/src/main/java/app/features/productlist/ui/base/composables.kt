@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.runtime.Composable
@@ -49,7 +49,7 @@ fun AddProductFloatingActionButton(productListEvents: ProductListEvents){
     LargeFloatingActionButton (
         onClick = productListEvents.onAddProduct,
     ) {
-        Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.add_product_floatingbutton_description))
+        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_product_floatingbutton_description))
     }
 }
 
