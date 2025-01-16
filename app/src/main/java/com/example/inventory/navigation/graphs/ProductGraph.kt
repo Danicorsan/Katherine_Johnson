@@ -1,5 +1,6 @@
 package com.example.inventory.navigation.graphs
 
+import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -27,7 +28,7 @@ fun NavGraphBuilder.productGraph(
         route = ProductGraph.ROUTE
     ){
         productListRoute(navController, productViewModels)
-        productCreationRoute(navController, productViewModels.productCreationViewModel)
+        productCreationRoute(navController)
     }
 }
 
@@ -57,17 +58,15 @@ private fun NavGraphBuilder.productListRoute(
 }
 
 private fun NavGraphBuilder.productCreationRoute(
-    navController: NavController,
-    productCreationViewModel: ProductCreationViewModel
+    navController: NavController
 ){
     composable(
         route = ProductGraph.productCreationRoute()
     ) {
         ProductCreationScreen(
-            viewModel = productCreationViewModel,
-            onGoBack = {
+            viewModel = remember { ProductCreationViewModel({
                 navController.popBackStack()
-            }
+            }) }
         )
     }
 }

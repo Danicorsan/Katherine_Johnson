@@ -15,10 +15,14 @@ data class ProductEvents(
     val onStockChange : (String) -> Unit,
     val onPriceChange : (String) -> Unit,
     val onMinimunStock : (String) -> Unit,
+    val onNotesChanged : (String) -> Unit,
+    val onTagsChanged : (String) -> Unit,
     val onNewAcquisitionDateSelected : (Long?) -> Unit,
     val onNewDiscontinuationDateSelected : (Long?) -> Unit,
     val onNewCategorySelected : (Category) -> Unit,
-    val onNewSectionSelected : (String) -> Unit
+    val onNewSectionSelected : (String) -> Unit,
+    val onDismissCantRegisterProductAlertDialog : () -> Unit,
+    val onDismissEmptyFieldsAlertDialog : () -> Unit
     ){
     companion object{
         fun build(viewModel : ProductBaseCreationViewModel) : ProductEvents{
@@ -35,10 +39,14 @@ data class ProductEvents(
                 onStockChange = viewModel::onStockChange,
                 onPriceChange = viewModel::onPriceChange,
                 onMinimunStock = viewModel::onMinimunStockChange,
+                onNotesChanged = viewModel::onNotesChanged,
+                onTagsChanged = viewModel::onTagsChanged,
                 onNewAcquisitionDateSelected = viewModel::onAcquisitonDateChange,
                 onNewDiscontinuationDateSelected = viewModel::onDiscontinuationDateChange,
                 onNewCategorySelected = viewModel::onNewCategorySelected,
-                onNewSectionSelected = viewModel::onNewSectionSelected
+                onNewSectionSelected = viewModel::onNewSectionSelected,
+                onDismissCantRegisterProductAlertDialog = viewModel::onDismissCantRegisterAlertDialog,
+                onDismissEmptyFieldsAlertDialog = viewModel::onDismissEmptyFieldsAlertDialog
             )
         }
     }

@@ -25,4 +25,10 @@
     <string name="code_label">Código</string>
     <string name="no_selected_option">No seleccionado</string>
     <string name="on_go_previus_screen_iconButton">Volver a la pantalla anterior</string>
+    <string name="cant_register_alert_dialog_title">Error</string>
+    <string name="cant_register_alert_dialog_message">No se ha podido registrar el producto</string>
+    <string name="empty_fields_alert_dialog_title">Campos vacios</string>
+    <string name="empty_fields_alert_dialog_message">Se ha detectado campos vacios</string>
+    <string name="confirm_button_alert_dialog">Vale</string>
+    <string name="tags_label">Etiquetas</string>
 </resources>

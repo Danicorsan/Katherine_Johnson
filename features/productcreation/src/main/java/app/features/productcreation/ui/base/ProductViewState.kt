@@ -1,6 +1,7 @@
 package app.features.productcreation.ui.base
 
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.product.complements.tags.Tags
 import kotlinx.datetime.Instant
 
 data class ProductViewState(
@@ -16,7 +17,7 @@ data class InputDataState(
     val name : String = "",
     val shortName : String = "",
     val description : String = "",
-    val serialNumber : String = "",
+    val serieNumber : String = "",
     val modelCode : String = "",
     val productType : String = "",
     val stock : String = "",
@@ -28,11 +29,14 @@ data class InputDataState(
     val discontinuationDateRepresentation : String? = null,
     val selectedCategory : Category? = null,
     val selectedSection : String? = null,
+    val notes : String = "",
+    val tags : String = ""
 )
 
 data class ErrorDataState(
     val shortNameError : Boolean = false,
     val cantRegisterProduct : Boolean = false,
+    val emptyFields : Boolean = false,
     val priceError: Boolean = false,
     val stockError : Boolean = false
     )

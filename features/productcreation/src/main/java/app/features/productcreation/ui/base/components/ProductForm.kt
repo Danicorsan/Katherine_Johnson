@@ -1,4 +1,4 @@
-package app.features.productcreation.ui.base
+package app.features.productcreation.ui.base.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +16,13 @@ import app.base.ui.composables.NormalButton
 import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace
 import app.features.productcreation.R
+import app.features.productcreation.ui.base.composables.DatePickerDocked
+import app.features.productcreation.ui.base.composables.ExposedDropDownMenuForCategory
+import app.features.productcreation.ui.base.composables.ExposedDropDownMenuForSection
+import app.features.productcreation.ui.base.composables.MultipleLineEditText
+import app.features.productcreation.ui.base.composables.OneLineEditText
+import app.features.productcreation.ui.base.ProductEvents
+import app.features.productcreation.ui.base.ProductViewState
 
 @Composable
 fun ProductForm(
@@ -54,7 +61,7 @@ fun ProductForm(
             )
 
             OneLineEditText(
-                text = productViewState.inputDataState.serialNumber,
+                text = productViewState.inputDataState.serieNumber,
                 change = productEvents.onSerialNumberChange,
                 tag = stringResource(R.string.serial_number_label)
             )
@@ -72,14 +79,14 @@ fun ProductForm(
             )
 
             SmallSpace()
-            DropDownMenuForCategory(
+            ExposedDropDownMenuForCategory(
                 productViewState.categoriesList,
                 productViewState.inputDataState.selectedCategory,
                 productEvents.onNewCategorySelected
             )
 
             SmallSpace()
-            DropDownMenuForSection(
+            ExposedDropDownMenuForSection(
                 productViewState.sectionsList,
                 productViewState.inputDataState.selectedSection,
                 productEvents.onNewSectionSelected
@@ -93,10 +100,12 @@ fun ProductForm(
                 opcionesTeclado = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
-            MultipleLineEditText(
-                text = productViewState.inputDataState.description,
-                change = productEvents.onDescriptionChange,
-                tag = stringResource(R.string.description_label)
+            OneLineEditText(
+                text = productViewState.inputDataState.stock,
+                change = productEvents.onStockChange,
+                tag = stringResource(R.string.stock_label),
+                error = productViewState.errorDataState.stockError,
+                opcionesTeclado = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
             SmallSpace()
@@ -111,6 +120,24 @@ fun ProductForm(
                 selectedDateText = productViewState.inputDataState.discontinuationDateRepresentation ?: stringResource(R.string.no_selected_option),
                 label = stringResource(R.string.discontinuation_date_label),
                 onNewDateSelected = productEvents.onNewDiscontinuationDateSelected
+            )
+
+            MultipleLineEditText(
+                text = productViewState.inputDataState.description,
+                change = productEvents.onDescriptionChange,
+                tag = stringResource(R.string.description_label)
+            )
+
+            MultipleLineEditText(
+                text = productViewState.inputDataState.notes,
+                change = productEvents.onNotesChanged,
+                tag = stringResource(R.string.notes_label)
+            )
+
+            MultipleLineEditText(
+                text = productViewState.inputDataState.tags,
+                change = productEvents.onTagsChanged,
+                tag = stringResource(R.string.tags_label)
             )
         }
     }

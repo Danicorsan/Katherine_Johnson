@@ -12,19 +12,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
 import app.features.productcreation.R
-import app.features.productcreation.ui.base.Appbar
-import app.features.productcreation.ui.base.ProductForm
+import app.features.productcreation.ui.base.components.AlertDialogOK
+import app.features.productcreation.ui.base.components.ProductForm
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.ProductEvents
+import app.features.productcreation.ui.base.components.Appbar
 
 
 @Preview(showBackground = true)
 @Composable
 fun ProductCreationScreen(
-    viewModel: ProductCreationViewModel = remember{ ProductCreationViewModel() },
-    onGoBack : () -> Unit = {}
+    viewModel: ProductCreationViewModel = remember{ ProductCreationViewModel() }
 ){
-    viewModel.getReady(onGoBack)
     ProductCreationHost(
         productState = viewModel.productViewState,
         productEvents = ProductEvents.build(viewModel)
@@ -40,10 +39,21 @@ fun ProductCreationHost(
         topBar = @Composable { Appbar(
             titleText = stringResource(R.string.creation_product_title_appbar),
             onGoBack = productEvents.onLeavePage
-        )}
+        )
+        }
     ) { contentPadding ->
         when {
             productState.isLoading -> LoadingUi()
+            productState.errorDataState.cantRegisterProduct -> AlertDialogOK(
+                title = stringResource(R.string.cant_register_alert_dialog_title),
+                message = stringResource(R.string.cant_register_alert_dialog_message),
+                onDismiss = productEvents.onDismissCantRegisterProductAlertDialog
+            )
+            productState.errorDataState.emptyFields -> AlertDialogOK(
+                title = stringResource(R.string.empty_fields_alert_dialog_title),
+                message = stringResource(R.string.empty_fields_alert_dialog_message),
+                onDismiss = productEvents.onDismissEmptyFieldsAlertDialog
+            )
             else -> ProductCreationContent(
                 modifier = Modifier.padding(contentPadding),
                 productState = productState,

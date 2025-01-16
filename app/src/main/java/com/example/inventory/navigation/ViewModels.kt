@@ -19,7 +19,5 @@ data class CategoryViewModels(
 )
 
 data class ProductViewModels(
-    val productListViewModel : ProductListViewModel = ProductListViewModel(),
-    val productCreationViewModel : ProductCreationViewModel = ProductCreationViewModel(),
-    val productEditionViewModel : ProductEditionViewModel = ProductEditionViewModel()
+    val productListViewModel : ProductListViewModel = ProductListViewModel()
 )
