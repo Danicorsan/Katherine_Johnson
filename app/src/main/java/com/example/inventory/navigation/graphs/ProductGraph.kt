@@ -8,7 +8,8 @@ import androidx.navigation.navigation
 import app.features.productcreation.ui.creation.ProductCreationScreen
 import app.features.productcreation.ui.creation.ProductCreationViewModel
 import app.features.productlist.ui.ProductListScreen
-import com.example.inventory.navigation.ProductViewModels
+import app.features.productlist.ui.ProductListViewModel
+import app.features.productlist.ui.base.ProductListNavigationEvents
 
 object ProductGraph {
     const val ROUTE = "product"
@@ -19,40 +20,40 @@ object ProductGraph {
     fun productDetailsRoute() = "$ROUTE/productDetails"
 }
 
-fun NavGraphBuilder.productGraph(
-    navController: NavController,
-    productViewModels : ProductViewModels
-){
+fun NavGraphBuilder.productGraph(navController: NavController){
     navigation(
         startDestination = ProductGraph.productListRoute(),
         route = ProductGraph.ROUTE
     ){
-        productListRoute(navController, productViewModels)
+        productListRoute(navController)
         productCreationRoute(navController)
     }
 }
 
 private fun NavGraphBuilder.productListRoute(
-    navController: NavController,
-    productViewModels: ProductViewModels
+    navController: NavController
 ){
     composable(
         route = ProductGraph.productListRoute()
     ) {
         ProductListScreen(
-            viewModel = productViewModels.productListViewModel,
-            onAddProduct = {
-                navController.navigate(ProductGraph.productCreationRoute())
-            },
-            onSeeProductDetails = {
+            viewModel = remember { ProductListViewModel(
+                ProductListNavigationEvents(
+                    onCreateProductNav = {
+                        navController.navigate(ProductGraph.productCreationRoute())
+                    },
+                    onSeeProductDetailsNav = {
 
-            },
-            onEditProduct = {
+                    },
+                    onEditProductNav = {
 
-            },
-            onGoBack = {
-                navController.popBackStack()
-            }
+                    },
+                    onGoBackNav = {
+                        navController.popBackStack()
+                    }
+                )
+            ) },
+
         )
     }
 }
@@ -64,9 +65,10 @@ private fun NavGraphBuilder.productCreationRoute(
         route = ProductGraph.productCreationRoute()
     ) {
         ProductCreationScreen(
-            viewModel = remember { ProductCreationViewModel({
+            viewModel = remember { ProductCreationViewModel {
                 navController.popBackStack()
-            }) }
+            }
+            }
         )
     }
 }

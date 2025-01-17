@@ -9,15 +9,10 @@ import app.features.productlist.ui.ProductListViewModel
 
 data class ViewModels(
     val categoryViewModels: CategoryViewModels = CategoryViewModels(),
-    val productViewModels : ProductViewModels = ProductViewModels()
 )
 
 data class CategoryViewModels(
     val categoryListViewModel: CategoryListViewModel = CategoryListViewModel(),
     val categoryCreationViewModel: CategoryCreationViewModel = CategoryCreationViewModel(),
     val categoryEditionViewModel: CategoryEditionViewModel = CategoryEditionViewModel()
-)
-
-data class ProductViewModels(
-    val productListViewModel : ProductListViewModel = ProductListViewModel()
 )

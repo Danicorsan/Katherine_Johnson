@@ -7,57 +7,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.repository.ProductRepository
-import app.features.productlist.ui.base.NavigationEvents
+import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
 
-class ProductListViewModel : ViewModel() {
+class ProductListViewModel(private val productListNavigationEvents : ProductListNavigationEvents) : ViewModel() {
 
     var productListState by mutableStateOf(ProductListState())
     private set
 
-    private val isReady = AtomicBoolean(false)
+    init {
+        productListState = productListState.copy(isLoading = true)
+        viewModelScope.launch {
+            ProductRepository.getAllProducts().collect{
+                productListState = productListState.copy(
+                    isLoading = false,
+                    productList = it.values.toList()
+                )
+            }
+        }
+    }
 
-    lateinit var navigationEvents : NavigationEvents
-    private set
-
-    fun onAddProduct(){
-        isReady.set(false)
-        navigationEvents.onAddProductNav()
+    fun onCreateProduct(){
+        productListNavigationEvents.onCreateProductNav()
     }
 
     fun onDeleteProduct(product: Product){
     }
 
     fun onSeeProductDetails(product: Product){
-        isReady.set(false)
-        navigationEvents.onSeeProductDetailsNav(product)
+        productListNavigationEvents.onSeeProductDetailsNav(product)
     }
 
     fun onEditProduct(product : Product){
-        isReady.set(false)
-        navigationEvents.onEditProductNav(product)
+        productListNavigationEvents.onEditProductNav(product)
     }
 
     fun onGoBack(){
-        isReady.set(false)
-        navigationEvents.onGoBackNav()
+        productListNavigationEvents.onGoBackNav()
     }
 
-    fun getReady(navigationEvents: NavigationEvents){
-        if (!isReady.get()){
-            productListState = productListState.copy(isLoading = true)
-            this.navigationEvents = navigationEvents
-            viewModelScope.launch {
-                ProductRepository.getAllProducts().collect{
-                    isReady.set(true)
-                    productListState = productListState.copy(
-                        isLoading = false,
-                        productList = it.values.toList()
-                    )
-                }
-            }
-        }
-    }
 }

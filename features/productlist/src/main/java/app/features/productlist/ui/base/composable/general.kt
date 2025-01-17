@@ -1,4 +1,4 @@
-package app.features.productlist.ui.base
+package app.features.productlist.ui.base.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
@@ -18,6 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import app.base.ui.composables.SmallSpace
 import app.features.productlist.R
+import app.features.productlist.ui.base.Specification
+import app.features.productlist.ui.base.ProductListEvents
 
 
 @Composable
@@ -27,8 +29,8 @@ fun DefaultProductImage() {
             contentDescription = stringResource(R.string.product_image_description),
             contentScale = ContentScale.Fit,
             modifier = Modifier
-                .fillMaxSize(InternalSpecification.RelativeImageSize)
-                .clip(RoundedCornerShape(InternalSpecification.RelativeRoundedCornerShape))
+                .fillMaxSize(Specification.RelativeImageSize)
+                .clip(RoundedCornerShape(Specification.RelativeRoundedCornerShape))
         )
 }
 
@@ -55,5 +57,5 @@ fun AddProductFloatingActionButton(productListEvents: ProductListEvents){
 
 @Composable
 fun CustomSpacerForEdingOfProductList(){
-    Spacer(modifier = Modifier.fillMaxHeight(InternalSpecification.RelativeSpaceForCustomSpacerForLazyColumn))
+    Spacer(modifier = Modifier.fillMaxHeight(Specification.RelativeSpaceForCustomSpacerForLazyColumn))
 }

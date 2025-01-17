@@ -13,7 +13,7 @@ data class ProductListEvents(
     companion object{
         fun build(viewModel : ProductListViewModel) : ProductListEvents{
             return ProductListEvents(
-                onAddProduct = viewModel::onAddProduct,
+                onAddProduct = viewModel::onCreateProduct,
                 onDeleteProduct = viewModel::onDeleteProduct,
                 seeProductDetails = viewModel::onSeeProductDetails,
                 onEditProduct = viewModel::onEditProduct,
@@ -23,9 +23,9 @@ data class ProductListEvents(
     }
 }
 
-data class NavigationEvents(
-    val onAddProductNav: () -> Unit,
-    val onSeeProductDetailsNav : (Product) -> Unit,
-    val onEditProductNav : (Product) -> Unit,
-    val onGoBackNav : () -> Unit
+data class ProductListNavigationEvents(
+    val onCreateProductNav: () -> Unit = {},
+    val onSeeProductDetailsNav : (Product) -> Unit = {},
+    val onEditProductNav : (Product) -> Unit = {},
+    val onGoBackNav : () -> Unit = {}
 )
