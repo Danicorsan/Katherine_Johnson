@@ -5,31 +5,45 @@ import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.complements.tags.Tag
 import app.domain.invoicing.product.complements.tags.Tags
 import app.domain.invoicing.repository.ProductRepository
+import app.features.productcreation.ui.base.ErrorDataState
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
 import kotlinx.coroutines.launch
 
 class ProductCreationViewModel(onGoBackNav : () -> Unit = {}) : ProductBaseCreationViewModel(onGoBackNav) {
     override fun onAcceptChanges() {
         val errorDataState = productViewState.errorDataState
-        if (areThereAnyEmptyOrNotSelectedOnObligatoryFields()){
-            productViewState = productViewState.copy(
-                errorDataState = errorDataState.copy(
-                    emptyFields = true
+        when{
+            areThereAnyEmptyOrNotSelectedOnObligatoryFields() -> {
+                productViewState = productViewState.copy(
+                    errorDataState = errorDataState.copy(
+                        emptyFields = true
+                    )
                 )
-            )
-            return
-        }
-        if (errorDataState.priceError || errorDataState.stockError || errorDataState.shortNameError)
-            productViewState = productViewState.copy(
-                errorDataState = errorDataState.copy(
-                    cantRegisterProduct = true
-                )
-            )
-        else{
-            viewModelScope.launch {
-                ProductRepository.addProduct(makeProductFromFields())
             }
-            onGoBackNav()
+            isThereAnActiveError(errorDataState) -> {
+                productViewState = productViewState.copy(
+                    errorDataState = errorDataState.copy(
+                        cantRegisterProduct = true
+                    )
+                )
+            }
+            else -> onValidProductToRegister()
+        }
+    }
+
+    private fun isThereAnActiveError(errorDataState: ErrorDataState) =
+        errorDataState.priceError || errorDataState.stockError || errorDataState.shortNameError
+
+    private fun onValidProductToRegister() {
+        viewModelScope.launch {
+            productViewState = productViewState.copy(
+                isLoading = true
+            )
+            ProductRepository.addProduct(makeProductFromFields())
+            productViewState = productViewState.copy(
+                isLoading = false,
+                productRegisterSuccessful = true
+            )
         }
     }
 

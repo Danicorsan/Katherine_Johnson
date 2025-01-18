@@ -54,6 +54,11 @@ fun ProductCreationHost(
                 message = stringResource(R.string.empty_fields_alert_dialog_message),
                 onDismiss = productEvents.onDismissEmptyFieldsAlertDialog
             )
+            productState.productRegisterSuccessful -> AlertDialogOK(
+                title = stringResource(R.string.product_registered_successful_alert_dialog_title),
+                message = stringResource(R.string.product_registered_successful_alert_dialog_message),
+                onDismiss = productEvents.onDismissProductHasBeenRegisteredAlertDialog
+            )
             else -> ProductCreationContent(
                 modifier = Modifier.padding(contentPadding),
                 productState = productState,

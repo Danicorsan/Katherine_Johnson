@@ -22,7 +22,8 @@ data class ProductEvents(
     val onNewCategorySelected : (Category) -> Unit,
     val onNewSectionSelected : (String) -> Unit,
     val onDismissCantRegisterProductAlertDialog : () -> Unit,
-    val onDismissEmptyFieldsAlertDialog : () -> Unit
+    val onDismissEmptyFieldsAlertDialog : () -> Unit,
+    val onDismissProductHasBeenRegisteredAlertDialog : () -> Unit
     ){
     companion object{
         fun build(viewModel : ProductBaseCreationViewModel) : ProductEvents{
@@ -46,7 +47,8 @@ data class ProductEvents(
                 onNewCategorySelected = viewModel::onNewCategorySelected,
                 onNewSectionSelected = viewModel::onNewSectionSelected,
                 onDismissCantRegisterProductAlertDialog = viewModel::onDismissCantRegisterAlertDialog,
-                onDismissEmptyFieldsAlertDialog = viewModel::onDismissEmptyFieldsAlertDialog
+                onDismissEmptyFieldsAlertDialog = viewModel::onDismissEmptyFieldsAlertDialog,
+                onDismissProductHasBeenRegisteredAlertDialog = viewModel:: onDismissProductHasBeenRegisteredAlertDialog
             )
         }
     }

@@ -23,6 +23,7 @@
     <string name="notes_label">Notas</string>
     <string name="accept_button_label">Aceptar</string>
     <string name="code_label">Código</string>
+    <string name="tags_label">Etiquetas</string>
     <string name="no_selected_option">No seleccionado</string>
     <string name="on_go_previus_screen_iconButton">Volver a la pantalla anterior</string>
     <string name="cant_register_alert_dialog_title">Error</string>
@@ -30,6 +31,7 @@
     <string name="empty_fields_alert_dialog_title">Campos vacios</string>
     <string name="empty_fields_alert_dialog_message">Se ha detectado campos vacios</string>
     <string name="confirm_button_alert_dialog">Vale</string>
-    <string name="tags_label">Etiquetas</string>
+    <string name="product_registered_successful_alert_dialog_title">¡Éxito!</string>
+    <string name="product_registered_successful_alert_dialog_message">Se ha registrado el producto</string>
     <string name="message_for_obligatory_fields">Los campos marcados con %s son obligatorios</string>
 </resources>

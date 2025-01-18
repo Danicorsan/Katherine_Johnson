@@ -22,6 +22,7 @@
     <string name="labels_label">Tags</string>
     <string name="notes_label">Notes</string>
     <string name="accept_button_label">Accept</string>
+    <string name="tags_label">Tags</string>
     <string name="product_edition_title_appbar">Edit product</string>
     <string name="no_selected_option">Not selected</string>
     <string name="on_go_previus_screen_iconButton">Go to previous page</string>
@@ -30,6 +31,7 @@
     <string name="empty_fields_alert_dialog_title">Empty fields</string>
     <string name="empty_fields_alert_dialog_message">Empty fields have been detected</string>
     <string name="confirm_button_alert_dialog">Ok</string>
-    <string name="tags_label">Tags</string>
+    <string name="product_registered_successful_alert_dialog_title">Success!</string>
+    <string name="product_registered_successful_alert_dialog_message">The product has been registered</string>
     <string name="message_for_obligatory_fields">Fields marked with %s must be filled</string>
 </resources>

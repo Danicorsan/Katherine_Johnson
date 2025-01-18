@@ -235,6 +235,13 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
         )
     }
 
+    fun onDismissProductHasBeenRegisteredAlertDialog(){
+        productViewState = productViewState.copy(
+            productRegisterSuccessful = false
+        )
+        onGoBackNav()
+    }
+
     fun onLeavePage(){
         onGoBackNav()
     }

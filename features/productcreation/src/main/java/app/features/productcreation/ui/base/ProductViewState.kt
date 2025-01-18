@@ -1,7 +1,6 @@
 package app.features.productcreation.ui.base
 
 import app.domain.invoicing.category.Category
-import app.domain.invoicing.product.complements.tags.Tags
 import kotlinx.datetime.Instant
 
 data class ProductViewState(
@@ -9,6 +8,7 @@ data class ProductViewState(
     val errorDataState: ErrorDataState = ErrorDataState(),
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
+    val productRegisterSuccessful : Boolean = false,
     val sectionsList : Iterable<String> = emptyList()
 )
 

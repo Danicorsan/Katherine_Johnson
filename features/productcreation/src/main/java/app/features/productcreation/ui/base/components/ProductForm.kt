@@ -39,8 +39,7 @@ fun ProductForm(
             .padding(Separations.Medium)
     ){
         Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState()),
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             MessageOfObligatoryTextFields()
