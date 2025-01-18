@@ -14,18 +14,20 @@ fun OneLineEditText(
     modifier: Modifier = Modifier,
     text: String,
     change : (String) -> Unit,
-    tag : String,
+    label : String,
     error : Boolean = false,
-    opcionesTeclado : KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions : KeyboardOptions = KeyboardOptions.Default,
+    obligatoryField : Boolean = false
     ){
     OutlinedTextField(
         value = text,
         onValueChange = change,
-        modifier = modifier.fillMaxWidth(Specification.editTextMaxWithdFraction),
+        modifier = modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION),
         isError = error,
-        label = @Composable { Text(tag) },
+        label = @Composable { Text(label +
+                if (obligatoryField) Specification.OBLIGATORYFIELDSMARK else "") },
         singleLine = true,
-        keyboardOptions = opcionesTeclado,
+        keyboardOptions = keyboardOptions,
     )
 }
 
@@ -34,14 +36,17 @@ fun MultipleLineEditText(
     modifier: Modifier = Modifier,
     text: String,
     change : (String) -> Unit,
-    tag : String,
-    error : Boolean = false){
+    label : String,
+    error : Boolean = false,
+    obligatoryField: Boolean = false
+){
     OutlinedTextField(
         text,
         change,
         isError = error,
-        modifier = modifier.fillMaxWidth(Specification.editTextMaxWithdFraction),
-        label = @Composable { Text(tag) },
+        modifier = modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION),
+        label = @Composable { Text(label +
+                if (obligatoryField) Specification.OBLIGATORYFIELDSMARK else "") },
     )
 }
 

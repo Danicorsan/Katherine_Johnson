@@ -24,7 +24,7 @@ import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace
 import app.domain.invoicing.product.Product
 import app.features.productlist.R
-import app.features.productlist.ui.base.composable.CustomSpacerForEdingOfProductList
+import app.features.productlist.ui.base.composable.CustomSpacerBetweenEachProduct
 import app.features.productlist.ui.base.composable.DefaultProductImage
 import app.features.productlist.ui.base.Specification
 import app.features.productlist.ui.base.ProductListEvents
@@ -39,7 +39,7 @@ fun ListProducts(productList: List<Product>, productListEvents: ProductListEvent
             ShowProductTile(it, productListEvents)
         }
         item {
-            CustomSpacerForEdingOfProductList()
+            CustomSpacerBetweenEachProduct()
         }
     }
 }
@@ -79,7 +79,7 @@ private fun ShowProductImage(product: Product){//Mantener parametro de cara a la
 @Composable
 private fun ShowBasicInformation(product : Product){
     Column(
-        modifier = Modifier.fillMaxWidth(Specification.RelativeSpaceForProductBasicInformation),
+        modifier = Modifier.fillMaxWidth(Specification.RELATIVESPACEFORPRODUCTBASICINFORMATION),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ShowProductsName(product)

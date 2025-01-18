@@ -31,4 +31,5 @@
     <string name="empty_fields_alert_dialog_message">Empty fields have been detected</string>
     <string name="confirm_button_alert_dialog">Ok</string>
     <string name="tags_label">Tags</string>
+    <string name="message_for_obligatory_fields">Fields marked with * must be filled</string>
 </resources>

@@ -36,7 +36,7 @@ fun DatePickerDocked(
     val datePickerState = rememberDatePickerState()
 
     Box(
-        modifier = Modifier.fillMaxWidth(Specification.editTextMaxWithdFraction)
+        modifier = Modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION)
     ) {
         OutlinedTextField(
             value = selectedDateText,

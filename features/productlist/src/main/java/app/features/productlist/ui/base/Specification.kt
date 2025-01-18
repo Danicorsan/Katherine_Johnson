@@ -1,8 +1,8 @@
 package app.features.productlist.ui.base
 
 object Specification {
-    val RelativeImageSize = 15/100f
-    val RelativeRoundedCornerShape = 20f
-    val RelativeSpaceForProductBasicInformation = 70/100f
-    val RelativeSpaceForCustomSpacerForLazyColumn = 20/100f
+    const val RELATIVEIMAGESIZE : Float = 15/100f
+    const val RELATIVEROUNDEDCORNERSHAPE : Float= 20f
+    const val RELATIVESPACEFORPRODUCTBASICINFORMATION : Float = 70/100f
+    const val RELATIVESPACEFORCUSTOMSPACERFORPRODUCTLIST : Float = 20/100f
 }

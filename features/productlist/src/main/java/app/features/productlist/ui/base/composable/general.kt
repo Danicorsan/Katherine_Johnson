@@ -29,8 +29,8 @@ fun DefaultProductImage() {
             contentDescription = stringResource(R.string.product_image_description),
             contentScale = ContentScale.Fit,
             modifier = Modifier
-                .fillMaxSize(Specification.RelativeImageSize)
-                .clip(RoundedCornerShape(Specification.RelativeRoundedCornerShape))
+                .fillMaxSize(Specification.RELATIVEIMAGESIZE)
+                .clip(RoundedCornerShape(Specification.RELATIVEROUNDEDCORNERSHAPE))
         )
 }
 
@@ -56,6 +56,6 @@ fun AddProductFloatingActionButton(productListEvents: ProductListEvents){
 }
 
 @Composable
-fun CustomSpacerForEdingOfProductList(){
-    Spacer(modifier = Modifier.fillMaxHeight(Specification.RelativeSpaceForCustomSpacerForLazyColumn))
+fun CustomSpacerBetweenEachProduct(){
+    Spacer(modifier = Modifier.fillMaxHeight(Specification.RELATIVESPACEFORCUSTOMSPACERFORPRODUCTLIST))
 }

@@ -1,7 +1,6 @@
 package app.features.productcreation.ui.base.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,7 +18,7 @@ fun ExposedDropDownMenuForCategory(
     val noItemSelectedMessage = stringResource(R.string.no_selected_option)
 
     ExposedDropDownMenuTemplate(
-        modifier = Modifier.fillMaxWidth(Specification.editTextMaxWithdFraction),
+        modifier = Modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION),
         showSelectedValueInTextField = {
             categorySelected?.name ?: noItemSelectedMessage
         },
@@ -28,7 +27,7 @@ fun ExposedDropDownMenuForCategory(
         howShowItem = {
             Text(it.name)
         },
-        label = stringResource(R.string.category_label)
+        label = stringResource(R.string.category_label) + Specification.OBLIGATORYFIELDSMARK
     )
 }
 
@@ -41,7 +40,7 @@ fun ExposedDropDownMenuForSection(
     val noItemSelectedMessage = stringResource(R.string.no_selected_option)
 
     ExposedDropDownMenuTemplate(
-        modifier = Modifier.fillMaxWidth(Specification.editTextMaxWithdFraction),
+        modifier = Modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION),
         showSelectedValueInTextField = {
             sectionSelected ?: noItemSelectedMessage
         },
@@ -50,7 +49,7 @@ fun ExposedDropDownMenuForSection(
         howShowItem = {
             Text(it)
         },
-        label = stringResource(R.string.section_label)
+        label = stringResource(R.string.section_label) + Specification.OBLIGATORYFIELDSMARK
     )
 }
 
