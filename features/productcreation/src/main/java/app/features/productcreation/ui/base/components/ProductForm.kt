@@ -124,7 +124,7 @@ fun ProductForm(
             SmallSpace()
             DatePickerDocked(
                 selectedDateText = productViewState.inputDataState.adquisitionDateRepresentation ?: stringResource(R.string.no_selected_option),
-                label = stringResource(R.string.acquisition_date_label) + Specification.OBLIGATORYFIELDSMARK, //Marca de campo obligatorio
+                label = stringResource(R.string.acquisition_date_label) + Specification.OBLIGATORYFIELDSMARK,
                 onNewDateSelected = productEvents.onNewAcquisitionDateSelected
             )
 
@@ -163,5 +163,5 @@ fun ProductForm(
 
 @Composable
 private fun MessageOfObligatoryTextFields(){
-    Text(stringResource(R.string.message_for_obligatory_fields))
+    Text(stringResource(R.string.message_for_obligatory_fields, Specification.OBLIGATORYFIELDSMARK))
 }
