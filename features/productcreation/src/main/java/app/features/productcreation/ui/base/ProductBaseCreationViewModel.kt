@@ -11,18 +11,25 @@ import app.domain.invoicing.repository.CategoryRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
-import java.util.concurrent.atomic.AtomicBoolean
 
-abstract class ProductBaseCreationViewModel : ViewModel() {
+abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Unit) : ViewModel() {
     var productViewState by mutableStateOf(ProductViewState())
-        private set
+        protected set
 
-    private val isReady = AtomicBoolean()
+    init {
+        productViewState = productViewState.copy(isLoading = true)
+        viewModelScope.launch {
+            delay(2000)//Simulacion de tiempo de espera
+            val categories = CategoryRepository.getAllCategories()
+            productViewState = productViewState.copy(
+                isLoading = false,
+                categoriesList = categories,
+                sectionsList = listOf("Sección 1", "Sección 2", "Sección 3")
+            )
+        }
+    }
 
-    protected lateinit var onGoBackNav : () -> Unit
-        private set
-
-    fun onCodeChange(newCode : String){
+    fun onCodeChanged(newCode : String){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 code = newCode
@@ -30,7 +37,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onNameChange(newName : String){
+    fun onNameChanged(newName : String){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 name = newName
@@ -38,9 +45,10 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onShortNameChange(newShort : String) {
-        val noSpecialCharacter = Regex("[^a-zA-Z0-9]")
-        if (newShort.length <= 3 || noSpecialCharacter.containsMatchIn(newShort)) {
+    fun onShortNameChanged(newShort : String) {
+        fun hasRightLength() = newShort.length <= 3
+        fun thereAreSpecialCharacter() = Regex("[^a-zA-Z0-9]").containsMatchIn(newShort)
+        if (hasRightLength() || thereAreSpecialCharacter()) {
             shortNameChanged(newShort, true)
         } else {
             shortNameChanged(newShort, false)
@@ -58,7 +66,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onDescriptionChange(newDescription : String){
+    fun onDescriptionChanged(newDescription : String){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 description = newDescription
@@ -66,15 +74,15 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onSerialNumberChange(newSerialNumber : String){
+    fun onSerialNumberChanged(newSerialNumber : String){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
-                serialNumber = newSerialNumber
+                serieNumber = newSerialNumber
             )
         )
     }
 
-    fun onModelCodeChange(newModelCode : String){
+    fun onModelCodeChanged(newModelCode : String){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 modelCode = newModelCode
@@ -82,7 +90,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onProductTypeChange(newProductType : String){
+    fun onProductTypeChanged(newProductType : String){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 productType = newProductType
@@ -91,7 +99,9 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
     }
 
     fun onStockChange(newStock : String){
-        if (newStock.contains(".") || newStock.toInt() <= 1){
+        fun notAUintNumber() = newStock.toUIntOrNull() == null
+        fun notEnougthStock() = newStock.toUInt() < 1u
+        if (notAUintNumber() || notEnougthStock()){
             stockChanged(newStock, true)
         } else{
             stockChanged(newStock, false)
@@ -109,16 +119,18 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onPriceChange(newPrice : String){
+    fun onPriceChanged(newPrice : String){
         val price = newPrice.toDoubleOrNull()
-        if (price == null || price <= 0){
+        fun itIsANumber() = price == null
+        fun isNotPositive() = price!! < 0
+        if (itIsANumber() || isNotPositive()){
             priceChanged(newPrice, true)
         } else {
             priceChanged(newPrice, false)
         }
     }
 
-    fun priceChanged(newPrice : String, error: Boolean){
+    private fun priceChanged(newPrice : String, error: Boolean){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 price = newPrice
@@ -129,7 +141,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onMinimunStockChange(newMinimunStock : String){
+    fun onMinimunStockChanged(newMinimunStock : String){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 minimunStock = newMinimunStock
@@ -153,7 +165,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         )
     }
 
-    fun onAcquisitonDateChange(newAcquisitionDate : Long?){
+    fun onAcquisitonDateChanged(newAcquisitionDate : Long?){
         newAcquisitionDate?.let {
             val adquisitionDate = Instant.fromEpochMilliseconds(newAcquisitionDate)
             productViewState = productViewState.copy(
@@ -172,7 +184,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         }
     }
 
-    fun onDiscontinuationDateChange(newDiscontinuationDate : Long?){
+    fun onDiscontinuationDateChanged(newDiscontinuationDate : Long?){
         newDiscontinuationDate?.let {
             val discontinuationDate = Instant.fromEpochMilliseconds(newDiscontinuationDate)
             productViewState = productViewState.copy(
@@ -191,28 +203,48 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
         }
     }
 
-    fun getReady(onGoBackNav : () -> Unit){
-        if (!isReady.get()) {
-            productViewState = productViewState.copy(isLoading = true)
-            this.onGoBackNav = onGoBackNav
-            viewModelScope.launch {
-                delay(2000)//Simulacion de tiempo de espera
-                val categories = CategoryRepository.getAllCategories()
-                isReady.set(true)
-                productViewState = productViewState.copy(
-                    isLoading = false,
-                    categoriesList = categories
-                )
-            }
-        }
+    fun onNotesChanged(newNotes : String){
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                notes = newNotes
+            )
+        )
     }
 
-    fun onLeavePage(){
-        isReady.set(false)
+    fun onTagsChanged(newTags: String){
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                tags = newTags
+            )
+        )
+    }
+
+    fun onDismissCantRegisterAlertDialog(){
+        productViewState = productViewState.copy(
+            errorDataState = productViewState.errorDataState.copy(
+                cantRegisterProduct = false
+            )
+        )
+    }
+
+    fun onDismissEmptyFieldsAlertDialog(){
+        productViewState = productViewState.copy(
+            errorDataState = productViewState.errorDataState.copy(
+                emptyFields = false
+            )
+        )
+    }
+
+    fun onDismissProductHasBeenRegisteredAlertDialog(){
+        productViewState = productViewState.copy(
+            productRegisterSuccessful = false
+        )
         onGoBackNav()
     }
 
-    open fun onAcceptChanges(){
-        isReady.set(false)
+    fun onLeavePage(){
+        onGoBackNav()
     }
+
+    abstract fun onAcceptChanges()
 }

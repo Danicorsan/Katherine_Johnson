@@ -12,19 +12,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
 import app.features.productcreation.R
-import app.features.productcreation.ui.base.Appbar
-import app.features.productcreation.ui.base.ProductForm
+import app.features.productcreation.ui.base.components.ProductForm
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.ProductEvents
+import app.features.productcreation.ui.base.components.Appbar
 
 
 @Preview(showSystemUi = true)
 @Composable
 fun ProductEditionScreen(
-    viewModel: ProductEditionViewModel = remember { ProductEditionViewModel()},
-    onGoBack : () -> Unit = {}
+    viewModel: ProductEditionViewModel = remember { ProductEditionViewModel()}
 ){
-    viewModel.getReady(onGoBack)
     ProductEditionHost(
         productState = viewModel.productViewState,
         productEvents = ProductEvents.build(viewModel)

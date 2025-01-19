@@ -1,21 +1,18 @@
-package app.features.productlist.ui.base
+package app.features.productlist.ui.base.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -23,39 +20,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.base.ui.composables.MediumSpace
+import androidx.compose.ui.unit.dp
 import app.base.ui.composables.MediumTitleText
 import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace
 import app.domain.invoicing.product.Product
 import app.features.productlist.R
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Appbar(titleText : String, productListEvents : ProductListEvents){
-    CenterAlignedTopAppBar(
-        title = {
-            Text(text = titleText)
-        },
-        navigationIcon = {
-            IconButton(onClick = productListEvents.onGoBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.go_back_iconbutton))
-            }
-        }
-    )
-}
+import app.features.productlist.ui.base.composable.CustomSpacerBetweenEachProduct
+import app.features.productlist.ui.base.composable.DefaultProductImage
+import app.features.productlist.ui.base.Specification
+import app.features.productlist.ui.base.ProductListEvents
+import app.features.productlist.ui.base.composable.PutInRowWithSeparation
 
 @Composable
 fun ListProducts(productList: List<Product>, productListEvents: ProductListEvents){
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = Specification.BOTTOMPADDINGVALUETOCONTENTPADDINGFORPRODUCTLIST)
     ){
         items(productList) {
             ShowProductTile(it, productListEvents)
         }
         item {
-            CustomSpacerForEdingOfProductList()
+            CustomSpacerBetweenEachProduct()
         }
     }
 }
@@ -95,7 +82,7 @@ private fun ShowProductImage(product: Product){//Mantener parametro de cara a la
 @Composable
 private fun ShowBasicInformation(product : Product){
     Column(
-        modifier = Modifier.fillMaxWidth(InternalSpecification.RelativeSpaceForProductBasicInformation),
+        modifier = Modifier.fillMaxWidth(Specification.RELATIVESPACEFORPRODUCTBASICINFORMATION),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ShowProductsName(product)

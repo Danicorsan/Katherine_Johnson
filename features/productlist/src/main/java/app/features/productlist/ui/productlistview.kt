@@ -10,33 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
-import app.domain.invoicing.product.Product
 import app.features.productlist.R
-import app.features.productlist.ui.base.AddProductFloatingActionButton
-import app.features.productlist.ui.base.Appbar
-import app.features.productlist.ui.base.ListProducts
-import app.features.productlist.ui.base.NavigationEvents
+import app.features.productlist.ui.base.composable.AddProductFloatingActionButton
+import app.features.productlist.ui.base.components.Appbar
+import app.features.productlist.ui.base.components.ListProducts
 import app.features.productlist.ui.base.ProductListEvents
+import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
 
 
 @Preview(showSystemUi = true)
 @Composable
 fun ProductListScreen(
-    viewModel: ProductListViewModel = remember { ProductListViewModel()},
-    onAddProduct : () -> Unit = {},
-    onSeeProductDetails : (Product) -> Unit = {},
-    onEditProduct : (Product) -> Unit = {},
-    onGoBack : () -> Unit = {}
+    viewModel: ProductListViewModel = remember { ProductListViewModel(ProductListNavigationEvents())},
 ){
-    viewModel.getReady(
-        navigationEvents = NavigationEvents(
-            onAddProductNav = onAddProduct,
-            onSeeProductDetailsNav = onSeeProductDetails,
-            onEditProductNav = onEditProduct,
-            onGoBackNav = onGoBack
-        )
-    )
     ProductListHost(
         productListState = viewModel.productListState ,
         productListEvents = ProductListEvents.build(viewModel)
@@ -49,7 +36,7 @@ private fun ProductListHost(
     productListEvents : ProductListEvents
 ){
     Scaffold(
-        topBar = @Composable{ Appbar(stringResource(R.string.title_appbar), productListEvents)},
+        topBar = @Composable{ Appbar(stringResource(R.string.title_appbar), productListEvents) },
         floatingActionButton = { AddProductFloatingActionButton(productListEvents) }
     ) { contentPadding ->
         when {
