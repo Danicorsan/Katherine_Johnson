@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Billing App</string>
+    <string name="menu_invoices">Invoices</string>
+    <string name="menu_estimates">Estimates</string>
+    <string name="menu_customers">Customers</string>
+    <string name="menu_items">Items</string>
+    <string name="menu_settings">Settings</string>
+    <string name="section_others">Others</string>
+    <string name="section_business">Business</string>
+    <string name="inicio">Start</string>
+    <string name="bienvenido">Welcome</string>
+    <string name="productos">Products</string>
+    <string name="explora_y_gestiona_tus_productos">Explore and manage your products</string>
+    <string name="categorias">Categories</string>
+    <string name="organiza_tus_productos_por_categorias">Organize your products by categories</string>
+    <string name="inventario">Inventory</string>
+    <string name="consulta_y_gestiona_el_inventario">Consult and manage inventory</string>
+</resources>
