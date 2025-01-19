@@ -24,11 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.inventory.theme.InventoryTheme
+import com.example.inventory.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +41,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Inicio") },
+                title = { Text(stringResource(id = R.string.inicio)) },
             )
         },
         content = { innerPadding ->
@@ -54,7 +55,7 @@ fun HomeScreen(
             ) {
                 // Título de bienvenida
                 Text(
-                    text = "Bienvenido",
+                    text = stringResource(id = R.string.bienvenido),
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -66,24 +67,24 @@ fun HomeScreen(
                 // Sección Productos
                 HomeMenuCard(
                     icon = Icons.Default.ShoppingCart,
-                    title = "Productos",
-                    description = "Explora y gestiona tus productos",
+                    title = stringResource(id = R.string.productos),
+                    description = stringResource(id = R.string.explora_y_gestiona_tus_productos),
                     onClick = onNavigateProducts
                 )
 
                 // Sección Categorías
                 HomeMenuCard(
                     icon = Icons.AutoMirrored.Filled.List,
-                    title = "Categorías",
-                    description = "Organiza tus productos por categorías",
+                    title = stringResource(id = R.string.categorias),
+                    description = stringResource(id = R.string.organiza_tus_productos_por_categorias),
                     onClick = onNavigateCategories
                 )
 
                 // Sección Inventario
                 HomeMenuCard(
                     icon = Icons.Filled.Build,
-                    title = "Inventario",
-                    description = "Consulta y gestiona el inventario",
+                    title = stringResource(id = R.string.inventario),
+                    description = stringResource(id = R.string.consulta_y_gestiona_el_inventario),
                     onClick = onNavigateInventory
                 )
             }

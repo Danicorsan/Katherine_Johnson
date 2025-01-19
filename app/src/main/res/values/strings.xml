@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">App Facturación</string>
-
     <string name="menu_invoices">Facturas</string>
     <string name="menu_estimates">Estimaciones</string>
     <string name="menu_customers">Clientes</string>
@@ -8,6 +8,12 @@
     <string name="menu_settings">Configuración</string>
     <string name="section_others">Otros</string>
     <string name="section_business">Negocio</string>
-
-
+    <string name="inicio">Inicio</string>
+    <string name="bienvenido">Bienvenido</string>
+    <string name="productos">Productos</string>
+    <string name="explora_y_gestiona_tus_productos">Explora y gestiona tus productos</string>
+    <string name="categorias">Categorías</string>
+    <string name="organiza_tus_productos_por_categorias">Organiza tus productos por categorías</string>
+    <string name="inventario">Inventario</string>
+    <string name="consulta_y_gestiona_el_inventario">Consulta y gestiona el inventario</string>  <!-- Aquí también -->
 </resources>
