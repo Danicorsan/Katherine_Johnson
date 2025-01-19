@@ -41,3 +41,34 @@ De cara a la clase productos se han ido implementado los campos correspondientes
 
 Tambien en comparación con la primera entrega se ha buscado mejorar considerablemente el diseño de las vistas,
 ademas de aplicar refactorizaciones para mejorar la limpieza y calidad de código.
+
+## Categorias
+Esta característica ha sido implementada por **Daniel Cortés Sánchez**. La funcionalidad permite gestionar las categorías de productos dentro de la aplicación, con dos pantallas principales: una para la creación de nuevas categorías y otra para listar las categorías existentes.
+
+### ¿Qué se ha hecho?
+- **Pantalla para crear categorías**: Se ha implementado una interfaz de usuario para crear nuevas categorías de productos, que incluye campos para el nombre, descripción, nombre corto, tipo de categoría y si es fungible o no.
+- **Pantalla para listar categorías**: Se ha creado una vista que lista todas las categorías existentes, permitiendo al usuario visualizar la información relevante de cada una.
+- **Validación de campos**: Se ha implementado la validación de campos tanto en la creación de categorías como en la edición para evitar la duplicación de categorías y asegurar que se proporcionen datos correctos.
+- **Gestión de estados y errores**: Se ha introducido un modelo de estado que maneja los errores en los campos de entrada y gestiona la creación de nuevas categorías.
+- **Interacción con el repositorio**: Ambas pantallas interactúan con un repositorio simulado de categorías para almacenar y recuperar los datos.
+
+### Detalles a tener en cuenta
+
+#### Pantalla de creación de categoría:
+- **Campos**: Los campos que se incluyen son:
+    - Nombre de la categoría
+    - Descripción de la categoría
+    - Nombre corto
+    - Imagen (aunque aún no implementada)
+    - Tipo de categoría (con un desplegable para seleccionar entre las opciones disponibles)
+    - Indicador de fungibilidad (si es fungible o no)
+
+- **Validación**:
+    - Se realiza una validación del nombre para asegurarse de que no esté vacío ni sea un duplicado.
+    - La descripción también debe ser ingresada.
+    - El nombre corto debe cumplir con una expresión regular y no puede duplicarse con otras categorías.
+
+#### Pantalla de listado de categorías:
+- **Lista de categorías**: La pantalla muestra una lista de las categorías disponibles con un ícono y el nombre de cada una. Cada categoría puede ser seleccionada (aunque la funcionalidad de detalle aún está pendiente de implementación).
+
+- **Botón de acción flotante**: Se ha añadido un botón flotante que permite navegar a la pantalla de creación de nuevas categorías.
