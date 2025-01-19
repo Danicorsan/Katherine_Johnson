@@ -1,6 +1,7 @@
 package app.features.categorylist.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,9 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material.icons.sharp.MailOutline
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -103,8 +103,8 @@ fun CategoryListScreen(
                                     .padding(8.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Filled.MailOutline,
-                                    contentDescription = "Ícono de categoría",
+                                    imageVector = Icons.AutoMirrored.Filled.List,
+                                    contentDescription = "Icono de categoría",
                                     modifier = Modifier
                                         .size(48.dp)
                                         .padding(end = 8.dp),
@@ -117,10 +117,23 @@ fun CategoryListScreen(
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium,
                                     modifier = Modifier
-                                        .fillMaxWidth()
                                         .align(Alignment.CenterVertically) // Centra el texto verticalmente respecto a la imagen
                                         .padding(4.dp) // Espaciado interno
                                 )
+
+                                Box(
+                                    contentAlignment = Alignment.CenterEnd,
+                                    modifier = Modifier.fillMaxWidth()
+                                ){
+                                    IconButton(
+                                        enabled = false,
+                                        onClick = {},
+
+                                        ) {
+                                        Icon(Icons.Filled.MoreVert, "MoreVert")
+                                    }
+                                }
+
                             }
                         }
                     }

@@ -13,4 +13,16 @@
     <string name="guardar_cambios">Guardar Cambios</string>
     <string name="imagen">Imagen</string>
     <string name="nombre_corto">Nombre corto</string>
+    <string name="error_nombre_existente">Ya hay una categoría con ese nombre</string>
+    <string name="error_nombre_vacio">El nombre no puede estar vacío</string>
+    <string name="error_descripcion_vacia">La descripción no puede estar vacía</string>
+    <string name="error_nombre_corto">Debe tener al menos tres caracteres sin caracteres especiales</string>
+    <string name="error_al_crear_la_categoria">Error al crear la categoría</string>
+    <string name="revisar_cambios_dialog">Por favor, revisa los campos e intenta nuevamente.</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="selecciona_una_categoria">Selecciona una Categoría</string>
+    <string name="fungible">Fungible:</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="ya_hay_una_categoria_con_ese_nombre_corto">Ya hay una categoria con ese nombre corto</string>
 </resources>

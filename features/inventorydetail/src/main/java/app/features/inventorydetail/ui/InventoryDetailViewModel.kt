@@ -1,22 +1,46 @@
 package app.features.inventorydetail.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import app.domain.invoicing.repository.InventoryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import app.domain.invoicing.inventory.Item
+import kotlinx.coroutines.launch
 
-open class InventoryDetailViewModel : ViewModel() {
+// ViewModel para gestionar el estado del inventario
+open class InventoryDetailViewModel(
+    private val inventoryRepository: InventoryRepository
+) : ViewModel() {
+
     val _uiState = MutableStateFlow(InventoryDetailState())
-    val uiState: StateFlow<InventoryDetailState> = _uiState
+    val uiState: StateFlow<InventoryDetailState> get() = _uiState
 
-    open fun loadInventoryDetails() {
-        // Simulación de carga de datos
-        val sampleItems = listOf(
-            Item(1, "Camiseta Roja", "Camiseta de algodón, talla M"),
-            Item(2, "Pantalones Azules", "Pantalones de mezclilla, talla 32"),
-            Item(3, "Zapatos Negros", "Zapatos de cuero, talla 42")
-        )
-        // Actualizamos el estado con los artículos
-        _uiState.value = InventoryDetailState(items = sampleItems)
+    // Cargar los detalles del inventario
+    open fun loadInventoryDetails(inventoryId: Int) {
+        // Evitar recargar si ya está cargado el inventario con el mismo ID
+        if (_uiState.value.inventory?.id == inventoryId) return
+
+        // Marcar que estamos cargando el inventario (estado inicial)
+        _uiState.value = _uiState.value.copy(inventory = null, items = emptyList())
+
+        viewModelScope.launch {
+            // Intentamos cargar el inventario desde el repositorio
+            val inventory = inventoryRepository.findInventoryById(inventoryId)
+
+            if (inventory != null) {
+                // Si se encuentra el inventario, actualizamos el estado
+                _uiState.value = InventoryDetailState(
+                    inventory = inventory,
+                    items = inventory.items
+                )
+            } else {
+                // Si no se encuentra el inventario, podemos manejar el caso de error o vacío
+                _uiState.value = InventoryDetailState(
+                    inventory = null,
+                    items = emptyList()
+                )
+                // Aquí también podrías añadir algún manejo de error (mensaje de no encontrado, etc.)
+            }
+        }
     }
 }

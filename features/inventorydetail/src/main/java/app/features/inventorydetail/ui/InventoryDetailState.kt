@@ -1,7 +1,8 @@
 package app.features.inventorydetail.ui
 
-import app.domain.invoicing.inventory.Item
+import app.domain.invoicing.inventory.Inventory
 
 data class InventoryDetailState(
-    val items: List<Item> = emptyList()
+    val inventory: Inventory? = null,
+    val items: List<Any> = emptyList()
 )

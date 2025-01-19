@@ -1,12 +1,19 @@
 package app.features.inventorycreation.ui.creation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.repository.InventoryRepository
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-open class CreateInventoryViewModel : ViewModel() {
+open class CreateInventoryViewModel(
+    private val inventoryRepository: InventoryRepository
+) : ViewModel() {
+
     private val _uiState = MutableStateFlow(CreateInventoryState())
-    open val uiState: StateFlow<CreateInventoryState> = _uiState
+    open val uiState: StateFlow<CreateInventoryState> get() = _uiState
 
     fun onInventoryNameChange(newName: String) {
         _uiState.value = _uiState.value.copy(
@@ -23,6 +30,21 @@ open class CreateInventoryViewModel : ViewModel() {
     }
 
     fun createInventory() {
-        // Logic to create the inventory (e.g., save to a database)
+        if (_uiState.value.isCreateButtonEnabled) {
+            val newInventory = Inventory(
+                id = generateInventoryId(),  // Método para generar un ID único
+                name = _uiState.value.inventoryName,
+                description = _uiState.value.inventoryDescription,
+                items = emptyList()  // Por defecto sin artículos
+            )
+            viewModelScope.launch {
+                inventoryRepository.addInventory(newInventory)
+            }
+        }
+    }
+
+    private fun generateInventoryId(): Int {
+        // Lógica para generar un ID único para el inventario
+        return (System.currentTimeMillis() % Int.MAX_VALUE).toInt()
     }
 }

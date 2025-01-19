@@ -1,32 +1,41 @@
 package app.features.inventorylist.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.domain.invoicing.inventory.Inventory
-import app.features.inventorylist.R
+import app.domain.invoicing.inventory.Item
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun InventoryListScreen(
     viewModel: InventoryListViewModel,
     onBackClick: () -> Unit,
-    onInventoryClick: (Inventory) -> Unit
+    onInventoryClick: (Inventory) -> Unit,
+    onCreateInventoryClick: () -> Unit
 ) {
-    // Obtenemos el estado actual del ViewModel
     val uiState = viewModel.uiState.collectAsState().value
 
     Column(
@@ -34,7 +43,7 @@ fun InventoryListScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Icono de retroceso
+        // Botón de retroceso
         IconButton(
             onClick = { onBackClick() },
             modifier = Modifier
@@ -43,19 +52,24 @@ fun InventoryListScreen(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.volver),
+                contentDescription = "Volver"
             )
         }
 
         // Título de la pantalla
         Text(
-            text = stringResource(R.string.lista_de_inventarios),
+            text = "Lista de Inventarios",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .fillMaxWidth()
-                .wrapContentWidth(Alignment.CenterHorizontally),
+                .wrapContentWidth(Alignment.CenterHorizontally)
         )
+
+        // Botón para crear un inventario
+        Button(onClick = onCreateInventoryClick) {
+            Text("Crear Inventario")
+        }
 
         // Lista de inventarios
         LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -67,71 +81,68 @@ fun InventoryListScreen(
 }
 
 @Composable
-fun InventoryCard(inventory: Inventory, onClick: () -> Unit) {
+fun InventoryCard(inventory: Inventory, onClick: (Inventory) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp)
-            .background(Color.White),
-        elevation = CardDefaults.cardElevation(8.dp),
-        shape = MaterialTheme.shapes.medium,
-        onClick = onClick
+            .padding(8.dp)
+            .clickable { onClick(inventory) },
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = inventory.name,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        letterSpacing = 0.5.sp
-                    )
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = stringResource(R.string.cantidad, inventory.quantity),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        letterSpacing = 0.5.sp
-                    )
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = stringResource(R.string.valor_acumulado, inventory.price),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.5.sp
-                    )
-                )
-            }
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = inventory.name, style = MaterialTheme.typography.bodyLarge)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = inventory.description, style = MaterialTheme.typography.bodySmall)
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun InventoryListScreenPreview() {
-    // Creamos una lista de inventarios para la vista previa
-    val inventories = listOf(
-        Inventory(1, "Camisa", "Camisa grande", 45, 15.99, emptyList()),
-        Inventory(2, "Pantalón", "Pantalón de mezclilla", 30, 25.99, emptyList()),
-        Inventory(3, "Zapatos", "Zapatos deportivos", 20, 35.99, emptyList())
+fun PreviewInventoryListScreen() {
+    // Simulamos los datos para los inventarios
+    val sampleInventories = listOf(
+        Inventory(
+            id = 1, name = "Inventario 1", description = "Descripción del Inventario 1",
+            items = listOf(
+                Item(1, "Camiseta Roja", "Camiseta de algodón, talla M"),
+                Item(2, "Pantalones Azules", "Pantalones de mezclilla, talla 32"),
+                Item(3, "Zapatos Negros", "Zapatos de cuero, talla 42")
+            )
+        ),
+        Inventory(
+            id = 2, name = "Inventario 2", description = "Descripción del Inventario 2",
+            items = listOf(
+                Item(1, "Camiseta Roja", "Camiseta de algodón, talla M"),
+                Item(2, "Pantalones Azules", "Pantalones de mezclilla, talla 32"),
+                Item(3, "Zapatos Negros", "Zapatos de cuero, talla 42")
+            )
+        ),
+        Inventory(
+            id = 3, name = "Inventario 3", description = "Descripción del Inventario 3",
+            items = listOf(
+                Item(1, "Camiseta Roja", "Camiseta de algodón, talla M"),
+                Item(2, "Pantalones Azules", "Pantalones de mezclilla, talla 32"),
+                Item(3, "Zapatos Negros", "Zapatos de cuero, talla 42")
+            )
+        )
     )
 
-    // Creamos un ViewModel de prueba
+    // Simulamos un ViewModel con un StateFlow
     val previewViewModel = object : InventoryListViewModel() {
-        override fun loadInventoryList() {
-            val sampleItems = listOf(
-                Inventory(1, "Camisa", "Camisa grande", 45, 15.99, emptyList()),
-                Inventory(2, "Pantalón", "Pantalón de mezclilla", 30, 25.99, emptyList()),
-                Inventory(3, "Zapatos", "Zapatos deportivos", 20, 35.99, emptyList())
-            )
-            _uiState.value = InventoryListState(inventories = sampleItems)
-        }
+        override val uiState: StateFlow<InventoryListState> = MutableStateFlow(InventoryListState(inventories = sampleInventories))
     }
 
-    // Llamamos a la pantalla con los datos de muestra
-    InventoryListScreen(viewModel = previewViewModel, onBackClick = {}, onInventoryClick = {})
+    // Pasamos el ViewModel simulado y las funciones necesarias para la vista previa
+    InventoryListScreen(
+        viewModel = previewViewModel,
+        onBackClick = {
+            println("Volver a la pantalla anterior")
+        },
+        onInventoryClick = { inventory ->
+            println("Inventario seleccionado: ${inventory.name}")
+        },
+        onCreateInventoryClick = {
+            println("Crear nuevo inventario")
+        }
+    )
 }

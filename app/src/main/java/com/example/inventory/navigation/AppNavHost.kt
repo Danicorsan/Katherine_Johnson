@@ -7,8 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.inventory.home.HomeScreen
 import com.example.inventory.navigation.graphs.CategoryGraph
+import com.example.inventory.navigation.graphs.InventoryGraph
 import com.example.inventory.navigation.graphs.ProductGraph
 import com.example.inventory.navigation.graphs.categoryGraph
+import com.example.inventory.navigation.graphs.inventoryGraph
 import com.example.inventory.navigation.graphs.productGraph
 
 @Composable
@@ -27,7 +29,7 @@ fun AppNavHost(
             CategoryGraph.categoryListRoute()) },
             onNavigateProducts = {
                 navController.navigate(ProductGraph.ROUTE)
-            }, onNavigateInventory = {}) }
+            }, onNavigateInventory = {navController.navigate(InventoryGraph.ROUTE)}) }
 
         categoryGraph(
             navController = navController,
@@ -35,6 +37,9 @@ fun AppNavHost(
         )
 
         productGraph(
+            navController = navController
+        )
+        inventoryGraph(
             navController = navController
         )
     }

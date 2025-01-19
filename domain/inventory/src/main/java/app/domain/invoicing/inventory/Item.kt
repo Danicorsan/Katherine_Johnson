@@ -1,8 +1,7 @@
 package app.domain.invoicing.inventory
 
-data class Inventory(
+data class Item(
     val id: Int,
     val name: String,
-    val description: String,
-    val items: List<Any>
+    val description: String
 )
