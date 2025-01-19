@@ -1,7 +1,8 @@
 <resources>
 
-    <string name="volver">Back</string>
-    <string name="lista_de_inventarios">List of inventories</string>
-    <string name="cantidad">Quantity: %1$s</string>
-    <string name="valor_acumulado">Acumulated value: %1$s USD</string>
+    <string name="lista_de_inventarios">Inventory List</string>
+    <string name="volver">Go Back</string>
+    <string name="crear_inventario">Create Inventory</string>
+    <string name="editar_inventario">Edit Inventory</string>
+    <string name="eliminar_inventario">Delete Inventory</string>
 </resources>

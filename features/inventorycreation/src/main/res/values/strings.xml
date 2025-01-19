@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="editar_inventario">Editar Inventario</string>
-    <string name="nombre_del_inventario">Nombre del Inventario</string>
-    <string name="descripci_n_del_inventario">Descripción del Inventario</string>
-    <string name="guardar_cambios">Guardar Cambios</string>
+
     <string name="crear_inventario">Crear Inventario</string>
-    <string name="nuevo_nombre_de_inventario">Nuevo nombre de inventario</string>
-    <string name="nueva_descripci_n_del_inventario">Nueva descripción del Inventario</string>
+    <string name="nombre_del_inventario">Nombre del Inventario</string>
+    <string name="descripcion_del_inventario">Descripción del Inventario</string>
+    <string name="editar_inventario">Editar Inventario</string>
+    <string name="nueva_descripcion_del_inventario">Nueva Descripción del Inventario</string>
+    <string name="guardar_cambios">Guardar Cambios</string>
+    <string name="nuevo_nombre_del_inventario">Nuevo Nombre del Inventario</string>
 </resources>

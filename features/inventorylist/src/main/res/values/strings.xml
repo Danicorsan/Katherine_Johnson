@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="volver">Volver</string>
+
     <string name="lista_de_inventarios">Lista de Inventarios</string>
-    <string name="cantidad">Cantidad: %1$s</string>
-    <string name="valor_acumulado">Valor acumulado: %1$s€</string>
+    <string name="volver">Volver</string>
+    <string name="crear_inventario">Crear Inventario</string>
+    <string name="editar_inventario">Editar Inventario</string>
+    <string name="eliminar_inventario">Eliminar Inventario</string>
 </resources>

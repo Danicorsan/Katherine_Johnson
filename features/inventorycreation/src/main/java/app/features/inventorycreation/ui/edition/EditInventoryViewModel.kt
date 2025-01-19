@@ -16,7 +16,6 @@ open class EditInventoryViewModel(
     open val uiState: StateFlow<EditInventoryState> get() = _uiState
 
     open fun loadInventory(inventoryId: Int) {
-        // Simula cargar el inventario desde el repositorio (reemplazar por lógica real)
         val inventory = inventoryRepository.findInventoryById(inventoryId)
         if (inventory != null) {
             _uiState.value = _uiState.value.copy(
@@ -42,12 +41,11 @@ open class EditInventoryViewModel(
     }
 
     open fun saveChanges() {
-        // Lógica para actualizar el inventario en el repositorio
         val updatedInventory = Inventory(
             id = _uiState.value.inventoryId,
             name = _uiState.value.inventoryName,
             description = _uiState.value.inventoryDescription,
-            items = emptyList()  // Dejar vacío si no se quieren modificar los artículos
+            items = emptyList()
         )
         viewModelScope.launch {
             inventoryRepository.updateInventory(updatedInventory)
@@ -56,17 +54,15 @@ open class EditInventoryViewModel(
 }
 class FakeInventoryRepository : InventoryRepository() {
     override fun findInventoryById(inventoryId: Int): Inventory? {
-        // Simulamos encontrar un inventario
         return Inventory(
             id = inventoryId,
             name = "Inventario $inventoryId",
             description = "Descripción simulada del inventario",
-            items = emptyList()  // No se añaden artículos para este ejemplo
+            items = emptyList()
         )
     }
 
     override suspend fun updateInventory(inventory: Inventory) {
-        // Simulamos el proceso de actualización
         println("Inventario actualizado: ${inventory.name}")
     }
 }

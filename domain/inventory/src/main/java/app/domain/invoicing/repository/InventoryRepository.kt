@@ -27,7 +27,14 @@ open class InventoryRepository {
             items = listOf(
                 Item(id = 1, name = "Camiseta Roja", description = "Camiseta de algodón, talla M"),
                 Item(id = 2, name = "Pantalones Azules", description = "Pantalones de mezclilla, talla 32"),
-                Item(id = 3, name = "Zapatos Negros", description = "Zapatos de cuero, talla 42")
+                Item(id = 3, name = "Zapatos Negros", description = "Zapatos de cuero, talla 42"),
+                Item(id = 4, name = "Camisa Verde", description = "Camisa de algodón, talla S"),
+                Item(id = 5, name = "Pantalones Blancos", description = "Pantalones de mezclilla, talla 34"),
+                Item(id = 6, name = "Zapatos Blancos", description = "Zapatos de cuero, talla 40"),
+                Item(id = 7, name = "Camisa Azul", description = "Camisa de algodón, talla L"),
+                Item(id = 8, name = "Pantalones Negros", description = "Pantalones de mezclilla, talla 36"),
+                Item(id = 9, name = "Zapatos Rojos", description = "Zapatos de cuero, talla 38"),
+                Item(id = 10, name = "Camisa Negra", description = "Camisa de algodón, talla XL")
             )
         )
 
@@ -38,7 +45,14 @@ open class InventoryRepository {
             items = listOf(
                 Item(id = 1, name = "Laptop", description = "Laptop HP con 16GB de RAM"),
                 Item(id = 2, name = "Smartphone", description = "Smartphone Samsung Galaxy S21"),
-                Item(id = 3, name = "Auriculares", description = "Auriculares inalámbricos Sony")
+                Item(id = 3, name = "Auriculares", description = "Auriculares inalámbricos Sony"),
+                Item(id = 4, name = "Teclado", description = "Teclado USB con teclas RGB"),
+                Item(id = 5, name = "Monitor", description = "Monitor LCD 24 pulgadas"),
+                Item(id = 6, name = "Mouse", description = "Mouse inalambríco Logitech"),
+                Item(id = 7, name = "Impresora", description = "Impresora multifuncional HP"),
+                Item(id = 8, name = "Cargador", description = "Cargador de batería de 12V"),
+                Item(id = 9, name = "Cable USB", description = "Cable USB 3.0 para dispositivos"),
+                Item(id = 10, name = "Cable HDMI", description = "Cable HDMI para monitores")
             )
         )
 
@@ -49,7 +63,14 @@ open class InventoryRepository {
             items = listOf(
                 Item(id = 1, name = "Escritorio", description = "Escritorio de madera con cajones"),
                 Item(id = 2, name = "Silla Ejecutiva", description = "Silla ergonómica de oficina"),
-                Item(id = 3, name = "Archivador", description = "Archivador metálico de 4 cajones")
+                Item(id = 3, name = "Archivador", description = "Archivador metálico de 4 cajones"),
+                Item(id = 4, name = "Mesas de Comedor", description = "Mesas de comedor de madera"),
+                Item(id = 5, name = "Cajones de Organización", description = "Cajones de organización de madera"),
+                Item(id = 6, name = "Cajones de Organización", description = "Cajones de organización de madera"),
+                Item(id = 7, name = "Cajones de Organización", description = "Cajones de organización de madera"),
+                Item(id = 8, name = "Cajones de Organización", description = "Cajones de organización de madera"),
+                Item(id = 9, name = "Cajones de Organización", description = "Cajones de organización de madera"),
+                Item(id = 10, name = "Cajones de Organización", description = "Cajones de organización de madera")
             )
         )
 

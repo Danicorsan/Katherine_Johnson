@@ -19,7 +19,6 @@ open class InventoryListViewModel(
     }
 
     private fun loadInventories() {
-        // Simula la carga de inventarios desde el repositorio
         viewModelScope.launch {
             inventoryRepository.inventories.collect { inventories ->
                 _uiState.value = InventoryListState(inventories = inventories)

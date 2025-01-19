@@ -32,10 +32,10 @@ open class CreateInventoryViewModel(
     fun createInventory() {
         if (_uiState.value.isCreateButtonEnabled) {
             val newInventory = Inventory(
-                id = generateInventoryId(),  // Método para generar un ID único
+                id = generateInventoryId(),
                 name = _uiState.value.inventoryName,
                 description = _uiState.value.inventoryDescription,
-                items = emptyList()  // Por defecto sin artículos
+                items = emptyList()
             )
             viewModelScope.launch {
                 inventoryRepository.addInventory(newInventory)
@@ -44,7 +44,6 @@ open class CreateInventoryViewModel(
     }
 
     private fun generateInventoryId(): Int {
-        // Lógica para generar un ID único para el inventario
         return (System.currentTimeMillis() % Int.MAX_VALUE).toInt()
     }
 }

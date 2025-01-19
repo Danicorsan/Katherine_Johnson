@@ -21,7 +21,6 @@ import app.domain.invoicing.repository.InventoryRepository
 object InventoryGraph {
     const val ROUTE = "inventory"
 
-    // Definimos las rutas para las pantallas
     fun inventoryListRoute() = "$ROUTE/inventoryList"
     fun inventoryCreationRoute() = "$ROUTE/inventoryCreation"
     fun inventoryEditionRoute(inventoryId: String) = "$ROUTE/inventoryEdition/$inventoryId"  // Aceptamos un parámetro de ID
@@ -33,13 +32,9 @@ fun NavGraphBuilder.inventoryGraph(navController: NavController) {
         startDestination = InventoryGraph.inventoryListRoute(),
         route = InventoryGraph.ROUTE
     ) {
-        // Ruta para la pantalla de lista de inventarios
         inventoryListRoute(navController)
-        // Ruta para la pantalla de creación de inventarios
         inventoryCreationRoute(navController)
-        // Ruta para la pantalla de edición de inventarios
         inventoryEditionRoute(navController)
-        // Ruta para la pantalla de detalles de inventarios
         inventoryDetailsRoute(navController)
     }
 }
@@ -53,12 +48,16 @@ private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
                 navController.popBackStack()
             },
             onInventoryClick = { inventory ->
-                // Navegar a los detalles de ese inventario, pasando el inventoryId
                 navController.navigate(InventoryGraph.inventoryDetailsRoute(inventory.id.toString()))
             },
             onCreateInventoryClick = {
-                // Navegar a la pantalla de creación de inventarios
                 navController.navigate(InventoryGraph.inventoryCreationRoute())
+            },
+            onEditInventoryClick = { inventory ->
+                navController.navigate(InventoryGraph.inventoryEditionRoute(inventory.id.toString()))
+            },
+            onDeleteInventoryClick = { inventory ->
+                navController.navigate(InventoryGraph.inventoryEditionRoute(inventory.id.toString()))
             }
         )
     }
@@ -66,10 +65,8 @@ private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
 
 private fun NavGraphBuilder.inventoryCreationRoute(navController: NavController) {
     composable(route = InventoryGraph.inventoryCreationRoute()) {
-        // Instanciamos el repositorio directamente
         val inventoryRepository = remember { InventoryRepository() }
 
-        // Instanciamos el ViewModel y pasamos el repositorio
         val viewModel: CreateInventoryViewModel = viewModel(
             factory = object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -78,15 +75,12 @@ private fun NavGraphBuilder.inventoryCreationRoute(navController: NavController)
             }
         )
 
-        // Pasamos el ViewModel y el callback de navegación
         CreateInventoryScreen(
             onNavigateToList = {
-                // Cuando se crea un inventario, regresamos a la lista
-                navController.popBackStack()  // Volver a la lista de inventarios
+                navController.popBackStack()
             },
             onBackClick = {
-                // Acción para ir hacia atrás cuando se presiona el botón de retroceso
-                navController.popBackStack()  // Volver a la pantalla anterior
+                navController.popBackStack()
             }
         )
     }
@@ -97,23 +91,17 @@ private fun NavGraphBuilder.inventoryEditionRoute(navController: NavController) 
     composable(
         route = InventoryGraph.inventoryEditionRoute("{inventoryId}")
     ) { backStackEntry ->
-        // Obtener el parámetro inventoryId de la ruta
         val inventoryId = backStackEntry.arguments?.getString("inventoryId")?.toInt() ?: 0
-
-        // Instanciamos el repositorio y el ViewModel
         val inventoryRepository = remember { InventoryRepository() }
         val viewModel: EditInventoryViewModel = remember { EditInventoryViewModel(inventoryRepository) }
 
-        // Llamamos a la pantalla de edición de inventario y pasamos los parámetros necesarios
         EditInventoryScreen(
             viewModel = viewModel,
             inventoryId = inventoryId,
             onInventoryEdited = {
-                // Cuando se edita un inventario, regresamos a la lista
                 navController.popBackStack()
             },
             onNavigateBack = {
-                // Regresar a la pantalla anterior
                 navController.popBackStack()
             }
         )
@@ -124,7 +112,6 @@ private fun NavGraphBuilder.inventoryDetailsRoute(navController: NavController) 
     composable(
         route = InventoryGraph.inventoryDetailsRoute("{inventoryId}")
     ) { backStackEntry ->
-        // Obtener el parámetro inventoryId de la ruta
         val inventoryId = backStackEntry.arguments?.getString("inventoryId")?.toInt() ?: 0
         val viewModel = remember { InventoryDetailViewModel(InventoryRepository()) }
 
@@ -132,11 +119,9 @@ private fun NavGraphBuilder.inventoryDetailsRoute(navController: NavController) 
             viewModel = viewModel,
             inventoryId = inventoryId,
             onEditClick = {
-                // Al hacer clic en el botón de editar, navegamos a la pantalla de edición
                 navController.navigate(InventoryGraph.inventoryEditionRoute(inventoryId.toString())) // Pasar el inventoryId
             },
             onNavigateBack = {
-                // Al hacer clic en "volver", navegamos hacia atrás
                 navController.popBackStack()
             }
         )

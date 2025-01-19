@@ -1,87 +1,99 @@
 package app.features.inventorylist.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.Item
+import app.features.inventorylist.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InventoryListScreen(
     viewModel: InventoryListViewModel,
     onBackClick: () -> Unit,
     onInventoryClick: (Inventory) -> Unit,
-    onCreateInventoryClick: () -> Unit
+    onCreateInventoryClick: () -> Unit,
+    onEditInventoryClick: (Inventory) -> Unit,
+    onDeleteInventoryClick: (Inventory) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState().value
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Botón de retroceso
-        IconButton(
-            onClick = { onBackClick() },
+    MaterialTheme {
+        Box(
             modifier = Modifier
-                .padding(bottom = 16.dp)
-                .align(Alignment.Start)
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Volver"
-            )
-        }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 56.dp)
+            ) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = stringResource(R.string.lista_de_inventarios),
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { onBackClick() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.volver)
+                            )
+                        }
+                    },
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
-        // Título de la pantalla
-        Text(
-            text = "Lista de Inventarios",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .fillMaxWidth()
-                .wrapContentWidth(Alignment.CenterHorizontally)
-        )
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(uiState.inventories) { inventory ->
+                        InventoryCard(
+                            inventory = inventory,
+                            onClick = { onInventoryClick(inventory) },
+                            onEditClick = { onEditInventoryClick(inventory) },
+                            onDeleteClick = { onDeleteInventoryClick(inventory) }
+                        )
+                    }
+                }
+            }
 
-        // Botón para crear un inventario
-        Button(onClick = onCreateInventoryClick) {
-            Text("Crear Inventario")
-        }
-
-        // Lista de inventarios
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(uiState.inventories) { inventory ->
-                InventoryCard(inventory = inventory, onClick = { onInventoryClick(inventory) })
+            Button(
+                onClick = onCreateInventoryClick,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+            ) {
+                Text(stringResource(R.string.crear_inventario))
             }
         }
     }
 }
 
 @Composable
-fun InventoryCard(inventory: Inventory, onClick: (Inventory) -> Unit) {
+fun InventoryCard(
+    inventory: Inventory,
+    onClick: (Inventory) -> Unit,
+    onEditClick: (Inventory) -> Unit,
+    onDeleteClick: (Inventory) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -92,6 +104,20 @@ fun InventoryCard(inventory: Inventory, onClick: (Inventory) -> Unit) {
             Text(text = inventory.name, style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = inventory.description, style = MaterialTheme.typography.bodySmall)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                IconButton(onClick = { onEditClick(inventory) }) {
+                    Icon(imageVector = Icons.Filled.Edit, contentDescription = stringResource(R.string.editar_inventario))
+                }
+                IconButton(onClick = { onDeleteClick(inventory) }) {
+                    Icon(imageVector = Icons.Filled.Delete, contentDescription = stringResource(R.string.eliminar_inventario))
+                }
+            }
         }
     }
 }
@@ -99,7 +125,6 @@ fun InventoryCard(inventory: Inventory, onClick: (Inventory) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewInventoryListScreen() {
-    // Simulamos los datos para los inventarios
     val sampleInventories = listOf(
         Inventory(
             id = 1, name = "Inventario 1", description = "Descripción del Inventario 1",
@@ -127,12 +152,10 @@ fun PreviewInventoryListScreen() {
         )
     )
 
-    // Simulamos un ViewModel con un StateFlow
     val previewViewModel = object : InventoryListViewModel() {
         override val uiState: StateFlow<InventoryListState> = MutableStateFlow(InventoryListState(inventories = sampleInventories))
     }
 
-    // Pasamos el ViewModel simulado y las funciones necesarias para la vista previa
     InventoryListScreen(
         viewModel = previewViewModel,
         onBackClick = {
@@ -143,6 +166,12 @@ fun PreviewInventoryListScreen() {
         },
         onCreateInventoryClick = {
             println("Crear nuevo inventario")
+        },
+        onEditInventoryClick = { inventory ->
+            println("Editar inventario: ${inventory.name}")
+        },
+        onDeleteInventoryClick = { inventory ->
+            println("Eliminar inventario: ${inventory.name}")
         }
     )
 }
