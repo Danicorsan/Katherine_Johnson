@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 
 
 object ProductRepository {
-    private var nextId = 6
+    private var nextId = 8
     private var productWarehouse : MutableMap<Int, Product> = initializeProductsDemo()
 
     /**
