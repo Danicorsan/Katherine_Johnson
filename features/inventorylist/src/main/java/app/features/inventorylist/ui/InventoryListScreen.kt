@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,57 +33,56 @@ fun InventoryListScreen(
 ) {
     val uiState = viewModel.uiState.collectAsState().value
 
-    MaterialTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 56.dp)
-            ) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(R.string.lista_de_inventarios),
-                            style = MaterialTheme.typography.headlineMedium
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = { onBackClick() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.volver)
-                            )
-                        }
-                    },
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(uiState.inventories) { inventory ->
-                        InventoryCard(
-                            inventory = inventory,
-                            onClick = { onInventoryClick(inventory) },
-                            onEditClick = { onEditInventoryClick(inventory) },
-                            onDeleteClick = { onDeleteInventoryClick(inventory) }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.lista_de_inventarios),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onBackClick() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.volver)
                         )
                     }
                 }
-            }
-
-            Button(
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
                 onClick = onCreateInventoryClick,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
+                modifier = Modifier.padding(16.dp),
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
-                Text(stringResource(R.string.crear_inventario))
+                Text(
+                    text = stringResource(R.string.crear_inventario),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        },
+        content = { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                items(uiState.inventories) { inventory ->
+                    InventoryCard(
+                        inventory = inventory,
+                        onClick = { onInventoryClick(inventory) },
+                        onEditClick = { onEditInventoryClick(inventory) },
+                        onDeleteClick = { onDeleteInventoryClick(inventory) }
+                    )
+                }
             }
         }
-    }
+    )
 }
 
 @Composable
@@ -99,6 +97,8 @@ fun InventoryCard(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onClick(inventory) },
+        shape = MaterialTheme.shapes.medium, // MaterialShape
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp) // Elevation
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = inventory.name, style = MaterialTheme.typography.bodyLarge)
