@@ -2,48 +2,70 @@ package app.features.productcreation.ui.edition
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import app.base.ui.components.LoadingUi
 import app.features.productcreation.R
-import app.features.productcreation.ui.base.Appbar
-import app.features.productcreation.ui.base.DropDownItems
-import app.features.productcreation.ui.base.ProductForm
+import app.features.productcreation.ui.base.components.ProductForm
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.ProductEvents
+import app.features.productcreation.ui.base.components.Appbar
 
-@Preview(showBackground = true)
+
+@Preview(showSystemUi = true)
 @Composable
-fun ProductEtitionScreen(viewModel: ProductEditionViewModel = ProductEditionViewModel()){
-    ProductEditionContent(
-        productState = viewModel.estadoProducto,
-        events = ProductEvents(
-            confirmationAboutProduct = viewModel::acceptProductEdition,
-            leavePage = viewModel::leavePage,
-            onNameChange = viewModel::nameChanged
-        ),
-        dropDownItems = viewModel.desplegable
+fun ProductEditionScreen(
+    viewModel: ProductEditionViewModel = remember { ProductEditionViewModel()}
+){
+    ProductEditionHost(
+        productState = viewModel.productViewState,
+        productEvents = ProductEvents.build(viewModel)
     )
 }
 
 @Composable
-private fun ProductEditionContent(
+private fun ProductEditionHost(
     productState: ProductViewState,
-    events : ProductEvents,
-    dropDownItems: DropDownItems
+    productEvents : ProductEvents
 ){
+    Scaffold(
+        topBar = @Composable { Appbar(
+            titleText = stringResource(R.string.product_edition_title_appbar),
+            onGoBack = productEvents.onLeavePage
+        ) }
+    ) { contentPadding ->
+        when {
+            productState.isLoading -> LoadingUi()
+            else -> ProductEditionContent(
+                modifier = Modifier.padding(contentPadding),
+                productState = productState,
+                productEvents = productEvents
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProductEditionContent(
+    modifier: Modifier,
+    productState: ProductViewState,
+    productEvents : ProductEvents
+    ){
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Appbar(titleText = stringResource(R.string.titulo_edicion_producto_appbar))
         ProductForm(
             productState,
-            events,
-            dropDownItems,
-            stringResource(R.string.boton_aceptar)
+            productEvents,
+            stringResource(R.string.accept_button_label),
+            productEvents.onAcceptProduct
         )
     }
 }
