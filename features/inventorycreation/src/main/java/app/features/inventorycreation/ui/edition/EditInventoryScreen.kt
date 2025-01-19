@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,16 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import app.features.inventorycreation.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -32,12 +32,11 @@ import kotlinx.coroutines.flow.StateFlow
 fun EditInventoryScreen(
     viewModel: EditInventoryViewModel,
     inventoryId: Int,
-    onInventoryEdited: () -> Unit,  // Callback cuando se editen los datos
-    onNavigateBack: () -> Unit      // Callback para navegar hacia atrás
+    onInventoryEdited: () -> Unit,
+    onNavigateBack: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState().value
 
-    // Cargar detalles del inventario si aún no se cargan
     if (uiState.inventoryId != inventoryId) {
         viewModel.loadInventory(inventoryId)
     }
@@ -45,11 +44,10 @@ fun EditInventoryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Editar Inventario") },
+                title = { Text(stringResource(R.string.editar_inventario)) },
                 navigationIcon = {
-                    // Aquí podemos agregar el botón de retroceso
                     IconButton(onClick = onNavigateBack) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 }
             )
@@ -63,33 +61,30 @@ fun EditInventoryScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Campo de nombre del inventario
                 TextField(
                     value = uiState.inventoryName,
                     onValueChange = { viewModel.onInventoryNameChange(it) },
-                    label = { Text("Nuevo Nombre del Inventario") },
+                    label = { Text(stringResource(R.string.nuevo_nombre_del_inventario)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // Campo de descripción del inventario
                 TextField(
                     value = uiState.inventoryDescription,
                     onValueChange = { viewModel.onInventoryDescriptionChange(it) },
-                    label = { Text("Nueva Descripción del Inventario") },
+                    label = { Text(stringResource(R.string.nueva_descripcion_del_inventario)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // Botón para guardar los cambios
                 Button(
                     onClick = {
-                        viewModel.saveChanges()  // Guardar cambios
-                        onInventoryEdited()  // Invocar el callback cuando se editen los datos
-                        onNavigateBack()  // Volver a la lista de inventarios o pantalla anterior
+                        viewModel.saveChanges()
+                        onInventoryEdited()
+                        onNavigateBack()
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = uiState.isSaveButtonEnabled  // Solo habilitar si ambos campos son válidos
+                    enabled = uiState.isSaveButtonEnabled
                 ) {
-                    Text("Guardar Cambios")
+                    Text(stringResource(R.string.guardar_cambios))
                 }
             }
         }

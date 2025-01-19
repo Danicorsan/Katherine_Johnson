@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="volver">Back</string>
-    <string name="detalle_del_inventario">Detail of the inventory</string>
+    <string name="detalle_del_inventario">Inventory Detail</string>
+    <string name="volver">Go Back</string>
+    <string name="cargando_inventario">Loading Inventory…</string>
+    <string name="nombre">Name: %1$s</string>
+    <string name="descripcion">Description: %1$s</string>
 </resources>

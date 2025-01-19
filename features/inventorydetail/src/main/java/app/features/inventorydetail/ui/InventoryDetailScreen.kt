@@ -1,89 +1,89 @@
 package app.features.inventorydetail.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import app.domain.invoicing.inventory.Item
-import app.domain.invoicing.inventory.Inventory
-import app.domain.invoicing.repository.InventoryRepository
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.domain.invoicing.inventory.Item
+import app.domain.invoicing.repository.InventoryRepository
+import app.features.inventorydetail.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InventoryDetailScreen(
-    viewModel: ViewModel,
     inventoryId: Int,
-    onEditClick: () -> Unit,  // Callback cuando se haga clic en editar
-    onNavigateBack: () -> Unit // Callback para navegar hacia atrás
+    onNavigateBack: () -> Unit,
+    viewModel: InventoryDetailViewModel,
+    onEditClick: () -> Unit
 ) {
-    // Obtén el ViewModel
     val viewModel: InventoryDetailViewModel = viewModel(factory = InventoryDetailViewModelFactory(InventoryRepository()))
 
-    // Obtén el estado del ViewModel
     val uiState by viewModel.uiState.collectAsState()
 
-    // Llamamos a loadInventoryDetails solo si el inventario no está cargado o es diferente al id que se está solicitando
     LaunchedEffect(inventoryId) {
         viewModel.loadInventoryDetails(inventoryId)
     }
 
-    // Layout de la pantalla
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
     ) {
-        // Botón de retroceso con ícono de flecha
-        IconButton(
-            onClick = { onNavigateBack() },
+        TopAppBar(
+            title = {
+                Text(
+                    text = stringResource(R.string.detalle_del_inventario),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = { onNavigateBack() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.volver)
+                    )
+                }
+            },
             modifier = Modifier.padding(bottom = 16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Volver",
-                tint = Color.Black
-            )
-        }
-
-        // Título de la pantalla
-        Text(
-            text = "Detalle del Inventario",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .fillMaxWidth()
         )
 
-        // Verificamos si estamos cargando los datos
         if (uiState.inventory == null) {
-            // Si no se tiene el inventario, mostrar un mensaje de carga o error
-            Text(text = "Cargando inventario...")
+            Text(text = stringResource(R.string.cargando_inventario))
         } else {
-            // Si el inventario está disponible, mostramos sus detalles
             uiState.inventory?.let { inventory ->
-                Text(text = "Nombre: ${inventory.name}")
-                Text(text = "Descripción: ${inventory.description}")
+                Text(
+                    text = stringResource(R.string.nombre, inventory.name),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
 
-                // Botón para editar el inventario
-                Button(
-                    onClick = onEditClick,
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
-                    Text("Editar Inventario")
-                }
+                Text(
+                    text = stringResource(R.string.descripcion, inventory.description),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
-                // Mostramos los artículos dentro del inventario
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     items(uiState.items) { item ->
                         ItemCard(item = item as Item)
@@ -115,7 +115,6 @@ fun ItemCard(item: Item) {
     }
 }
 
-// Factory para la creación del ViewModel (si es necesario)
 class InventoryDetailViewModelFactory(
     private val inventoryRepository: InventoryRepository
 ) : ViewModelProvider.Factory {
@@ -127,15 +126,14 @@ class InventoryDetailViewModelFactory(
 @Preview(showBackground = true)
 @Composable
 fun PreviewInventoryDetailScreen() {
-    // Llamamos a la pantalla con los datos de muestra
     InventoryDetailScreen(
         inventoryId = 1,
-        onEditClick = {
-            println("Editar inventario con ID: 1")
-        },
         onNavigateBack = {
             println("Volver a la lista de inventarios")
         },
-        viewModel = viewModel()
+        viewModel = InventoryDetailViewModel(InventoryRepository()),
+        onEditClick = {
+            println("Editar el inventario")
+        }
     )
 }
