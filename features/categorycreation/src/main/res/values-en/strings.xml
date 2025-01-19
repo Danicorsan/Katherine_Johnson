@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- IDIOMA INGLES!-->
-    <!--CategoryCreatinScreen!-->
+    <!--CategoryCreationScreen!-->
     <string name="crear_categoria">New category</string>
     <string name="volver">Back</string>
     <string name="nombre_de_la_categoria">Name of the category</string>
@@ -13,4 +13,16 @@
     <string name="guardar_cambios">Save Changes</string>
     <string name="imagen">Image</string>
     <string name="nombre_corto">Short Name</string>
+    <string name="error_nombre_existente">There is already a category with that name</string>
+    <string name="error_nombre_vacio">The name cannot be empty</string>
+    <string name="error_descripcion_vacia">The description cannot be empty</string>
+    <string name="error_nombre_corto">It must have at least three characters without any special character</string>
+    <string name="error_al_crear_la_categoria">Error creating the category</string>
+    <string name="revisar_cambios_dialog">Please check the fields and try again.</string>
+    <string name="aceptar">Accept</string>
+    <string name="selecciona_una_categoria">Select a Category</string>
+    <string name="fungible">Fungible:</string>
+    <string name="si">Yes</string>
+    <string name="no">No</string>
+    <string name="ya_hay_una_categoria_con_ese_nombre_corto">There is already a category with that shortname</string>
 </resources>

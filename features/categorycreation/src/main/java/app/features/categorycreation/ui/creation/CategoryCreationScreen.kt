@@ -15,7 +15,10 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -27,11 +30,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.MediumSpace
 import app.domain.invoicing.category.TypeCategory
@@ -71,7 +73,6 @@ fun CategoryCreationScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryCreationContent(
     viewModel: CategoryCreationViewModel,
@@ -87,117 +88,211 @@ fun CategoryCreationContent(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = stringResource(R.string.crear_categoria),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp,
-        )
 
-        // Nombre de la Categoría
-        OutlinedTextField(
-            value = viewModel.state.name,
-            onValueChange = { viewModel.onNameChange(it) },
-            label = { Text(stringResource(R.string.nombre_de_la_categoria)) },
-            modifier = Modifier.fillMaxWidth(),
-            maxLines = 2,
-            isError = viewModel.state.isNameError,
-            supportingText = {
-                if (viewModel.state.isNameError) {
-                    Text(text = "Ya hay una categoría con ese nombre")
-                }
-            },
-        )
 
-        // Descripción de la Categoría
-        OutlinedTextField(
-            value = viewModel.state.description,
-            onValueChange = { viewModel.onDescriptionChange(it) },
-            label = { Text(stringResource(R.string.descripcion_de_la_categoria)) },
-            modifier = Modifier.fillMaxWidth(),
-            maxLines = 4,
-            isError = viewModel.state.isDescriptionError,
-            supportingText = {
-                if (viewModel.state.isDescriptionError) {
-                    Text(text = "La descripción no puede estar vacía")
-                }
-            },
-        )
-
-        // Nombre Corto
-        OutlinedTextField(
-            value = viewModel.state.shortName,
-            onValueChange = { viewModel.onShortNameChange(it) },
-            label = { Text(stringResource(R.string.nombre_corto)) },
-            modifier = Modifier.fillMaxWidth(),
-            maxLines = 2,
-            isError = viewModel.state.isShortNameError,
-            supportingText = {
-                if (viewModel.state.isShortNameError) {
-                    Text(text = "Debe tener al menos tres caracteres sin caracteres especiales")
-                }
-            }
-        )
-
-        // Imagen
-        OutlinedTextField(
-            value = viewModel.state.image ?: "",
-            onValueChange = { viewModel.onImageChange(it) },
-            enabled = false,
-            label = { Text(stringResource(R.string.imagen)) },
-            modifier = Modifier.fillMaxWidth()
-        )
+        // Input Fields
+        CategoryInputFields(viewModel)
 
         MediumSpace()
 
-        // Dropdown para TypeCategory
+        // Dropdown for TypeCategory
         EditableExposedDropdownMenuTypeCategory(viewModel)
 
-        // Botones
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Button(onClick = {
+        // Action Buttons
+        ActionButtons(
+            onDiscardChanges = {
                 onClickNewCategory()
                 viewModel.onDiscardChanges()
-            }) {
-                Text(stringResource(R.string.descartar_cambios))
-            }
-
-            Button(onClick = {
+            },
+            onCreateCategory = {
                 viewModel.createCategory()
                 if (viewModel.state.isError) {
                     showDialog = true
                 } else {
                     onClickNewCategory()
                 }
-            }) {
-                Text(stringResource(R.string.crear_categoria))
+            }
+        )
+    }
+
+    // Error Dialog
+    if (showDialog) {
+        ErrorDialog { showDialog = false }
+    }
+}
+
+
+@Composable
+private fun CategoryInputFields(viewModel: CategoryCreationViewModel) {
+    val state = viewModel.state
+
+    InputField(
+        value = state.name,
+        onValueChange = viewModel::onNameChange,
+        label = stringResource(R.string.nombre_de_la_categoria),
+        isError = state.isNameError,
+        supportingText = {
+            if (state.isNameError) {
+                Text(
+                    text = if (state.name.isNotEmpty())
+                        stringResource(R.string.error_nombre_existente)
+                    else
+                        stringResource(R.string.error_nombre_vacio)
+                )
+            }
+        }
+    )
+
+    InputField(
+        value = state.description,
+        onValueChange = viewModel::onDescriptionChange,
+        label = stringResource(R.string.descripcion_de_la_categoria),
+        isError = state.isDescriptionError,
+        supportingText = {
+            if (state.isDescriptionError) {
+                Text(text = stringResource(R.string.error_descripcion_vacia))
+            }
+        },
+        maxLines = 4
+    )
+
+    InputField(
+        value = state.shortName,
+        onValueChange = viewModel::onShortNameChange,
+        label = stringResource(R.string.nombre_corto),
+        isError = state.isShortNameError,
+        supportingText = {
+            if (state.isShortNameError) {
+                Text(
+                    text = if (state.shortNameErrorMessage == "1") {
+                        stringResource(R.string.error_nombre_corto)
+                    } else {
+                        stringResource(R.string.ya_hay_una_categoria_con_ese_nombre_corto)
+                    }
+                )
+            }
+        }
+    )
+
+    //TODO Implementar imagen (pregunté a Lourdes y me dijo que de momento no lo implementase)
+    OutlinedTextField(
+        value = state.image ?: "",
+        onValueChange = viewModel::onImageChange,
+        enabled = false,
+        label = { Text(stringResource(R.string.imagen)) },
+        modifier = Modifier.fillMaxWidth()
+    )
+
+
+    FungibleSelectionField(
+        isFungible = state.fungible,
+        onSelectionChange = viewModel::onFungibleChange
+
+    )
+
+}
+
+@Composable
+private fun InputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    isError: Boolean,
+    supportingText: @Composable () -> Unit = {},
+    maxLines: Int = 2
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        modifier = Modifier.fillMaxWidth(),
+        maxLines = maxLines,
+        isError = isError,
+        supportingText = supportingText
+    )
+}
+
+@Composable
+fun FungibleSelectionField(
+    isFungible: Boolean?,
+    onSelectionChange: (Boolean) -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        MediumSpace()
+        Text(
+            text = stringResource(R.string.fungible),
+            style = MaterialTheme.typography.titleMedium,
+            color = Color.Gray,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = isFungible == true,
+                    onClick = { onSelectionChange(true) }
+                )
+                Text(
+                    text = stringResource(R.string.si),
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = isFungible == false,
+                    onClick = { onSelectionChange(false) }
+                )
+                Text(
+                    text = stringResource(R.string.no),
+                    modifier = Modifier.padding(start = 8.dp)
+                )
             }
         }
     }
+}
 
-    // Diálogo de error
-    if (showDialog) {
-        BaseAlertDialog(
-            title = "Error al crear la categoría",
-            text = "Por favor, revisa los campos e intenta nuevamente.",
-            confirmText = "Aceptar",
-            onConfirm = { showDialog = false },
-            onDismiss = { showDialog = false }
-        )
+@Composable
+private fun ActionButtons(
+    onDiscardChanges: () -> Unit,
+    onCreateCategory: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Button(onClick = onDiscardChanges) {
+            Text(stringResource(R.string.descartar_cambios))
+        }
+        Button(onClick = onCreateCategory) {
+            Text(stringResource(R.string.crear_categoria))
+        }
     }
+}
+
+@Composable
+private fun ErrorDialog(onDismiss: () -> Unit) {
+    BaseAlertDialog(
+        title = stringResource(R.string.error_al_crear_la_categoria),
+        text = stringResource(R.string.revisar_cambios_dialog),
+        confirmText = stringResource(R.string.aceptar),
+        onConfirm = onDismiss,
+        onDismiss = onDismiss
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditableExposedDropdownMenuTypeCategory(viewModel: CategoryCreationViewModel) {
-    val options = TypeCategory.values().map { it.name }
+    val options = TypeCategory.entries.map { it.name }
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options.first()) }
 
@@ -213,12 +308,12 @@ fun EditableExposedDropdownMenuTypeCategory(viewModel: CategoryCreationViewModel
             readOnly = true,
             value = selectedOptionText,
             onValueChange = {},
-            label = { Text("Selecciona una Categoría") },
+            label = { Text(stringResource(R.string.selecciona_una_categoria)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
             modifier = Modifier
-                .menuAnchor()
+                .menuAnchor(type = MenuAnchorType.PrimaryNotEditable, enabled = true)
                 .fillMaxWidth()
         )
         ExposedDropdownMenu(

@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import app.base.ui.composables.BaseAlertDialog
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.TypeCategory
 import app.domain.invoicing.repository.CategoryRepository
@@ -41,7 +40,9 @@ class CategoryCreationViewModel(private val repository: CategoryRepository = Cat
     private fun validateFields(): Boolean {
         var hasError = false
 
-        if (state.name.isEmpty() || CategoryRepository.getAllCategories().any { it.name == state.name }) {
+        if (state.name.isEmpty() || CategoryRepository.getAllCategories()
+                .any { it.name == state.name }
+        ) {
             state = state.copy(isNameError = true)
             hasError = true
         }
@@ -52,7 +53,9 @@ class CategoryCreationViewModel(private val repository: CategoryRepository = Cat
         }
 
         val shortNameRegex = Regex("^[a-zA-Z0-9]{3,}\$")
-        if (!shortNameRegex.matches(state.shortName)) {
+        if (!shortNameRegex.matches(state.shortName) || CategoryRepository.getAllCategories()
+                .any { it.shortName == state.shortName }
+        ) {
             state = state.copy(isShortNameError = true)
             hasError = true
         }
@@ -86,13 +89,24 @@ class CategoryCreationViewModel(private val repository: CategoryRepository = Cat
     }
 
     fun onShortNameChange(shortName: String) {
-        state = state.copy(isShortNameError = false, isError = false)
+        state = state.copy(isShortNameError = false, isError = false, shortNameErrorMessage = null)
 
         val shortNameRegex = Regex("^[a-zA-Z0-9]{3,}\$")
-        if (!shortNameRegex.matches(shortName)) {
-            state = state.copy(
-                isShortNameError = true,
-            )
+
+        when {
+            !shortNameRegex.matches(shortName) -> {
+                state = state.copy(
+                    isShortNameError = true,
+                    shortNameErrorMessage = "1"
+                )
+            }
+
+            CategoryRepository.getAllCategories().any { it.shortName == shortName } -> {
+                state = state.copy(
+                    isShortNameError = true,
+                    shortNameErrorMessage = "2"
+                )
+            }
         }
 
         state = state.copy(shortName = shortName)
@@ -108,5 +122,9 @@ class CategoryCreationViewModel(private val repository: CategoryRepository = Cat
 
     fun onDiscardChanges() {
         state = CategoryCreationState()
+    }
+
+    fun onFungibleChange(fungible: Boolean) {
+        state = state.copy(fungible = fungible)
     }
 }

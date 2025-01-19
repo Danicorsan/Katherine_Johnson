@@ -11,8 +11,4 @@ class CategoryListViewModel : ViewModel() {
     var state by mutableStateOf(CategoryListState(CategoryRepository.getAllCategories()))
         private set
 
-    fun newCategory(){
-
-    }
-
 }
