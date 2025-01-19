@@ -42,6 +42,7 @@ De cara a la clase productos se han ido implementado los campos correspondientes
 Tambien en comparación con la primera entrega se ha buscado mejorar considerablemente el diseño de las vistas,
 ademas de aplicar refactorizaciones para mejorar la limpieza y calidad de código.
 
+----------------
 ## Categorias
 Esta característica ha sido implementada por **Daniel Cortés Sánchez**. La funcionalidad permite gestionar las categorías de productos dentro de la aplicación, con dos pantallas principales: una para la creación de nuevas categorías y otra para listar las categorías existentes.
 
@@ -72,3 +73,27 @@ Esta característica ha sido implementada por **Daniel Cortés Sánchez**. La fu
 - **Lista de categorías**: La pantalla muestra una lista de las categorías disponibles con un ícono y el nombre de cada una. Cada categoría puede ser seleccionada (aunque la funcionalidad de detalle aún está pendiente de implementación).
 
 - **Botón de acción flotante**: Se ha añadido un botón flotante que permite navegar a la pantalla de creación de nuevas categorías.
+
+----------------
+## Inventarios
+Caracteristica implementada por **Leandro Orellana Martos**. La funcionalidad permite gestionar inventarios de forma fácil al usuario, acompañado de tres pantallas como son la de listado de inventarios, detalles de inventario y creacion de inventario.
+
+### ¿Qué se ha hecho?
+- **Pantalla para crear inventarios**: Se ha implementado una interfaz de usuario para crear inventarios de productos, el cual tiene dos campos como son el nombre y la descripcion.
+- **Pantalla para listar inventarios**: Se ha creado una vista que lista todos las inventarios existentes, en la cual el usuario podra listar todos los inventarios existentes y nuevamente creados.
+- **Tarjetas con iconos de editar y borrar**: Se han implementado las funcionalidades de editar y borrar inventarios (aún en desarrollo)
+- **Gestión de estados y errores**: Se ha introducido un modelo de estado que maneja los errores en los campos de entrada y gestiona la creación de nuevos inventarios.
+- **Interacción con el repositorio**: Todas las pantallas están unidas al repositorio, lo cual indica que sacan y meten datos de forma local.
+
+### Detalles a tener en cuenta
+
+#### Pantalla de creación de inventario:
+- **Campos**: Los campos que se incluyen son:
+    - Nombre del inventario
+    - Descripción del inventario
+#### Pantalla de detalles de inventario
+- Incluye productos de forma falsa (ya incluidos en repositorio) para simular funcionalidad de listado de productos en inventario
+- Nombre y descripción de los productos
+- Nombre y descripcion del inventario
+#### Pantalla de listado de inventario
+- Cards con funcionalidades de edicion y eliminamiento de inventarios
