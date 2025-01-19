@@ -22,7 +22,6 @@ import app.base.utils.format
 import app.base.utils.toCurrency
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
-import app.domain.invoicing.product.complements.notes.Note
 import app.features.productdetail.R
 
 @Composable
@@ -33,7 +32,6 @@ fun ScrollableContentColumn(product: Product){
             .verticalScroll(rememberScrollState())
             .padding(top = Separations.Medium),
         horizontalAlignment = Alignment.CenterHorizontally,
-
         ){
         DetailsProductScreenTitle(product.name)
         MediumSpace()
@@ -105,32 +103,16 @@ fun ScrollableContentColumn(product: Product){
         ProductDetailsColumn(
             dataType = stringResource(R.string.description_label)
         ){
-            val contenidoAMostrar = when(product.description){
-                null -> stringResource(R.string.field_without_value)
-                else -> product.description!!
-            }
-            DescriptionText(contenido = contenidoAMostrar)
+            LargeTextBox(contenido = product.description)
         }
         MediumSpace()
         ProductDetailsColumn(
             dataType = stringResource(R.string.notes_label)
         ){
-            ScrollabelRow(product.notes) {
-                    nota -> ShowNote(nota)
-            }
+            LargeTextBox(contenido = product.notes)
         }
     }
 }
-
-@Composable
-private fun ShowNote(note: Note){
-    Column {
-        InformativeText(text = note.title)
-        SmallSpace()
-        InformativeText(text = note.title)
-    }
-}
-
 
 @Composable
 private fun ProductDetailsColumn(dataType : String, data : String?){
@@ -174,12 +156,12 @@ private fun MakeInRow(
     productDetail1 : @Composable () -> Unit,
     productDetail2: @Composable () -> Unit
 ){
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ){
-            productDetail1()
-            HighSpace()
-            productDetail2()
-        }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ){
+        productDetail1()
+        HighSpace()
+        productDetail2()
+    }
 }

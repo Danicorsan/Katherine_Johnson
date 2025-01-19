@@ -35,8 +35,7 @@ fun AppNavHost(
         )
 
         productGraph(
-            navController = navController,
-            productViewModels = viewModels.productViewModels
+            navController = navController
         )
     }
 }

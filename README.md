@@ -41,8 +41,3 @@ De cara a la clase productos se han ido implementado los campos correspondientes
 
 Tambien en comparación con la primera entrega se ha buscado mejorar considerablemente el diseño de las vistas,
 ademas de aplicar refactorizaciones para mejorar la limpieza y calidad de código.
-
-### ¿Qué no se ha podido realizar de cara a la segunda entrega?
-Aunque se ha podido iniciar la implementación de los casos de uso (dado que son cortos se van ha añadir directamente
-a la vista-modelo), no se van ha lograr terminar de cara a este plazo de entrega, por tanto, el boton de "aceptar" en
-la pantalla de creación de productos solo te llevará a la pantalla anterior.
