@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import app.base.ui.composables.MediumTitleText
 import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace
@@ -36,7 +35,7 @@ import app.features.productlist.ui.base.composable.PutInRowWithSeparation
 fun ListProducts(productList: List<Product>, productListEvents: ProductListEvents){
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = Specification.BOTTOMPADDINGVALUETOCONTENTPADDINGFORPRODUCTLIST)
+        contentPadding = PaddingValues(bottom = Specification.BOTTOMPADDINGVALUETOPRODUCTLIST)
     ){
         items(productList) {
             ShowProductTile(it, productListEvents)

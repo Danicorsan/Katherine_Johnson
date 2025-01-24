@@ -9,7 +9,8 @@ data class ProductViewState(
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
     val productRegisterSuccessful : Boolean = false,
-    val sectionsList : Iterable<String> = emptyList()
+    val sectionsList : Iterable<String> = emptyList(),
+    val productIsBeingAdded : Boolean = false
 )
 
 data class InputDataState(

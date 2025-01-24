@@ -11,6 +11,9 @@ import kotlinx.coroutines.launch
 
 class ProductCreationViewModel(onGoBackNav : () -> Unit = {}) : ProductBaseCreationViewModel(onGoBackNav) {
     override fun onAcceptChanges() {
+        if (productViewState.isLoading || productViewState.productIsBeingAdded)
+            return
+
         val errorDataState = productViewState.errorDataState
         when{
             areThereAnyEmptyOrNotSelectedOnObligatoryFields() -> {
@@ -35,10 +38,11 @@ class ProductCreationViewModel(onGoBackNav : () -> Unit = {}) : ProductBaseCreat
         errorDataState.priceError || errorDataState.stockError || errorDataState.shortNameError
 
     private fun onValidProductToRegister() {
+        productViewState = productViewState.copy(
+            isLoading = true,
+            productIsBeingAdded = true
+        )
         viewModelScope.launch {
-            productViewState = productViewState.copy(
-                isLoading = true
-            )
             ProductRepository.addProduct(makeProductFromFields())
             productViewState = productViewState.copy(
                 isLoading = false,

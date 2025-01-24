@@ -1,5 +1,6 @@
 package app.features.productcreation.ui.edition
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,7 +16,8 @@ import app.features.productcreation.R
 import app.features.productcreation.ui.base.components.ProductForm
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.ProductEvents
-import app.features.productcreation.ui.base.components.Appbar
+import app.features.productcreation.ui.base.components.ProductCreationAppbar
+import app.features.productcreation.ui.base.components.ProductCreationFloatingActionButton
 
 
 @Preview(showSystemUi = true)
@@ -35,10 +37,12 @@ private fun ProductEditionHost(
     productEvents : ProductEvents
 ){
     Scaffold(
-        topBar = @Composable { Appbar(
-            titleText = stringResource(R.string.product_edition_title_appbar),
-            onGoBack = productEvents.onLeavePage
-        ) }
+        topBar = { ProductCreationAppbar(
+            titleText = stringResource(R.string.creation_product_title_appbar),
+            onLeavePage = productEvents.onLeavePage) },
+        floatingActionButton = {
+            ProductCreationFloatingActionButton(productEvents.onAcceptProduct)
+        }
     ) { contentPadding ->
         when {
             productState.isLoading -> LoadingUi()
@@ -57,15 +61,14 @@ private fun ProductEditionContent(
     productState: ProductViewState,
     productEvents : ProductEvents
     ){
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
         ProductForm(
             productState,
-            productEvents,
-            stringResource(R.string.accept_button_label),
-            productEvents.onAcceptProduct
+            productEvents
         )
     }
 }

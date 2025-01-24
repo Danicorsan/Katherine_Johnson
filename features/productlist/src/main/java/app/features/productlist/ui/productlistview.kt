@@ -11,12 +11,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
 import app.features.productlist.R
-import app.features.productlist.ui.base.composable.AddProductFloatingActionButton
-import app.features.productlist.ui.base.components.Appbar
 import app.features.productlist.ui.base.components.ListProducts
 import app.features.productlist.ui.base.ProductListEvents
 import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
+import app.features.productlist.ui.base.components.AddProductFloatingActionButton
+import app.features.productlist.ui.base.components.ProductListAppBar
 
 
 @Preview(showSystemUi = true)
@@ -36,7 +36,10 @@ private fun ProductListHost(
     productListEvents : ProductListEvents
 ){
     Scaffold(
-        topBar = @Composable{ Appbar(stringResource(R.string.title_appbar), productListEvents) },
+        topBar = { ProductListAppBar(
+            titleText = stringResource(R.string.title_appbar),
+            onLeavePage = productListEvents.onGoBack
+        ) },
         floatingActionButton = { AddProductFloatingActionButton(productListEvents) }
     ) { contentPadding ->
         when {
