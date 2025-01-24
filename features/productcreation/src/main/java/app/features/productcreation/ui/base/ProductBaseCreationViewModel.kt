@@ -24,7 +24,10 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
             productViewState = productViewState.copy(
                 isLoading = false,
                 categoriesList = categories,
-                sectionsList = listOf("Sección 1", "Sección 2", "Sección 3")
+                sectionsList = listOf("Sección 1", "Sección 2", "Sección 3",
+                    "Sección 1", "Sección 2", "Sección 3",
+                    "Sección 1", "Sección 2", "Sección 3",
+                    "Sección 1", "Sección 2", "Sección 3")
             )
         }
     }

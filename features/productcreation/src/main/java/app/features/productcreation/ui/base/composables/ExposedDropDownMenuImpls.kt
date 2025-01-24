@@ -22,9 +22,9 @@ fun ExposedDropDownMenuForCategory(
         showSelectedValueInTextField = {
             categorySelected?.name ?: noItemSelectedMessage
         },
-        elementsList = categories,
+        elementList = categories,
         onNewItemSelected = onNewCategorySelected,
-        howShowItem = {
+        howShowEachItemInMenu = {
             Text(it.name)
         },
         label = stringResource(R.string.category_label) + Specification.OBLIGATORYFIELDSMARK
@@ -44,9 +44,9 @@ fun ExposedDropDownMenuForSection(
         showSelectedValueInTextField = {
             sectionSelected ?: noItemSelectedMessage
         },
-        elementsList = sections,
+        elementList = sections,
         onNewItemSelected = onNewSectionSelected,
-        howShowItem = {
+        howShowEachItemInMenu = {
             Text(it)
         },
         label = stringResource(R.string.section_label) + Specification.OBLIGATORYFIELDSMARK

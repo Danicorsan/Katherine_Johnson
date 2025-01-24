@@ -1,4 +1,4 @@
-package app.features.productcreation.ui.base.composables
+package app.base.ui.composables
 
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api

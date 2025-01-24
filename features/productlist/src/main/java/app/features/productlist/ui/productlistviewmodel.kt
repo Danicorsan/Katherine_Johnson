@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productlist.ui.base.ProductListNavigationEvents
@@ -19,10 +20,18 @@ class ProductListViewModel(private val productListNavigationEvents : ProductList
     init {
         productListState = productListState.copy(isLoading = true)
         viewModelScope.launch {
-            ProductRepository.getAllProducts().collect{
+            val result = ProductRepository.getAllProducts()
+                if (result is BaseResult.Success){
+                    result.data.collect{
+                        productListState = productListState.copy(
+                            isLoading = false,
+                            productList = it.values.toList()
+                        )
+                }
+            } else {
                 productListState = productListState.copy(
                     isLoading = false,
-                    productList = it.values.toList()
+                    productList = emptyList()
                 )
             }
         }

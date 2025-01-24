@@ -19,12 +19,12 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
             serialNumber = "SN123456789",
             modelCode = "MODL001",
             productType = "Electrónica",
-            category =  Category(
+            category = Category(
                 id = 1,
                 name = "Electronics",
-                shortName = "Elec",
-                description = "Devices and gadgets for everyday use",
-                image = ByteArray(0).toString(), // Imagen vacía como ejemplo
+                shortName = "ELEC",
+                description = "Category for electronic products",
+                image = null,
                 createdAt = Date(),
                 fungible = true
             ),
@@ -48,13 +48,13 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
             modelCode = "MODL002",
             productType = "Electrónica",
             category = Category(
-                id = 2,
-                name = "Books",
-                shortName = "Books",
-                description = "Printed and digital books of various genres",
-                image = ByteArray(0).toString(), // Imagen vacía como ejemplo
+                id = 1,
+                name = "Electronics",
+                shortName = "ELEC",
+                description = "Category for electronic products",
+                image = null,
                 createdAt = Date(),
-                fungible = false
+                fungible = true
             ),
             section = "Accesorios",
             state = ProductState.verified,
@@ -76,10 +76,10 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
             productType = "Muebles",
             category = Category(
                 id = 3,
-                name = "Clothing",
-                shortName = "Cloth",
-                description = "Apparel for men, women, and kids",
-                image = ByteArray(0).toString(), // Imagen vacía como ejemplo
+                name = "Services",
+                shortName = "SERV",
+                description = "Category for service offerings",
+                image = null,
                 createdAt = Date(),
                 fungible = false
             ),
@@ -102,14 +102,14 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
             serialNumber = "SN5566778899",
             modelCode = "MODL004",
             productType = "Electrónica",
-            category =  Category(
-                id = 4,
-                name = "Groceries",
-                shortName = "Groc",
-                description = "Daily essentials and food items",
-                image = ByteArray(0).toString(), // Imagen vacía como ejemplo
+            category = Category(
+                id = 1,
+                name = "Electronics",
+                shortName = "ELEC",
+                description = "Category for electronic products",
+                image = null,
                 createdAt = Date(),
-                fungible = false
+                fungible = true
             ),
             section = "Tecnología",
             state = ProductState.verified,
@@ -130,14 +130,14 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
             serialNumber = "SN9988776655",
             modelCode = "MODL005",
             productType = "Electrónica",
-            category = Category(
-                id = 5,
-                name = "Furniture",
-                shortName = "Furn",
-                description = "Home and office furniture",
-                image = ByteArray(0).toString(), // Imagen vacía como ejemplo
+            category =             Category(
+                id = 1,
+                name = "Electronics",
+                shortName = "ELEC",
+                description = "Category for electronic products",
+                image = null,
                 createdAt = Date(),
-                fungible = false
+                fungible = true
             ),
             section = "Tecnología",
             state = ProductState.new,
@@ -158,13 +158,13 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
             modelCode = "MODL005",
             productType = "Electrónica",
             category = Category(
-                id = 5,
-                name = "Furniture",
-                shortName = "Furn",
-                description = "Home and office furniture",
-                image = ByteArray(0).toString(), // Imagen vacía como ejemplo
+                id = 1,
+                name = "Electronics",
+                shortName = "ELEC",
+                description = "Category for electronic products",
+                image = null,
                 createdAt = Date(),
-                fungible = false
+                fungible = true
             ),
             section = "Tecnología",
             state = ProductState.new,
@@ -178,29 +178,29 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
         7 to Product(
             id = 7,
             code = "PROD007",
-            name = "Monitor UltraWide 3",
-            shortName = "Monitor",
-            description = "Monitor curvo UltraWide 34 pulgadas",
+            name = "Libro: Las mil maravillas",
+            shortName = "Las mil maravillas",
+            description = "Un libro de fantasia",
             serialNumber = "SN9988776657",
             modelCode = "MODL005",
-            productType = "Electrónica",
+            productType = "Libro de tapa dura",
             category = Category(
-                id = 5,
-                name = "Furniture",
-                shortName = "Furn",
-                description = "Home and office furniture",
-                image = ByteArray(0).toString(), // Imagen vacía como ejemplo
+                id = 2,
+                name = "Books",
+                shortName = "BOOK",
+                description = "Category for books and literature",
+                image = null,
                 createdAt = Date(),
                 fungible = false
             ),
-            section = "Tecnología",
+            section = "Libros",
             state = ProductState.new,
             stock = 15u,
             price = 499.99,
             acquisitionDate = Instant.parse("2023-06-10T15:00:00Z"),
             discontinuationDate = null,
-            notes = "Accesorios\nIncluye cables HDMI y DisplayPort",
-            tags = Tags(listOf(Tag("monitor"), Tag("curvo"))),
+            notes = "Accesorios\nIncluye un marca páginas",
+            tags = Tags(listOf(Tag("libro"), Tag("fantasia"))),
         )
     )
 }
