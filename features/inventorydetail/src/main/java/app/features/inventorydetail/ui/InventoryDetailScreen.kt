@@ -22,11 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.domain.invoicing.inventory.Item
-import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorydetail.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,10 +31,10 @@ import app.features.inventorydetail.R
 fun InventoryDetailScreen(
     inventoryId: Int,
     onNavigateBack: () -> Unit,
-    viewModel: InventoryDetailViewModel,
     onEditClick: () -> Unit
 ) {
-    val viewModel: InventoryDetailViewModel = viewModel(factory = InventoryDetailViewModelFactory(InventoryRepository()))
+    // Aquí no es necesario un ViewModelFactory, porque estamos pasando directamente la implementación del repositorio
+    val viewModel: InventoryDetailViewModel = viewModel()
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -73,26 +70,27 @@ fun InventoryDetailScreen(
         } else {
             uiState.inventory?.let { inventory ->
                 Text(
-                    text = stringResource(R.string.nombre, inventory.name),
+                    text = stringResource(R.string.nombre) + " " + inventory.name,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 Text(
-                    text = stringResource(R.string.descripcion, inventory.description),
+                    text = stringResource(R.string.descripcion) + " " + inventory.description,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     items(uiState.items) { item ->
-                        ItemCard(item = item as Item)
+                        ItemCard(item = item)
                     }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun ItemCard(item: Item) {
@@ -115,14 +113,6 @@ fun ItemCard(item: Item) {
     }
 }
 
-class InventoryDetailViewModelFactory(
-    private val inventoryRepository: InventoryRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return InventoryDetailViewModel(inventoryRepository) as T
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewInventoryDetailScreen() {
@@ -131,7 +121,6 @@ fun PreviewInventoryDetailScreen() {
         onNavigateBack = {
             println("Volver a la lista de inventarios")
         },
-        viewModel = InventoryDetailViewModel(InventoryRepository()),
         onEditClick = {
             println("Editar el inventario")
         }

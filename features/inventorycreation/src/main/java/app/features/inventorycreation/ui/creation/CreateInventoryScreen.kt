@@ -17,35 +17,24 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.domain.invoicing.repository.InventoryRepository
+import app.domain.invoicing.inventory.Inventory
 import app.features.inventorycreation.R
-import kotlinx.coroutines.flow.MutableStateFlow
+import app.features.inventorylist.ui.InventoryListViewModel
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateInventoryScreen(
     onNavigateToList: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    inventoryListViewModel: InventoryListViewModel
 ) {
-    val inventoryRepository = remember { InventoryRepository() }
-
-    val viewModel: CreateInventoryViewModel = viewModel(
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CreateInventoryViewModel(inventoryRepository) as T
-            }
-        }
-    )
-
+    val viewModel: CreateInventoryViewModel = viewModel()
     val uiState = viewModel.uiState.collectAsState().value
 
     Scaffold(
@@ -82,40 +71,35 @@ fun CreateInventoryScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
+                uiState.errorMessage?.let {
+                    Text(
+                        text = it,
+                        color = androidx.compose.ui.graphics.Color.Red,
+                        modifier = Modifier.fillMaxWidth(),
+                        style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
+                    )
+                }
+
                 Button(
                     onClick = {
                         viewModel.createInventory()
+                        inventoryListViewModel.addInventory(
+                            Inventory(
+                                id = System.currentTimeMillis().toInt(),
+                                name = uiState.inventoryName,
+                                description = uiState.inventoryDescription,
+                                items = emptyList(),
+                                createdAt = Date()
+                            )
+                        )
                         onNavigateToList()
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = uiState.isCreateButtonEnabled
+                    enabled = uiState.isCreateButtonEnabled && !uiState.isLoading
                 ) {
                     Text(stringResource(R.string.crear_inventario))
                 }
             }
-        }
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewCreateInventoryScreen() {
-    val previewViewModel = object : CreateInventoryViewModel(InventoryRepository()) {
-        override val uiState: MutableStateFlow<CreateInventoryState> = MutableStateFlow(
-            CreateInventoryState(
-                inventoryName = "Nuevo Inventario",
-                inventoryDescription = "Descripción del inventario",
-                isCreateButtonEnabled = true
-            )
-        )
-    }
-
-    CreateInventoryScreen(
-        onNavigateToList = {
-            println("Volver a la lista de inventarios")
-        },
-        onBackClick = {
-            println("Volver a la pantalla anterior")
         }
     )
 }

@@ -41,7 +41,7 @@ fun NavGraphBuilder.inventoryGraph(navController: NavController) {
 
 private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
     composable(route = InventoryGraph.inventoryListRoute()) {
-        val viewModel = remember { InventoryListViewModel(InventoryRepository()) }
+        val viewModel = remember { InventoryListViewModel(InventoryRepository) }
         InventoryListScreen(
             viewModel = viewModel,
             onBackClick = {
@@ -65,7 +65,7 @@ private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
 
 private fun NavGraphBuilder.inventoryCreationRoute(navController: NavController) {
     composable(route = InventoryGraph.inventoryCreationRoute()) {
-        val inventoryRepository = remember { InventoryRepository() }
+        val inventoryRepository = remember { InventoryRepository }
 
         val viewModel: CreateInventoryViewModel = viewModel(
             factory = object : ViewModelProvider.Factory {
@@ -81,7 +81,8 @@ private fun NavGraphBuilder.inventoryCreationRoute(navController: NavController)
             },
             onBackClick = {
                 navController.popBackStack()
-            }
+            },
+            inventoryListViewModel = InventoryListViewModel(inventoryRepository)
         )
     }
 }
@@ -92,7 +93,7 @@ private fun NavGraphBuilder.inventoryEditionRoute(navController: NavController) 
         route = InventoryGraph.inventoryEditionRoute("{inventoryId}")
     ) { backStackEntry ->
         val inventoryId = backStackEntry.arguments?.getString("inventoryId")?.toInt() ?: 0
-        val inventoryRepository = remember { InventoryRepository() }
+        val inventoryRepository = remember { InventoryRepository }
         val viewModel: EditInventoryViewModel = remember { EditInventoryViewModel(inventoryRepository) }
 
         EditInventoryScreen(
@@ -113,10 +114,9 @@ private fun NavGraphBuilder.inventoryDetailsRoute(navController: NavController) 
         route = InventoryGraph.inventoryDetailsRoute("{inventoryId}")
     ) { backStackEntry ->
         val inventoryId = backStackEntry.arguments?.getString("inventoryId")?.toInt() ?: 0
-        val viewModel = remember { InventoryDetailViewModel(InventoryRepository()) }
+        val viewModel = remember { InventoryDetailViewModel(InventoryRepository) }
 
         InventoryDetailScreen(
-            viewModel = viewModel,
             inventoryId = inventoryId,
             onEditClick = {
                 navController.navigate(InventoryGraph.inventoryEditionRoute(inventoryId.toString())) // Pasar el inventoryId

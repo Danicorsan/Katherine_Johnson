@@ -7,30 +7,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-open class InventoryDetailViewModel(
-    private val inventoryRepository: InventoryRepository
+class InventoryDetailViewModel(
+    private val inventoryRepository: InventoryRepository = InventoryRepository // Uso directo de la implementación
 ) : ViewModel() {
 
+    // Estado que contiene la información del inventario
     private val _uiState = MutableStateFlow(InventoryDetailState())
     val uiState: StateFlow<InventoryDetailState> get() = _uiState
 
-    open fun loadInventoryDetails(inventoryId: Int) {
-        if (_uiState.value.inventory?.id == inventoryId) return
-
-        _uiState.value = _uiState.value.copy(inventory = null, items = emptyList())
-
+    // Función para cargar los detalles del inventario
+    fun loadInventoryDetails(inventoryId: Int) {
         viewModelScope.launch {
-            val inventory = inventoryRepository.findInventoryById(inventoryId)
-
+            val inventory = inventoryRepository.getInventoryById(inventoryId) // Aquí se usa el repositorio
             if (inventory != null) {
-                _uiState.value = InventoryDetailState(
+                _uiState.value = _uiState.value.copy(
                     inventory = inventory,
-                    items = inventory.items
-                )
-            } else {
-                _uiState.value = InventoryDetailState(
-                    inventory = null,
-                    items = emptyList()
+                    items = inventory.items // Cargar los items asociados
                 )
             }
         }
