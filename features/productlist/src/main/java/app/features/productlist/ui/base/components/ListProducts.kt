@@ -38,7 +38,15 @@ fun ListProducts(productList: List<Product>, productListEvents: ProductListEvent
         contentPadding = PaddingValues(bottom = Specification.BOTTOMPADDINGVALUETOPRODUCTLIST)
     ){
         items(productList) {
-            ShowProductTile(it, productListEvents)
+            ProductInformationCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = Separations.Small),
+                product = it,
+                onProductCardPressed = productListEvents.seeProductDetails,
+                onEditIconButtonPressed = productListEvents.onEditProduct,
+                onDeleteIconButtonPressed = productListEvents.onDeleteProduct
+            )
         }
         item {
             CustomSpacerBetweenEachProduct()
@@ -47,13 +55,16 @@ fun ListProducts(productList: List<Product>, productListEvents: ProductListEvent
 }
 
 @Composable
-fun ShowProductTile (product : Product, productListEvents : ProductListEvents){
+fun ProductInformationCard (
+    modifier: Modifier = Modifier,
+    product : Product,
+    onProductCardPressed : (Product) -> Unit,
+    onEditIconButtonPressed : (Product) -> Unit,
+    onDeleteIconButtonPressed : (Product) -> Unit,
+    ){
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = Separations.Small),
-        onClick = {productListEvents.seeProductDetails(product)},
-
+        modifier = modifier,
+        onClick = {onProductCardPressed(product)},
         ) {
         Row(
             modifier = Modifier
@@ -63,7 +74,11 @@ fun ShowProductTile (product : Product, productListEvents : ProductListEvents){
         ) {
             ShowProductImage(product)
             ShowBasicInformation(product)
-            ShowIconActions(product, productListEvents)
+            ShowIconActions(
+                product = product,
+                onEditIconButtonPressed = onEditIconButtonPressed,
+                onDeleteIconButtonPressed = onDeleteIconButtonPressed
+                )
         }
     }
 }
@@ -110,19 +125,20 @@ private fun ShowProductsName(product: Product){
 @Composable
 private fun ShowIconActions(
     product: Product,
-    productListEvents : ProductListEvents
+    onEditIconButtonPressed : (Product) -> Unit,
+    onDeleteIconButtonPressed : (Product) -> Unit,
 ){
     PutInRowWithSeparation(
         {
             IconButton(
-                onClick = {productListEvents.onEditProduct(product)}
+                onClick = {onEditIconButtonPressed(product)}
             ) {
                 Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.edit_product_iconbutton))
             }
         },
         {
             IconButton(
-                onClick = {productListEvents.onDeleteProduct(product)}
+                onClick = {onDeleteIconButtonPressed(product)}
             ) {
                 Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.delete_iconbutton_description))
             }
