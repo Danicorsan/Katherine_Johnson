@@ -3,6 +3,8 @@ package app.features.productcreation.ui.base
 import app.domain.invoicing.category.Category
 import kotlinx.datetime.Instant
 
+//TODO(Quitar las variables de "control de vista" y dejar solo las "informativas" para separar el view State para creacion y edición)
+// Las variable de "control" son: "isLoading", "productRegisterSuccessful", y "cantRegisterProduct"
 data class ProductViewState(
     val inputDataState: InputDataState = InputDataState(),
     val errorDataState: ErrorDataState = ErrorDataState(),

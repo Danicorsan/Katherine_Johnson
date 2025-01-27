@@ -25,7 +25,7 @@ data class ProductListEvents(
 
 data class ProductListNavigationEvents(
     val onCreateProductNav: () -> Unit = {},
-    val onSeeProductDetailsNav : (Product) -> Unit = {},
-    val onEditProductNav : (Product) -> Unit = {},
+    val onSeeProductDetailsNav : (Int) -> Unit = {},
+    val onEditProductNav : (Int) -> Unit = {},
     val onGoBackNav : () -> Unit = {}
 )

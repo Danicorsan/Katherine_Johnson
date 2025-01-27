@@ -45,11 +45,11 @@ class ProductListViewModel(private val productListNavigationEvents : ProductList
     }
 
     fun onSeeProductDetails(product: Product){
-        productListNavigationEvents.onSeeProductDetailsNav(product)
+        productListNavigationEvents.onSeeProductDetailsNav(product.id!!)
     }
 
     fun onEditProduct(product : Product){
-        productListNavigationEvents.onEditProductNav(product)
+        productListNavigationEvents.onEditProductNav(product.id!!)
     }
 
     fun onGoBack(){
