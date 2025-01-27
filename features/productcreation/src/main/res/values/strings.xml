@@ -34,4 +34,6 @@
     <string name="product_registered_successful_alert_dialog_message">Se ha registrado el producto</string>
     <string name="message_for_obligatory_fields">Los campos marcados con %s son obligatorios</string>
     <string name="on_create_product_icon">Crear el nuevo producto</string>
+    <string name="cant_update_alert_dialog_message">No se ha podido actualizar el producto</string>
+    <string name="product_updated_successful_alert_dialog_message">El producto ha sido actualizado</string>
 </resources>
