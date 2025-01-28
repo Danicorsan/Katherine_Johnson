@@ -12,6 +12,7 @@ import app.features.categorylist.ui.CategoryListScreen
 import app.features.categorylist.ui.CategoryListViewModel
 import com.example.inventory.navigation.CategoryViewModels
 import com.example.inventory.navigation.graphs.CategoryGraph.categoryCreationRoute
+import com.example.inventory.navigation.graphs.CategoryGraph.categoryEditionRoute
 
 
 object CategoryGraph {
@@ -42,7 +43,10 @@ private fun NavGraphBuilder.categoryListRoute(
         CategoryListScreen(
             viewModel = categoryListViewModel,
             onClickBack = { navController.popBackStack() },
-            onClickNewCategory = { navController.navigate(categoryCreationRoute()) } )
+            onClickNewCategory = { navController.navigate(categoryCreationRoute()) },
+            onClickEditCategory = { navController.navigate(categoryEditionRoute()) },
+            onClickDetails = {}
+        )
     }
 }
 
@@ -62,7 +66,7 @@ private fun NavGraphBuilder.categoryEditionRoute(
     navController: NavController,
     categoryEditionViewModel: CategoryEditionViewModel
 ) {
-    composable(route = CategoryGraph.categoryEditionRoute()) {
+    composable(route = categoryEditionRoute()) {
         CategoryEditionScreen(
             categoryEditionViewModel = categoryEditionViewModel,
             onClick = { navController.popBackStack() })
