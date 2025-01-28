@@ -1,10 +1,8 @@
 package app.features.categorylist.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,8 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,21 +25,47 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import app.base.ui.components.LoadingUi
+import app.base.ui.composables.MediumButton
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.TypeCategory
 import app.features.categorylist.R
 import java.util.Date
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+data class CategoryListEvents(
+    val onClickBack: () -> Unit,
+    val onClickNewCategory: () -> Unit,
+    val onClickEditCategory: () -> Unit,
+    val onClickDetails: (Category) -> Unit
+)
+
 @Composable
 fun CategoryListScreen(
     viewModel: CategoryListViewModel = CategoryListViewModel(),
     onClickBack: () -> Unit,
     onClickNewCategory: () -> Unit,
+    onClickEditCategory: () -> Unit,
+    onClickDetails: () -> Unit
+) {
+    val categoryListEvents = CategoryListEvents(
+        { onClickBack() },
+        { onClickNewCategory() },
+        { onClickEditCategory() },
+        { onClickDetails() }
+    )
+
+    CategoryListScreen(viewModel.state, categoryListEvents)
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CategoryListScreen(
+    state: CategoryListState,
+    events: CategoryListEvents
 ) {
     Scaffold(
         topBar = {
@@ -53,7 +76,7 @@ fun CategoryListScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { onClickBack() }) {
+                    IconButton(onClick = { events.onClickBack() }) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.volver)
@@ -63,85 +86,136 @@ fun CategoryListScreen(
             )
         },
         floatingActionButton = {
-            Button(
-                onClick = { onClickNewCategory() },
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(stringResource(R.string.nueva_categoria))
-            }
+            MediumButton(
+                contentDescription = "Add",
+                imageVector = Icons.Filled.Add,
+                onClick = { events.onClickNewCategory() },
+            )
         },
         content = { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding) // Asegura que el contenido no se solape con el FAB o el TopAppBar
-            ) {
-                Text(
-                    text = stringResource(R.string.categorias),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp),
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
+
+            when {
+                state.isLoading -> LoadingUi()
+                else -> CategoryListContent(
+                    state, events, modifier = Modifier.padding(innerPadding)
                 )
+            }
 
-                LazyColumn(
+        }
+    )
+
+}
+
+@Composable
+fun CategoryListContent(
+    state: CategoryListState,
+    events: CategoryListEvents,
+    modifier: Modifier
+) {
+
+    Column(
+        modifier = modifier // Asegura que el contenido no se solape con el FAB o el TopAppBar
+    ) {
+
+
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            items(state.categories) { category ->
+                Card(
                     modifier = Modifier
-                        .weight(1f)
                         .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable { /* TODO IMPLEMENTAR EL DETAILSCREEN EN FUTURAS PRACTICAS */ }
                 ) {
-                    items(viewModel.state.categories) { category ->
-                        Card(
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.List,
+                            contentDescription = "Icono de categoría",
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp)
-                                .clickable { /* TODO IMPLEMENTAR EL DETAILSCREEN EN FUTURAS PRACTICAS */ }
+                                .size(48.dp)
+                                .padding(end = 8.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+
+                        // Texto de la categoría
+                        Text(
+                            text = category.name,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically) // Centra el texto verticalmente respecto a la imagen
+                                .padding(4.dp) // Espaciado interno
+                        )
+
+                        /*
+                        //Contenedor de Iconos
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
                         ) {
-                            Row(
+                            //Informacion categoria
+                            Box(
+                                contentAlignment = Alignment.Center,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp)
+                                    .width(40.dp)
                             ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.List,
-                                    contentDescription = "Icono de categoría",
-                                    modifier = Modifier
-                                        .size(48.dp)
-                                        .padding(end = 8.dp),
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
-
-                                // Texto de la categoría
-                                Text(
-                                    text = category.name,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    fontWeight = FontWeight.Medium,
-                                    modifier = Modifier
-                                        .align(Alignment.CenterVertically) // Centra el texto verticalmente respecto a la imagen
-                                        .padding(4.dp) // Espaciado interno
-                                )
-
-                                Box(
-                                    contentAlignment = Alignment.CenterEnd,
-                                    modifier = Modifier.fillMaxWidth()
-                                ){
-                                    IconButton(
-                                        enabled = false,
-                                        onClick = {},
-
-                                        ) {
-                                        Icon(Icons.Filled.MoreVert, "MoreVert")
-                                    }
+                                IconButton(
+                                    onClick = {
+                                        events.onClickDetails(category)
+                                    },
+                                ) {
+                                    Icon(Icons.Filled.Info, "Info")
                                 }
 
                             }
-                        }
+
+                            //Editar Categoria
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.width(40.dp)
+                            ) {
+                                IconButton(
+                                    onClick = {
+                                        events.onClickEditCategory()
+                                    },
+                                ) {
+                                    Icon(Icons.Filled.Edit, "Edit")
+                                }
+
+                            }
+                            //Borrar categoria
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .width(40.dp)
+                            ) {
+                                IconButton(
+                                    enabled = false,
+                                    onClick = {
+
+                                    },
+                                ) {
+                                    Icon(Icons.Filled.Delete, "Delete")
+                                }
+
+                            }
+
+                         */
                     }
+
                 }
             }
         }
-    )
+    }
 }
+
 
 @Preview(showSystemUi = true)
 @Composable
@@ -163,6 +237,8 @@ fun PreviewCategoryListScreen() {
             state.categories = dummyCategories // Agrega datos ficticios
         },
         onClickBack = {},
-        onClickNewCategory = {}
+        onClickNewCategory = {},
+        onClickEditCategory = {},
+        onClickDetails = {}
     )
 }

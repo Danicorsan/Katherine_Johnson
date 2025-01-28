@@ -33,7 +33,7 @@ class CategoryCreationViewModel(private val repository: CategoryRepository = Cat
             state = state.copy(isError = false)
             println("Categoría creada: $newCategory")
         } else {
-            state = state.copy(isError = true)
+            state = state.copy(isError = true, showDialog = true)
         }
     }
 
@@ -126,5 +126,9 @@ class CategoryCreationViewModel(private val repository: CategoryRepository = Cat
 
     fun onFungibleChange(fungible: Boolean) {
         state = state.copy(fungible = fungible)
+    }
+
+    fun dimissDialog() {
+        state = state.copy(showDialog = false)
     }
 }
