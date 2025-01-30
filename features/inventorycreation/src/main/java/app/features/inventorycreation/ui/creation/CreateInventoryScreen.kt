@@ -20,9 +20,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.base.ui.components.LoadingUi
 import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
 import app.features.inventorylist.ui.InventoryListViewModel
 import java.util.Date
@@ -43,7 +46,7 @@ fun CreateInventoryScreen(
                 title = { Text(stringResource(R.string.crear_inventario)) },
                 navigationIcon = {
                     IconButton(onClick = { onBackClick() }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.volver))
                     }
                 }
             )
@@ -67,7 +70,7 @@ fun CreateInventoryScreen(
                 TextField(
                     value = uiState.inventoryDescription,
                     onValueChange = { viewModel.onInventoryDescriptionChange(it) },
-                    label = { Text(stringResource(R.string.descripcion_del_inventario)) },
+                    label = { Text(stringResource(R.string.descripcion_del_inventario))},
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -89,7 +92,8 @@ fun CreateInventoryScreen(
                                 name = uiState.inventoryName,
                                 description = uiState.inventoryDescription,
                                 items = emptyList(),
-                                createdAt = Date()
+                                createdAt = Date(),
+                                updatedAt = Date()
                             )
                         )
                         onNavigateToList()
@@ -97,9 +101,22 @@ fun CreateInventoryScreen(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = uiState.isCreateButtonEnabled && !uiState.isLoading
                 ) {
-                    Text(stringResource(R.string.crear_inventario))
+                    if (uiState.isLoading && uiState.isCreateButtonEnabled) {
+                        LoadingUi()
+                    } else {
+                        Text(stringResource(R.string.crear_inventario))
+                    }
                 }
             }
         }
+    )
+}
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewCreateInventoryScreen() {
+    CreateInventoryScreen(
+        onNavigateToList = {},
+        onBackClick = {},
+        inventoryListViewModel = InventoryListViewModel(InventoryRepository)
     )
 }

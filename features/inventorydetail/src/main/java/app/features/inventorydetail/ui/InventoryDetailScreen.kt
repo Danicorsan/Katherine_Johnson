@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.domain.invoicing.inventory.Item
+import app.domain.invoicing.product.Product
 import app.features.inventorydetail.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,9 +31,7 @@ import app.features.inventorydetail.R
 fun InventoryDetailScreen(
     inventoryId: Int,
     onNavigateBack: () -> Unit,
-    onEditClick: () -> Unit
 ) {
-    // Aquí no es necesario un ViewModelFactory, porque estamos pasando directamente la implementación del repositorio
     val viewModel: InventoryDetailViewModel = viewModel()
 
     val uiState by viewModel.uiState.collectAsState()
@@ -70,6 +68,11 @@ fun InventoryDetailScreen(
         } else {
             uiState.inventory?.let { inventory ->
                 Text(
+                    text = "ID:" + " " + inventory.id,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
                     text = stringResource(R.string.nombre) + " " + inventory.name,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -77,6 +80,16 @@ fun InventoryDetailScreen(
 
                 Text(
                     text = stringResource(R.string.descripcion) + " " + inventory.description,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                Text(
+                    text = stringResource(R.string.fecha_creacion) + " " + inventory.createdAt,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                Text(
+                    text = stringResource(R.string.fecha_actualizacion) + " " + inventory.updatedAt,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
@@ -93,7 +106,7 @@ fun InventoryDetailScreen(
 
 
 @Composable
-fun ItemCard(item: Item) {
+fun ItemCard(item: Product) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -109,6 +122,11 @@ fun ItemCard(item: Item) {
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp)
             )
+            Text(
+                text = item.code,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }
@@ -120,9 +138,6 @@ fun PreviewInventoryDetailScreen() {
         inventoryId = 1,
         onNavigateBack = {
             println("Volver a la lista de inventarios")
-        },
-        onEditClick = {
-            println("Editar el inventario")
         }
     )
 }

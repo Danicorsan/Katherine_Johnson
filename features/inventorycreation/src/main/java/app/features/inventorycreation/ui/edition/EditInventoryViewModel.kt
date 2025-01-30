@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Date
 
-// ViewModel para editar inventarios
 class EditInventoryViewModel(
     private val inventoryRepository: InventoryRepository
 ) : ViewModel() {
@@ -17,16 +16,13 @@ class EditInventoryViewModel(
     private val _uiState = MutableStateFlow(EditInventoryState())
     val uiState: StateFlow<EditInventoryState> get() = _uiState
 
-    // Cargar un inventario para su edición
     fun loadInventory(inventoryId: Int) {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true) // Mostrar que estamos cargando
+            _uiState.value = _uiState.value.copy(isLoading = true)
 
-            // Usamos la función getInventoryById en lugar de findInventoryById
             val inventory = inventoryRepository.getInventoryById(inventoryId)
 
             if (inventory != null) {
-                // Si el inventario es encontrado, actualizamos el estado
                 _uiState.value = _uiState.value.copy(
                     inventoryId = inventory.id,
                     inventoryName = inventory.name,
@@ -34,7 +30,6 @@ class EditInventoryViewModel(
                     isLoading = false
                 )
             } else {
-                // Si no se encuentra el inventario, mostramos un mensaje de error
                 _uiState.value = _uiState.value.copy(
                     errorMessage = "Inventario no encontrado",
                     isLoading = false
@@ -43,8 +38,6 @@ class EditInventoryViewModel(
         }
     }
 
-
-    // Manejo del cambio en el nombre del inventario
     fun onInventoryNameChange(newName: String) {
         _uiState.value = _uiState.value.copy(
             inventoryName = newName,
@@ -52,7 +45,6 @@ class EditInventoryViewModel(
         )
     }
 
-    // Manejo del cambio en la descripción del inventario
     fun onInventoryDescriptionChange(newDescription: String) {
         _uiState.value = _uiState.value.copy(
             inventoryDescription = newDescription,
@@ -60,18 +52,18 @@ class EditInventoryViewModel(
         )
     }
 
-    // Guardar los cambios en el inventario
     fun saveChanges() {
         val updatedInventory = Inventory(
             id = _uiState.value.inventoryId,
             name = _uiState.value.inventoryName,
             description = _uiState.value.inventoryDescription,
             items = emptyList(),
-            createdAt = Date() // Suponemos que los items no se modifican
+            createdAt = Date(),
+            updatedAt = Date()
         )
 
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true) // Indicamos que estamos guardando
+            _uiState.value = _uiState.value.copy(isLoading = true)
             val success = inventoryRepository.updateInventory(updatedInventory)
             if (success) {
                 _uiState.value = _uiState.value.copy(

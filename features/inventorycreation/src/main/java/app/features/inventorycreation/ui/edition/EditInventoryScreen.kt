@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -20,7 +21,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,7 +31,6 @@ import app.features.inventorycreation.R
 fun EditInventoryScreen(
     viewModel: EditInventoryViewModel,
     inventoryId: Int,
-    onInventoryEdited: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState().value
@@ -38,7 +40,7 @@ fun EditInventoryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.editar_inventario)) },
+                title = { Text(stringResource(R.string.editar_inventario), modifier = Modifier.wrapContentSize(align = Alignment.Center)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
@@ -72,7 +74,6 @@ fun EditInventoryScreen(
                 Button(
                     onClick = {
                         viewModel.saveChanges()
-                        onInventoryEdited()
                         onNavigateBack()
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -82,5 +83,16 @@ fun EditInventoryScreen(
                 }
             }
         }
+    )
+}
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewEditInventoryScreen() {
+    EditInventoryScreen(
+        viewModel = EditInventoryViewModel(
+            InventoryRepository
+        ),
+        inventoryId = 1,
+        onNavigateBack = {}
     )
 }
