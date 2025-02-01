@@ -23,14 +23,14 @@ fun ProductEditionScreen(
     viewModel: ProductEditionViewModel
 ){
     ProductEditionHost(
-        productState = viewModel.productViewState,
+        productEditionState = viewModel.productViewState,
         productEvents = ProductEvents.build(viewModel)
     )
 }
 
 @Composable
 private fun ProductEditionHost(
-    productState: ProductViewState,
+    productEditionState: ProductViewState,
     productEvents : ProductEvents
 ){
     Scaffold(
@@ -42,25 +42,25 @@ private fun ProductEditionHost(
         }
     ) { contentPadding ->
         when {
-            productState.isLoading -> LoadingUi()
-            productState.errorDataState.cantRegisterProduct -> AlertDialogOK(
+            productEditionState.isLoading -> LoadingUi()
+            productEditionState.cantRegisterProduct -> AlertDialogOK(
                 title = stringResource(R.string.cant_register_alert_dialog_title),
                 message = stringResource(R.string.cant_update_alert_dialog_message),
                 onDismiss = productEvents.onDismissCantRegisterProductAlertDialog
             )
-            productState.errorDataState.emptyFields -> AlertDialogOK(
+            productEditionState.errorDataState.emptyFields -> AlertDialogOK(
                 title = stringResource(R.string.empty_fields_alert_dialog_title),
                 message = stringResource(R.string.empty_fields_alert_dialog_message),
                 onDismiss = productEvents.onDismissEmptyFieldsAlertDialog
             )
-            productState.productRegisterSuccessful -> AlertDialogOK(
+            productEditionState.productRegisterSuccessful -> AlertDialogOK(
                 title = stringResource(R.string.product_registered_successful_alert_dialog_title),
                 message = stringResource(R.string.product_updated_successful_alert_dialog_message),
                 onDismiss = productEvents.onDismissProductHasBeenRegisteredAlertDialog
             )
             else -> ProductEditionContent(
                 modifier = Modifier.padding(contentPadding),
-                productState = productState,
+                baseProductState = productEditionState,
                 productEvents = productEvents
             )
         }
@@ -70,7 +70,7 @@ private fun ProductEditionHost(
 @Composable
 private fun ProductEditionContent(
     modifier: Modifier,
-    productState: ProductViewState,
+    baseProductState: ProductViewState,
     productEvents : ProductEvents
     ){
     Box(
@@ -79,7 +79,7 @@ private fun ProductEditionContent(
         contentAlignment = Alignment.Center
     ) {
         ProductForm(
-            productState,
+            baseProductState,
             productEvents
         )
     }

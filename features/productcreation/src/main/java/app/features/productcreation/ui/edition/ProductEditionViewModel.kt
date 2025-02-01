@@ -1,55 +1,95 @@
 package app.features.productcreation.ui.edition
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import app.base.utils.format
+import app.domain.invoicing.category.Category
 import app.domain.invoicing.network.BaseResult
+import app.domain.invoicing.product.Product
+import app.domain.invoicing.product.ProductState
+import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class ProductEditionViewModel(
     onGoBackNav: () -> Unit = {},
-    productToEditId: Int
+    private val productToEditId: Int
 ) : ProductBaseCreationViewModel(onGoBackNav) {
 
     init {
+        productViewState = productViewState.copy(isLoading = true)
         viewModelScope.launch {
-            //TODO(Añadir en el futuro código de control en caso de devolver BaseResult.Error)
-            //Se podria hacer una composicion y tener separado un productView state para creacion y
-            //otro para edición
-            val response = ProductRepository.getProductById(productToEditId) as BaseResult.Success
-            val productToEdit = response.data
+            val categoriesDeferred = async(Dispatchers.IO) { getCategories() }
+            val productDeferred = async(Dispatchers.IO) { getProductById(productToEditId) }
+            val sections = getSection()
+            val categories = categoriesDeferred.await()
+            val product = productDeferred.await()
+
             productViewState = productViewState.copy(
+                isLoading = false,
+                categoriesList = categories,
+                sectionsList = sections,
                 inputDataState = productViewState.inputDataState.copy(
-                    code = productToEdit.code,
-                    name = productToEdit.name,
-                    shortName = productToEdit.shortName,
-                    description = productToEdit.description,
-                    serieNumber = productToEdit.serialNumber,
-                    modelCode = productToEdit.modelCode,
-                    productType = productToEdit.productType,
-                    stock = productToEdit.stock.toString(),
-                    price = productToEdit.price.toString(),
-                    minimunStock = productToEdit.minimunStock?.toString() ?: "",
-                    adquisitionDate = productToEdit.acquisitionDate,
-                    adquisitionDateRepresentation = productToEdit.acquisitionDate.format(),
-                    discontinuationDate = productToEdit.discontinuationDate,
-                    discontinuationDateRepresentation = productToEdit.discontinuationDate?.format(),
-                    selectedCategory = productToEdit.category,
-                    selectedSection = productToEdit.section,
-                    notes = productToEdit.notes,
-                    tags = productToEdit.tags.toString()
+                    code = product.code,
+                    name = product.name,
+                    shortName = product.shortName,
+                    description = product.description,
+                    serieNumber = product.serialNumber,
+                    modelCode = product.modelCode,
+                    productType = product.productType,
+                    stock = product.stock.toString(),
+                    price = product.price.toString(),
+                    minimunStock = product.minimunStock?.toString() ?: "",
+                    adquisitionDate = product.acquisitionDate,
+                    adquisitionDateRepresentation = product.acquisitionDate.format(),
+                    discontinuationDate = product.discontinuationDate,
+                    discontinuationDateRepresentation = product.discontinuationDate?.format(),
+                    selectedCategory = product.category,
+                    selectedSection = product.section,
+                    notes = product.notes,
+                    tags = product.tags.toString()
                 )
             )
         }
+
     }
 
+    private suspend fun getProductById (productToEditId: Int) : Product =
+        (ProductRepository.getProductById(productToEditId) as BaseResult.Success).data
+
+    private suspend fun getCategories() : List<Category> {
+        delay(2000)
+        return CategoryRepository.getAllCategories()
+    }
+
+    private fun getSection() = listOf( //Se espera que esté metodo se vuelva realmete asincrono en el futuro
+            "Sección 1", "Sección 2", "Sección 3",
+            "Sección 1", "Sección 2", "Sección 3",
+            "Sección 1", "Sección 2", "Sección 3",
+            "Sección 1", "Sección 2", "Sección 3"
+    )
+
     override fun onAcceptChanges() {
-        //TODO(Establecer el estado del producto a "modified")
-        onGoBackNav()
+        comprobateAndManageLocalErrors {
+            productViewState = productViewState.copy(
+                isLoading = true,
+                productIsBeingAdded = true
+            )
+            viewModelScope.launch {
+                val productToUpdate = makeProductFromFields().copy(
+                    id = productToEditId,
+                    state = ProductState.modified
+                )
+                ProductRepository.updateExistingProduct(productToUpdate)
+                productViewState = productViewState.copy(
+                    isLoading = false,
+                    productRegisterSuccessful = true
+                )
+            }
+        }
     }
 }

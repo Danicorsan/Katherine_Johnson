@@ -140,7 +140,7 @@ fun ProductForm(
             label = stringResource(R.string.notes_label)
         )
 
-        MultipleLineEditText(
+        OneLineEditText(
             text = productViewState.inputDataState.tags,
             change = productEvents.onTagsChanged,
             label = stringResource(R.string.tags_label)

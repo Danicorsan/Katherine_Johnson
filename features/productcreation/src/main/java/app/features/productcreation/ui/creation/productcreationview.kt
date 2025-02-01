@@ -44,7 +44,7 @@ fun ProductCreationHost(
     ) { contentPadding ->
         when {
             productState.isLoading -> LoadingUi()
-            productState.errorDataState.cantRegisterProduct -> AlertDialogOK(
+            productState.cantRegisterProduct -> AlertDialogOK(
                 title = stringResource(R.string.cant_register_alert_dialog_title),
                 message = stringResource(R.string.cant_register_alert_dialog_message),
                 onDismiss = productEvents.onDismissCantRegisterProductAlertDialog

@@ -3,7 +3,9 @@ package com.example.inventory.navigation.graphs
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import app.features.productcreation.ui.creation.ProductCreationScreen
 import app.features.productcreation.ui.creation.ProductCreationViewModel
@@ -17,12 +19,13 @@ import app.features.productlist.ui.base.ProductListNavigationEvents
 //TODO(Transformar el productGraph a una clase sellada para una mayor limpieza con los argumentos)
 object ProductGraph {
     const val ROUTE = "product"
+    const val PRODUCTID = "productId"
 
     fun productListRoute() = "$ROUTE/productList"
     fun productCreationRoute() = "$ROUTE/productCreation"
-    fun productEditionRoute() = "$ROUTE/productEdition/{productId}"
+    fun productEditionRoute() = "$ROUTE/productEdition/{$PRODUCTID}"
     fun productEditionRoute(idParameter : Int) = "$ROUTE/productEdition/$idParameter"
-    fun productDetailsRoute() = "$ROUTE/productDetails/{productId}"
+    fun productDetailsRoute() = "$ROUTE/productDetails/{$PRODUCTID}"
     fun productDetailsRoute(idParameter : Int) = "$ROUTE/productDetails/$idParameter"
 }
 
@@ -85,9 +88,14 @@ private fun NavGraphBuilder.productEditionRoute(
     navController: NavController
 ){
     composable(
-        route = ProductGraph.productEditionRoute()
+        route = ProductGraph.productEditionRoute(),
+        arguments = listOf(
+            navArgument(ProductGraph.PRODUCTID){
+                type = NavType.IntType
+            }
+        )
     ) { navBackStackEntry ->
-        val id = navBackStackEntry.arguments?.getString("productId")?.toInt()
+        val id = navBackStackEntry.arguments?.getInt(ProductGraph.PRODUCTID)
         ProductEditionScreen(
             viewModel = remember { ProductEditionViewModel(
                 onGoBackNav = {
@@ -103,7 +111,7 @@ private fun NavGraphBuilder.productDetailsRoute(
     navController: NavController
 ){
     composable(
-        route = ProductGraph.productCreationRoute()
+        route = ProductGraph.productDetailsRoute()
     ) { navBackStackEntry ->
         ProductDetailScreen(
             onGoBackNav = {

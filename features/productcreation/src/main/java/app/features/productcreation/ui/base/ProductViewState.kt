@@ -3,15 +3,14 @@ package app.features.productcreation.ui.base
 import app.domain.invoicing.category.Category
 import kotlinx.datetime.Instant
 
-//TODO(Quitar las variables de "control de vista" y dejar solo las "informativas" para separar el view State para creacion y edición)
-// Las variable de "control" son: "isLoading", "productRegisterSuccessful", y "cantRegisterProduct"
 data class ProductViewState(
     val inputDataState: InputDataState = InputDataState(),
     val errorDataState: ErrorDataState = ErrorDataState(),
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
-    val productRegisterSuccessful : Boolean = false,
     val sectionsList : Iterable<String> = emptyList(),
+    val productRegisterSuccessful : Boolean = false,
+    val cantRegisterProduct : Boolean = false,
     val productIsBeingAdded : Boolean = false
 )
 
@@ -38,7 +37,6 @@ data class InputDataState(
 
 data class ErrorDataState(
     val shortNameError : Boolean = false,
-    val cantRegisterProduct : Boolean = false,
     val emptyFields : Boolean = false,
     val priceError: Boolean = false,
     val stockError : Boolean = false

@@ -4,36 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import app.base.utils.format
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.complements.tags.Tag
 import app.domain.invoicing.product.complements.tags.Tags
-import app.domain.invoicing.repository.CategoryRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 
 abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Unit) : ViewModel() {
     var productViewState by mutableStateOf(ProductViewState())
         protected set
-
-    init {
-        productViewState = productViewState.copy(isLoading = true)
-        viewModelScope.launch {
-            delay(2000)//Simulacion de tiempo de espera
-            val categories = CategoryRepository.getAllCategories()
-            productViewState = productViewState.copy(
-                isLoading = false,
-                categoriesList = categories,
-                sectionsList = listOf("Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3")
-            )
-        }
-    }
 
     fun onCodeChanged(newCode : String){
         productViewState = productViewState.copy(
@@ -227,9 +207,7 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
 
     fun onDismissCantRegisterAlertDialog(){
         productViewState = productViewState.copy(
-            errorDataState = productViewState.errorDataState.copy(
-                cantRegisterProduct = false
-            )
+            cantRegisterProduct = false
         )
     }
 
@@ -242,9 +220,6 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
     }
 
     fun onDismissProductHasBeenRegisteredAlertDialog(){
-        productViewState = productViewState.copy(
-            productRegisterSuccessful = false
-        )
         onGoBackNav()
     }
 
@@ -269,9 +244,7 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
             }
             isThereAnActiveError(errorDataState) -> {
                 productViewState = productViewState.copy(
-                    errorDataState = errorDataState.copy(
-                        cantRegisterProduct = true
-                    )
+                    cantRegisterProduct = true
                 )
             }
             else -> whenNoErrorFound()
