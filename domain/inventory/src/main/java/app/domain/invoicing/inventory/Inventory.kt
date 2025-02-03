@@ -9,5 +9,5 @@ data class Inventory(
     val description: String,
     val items: List<Product>,
     val createdAt: Date,
-    val updatedAt: Date,
+    var updatedAt: Date = Date()
 )

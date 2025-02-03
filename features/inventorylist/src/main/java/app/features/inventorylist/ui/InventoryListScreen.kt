@@ -1,26 +1,43 @@
 package app.features.inventorylist.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
@@ -35,7 +52,8 @@ fun InventoryListScreen(
     onCreateInventoryClick: () -> Unit,
     onEditInventoryClick: (Inventory) -> Unit
 ) {
-    val inventories = viewModel.state.inventories
+    val state = viewModel.uiState // Asegúrate de usar `state` en vez de `uiState`
+    val inventories = state.inventories
 
     // Función para eliminar un inventario
     var showDialog by remember { mutableStateOf(false) }
@@ -48,13 +66,11 @@ fun InventoryListScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.lista_de_inventarios),
-                        style = MaterialTheme.typography.headlineMedium,
-                        modifier = Modifier.wrapContentSize(Alignment.Center)
-                    )
+                        )
                 },
                 navigationIcon = {
                     IconButton(onClick = { onBackClick() }) {
@@ -81,21 +97,30 @@ fun InventoryListScreen(
             }
         },
         content = { paddingValues ->
-            if (inventories.isEmpty()) {
-                Text(text = "No hay inventarios", modifier = Modifier.fillMaxSize(), style = MaterialTheme.typography.bodyMedium)
+            // Mostrar LoadingUI cuando isLoading es true
+            if (state.isLoading) {
+                LoadingUi() // Esto se mostrará mientras el estado sea de carga
             } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                ) {
-                    items(inventories) { inventory ->
-                        InventoryCard(
-                            inventory = inventory,
-                            onClick = { onInventoryClick(inventory) },
-                            onDeleteClick = { onDeleteInventoryClick(inventory) },
-                            onEditClick = { onEditInventoryClick(inventory) }
-                        )
+                if (inventories.isEmpty()) {
+                    Text(
+                        text = "No hay inventarios",
+                        modifier = Modifier.fillMaxSize(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                    ) {
+                        items(inventories) { inventory ->
+                            InventoryCard(
+                                inventory = inventory,
+                                onClick = { onInventoryClick(inventory) },
+                                onDeleteClick = { onDeleteInventoryClick(inventory) },
+                                onEditClick = { onEditInventoryClick(inventory) }
+                            )
+                        }
                     }
                 }
             }
@@ -117,6 +142,7 @@ fun InventoryListScreen(
         }
     }
 }
+
 
 @Composable
 fun InventoryCard(
@@ -174,6 +200,7 @@ fun InventoryCard(
         }
     }
 }
+
 @Preview(showSystemUi = true)
 @Composable
 fun Preview() {

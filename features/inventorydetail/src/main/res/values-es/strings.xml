@@ -6,4 +6,6 @@
     <string name="cargando_inventario">Loading Inventory…</string>
     <string name="nombre">Name: %1$s</string>
     <string name="descripcion">Description: %1$s</string>
+    <string name="fecha_creacion">Created on:</string>
+    <string name="fecha_actualizacion">Updated on:</string>
 </resources>

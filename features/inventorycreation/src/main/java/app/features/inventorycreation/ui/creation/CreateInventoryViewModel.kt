@@ -1,9 +1,12 @@
 package app.features.inventorycreation.ui.creation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Date
 
 class CreateInventoryViewModel : ViewModel() {
@@ -25,18 +28,28 @@ class CreateInventoryViewModel : ViewModel() {
         )
     }
 
-    fun createInventory() {
+    fun createInventory(onInventoryCreated: (Inventory) -> Unit) {
         if (_uiState.value.isCreateButtonEnabled) {
-            Inventory(
-                id = generateInventoryId(),
-                name = _uiState.value.inventoryName,
-                description = _uiState.value.inventoryDescription,
-                items = emptyList(),
-                createdAt = Date(),
-                updatedAt = Date()
-            )
-
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+
+            // Llamar a la corutina para simular el delay de 3 segundos
+            viewModelScope.launch {
+                delay(3000) // Esperar 3 segundos
+
+                // Crear el inventario después del retraso
+                val newInventory = Inventory(
+                    id = generateInventoryId(),
+                    name = _uiState.value.inventoryName,
+                    description = _uiState.value.inventoryDescription,
+                    items = emptyList(),
+                    createdAt = Date(),
+                    updatedAt = Date()
+                )
+
+                // Actualizar el estado y llamar al callback
+                _uiState.value = _uiState.value.copy(isLoading = false)
+                onInventoryCreated(newInventory) // Pasar el inventario creado al callback
+            }
         }
     }
 
