@@ -7,4 +7,6 @@
     <string name="cargando_inventario">Cargando inventario…</string>
     <string name="nombre">Nombre: %1$s</string>
     <string name="descripcion">Descripción: %1$s</string>
+    <string name="fecha_creacion">Creado el:</string>
+    <string name="fecha_actualizacion">Actualizado el:</string>
 </resources>

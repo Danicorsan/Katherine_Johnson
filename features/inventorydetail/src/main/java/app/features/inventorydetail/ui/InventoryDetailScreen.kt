@@ -8,12 +8,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,11 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.domain.invoicing.inventory.Item
-import app.domain.invoicing.repository.InventoryRepository
+import app.domain.invoicing.product.Product
 import app.features.inventorydetail.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,10 +31,8 @@ import app.features.inventorydetail.R
 fun InventoryDetailScreen(
     inventoryId: Int,
     onNavigateBack: () -> Unit,
-    viewModel: InventoryDetailViewModel,
-    onEditClick: () -> Unit
 ) {
-    val viewModel: InventoryDetailViewModel = viewModel(factory = InventoryDetailViewModelFactory(InventoryRepository()))
+    val viewModel: InventoryDetailViewModel = viewModel()
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -50,12 +45,11 @@ fun InventoryDetailScreen(
             .padding(16.dp)
             .fillMaxWidth()
     ) {
-        TopAppBar(
+        CenterAlignedTopAppBar(
             title = {
                 Text(
                     text = stringResource(R.string.detalle_del_inventario),
-                    style = MaterialTheme.typography.headlineSmall
-                )
+                    )
             },
             navigationIcon = {
                 IconButton(onClick = { onNavigateBack() }) {
@@ -68,25 +62,40 @@ fun InventoryDetailScreen(
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        if (uiState.inventory == null) {
+        if (uiState.inventory == null || uiState.items.isEmpty()) {
             Text(text = stringResource(R.string.cargando_inventario))
         } else {
             uiState.inventory?.let { inventory ->
                 Text(
-                    text = stringResource(R.string.nombre, inventory.name),
+                    text = "ID:" + " " + inventory.id,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
+                    text = stringResource(R.string.nombre) + " " + inventory.name,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 Text(
-                    text = stringResource(R.string.descripcion, inventory.description),
+                    text = stringResource(R.string.descripcion) + " " + inventory.description,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                Text(
+                    text = stringResource(R.string.fecha_creacion) + " " + inventory.createdAt,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                Text(
+                    text = stringResource(R.string.fecha_actualizacion) + " " + inventory.updatedAt,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     items(uiState.items) { item ->
-                        ItemCard(item = item as Item)
+                        ItemCard(item = item)
                     }
                 }
             }
@@ -94,8 +103,9 @@ fun InventoryDetailScreen(
     }
 }
 
+
 @Composable
-fun ItemCard(item: Item) {
+fun ItemCard(item: Product) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -111,15 +121,12 @@ fun ItemCard(item: Item) {
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp)
             )
+            Text(
+                text = item.code,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
-    }
-}
-
-class InventoryDetailViewModelFactory(
-    private val inventoryRepository: InventoryRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return InventoryDetailViewModel(inventoryRepository) as T
     }
 }
 
@@ -130,10 +137,6 @@ fun PreviewInventoryDetailScreen() {
         inventoryId = 1,
         onNavigateBack = {
             println("Volver a la lista de inventarios")
-        },
-        viewModel = InventoryDetailViewModel(InventoryRepository()),
-        onEditClick = {
-            println("Editar el inventario")
         }
     )
 }

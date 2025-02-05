@@ -5,4 +5,5 @@
     <string name="crear_inventario">Create Inventory</string>
     <string name="editar_inventario">Edit Inventory</string>
     <string name="eliminar_inventario">Delete Inventory</string>
+    <string name="seguro_que_quieres_eliminar_el_inventario">Are you sure you want to delete the inventory?\n</string>
 </resources>
