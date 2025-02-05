@@ -37,11 +37,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import app.base.ui.components.LoadingUi
-import app.base.ui.composables.BaseAlertDialog
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorylist.R
+import app.base.ui.components.LoadingUI
+import app.base.ui.composables.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,7 +99,7 @@ fun InventoryListScreen(
         content = { paddingValues ->
             // Mostrar LoadingUI cuando isLoading es true
             if (state.isLoading) {
-                LoadingUi() // Esto se mostrará mientras el estado sea de carga
+                LoadingUI() // Esto se mostrará mientras el estado sea de carga
             } else {
                 if (inventories.isEmpty()) {
                     Text(
@@ -129,15 +129,17 @@ fun InventoryListScreen(
     if (showDialog) {
         selectedInventory?.let { inventory ->
             BaseAlertDialog(
-                title = stringResource(R.string.eliminar_inventario),
-                text = stringResource(R.string.seguro_que_quieres_eliminar_el_inventario, inventory.name),
-                onDismiss = { showDialog = false },
+                title = "Eliminar inventario",
+                text = "¿Estás seguro de eliminar el inventario ${inventory.name}?",
+                confirmText = "Eliminar",
+                dismissText = "Cancelar",
                 onConfirm = {
-                    showDialog = false
                     viewModel.deleteInventory(inventory)
+                    showDialog = false
                 },
-                confirmText = "Sí, quiero eliminarlo",
-                dismissText = "No, no quiero eliminarlo"
+                onDismiss = {
+                    showDialog = false
+                }
             )
         }
     }

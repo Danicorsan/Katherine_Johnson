@@ -42,7 +42,7 @@ class InventoryListViewModel(
             _uiState.value = uiState.copy(isLoading = true)
 
             // Esperar 3 segundos
-            delay(3000)
+            delay(1500)
 
             // Luego cargar los inventarios
             loadInventories()
