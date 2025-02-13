@@ -5,5 +5,6 @@ import app.domain.invoicing.product.Product
 
 data class InventoryDetailState(
     val inventory: Inventory? = null,
-    val items: List<Product> = emptyList()
+    val items: List<Product> = emptyList(),
+    val showInfoDialog: Boolean = false
 )

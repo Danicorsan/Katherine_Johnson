@@ -27,4 +27,22 @@ class InventoryDetailViewModel(
             }
         }
     }
+
+    fun onInfoClick() {
+        viewModelScope.launch {
+            val currentState = _uiState.value
+            _uiState.value = currentState.copy(
+                showInfoDialog = true
+            )
+        }
+    }
+
+    fun onInfoDialogDismiss() {
+        viewModelScope.launch {
+            val currentState = _uiState.value
+            _uiState.value = currentState.copy(
+                showInfoDialog = false
+            )
+        }
+    }
 }
