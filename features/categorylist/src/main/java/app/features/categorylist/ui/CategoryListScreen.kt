@@ -1,6 +1,7 @@
 package app.features.categorylist.ui
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,37 +29,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.base.ui.components.LoadingUi
+import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.MediumButton
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.TypeCategory
+import app.domain.invoicing.repository.CategoryRepository
 import app.features.categorylist.R
 import java.util.Date
-
 
 data class CategoryListEvents(
     val onClickBack: () -> Unit,
     val onClickNewCategory: () -> Unit,
-    val onClickEditCategory: () -> Unit,
-    val onClickDetails: (Int) -> Unit
+    val onClickDetails: (Int) -> Unit,
+    val requestDeleteCategory: (Int) -> Unit,
+    val confirmDeleteCategory: () -> Unit,
+    val cancelDeleteCategory: () -> Unit
 )
 
 @Composable
 fun CategoryListScreen(
-    viewModel: CategoryListViewModel = CategoryListViewModel(),
+    viewModel: CategoryListViewModel,
     onClickBack: () -> Unit,
     onClickNewCategory: () -> Unit,
-    onClickEditCategory: () -> Unit,
     onClickDetails: (Int) -> Unit
 ) {
     val categoryListEvents = CategoryListEvents(
         onClickBack = onClickBack,
         onClickNewCategory = onClickNewCategory,
-        onClickEditCategory = onClickEditCategory,
-        onClickDetails = onClickDetails
+        onClickDetails = onClickDetails,
+        requestDeleteCategory = viewModel::requestDeleteCategory,
+        confirmDeleteCategory = viewModel::confirmDeleteCategory,
+        cancelDeleteCategory = viewModel::cancelDeleteCategory
     )
-
     CategoryListScreen(viewModel.state, categoryListEvents)
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,24 +103,31 @@ fun CategoryListScreen(
                     state, events, modifier = Modifier.padding(innerPadding)
                 )
             }
-
         }
     )
-
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CategoryListContent(
     state: CategoryListState,
     events: CategoryListEvents,
     modifier: Modifier
 ) {
+    if (state.isDeleteDialogVisible) {
+        BaseAlertDialog(
+            onConfirm = {
+                events.confirmDeleteCategory()
+            },
+            onDismiss = { events.cancelDeleteCategory() },
+            text = "¿Estás seguro que quieres eliminar la categoría?",
+            confirmText = "Sí, estoy seguro",
+            dismissText = "No, volver",
+            title = "Borrar Categoría"
+        )
+    }
 
-    Column(
-        modifier = modifier // Asegura que el contenido no se solape con el FAB o el TopAppBar
-    ) {
-
-
+    Column(modifier = modifier) {
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
@@ -128,10 +138,14 @@ fun CategoryListContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .clickable {
-                            events.onClickDetails(category.id)
-                            //Si hago esto si me funciona events.onClickDetails(2)
-                        }
+                        .combinedClickable(
+                            onLongClick = {
+                                events.requestDeleteCategory(category.id)
+                            },
+                            onClick = {
+                                events.onClickDetails(category.id)
+                            }
+                        )
                 ) {
                     Row(
                         modifier = Modifier
@@ -147,78 +161,20 @@ fun CategoryListContent(
                             tint = MaterialTheme.colorScheme.primary
                         )
 
-                        // Texto de la categoría
                         Text(
                             text = category.name,
                             style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier
-                                .align(Alignment.CenterVertically) // Centra el texto verticalmente respecto a la imagen
-                                .padding(4.dp) // Espaciado interno
+                                .align(Alignment.CenterVertically)
+                                .padding(4.dp)
                         )
-
-                        /*
-                        //Contenedor de Iconos
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            //Informacion categoria
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .width(40.dp)
-                            ) {
-                                IconButton(
-                                    onClick = {
-                                        events.onClickDetails(category)
-                                    },
-                                ) {
-                                    Icon(Icons.Filled.Info, "Info")
-                                }
-
-                            }
-
-                            //Editar Categoria
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier.width(40.dp)
-                            ) {
-                                IconButton(
-                                    onClick = {
-                                        events.onClickEditCategory()
-                                    },
-                                ) {
-                                    Icon(Icons.Filled.Edit, "Edit")
-                                }
-
-                            }
-                            //Borrar categoria
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .width(40.dp)
-                            ) {
-                                IconButton(
-                                    enabled = false,
-                                    onClick = {
-
-                                    },
-                                ) {
-                                    Icon(Icons.Filled.Delete, "Delete")
-                                }
-
-                            }
-
-                         */
                     }
-
                 }
             }
         }
     }
 }
-
 
 @Preview(showSystemUi = true)
 @Composable
@@ -236,12 +192,10 @@ fun PreviewCategoryListScreen() {
         )
     }
     CategoryListScreen(
-        viewModel = CategoryListViewModel().apply {
-            state.categories = dummyCategories // Agrega datos ficticios
+        viewModel = CategoryListViewModel(CategoryRepository).apply {
         },
         onClickBack = {},
         onClickNewCategory = {},
-        onClickEditCategory = {},
         onClickDetails = {}
     )
 }

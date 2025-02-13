@@ -1,21 +1,18 @@
 package com.example.inventory.navigation.graphs
 
-import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import app.domain.invoicing.repository.AccountRepository
 import app.features.accountsignin.ui.LoginScreen
-import app.features.accountsignin.ui.LoginViewModel
+import app.features.accountsignup.ui.SignUpScreen
 import com.example.inventory.home.HomeScreen
 import com.example.inventory.navigation.graphs.AccountGraph.EMAIL
 import com.example.inventory.navigation.graphs.AccountGraph.PASSWORD
 import com.example.inventory.navigation.graphs.AccountGraph.ROUTE
-import app.features.accountsignup.ui.RegisterViewModel
-import app.features.accountsignup.ui.SignUpScreen
 
 object AccountGraph {
     const val ROUTE = "signUp"
@@ -74,12 +71,11 @@ private fun NavGraphBuilder.login(navController: NavController) {
     ) { backStackEntry ->
         val email = backStackEntry.arguments?.getString(EMAIL) ?: ""
         val password = backStackEntry.arguments?.getString(PASSWORD) ?: ""
-        val loginViewModel = remember { LoginViewModel(AccountRepository) }
         LoginScreen(
             email = email,
             password = password,
             onClickCrearCuenta = { navController.navigate(AccountGraph.register()) },
-            viewModel = loginViewModel,
+            viewModel = hiltViewModel(),
             onSuccess = {
                 navController.navigate(MainGraph.ROUTE) {
                     popUpTo(ROUTE) { inclusive = true } // Borra la pila de login
@@ -92,15 +88,14 @@ private fun NavGraphBuilder.login(navController: NavController) {
 
 private fun NavGraphBuilder.signUp(navController: NavController) {
     composable(AccountGraph.register()) {
-        val registerViewModel = remember { RegisterViewModel(AccountRepository) }
         SignUpScreen(
-            viewModel = registerViewModel,
+            viewModel = hiltViewModel(),
             onRegisterSuccess = { email, password ->
                 navController.navigate(
                     "$ROUTE/login?$EMAIL=$email&$PASSWORD=$password"
                 )
             },
-            onNavigateToLogin = { navController.navigate(ROUTE)}
+            onNavigateToLogin = { navController.navigate(ROUTE) }
         )
     }
 }

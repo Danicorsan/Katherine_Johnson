@@ -25,6 +25,17 @@ object AccountRepository {
                 name = "Daniel",
                 surname = "Cortés",
                 username = "danics",
+                birthdate = "02/03/2001"
+            )
+        )
+        dataSet.add(
+            Account(
+                id = 1,
+                email = Email("1"),
+                password = Password("1"),
+                name = "Prueba",
+                surname = "SdAASD",
+                username = "danasdasdics",
                 birthdate = "02/03/2003"
             )
         )

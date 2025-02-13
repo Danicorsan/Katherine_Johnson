@@ -23,6 +23,4 @@ data class Account(
     override fun hashCode(): Int {
         return email.hashCode()
     }
-
 }
-
