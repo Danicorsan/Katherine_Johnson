@@ -52,7 +52,7 @@ object ProductRepository {
     }
 
     /**
-     * Permite obtener todos los productos del almacen virtual de Productos.
+     * Permite obtener un objeto BaseResult para obtener un producto a traves de su id
      *
      * @return Un objeto base result que en caso de haber adquirido el producto con
      *          exito de la infraestructura, este se introduce en un objeto BaseResult.Success

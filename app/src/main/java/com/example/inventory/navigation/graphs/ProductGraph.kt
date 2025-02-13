@@ -12,6 +12,7 @@ import app.features.productcreation.ui.creation.ProductCreationViewModel
 import app.features.productcreation.ui.edition.ProductEditionScreen
 import app.features.productcreation.ui.edition.ProductEditionViewModel
 import app.features.productdetail.ui.ProductDetailScreen
+import app.features.productdetail.ui.ProductDetailsViewModel
 import app.features.productlist.ui.ProductListScreen
 import app.features.productlist.ui.ProductListViewModel
 import app.features.productlist.ui.base.ProductListNavigationEvents
@@ -54,7 +55,7 @@ private fun NavGraphBuilder.productListRoute(
                         navController.navigate(ProductGraph.productCreationRoute())
                     },
                     onSeeProductDetailsNav = { idProduct ->
-
+                        navController.navigate(ProductGraph.productDetailsRoute(idProduct))
                     },
                     onEditProductNav = { idProduct ->
                         navController.navigate(ProductGraph.productEditionRoute(idProduct))
@@ -111,9 +112,17 @@ private fun NavGraphBuilder.productDetailsRoute(
     navController: NavController
 ){
     composable(
-        route = ProductGraph.productDetailsRoute()
+        route = ProductGraph.productDetailsRoute(),
+        arguments = listOf(
+            navArgument(ProductGraph.PRODUCTID){
+                type = NavType.IntType
+            }
+        )
     ) { navBackStackEntry ->
+        val id = navBackStackEntry.arguments?.getInt(ProductGraph.PRODUCTID)
         ProductDetailScreen(
+            viewModel = remember { ProductDetailsViewModel()},
+            productId = id!!,
             onGoBackNav = {
                 navController.popBackStack()
             }

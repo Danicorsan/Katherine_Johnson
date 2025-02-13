@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import app.base.ui.components.LoadingUi
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
@@ -14,12 +16,60 @@ import app.features.productdetail.R
 import kotlinx.datetime.Instant
 import java.util.Date
 
-@Preview(showBackground = true)
 @Composable
 fun ProductDetailScreen(
-    onGoBackNav: () -> Unit = {}
-){
-    val category = Category (
+    viewModel: ProductDetailsViewModel,
+    productId: Int,
+    onGoBackNav: () -> Unit
+) {
+    LaunchedEffect(Unit) {
+        viewModel.getReady(productId, onGoBackNav)
+    }
+    ProductDetailsHost(
+        productDetailsState = viewModel.productDetailsState,
+        onGoBackNav = viewModel::onGoBackNavigationButtonClick
+    )
+}
+
+@Composable
+private fun ProductDetailsHost(
+    productDetailsState: ProductDetailsState,
+    onGoBackNav: () -> Unit
+) {
+    Scaffold(
+        topBar = @Composable {
+            Appbar(
+                titleText = stringResource(R.string.title_appbar),
+                navigationAction = onGoBackNav
+            )
+        }
+    ) { contentPadding ->
+        when {
+            productDetailsState.product == null -> LoadingUi()
+            else -> ProductDetailContent(
+                modifier = Modifier.padding(contentPadding),
+                product = productDetailsState.product
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProductDetailContent(
+    modifier: Modifier = Modifier,
+    product: Product
+) {
+    Box(
+        modifier = modifier
+    ) {
+        ScrollableContentColumn(product = product)
+    }
+}
+
+@Preview
+@Composable
+private fun ProductDetailPreview() {
+    val category = Category(
         id = 3,
         name = "Nombre Categoria",
         shortName = "cat",
@@ -29,7 +79,7 @@ fun ProductDetailScreen(
         fungible = false
     )
     val section = "Nombre Seccion"
-    val product : Product = Product(
+    val product: Product = Product(
         code = "dependenciaSeccion3",
         name = "Esponja duradera max",
         shortName = "Esponja",
@@ -47,27 +97,5 @@ fun ProductDetailScreen(
     )
     ProductDetailContent(
         product = product,
-        onGoBackNav = onGoBackNav
-        )
-}
-
-@Composable
-private fun ProductDetailContent(
-    product : Product,
-    onGoBackNav : () -> Unit
-){
-    Scaffold(
-        topBar = @Composable {
-            Appbar(
-                titleText = stringResource(R.string.title_appbar),
-                navigationAction = onGoBackNav
-            )
-        }
-    ){ contentPadding ->
-        Box(
-            modifier = Modifier.padding(contentPadding)
-        ) {
-            ScrollableContentColumn(product = product)
-        }
-    }
+    )
 }

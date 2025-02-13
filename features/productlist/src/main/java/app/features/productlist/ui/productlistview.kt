@@ -25,7 +25,7 @@ fun ProductListScreen(
     viewModel: ProductListViewModel = remember { ProductListViewModel(ProductListNavigationEvents())},
 ){
     ProductListHost(
-        productListState = viewModel.productListState ,
+        productListState = viewModel.productListState,
         productListEvents = ProductListEvents.build(viewModel)
     )
 }

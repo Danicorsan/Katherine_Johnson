@@ -1,5 +1,7 @@
 package app.features.productlist.ui.base.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,20 +34,20 @@ import app.features.productlist.ui.base.ProductListEvents
 import app.features.productlist.ui.base.composable.PutInRowWithSeparation
 
 @Composable
-fun ListProducts(productList: List<Product>, productListEvents: ProductListEvents){
+fun ListProducts(productList: List<Product>, productListEvents: ProductListEvents) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = Specification.BOTTOMPADDINGVALUETOPRODUCTLIST)
-    ){
+    ) {
         items(productList) {
             ProductInformationCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = Separations.Small),
                 product = it,
-                onProductCardPressed = productListEvents.seeProductDetails,
-                onEditIconButtonPressed = productListEvents.onEditProduct,
-                onDeleteIconButtonPressed = productListEvents.onDeleteProduct
+                onSeeProductDetails = productListEvents.seeProductDetails,
+                onEditProduct = productListEvents.onEditProduct,
+                onDeleteProduct = productListEvents.onDeleteProduct
             )
         }
         item {
@@ -54,18 +56,22 @@ fun ListProducts(productList: List<Product>, productListEvents: ProductListEvent
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProductInformationCard (
+private fun ProductInformationCard(
     modifier: Modifier = Modifier,
-    product : Product,
-    onProductCardPressed : (Product) -> Unit,
-    onEditIconButtonPressed : (Product) -> Unit,
-    onDeleteIconButtonPressed : (Product) -> Unit,
-    ){
+    product: Product,
+    onSeeProductDetails: (Product) -> Unit,
+    onEditProduct: (Product) -> Unit,
+    onDeleteProduct: (Product) -> Unit,
+) {
     Card(
-        modifier = modifier,
-        onClick = {onProductCardPressed(product)},
-        ) {
+        modifier = modifier.combinedClickable(
+            onClick = { onSeeProductDetails(product) },
+            onLongClick = { onDeleteProduct(product) }
+        ),
+        onClick = { onSeeProductDetails(product) },
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -76,25 +82,24 @@ fun ProductInformationCard (
             ShowBasicInformation(product)
             ShowIconActions(
                 product = product,
-                onEditIconButtonPressed = onEditIconButtonPressed,
-                onDeleteIconButtonPressed = onDeleteIconButtonPressed
-                )
+                onEditIconButtonPressed = onEditProduct
+            )
         }
     }
 }
 
 @Composable
-private fun ShowProductImage(product: Product){//Mantener parametro de cara a la implementación de imagenes
+private fun ShowProductImage(product: Product) {//Mantener parametro de cara a la implementación de imagenes
     Box(
         modifier = Modifier
             .padding(start = Separations.Small)
-    ){
+    ) {
         DefaultProductImage()
     }
 }
 
 @Composable
-private fun ShowBasicInformation(product : Product){
+private fun ShowBasicInformation(product: Product) {
     Column(
         modifier = Modifier.fillMaxWidth(Specification.RELATIVESPACEFORPRODUCTBASICINFORMATION),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -114,10 +119,10 @@ private fun ShowBasicInformation(product : Product){
 }
 
 @Composable
-private fun ShowProductsName(product: Product){
+private fun ShowProductsName(product: Product) {
     Box(
         contentAlignment = Alignment.Center
-    ){
+    ) {
         MediumTitleText(product.name)
     }
 }
@@ -125,23 +130,14 @@ private fun ShowProductsName(product: Product){
 @Composable
 private fun ShowIconActions(
     product: Product,
-    onEditIconButtonPressed : (Product) -> Unit,
-    onDeleteIconButtonPressed : (Product) -> Unit,
-){
-    PutInRowWithSeparation(
-        {
-            IconButton(
-                onClick = {onEditIconButtonPressed(product)}
-            ) {
-                Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.edit_product_iconbutton))
-            }
-        },
-        {
-            IconButton(
-                onClick = {onDeleteIconButtonPressed(product)}
-            ) {
-                Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.delete_iconbutton_description))
-            }
-        }
-    )
+    onEditIconButtonPressed: (Product) -> Unit,
+) {
+    IconButton(
+        onClick = { onEditIconButtonPressed(product) }
+    ) {
+        Icon(
+            Icons.Default.Edit,
+            contentDescription = stringResource(R.string.edit_product_iconbutton)
+        )
+    }
 }
