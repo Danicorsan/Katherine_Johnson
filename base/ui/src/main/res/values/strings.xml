@@ -22,4 +22,5 @@
 
     <string name="empty_state_title">Aun no hay %s</string>
     <string name="empty_state_support_text">Toca el botón \'+\' para crear un nuevo %s</string>
+    <string name="actions_icon_base_app_bar_content_description">Desplegar menú de acciones</string>
 </resources>
