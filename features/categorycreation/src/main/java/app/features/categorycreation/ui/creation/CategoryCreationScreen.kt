@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.MediumButton
 import app.base.ui.composables.MediumSpace
@@ -43,7 +44,7 @@ import app.features.categorycreation.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryCreationScreen(
-    viewModel: CategoryCreationViewModel = CategoryCreationViewModel(),
+    viewModel: CategoryCreationViewModel,
     onClickNewCategory: () -> Unit,
     onClickBack: () -> Unit
 ) {
@@ -311,5 +312,5 @@ fun EditableExposedDropdownMenuTypeCategory(viewModel: CategoryCreationViewModel
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewCategoryCreationScreen() {
-    CategoryCreationScreen(onClickNewCategory = {}, onClickBack = {})
+    CategoryCreationScreen(hiltViewModel(), onClickNewCategory = {}, onClickBack = {})
 }

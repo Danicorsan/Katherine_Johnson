@@ -14,7 +14,6 @@ import com.example.inventory.navigation.graphs.productGraph
 fun AppNavHost(
     navController: NavHostController,
     startDestination: String = AccountGraph.login(),
-    viewModels: ViewModels
 ) {
     NavHost(
         navController = navController,
@@ -27,7 +26,6 @@ fun AppNavHost(
 
         categoryGraph(
             navController = navController,
-            categoryViewModels = viewModels.categoryViewModels
         )
 
         productGraph(

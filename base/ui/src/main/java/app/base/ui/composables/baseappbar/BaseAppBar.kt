@@ -90,7 +90,6 @@ private fun DropDownMenuIcon(actions: List<Action>){
                     },
                     onClick = {
                         isExpanded = false
-
                     }
                 )
             }

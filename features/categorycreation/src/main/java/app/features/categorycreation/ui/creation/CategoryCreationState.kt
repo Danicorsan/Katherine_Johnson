@@ -1,4 +1,4 @@
-package app.features.categorycreation.ui.base
+package app.features.categorycreation.ui.creation
 
 import app.domain.invoicing.category.TypeCategory
 import java.util.Date

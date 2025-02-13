@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.TypeCategory
 import app.domain.invoicing.repository.CategoryRepository
-import app.features.categorycreation.ui.base.CategoryCreationState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
+import javax.inject.Inject
 
-class CategoryCreationViewModel(private val repository: CategoryRepository = CategoryRepository) :
-    ViewModel() {
+@HiltViewModel
+class CategoryCreationViewModel @Inject constructor(
+    private val repository: CategoryRepository
+) : ViewModel() {
 
     var state by mutableStateOf(CategoryCreationState())
         private set

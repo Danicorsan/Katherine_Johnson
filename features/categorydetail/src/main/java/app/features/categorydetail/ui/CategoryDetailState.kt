@@ -4,5 +4,6 @@ import app.domain.invoicing.category.Category
 
 data class CategoryDetailState(
     val category: Category? = null,
-    val notFoundError:Boolean = false
+    val notFoundError: Boolean = false,
+    val isDeleteDialogVisible: Boolean = false
 )
