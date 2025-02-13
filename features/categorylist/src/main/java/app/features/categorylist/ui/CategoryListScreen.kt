@@ -39,7 +39,7 @@ data class CategoryListEvents(
     val onClickBack: () -> Unit,
     val onClickNewCategory: () -> Unit,
     val onClickEditCategory: () -> Unit,
-    val onClickDetails: (Category) -> Unit
+    val onClickDetails: (Int) -> Unit
 )
 
 @Composable
@@ -48,13 +48,13 @@ fun CategoryListScreen(
     onClickBack: () -> Unit,
     onClickNewCategory: () -> Unit,
     onClickEditCategory: () -> Unit,
-    onClickDetails: () -> Unit
+    onClickDetails: (Int) -> Unit
 ) {
     val categoryListEvents = CategoryListEvents(
-        { onClickBack() },
-        { onClickNewCategory() },
-        { onClickEditCategory() },
-        { onClickDetails() }
+        onClickBack = onClickBack,
+        onClickNewCategory = onClickNewCategory,
+        onClickEditCategory = onClickEditCategory,
+        onClickDetails = onClickDetails
     )
 
     CategoryListScreen(viewModel.state, categoryListEvents)
@@ -128,7 +128,10 @@ fun CategoryListContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .clickable { /* TODO IMPLEMENTAR EL DETAILSCREEN EN FUTURAS PRACTICAS */ }
+                        .clickable {
+                            events.onClickDetails(category.id)
+                            //Si hago esto si me funciona events.onClickDetails(2)
+                        }
                 ) {
                     Row(
                         modifier = Modifier

@@ -8,7 +8,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.inventory.navigation.AppNavHost
 import com.example.inventory.navigation.ViewModels
-import com.example.inventory.navigation.graphs.CategoryGraph
+import com.example.inventory.navigation.graphs.AccountGraph
 import com.example.inventory.theme.InventoryTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 Surface {
                     AppNavHost(
                         navController = navController,
-                        startDestination = CategoryGraph.ROUTE,
+                        startDestination = AccountGraph.ROUTE,
                         viewModels = viewModel
                     )
                 }
