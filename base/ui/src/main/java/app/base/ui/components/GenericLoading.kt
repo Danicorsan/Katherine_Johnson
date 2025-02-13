@@ -28,21 +28,8 @@ fun LoadingUi() {
     }
 }
 
-/**
- * Componente reusable para mostrar un indicador de progreso
- */
-@Composable
-fun GenericLoading() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
 @Composable
 @Preview
 private fun Preview() {
-    LoadingUi( )
+    LoadingUi()
 }

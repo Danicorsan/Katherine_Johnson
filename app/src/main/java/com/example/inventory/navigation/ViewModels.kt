@@ -2,10 +2,8 @@ package com.example.inventory.navigation
 
 import app.features.categorycreation.ui.creation.CategoryCreationViewModel
 import app.features.categorycreation.ui.edition.CategoryEditionViewModel
+import app.features.categorydetail.ui.CategoryDetailViewModel
 import app.features.categorylist.ui.CategoryListViewModel
-import app.features.productcreation.ui.creation.ProductCreationViewModel
-import app.features.productcreation.ui.edition.ProductEditionViewModel
-import app.features.productlist.ui.ProductListViewModel
 
 data class ViewModels(
     val categoryViewModels: CategoryViewModels = CategoryViewModels(),
@@ -14,5 +12,6 @@ data class ViewModels(
 data class CategoryViewModels(
     val categoryListViewModel: CategoryListViewModel = CategoryListViewModel(),
     val categoryCreationViewModel: CategoryCreationViewModel = CategoryCreationViewModel(),
-    val categoryEditionViewModel: CategoryEditionViewModel = CategoryEditionViewModel()
+    val categoryEditionViewModel: CategoryEditionViewModel = CategoryEditionViewModel(),
+    val categoryDetailViewModel: CategoryDetailViewModel = CategoryDetailViewModel()
 )
