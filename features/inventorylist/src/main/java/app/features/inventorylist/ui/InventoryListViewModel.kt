@@ -12,8 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
-@HiltViewModel
-class InventoryListViewModel @Inject constructor(
+class InventoryListViewModel(
     private val repository: InventoryRepository
 ) : ViewModel() {
 
