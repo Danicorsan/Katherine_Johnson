@@ -8,7 +8,6 @@ data class Account(
     val name: String,
     val surname: String,
     val birthdate: String
-
 ) {
 
     override fun equals(other: Any?): Boolean {
