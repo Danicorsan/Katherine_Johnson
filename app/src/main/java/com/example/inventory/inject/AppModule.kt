@@ -2,6 +2,7 @@ package com.example.inventory.inject
 
 import app.domain.invoicing.repository.AccountRepository
 import app.domain.invoicing.repository.CategoryRepository
+import app.domain.invoicing.repository.InventoryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +23,12 @@ object AppModule {
     @Singleton
     fun provideCategoryRepository(): CategoryRepository {
         return CategoryRepository
+    }
+
+    @Provides
+    @Singleton
+    fun provideInventoryRepository(): InventoryRepository {
+        return InventoryRepository
     }
 
 

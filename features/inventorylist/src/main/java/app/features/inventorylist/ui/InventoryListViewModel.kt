@@ -7,15 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class InventoryListViewModel(
-    private val inventoryRepository: InventoryRepository
+@HiltViewModel
+class InventoryListViewModel @Inject constructor(
+    private val repository: InventoryRepository
 ) : ViewModel() {
 
-    private val _inventories = mutableListOf<Inventory>() // Lista de inventarios local
-    val inventories: MutableList<Inventory> get() = _inventories // Getter para la lista de inventarios
+    private val _inventories = mutableListOf<Inventory>()
 
     private val _uiState = mutableStateOf(InventoryListState(
         inventories = _inventories,
@@ -24,48 +26,40 @@ class InventoryListViewModel(
     ))
     val uiState: InventoryListState get() = _uiState.value
 
-    var state: InventoryListState by mutableStateOf(InventoryListState(
+    private var state: InventoryListState by mutableStateOf(InventoryListState(
         inventories = _inventories,
         isLoading = false,
         errorMessage = null
     ))
-        private set
 
     init {
-        loadInventoriesWithDelay() // Cargar inventarios con delay cuando se inicie el ViewModel
+        loadInventoriesWithDelay()
     }
 
-    // Cargar los inventarios con un retraso simulado
     private fun loadInventoriesWithDelay() {
         viewModelScope.launch {
-            // Primero mostrar LoadingUI
             _uiState.value = uiState.copy(isLoading = true)
 
-            // Esperar 3 segundos
             delay(3000)
 
-            // Luego cargar los inventarios
             loadInventories()
 
-            // Después de cargar los inventarios, poner isLoading = false
             _uiState.value = uiState.copy(isLoading = false)
         }
     }
 
-    // Cargar los inventarios desde el repositorio
     private fun loadInventories() {
         viewModelScope.launch {
             _inventories.clear()
-            _inventories.addAll(inventoryRepository.getAllInventories())
+            _inventories.addAll(repository.getAllInventories())
             _uiState.value = uiState.copy(inventories = _inventories, isLoading = false)
         }
     }
 
-    // Función para eliminar un inventario
     fun deleteInventory(inventory: Inventory) {
         viewModelScope.launch {
             _uiState.value = uiState.copy(isLoading = true)
-            val success = inventoryRepository.deleteInventory(inventory.id)
+            val success = repository.deleteInventory(inventory.id)
             if (success) {
                 state.isLoading = true
                 delay(2000)
@@ -77,13 +71,12 @@ class InventoryListViewModel(
         }
     }
 
-    // Función para agregar un inventario
     fun addInventory(inventory: Inventory) {
         viewModelScope.launch {
             _uiState.value = uiState.copy(isLoading = true)
-            val success = inventoryRepository.addInventory(inventory)
+            val success = repository.addInventory(inventory)
             if (success) {
-                _inventories.add(inventory) // Agregar a la lista local
+                _inventories.add(inventory)
                 _uiState.value = uiState.copy(inventories = _inventories, isLoading = false)
             } else {
                 _uiState.value = uiState.copy(errorMessage = "Error al agregar el inventario", isLoading = false)

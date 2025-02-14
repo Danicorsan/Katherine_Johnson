@@ -33,9 +33,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
+import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
 import app.features.inventorylist.ui.InventoryListViewModel
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,9 +102,18 @@ fun CreateInventoryScreen(
 
                     Button(
                         onClick = {
-                            viewModel.createInventory { newInventory ->
+                            viewModel.createInventory {
                                 // Después de crear el inventario, mostrar el diálogo
-                                inventoryListViewModel.addInventory(newInventory)
+                                inventoryListViewModel.addInventory(
+                                    inventory = Inventory(
+                                        id = uiState.inventoryId,
+                                        name = uiState.inventoryName,
+                                        description = uiState.inventoryDescription,
+                                        items = emptyList(),
+                                        createdAt = Date(),
+                                        updatedAt = Date()
+                                    )
+                                )
                                 isInventoryCreated = true  // Marcar que el inventario fue creado
                                 showDialog = true  // Mostrar el diálogo
                             }

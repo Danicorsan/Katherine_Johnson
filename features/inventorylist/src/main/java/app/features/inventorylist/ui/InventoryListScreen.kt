@@ -43,6 +43,7 @@ import app.base.ui.composables.MediumButton
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorylist.R
+import app.features.inventorylist.ui.base.InventoryCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,13 +54,13 @@ fun InventoryListScreen(
     onCreateInventoryClick: () -> Unit,
     onEditInventoryClick: (Inventory) -> Unit
 ) {
-    val state = viewModel.uiState // Asegúrate de usar `state` en vez de `uiState`
+    // Listar
+    val state = viewModel.uiState
     val inventories = state.inventories
 
-    // Función para eliminar un inventario
+    // Eliminar
     var showDialog by remember { mutableStateOf(false) }
     var selectedInventory: Inventory? by remember { mutableStateOf(null) }
-
     val onDeleteInventoryClick: (Inventory) -> Unit = { inventory ->
         selectedInventory = inventory
         showDialog = true
@@ -138,66 +139,11 @@ fun InventoryListScreen(
 }
 
 
-@Composable
-fun InventoryCard(
-    inventory: Inventory,
-    onClick: (Inventory) -> Unit,
-    onEditClick: (Inventory) -> Unit,
-    onDeleteClick: (Inventory) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { onClick(inventory) },
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        ) {
-            Icon(
-                painterResource(id = R.drawable.almacen1), // Puedes usar cualquier recurso aquí
-                contentDescription = null,
-                modifier = Modifier
-                    .size(120.dp)
-                    .padding(end = 16.dp)
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 16.dp)
-            ) {
-                Text(
-                    text = inventory.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = inventory.description, style = MaterialTheme.typography.bodySmall)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    IconButton(onClick = { onEditClick(inventory) }) {
-                        Icon(imageVector = Icons.Filled.Edit, contentDescription = stringResource(R.string.editar_inventario))
-                    }
-                    IconButton(onClick = { onDeleteClick(inventory) }) {
-                        Icon(imageVector = Icons.Filled.Delete, contentDescription = stringResource(R.string.eliminar_inventario))
-                    }
-                }
-            }
-        }
-    }
-}
+
 
 @Preview(showSystemUi = true)
 @Composable
-fun Preview() {
+fun InventoryListPreview() {
     InventoryListScreen(
         viewModel = InventoryListViewModel(InventoryRepository),
         onBackClick = {},

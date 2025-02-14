@@ -4,13 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Date
+import javax.inject.Inject
 
-class EditInventoryViewModel(
-    private val inventoryRepository: InventoryRepository
+@HiltViewModel
+class EditInventoryViewModel @Inject constructor(
+    private val repository: InventoryRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EditInventoryState())
@@ -20,7 +23,7 @@ class EditInventoryViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
 
-            val inventory = inventoryRepository.getInventoryById(inventoryId)
+            val inventory = repository.getInventoryById(inventoryId)
 
             if (inventory != null) {
                 _uiState.value = _uiState.value.copy(
@@ -64,7 +67,7 @@ class EditInventoryViewModel(
 
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
-            val success = inventoryRepository.updateInventory(updatedInventory)
+            val success = repository.updateInventory(updatedInventory)
             if (success) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
