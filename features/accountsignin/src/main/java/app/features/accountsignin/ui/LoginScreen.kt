@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.CampoFormulario
+import app.features.accountsignin.R
 
 @Composable
 fun LoginScreen(
@@ -52,9 +54,9 @@ fun LoginScreen(
     } else {
         if (showErrorDialog) {
             BaseAlertDialog(
-                title = "Error",
-                text = "Hay un problema con las credenciales",
-                confirmText = "Ok",
+                title = stringResource(R.string.error),
+                text = stringResource(R.string.hay_un_problema_con_las_credenciales),
+                confirmText = stringResource(R.string.ok),
                 onConfirm = { showErrorDialog = false },
                 onDismiss = { showErrorDialog = false })
         }
@@ -110,14 +112,14 @@ fun LoginScreenContent(
     onLoginClick: () -> Unit,
     onClickCrearCuenta: () -> Unit
 ) {
-    Text("¡Bienvenido!", style = MaterialTheme.typography.headlineSmall)
+    Text(stringResource(R.string.bienvenido), style = MaterialTheme.typography.headlineMedium)
     Spacer(modifier = Modifier.height(24.dp))
 
     CampoFormulario(
         value = state.email,
         onValueChange = onEmailChange,
         isError = state.isEmailError,
-        texto = "Correo"
+        texto = stringResource(R.string.correo)
     )
     state.emailErrorFormat?.let {
         Text(it, color = MaterialTheme.colorScheme.error, style = TextStyle(fontSize = 12.sp, textAlign = TextAlign.Center))
@@ -128,7 +130,7 @@ fun LoginScreenContent(
         value = state.password,
         onValueChange = onPasswordChange,
         isError = state.isPasswordError,
-        texto = "Contraseña",
+        texto = stringResource(R.string.contrasenia),
         isPassword = true
     )
     state.passwordErrorFormat?.let {
@@ -144,7 +146,7 @@ fun LoginScreenContent(
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.size(24.dp), color = MaterialTheme.colorScheme.onPrimary)
         } else {
-            Text("Iniciar sesión")
+            Text(stringResource(R.string.iniciar_sesion))
         }
     }
 
@@ -153,9 +155,9 @@ fun LoginScreenContent(
     Spacer(modifier = Modifier.height(16.dp))
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("¿No tienes cuenta?")
+        Text(stringResource(R.string.no_tienes_cuenta))
         TextButton(onClick = onClickCrearCuenta) {
-            Text("Crear cuenta")
+            Text(stringResource(R.string.crear_cuenta))
         }
     }
 }

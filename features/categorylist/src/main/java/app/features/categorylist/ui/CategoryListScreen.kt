@@ -10,17 +10,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.MediumButton
-import app.domain.invoicing.category.Category
-import app.domain.invoicing.category.TypeCategory
+import app.base.ui.composables.baseappbar.BaseAppBar
+import app.base.ui.composables.baseappbar.BaseAppBarIcons
+import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.repository.CategoryRepository
 import app.features.categorylist.R
-import java.util.Date
 
 data class CategoryListEvents(
     val onClickBack: () -> Unit,
@@ -72,25 +69,20 @@ fun CategoryListScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.lista_de_categoria),
+            BaseAppBar(
+                BaseAppBarState(
+                    title = stringResource(R.string.lista_de_categoria),
+                    navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon(
+                        onClick = {
+                            events.onClickBack()
+                        }
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { events.onClickBack() }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.volver)
-                        )
-                    }
-                },
+                )
             )
         },
         floatingActionButton = {
             MediumButton(
-                contentDescription = "Add",
+                contentDescription = stringResource(R.string.add),
                 imageVector = Icons.Filled.Add,
                 onClick = { events.onClickNewCategory() },
             )
@@ -154,7 +146,7 @@ fun CategoryListContent(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.List,
-                            contentDescription = "Icono de categoría",
+                            contentDescription = stringResource(R.string.icono_de_categoria),
                             modifier = Modifier
                                 .size(48.dp)
                                 .padding(end = 8.dp),
@@ -179,18 +171,6 @@ fun CategoryListContent(
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewCategoryListScreen() {
-    val dummyCategories = List(20) { index ->
-        Category(
-            id = index,
-            name = "Category $index",
-            description = "Description $index",
-            shortName = "Short $index",
-            image = null,
-            createdAt = Date(),
-            typeCategory = TypeCategory.BASICOS,
-            fungible = true
-        )
-    }
     CategoryListScreen(
         viewModel = CategoryListViewModel(CategoryRepository).apply {
         },
