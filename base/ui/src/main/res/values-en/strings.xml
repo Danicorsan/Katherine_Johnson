@@ -16,4 +16,8 @@
     <string name="empty_state_title">There is not %s yet</string>
     <string name="empty_state_support_text">Press button \'+\' for creating a new %s</string>
     <string name="actions_icon_base_app_bar_content_description">Open actions menu</string>
+    <string name="drawer_menu_icon_content_description">Open or close drawer menú</string>
+    <string name="go_back_previous_screen_icon">Go to previous page</string>
+    <string name="edit_element_action_icon">Edit %s</string>
+    <string name="delete_element_action_icon">Delete %s</string>
 </resources>

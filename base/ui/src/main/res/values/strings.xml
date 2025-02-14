@@ -23,4 +23,8 @@
     <string name="empty_state_title">Aun no hay %s</string>
     <string name="empty_state_support_text">Toca el botón \'+\' para crear un nuevo %s</string>
     <string name="actions_icon_base_app_bar_content_description">Desplegar menú de acciones</string>
+    <string name="drawer_menu_icon_content_description">Abrir o cerrar menú lateral</string>
+    <string name="go_back_previous_screen_icon">Volver a la pantalla anterior</string>
+    <string name="edit_element_action_icon">Editar %s</string>
+    <string name="delete_element_action_icon">Eliminar %s</string>
 </resources>

@@ -23,7 +23,7 @@ import app.base.ui.composables.SmallSpace
 /**
  * Permite crear un elemento App Bar generico para todos los modulos de la aplicación
  *
- * @param appBarState Contiene el estado de todos los datos necesarios para crear el elemento app bar
+ * @param appBarState Contiene el estado de todos los datos necesarios para crear el elemento App Bar
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
