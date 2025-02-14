@@ -1,5 +1,5 @@
 package com.example.inventory
-
+/*
 import app.domain.invoicing.invoice.Invoices
 import app.domain.invoicing.item.Items
 import app.domain.invoicing.category.CustomerListQuery
@@ -43,3 +43,5 @@ abstract class FakeDataModule {
     @Binds
     abstract fun invoicesList(query: InvoiceListMemory): InvoiceListQuery
 }
+
+ */

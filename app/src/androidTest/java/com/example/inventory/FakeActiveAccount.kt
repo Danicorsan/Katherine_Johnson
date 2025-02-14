@@ -5,7 +5,7 @@ import app.domain.invoicing.account.Email
 import app.domain.invoicing.account.Password
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-
+/*
 class FakeActiveAccount @Inject constructor() : ActiveAccount {
     override suspend fun save(account: Account) {
         TODO("Not yet implemented")
@@ -31,3 +31,5 @@ class FakeActiveAccount @Inject constructor() : ActiveAccount {
         TODO("Not yet implemented")
     }
 }
+
+ */
