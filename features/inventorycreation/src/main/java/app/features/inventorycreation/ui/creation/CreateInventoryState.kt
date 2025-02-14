@@ -2,7 +2,7 @@ package app.features.inventorycreation.ui.creation
 
 data class CreateInventoryState(
     val inventoryId: Int,
-    val inventoryName: S1tring = "",
+    val inventoryName: String = "",
     val inventoryDescription: String = "",
     val isCreateButtonEnabled: Boolean = false,
     val isLoading: Boolean = false,

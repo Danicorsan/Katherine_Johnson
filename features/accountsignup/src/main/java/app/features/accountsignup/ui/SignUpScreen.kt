@@ -19,9 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.CampoFormulario
+import app.features.accountsignup.R
 
 @Composable
 fun SignUpScreen(
@@ -31,6 +33,7 @@ fun SignUpScreen(
 ) {
     var showErrorDialog by remember { mutableStateOf(false) }
 
+    //Bandera para mostrar dialogo
     if (showErrorDialog) {
         BaseAlertDialog(
             title = "Error",
@@ -82,14 +85,14 @@ fun SignUpContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Crea tu cuenta", style = MaterialTheme.typography.headlineSmall)
+        Text(stringResource(R.string.crea_tu_cuenta), style = MaterialTheme.typography.headlineSmall)
 
         Spacer(modifier = Modifier.height(24.dp))
         CampoFormulario(
             value = viewModel.state.userName,
             onValueChange = { viewModel.onNameChange(it) },
-            isError = viewModel.state.nameUserErrorFormat != null,
-            texto = "Nombre",
+            isError = viewModel.state.isNameError,
+            texto = stringResource(R.string.nombre),
             errorMessage = viewModel.state.nameUserErrorFormat.orEmpty()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -97,7 +100,7 @@ fun SignUpContent(
             value = viewModel.state.userSurname,
             onValueChange = { viewModel.onSurnameChange(it) },
             isError = viewModel.state.userErrorFormat != null,
-            texto = "Apellidos",
+            texto = stringResource(R.string.apellidos),
             errorMessage = viewModel.state.userErrorFormat.orEmpty()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -105,7 +108,7 @@ fun SignUpContent(
             value = viewModel.state.email,
             onValueChange = { viewModel.onEmailChange(it) },
             isError = viewModel.state.emailErrorFormat != null,
-            texto = "Correo",
+            texto = stringResource(R.string.correo),
             errorMessage = viewModel.state.emailErrorFormat.orEmpty()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -113,7 +116,7 @@ fun SignUpContent(
             value = viewModel.state.password,
             onValueChange = { viewModel.onPasswordChange(it) },
             isError = viewModel.state.passwordErrorFormat != null,
-            texto = "Contraseña",
+            texto = stringResource(R.string.contrasenia),
             errorMessage = viewModel.state.passwordErrorFormat.orEmpty()
         )
 
@@ -123,15 +126,15 @@ fun SignUpContent(
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
         ) {
-            Text(if (isLoading) "Registrando..." else "Registrarse")
+            Text(stringResource(R.string.registrarse))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
         HorizontalDivider()
         Spacer(modifier = Modifier.height(16.dp))
-        Text("¿Ya tienes cuenta?")
+        Text(stringResource(R.string.ya_tienes_cuenta))
         TextButton(onClick = onLoginAccount) {
-            Text("Inicia sesión")
+            Text(stringResource(R.string.inicia_sesion))
         }
     }
 }

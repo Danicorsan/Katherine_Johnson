@@ -6,4 +6,13 @@
     <string name="nombre">Nombre:</string>
     <string name="descripcion">Descripción:</string>
     <string name="editar_categoria">Editar Categoría</string>
+    <string name="detalles">Detalles</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="nombre_de_la_categoria">Nombre de la Categoría</string>
+    <string name="tipo_de_categoria">Tipo de Categoría</string>
+    <string name="seguro_eliminar_categoria">¿Estás seguro de que quieres eliminar esta categoría?</string>
+    <string name="si_eliminar">Sí, eliminar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="eliminar_categoria">Eliminar Categoría</string>
 </resources>

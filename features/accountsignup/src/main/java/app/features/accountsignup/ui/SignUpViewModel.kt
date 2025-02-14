@@ -28,7 +28,7 @@ class RegisterViewModel @Inject constructor(
         if (!name.matches(Regex(nameRegex))) {
             state = state.copy(
                 isNameError = true,
-                userErrorFormat = "Formato de nombre incorrecto"
+                nameUserErrorFormat = "Formato de nombre incorrecto"
             )
         }
         state = state.copy(userName = name)
@@ -37,10 +37,11 @@ class RegisterViewModel @Inject constructor(
     fun onSurnameChange(surname: String) {
         state = state.copy(userErrorFormat = null, isSurnameError = false)
 
-        if (surname.isBlank()) {
+        val nameRegex = "^[a-zA-ZÁÉÍÓÚáéíóúñÑ\\s]{2,}$"
+        if (!surname.matches(Regex(nameRegex))) {
             state = state.copy(
                 isSurnameError = true,
-                userErrorFormat = "Los apellidos no pueden estar vacíos"
+                userErrorFormat = "Formato de apellidos incorrecto"
             )
         }
         state = state.copy(userSurname = surname)

@@ -74,7 +74,7 @@ fun CategoryDetailContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Detalles") },
+                title = { Text(stringResource(R.string.detalles)) },
                 navigationIcon = {
                     IconButton(onClick = { onGoBack() }) {
                         Icon(
@@ -85,10 +85,10 @@ fun CategoryDetailContent(
                 },
                 actions = {
                     IconButton(onClick = { onEditCategory(category.id) }) {
-                        Icon(Icons.Filled.Edit, "Editar")
+                        Icon(Icons.Filled.Edit, stringResource(R.string.editar))
                     }
                     IconButton(onClick = { onDeleteCategory() }) {
-                        Icon(Icons.Filled.Delete, "Eliminar")
+                        Icon(Icons.Filled.Delete, stringResource(R.string.eliminar))
                     }
                 },
             )
@@ -116,7 +116,7 @@ fun CategoryDetailContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Nombre de la Categoría",
+                        text = stringResource(R.string.nombre_de_la_categoria),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -130,7 +130,7 @@ fun CategoryDetailContent(
                     )
 
                     Text(
-                        text = "Descripción",
+                        text = stringResource(R.string.descripcion),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -144,7 +144,7 @@ fun CategoryDetailContent(
                     )
 
                     Text(
-                        text = "Tipo de Categoría",
+                        text = stringResource(R.string.tipo_de_categoria),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -181,10 +181,10 @@ fun CategoryDetailContent(
         BaseAlertDialog(
             onConfirm = onConfirmDelete,
             onDismiss = onCancelDelete,
-            text = "¿Estás seguro de que quieres eliminar esta categoría?",
-            confirmText = "Sí, eliminar",
-            dismissText = "Cancelar",
-            title = "Eliminar Categoría"
+            text = stringResource(R.string.seguro_eliminar_categoria),
+            confirmText = stringResource(R.string.si_eliminar),
+            dismissText = stringResource(R.string.cancelar),
+            title = stringResource(R.string.eliminar_categoria)
         )
     }
 }

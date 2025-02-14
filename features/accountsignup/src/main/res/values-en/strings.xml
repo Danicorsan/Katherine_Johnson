@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crea_tu_cuenta">Sign Up</string>
+    <string name="nombre">Name</string>
+    <string name="apellidos">Surname</string>
+    <string name="correo">Email</string>
+    <string name="contrasenia">Password</string>
+    <string name="registrarse">Sign Up</string>
+    <string name="ya_tienes_cuenta">¿Have got account?</string>
+    <string name="inicia_sesion">Sign in</string>
+</resources>

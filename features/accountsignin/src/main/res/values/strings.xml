@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="bienvenido">¡Bienvenido!</string>
+    <string name="correo">Correo</string>
+    <string name="contrasenia">Contraseña</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
+    <string name="no_tienes_cuenta">¿No tienes cuenta?</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="error">Error</string>
+    <string name="hay_un_problema_con_las_credenciales">Hay un problema con las credenciales</string>
+    <string name="ok">Ok</string>
 </resources>
