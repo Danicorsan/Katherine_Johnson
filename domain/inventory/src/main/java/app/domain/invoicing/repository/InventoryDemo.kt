@@ -21,6 +21,54 @@ fun initialiceInventoryDemo () : MutableList<Inventory>{
             items = listOf(productlist[0]),
             createdAt = Date(),
             updatedAt = Date()
+        ),
+        Inventory(
+            id = 3,
+            name = "Materiales",
+            description = "Objetos de materiales",
+            items = listOf(productlist[2]),
+            createdAt = Date(),
+            updatedAt = Date()
+        ),
+        Inventory(
+            id = 4,
+            name = "Servicios",
+            description = "Objetos de servicios",
+            items = listOf(productlist[3]),
+            createdAt = Date(),
+            updatedAt = Date()
+        ),
+        Inventory(
+            id = 5,
+            name = "Muebles",
+            description = "Objetos de muebles",
+            items = listOf(productlist[4]),
+            createdAt = Date(),
+            updatedAt = Date()
+        ),
+        Inventory(
+            id = 6,
+            name = "Otros",
+            description = "Objetos de otros",
+            items = listOf(productlist[5]),
+            createdAt = Date(),
+            updatedAt = Date()
+        ),
+        Inventory(
+            id = 7,
+            name = "Oficina",
+            description = "Objetos de oficina",
+            items = listOf(productlist[6]),
+            createdAt = Date(),
+            updatedAt = Date()
+        ),
+        Inventory(
+            id = 8,
+            name = "Almacenamiento",
+            description = "Objetos de almacenamiento",
+            items = listOf(productlist[6]),
+            createdAt = Date(),
+            updatedAt = Date()
         )
     )
 }

@@ -35,7 +35,6 @@ object InventoryRepository {
     }
 
     // Método para eliminar un inventario por ID
-    // Método para eliminar un inventario por ID
     fun deleteInventory(id: Int): Boolean {
         val index = dataSet.indexOfFirst { it.id == id }
         if (index == -1) {

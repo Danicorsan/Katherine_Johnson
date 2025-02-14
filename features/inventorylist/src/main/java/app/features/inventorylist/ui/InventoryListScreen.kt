@@ -14,13 +14,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
+import app.base.ui.composables.MediumButton
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorylist.R
@@ -83,18 +84,11 @@ fun InventoryListScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+            MediumButton(
                 onClick = onCreateInventoryClick,
-                modifier = Modifier.padding(16.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Text(
-                    text = "+",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+                imageVector = Icons.Default.Add,
+                contentDescription = "Añadir inventario"
+            )
         },
         content = { paddingValues ->
             // Mostrar LoadingUI cuando isLoading es true

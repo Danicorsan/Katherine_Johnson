@@ -67,6 +67,9 @@ class InventoryListViewModel(
             _uiState.value = uiState.copy(isLoading = true)
             val success = inventoryRepository.deleteInventory(inventory.id)
             if (success) {
+                state.isLoading = true
+                delay(2000)
+                state.isLoading = false
                 loadInventories()
             } else {
                 _uiState.value = uiState.copy(errorMessage = "Error al eliminar el inventario", isLoading = false)
