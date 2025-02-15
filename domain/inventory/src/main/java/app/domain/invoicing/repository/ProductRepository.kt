@@ -25,7 +25,7 @@ object ProductRepository {
      */
     fun getAllProducts() : BaseResult<Flow<Map<Int, Product>>> {
         val allProductFlow = flow {
-            delay(2000)
+            delay(1000)
             emit(productWarehouse)
         }
         return BaseResult.Success(allProductFlow)
@@ -45,7 +45,7 @@ object ProductRepository {
             it.value.category.id == category.id
         }.values.toList()
         val flowWithProducts = flow {
-            delay(2000)
+            delay(1000)
             emit(productsFiltered)
         }
         return BaseResult.Success(flowWithProducts)
@@ -60,7 +60,7 @@ object ProductRepository {
      *
      */
     suspend fun getProductById(id : Int) : BaseResult<Product> {
-        delay(2000)
+        delay(1000)
         productWarehouse[id]?.let {
             return BaseResult.Success(it)
         } ?: run {
@@ -79,7 +79,7 @@ object ProductRepository {
      *          (Por ahora solo devuelve Success)
      */
     suspend fun addProduct(product : Product) : BaseResult<Unit>{
-        delay(2000)
+        delay(1000)
         val idToBeAssign = nextId++
         productWarehouse.put(idToBeAssign, product.copy(id = idToBeAssign))
         return BaseResult.Success(Unit)
@@ -94,7 +94,7 @@ object ProductRepository {
      * devuelve BaseResult.Success)
      */
     suspend fun updateExistingProduct(updatedProduct: Product) : BaseResult<Unit>{
-        delay(2000)
+        delay(1000)
         productWarehouse[updatedProduct.id!!] = updatedProduct
         return BaseResult.Success(Unit)
     }
@@ -109,7 +109,7 @@ object ProductRepository {
      *          en caso de error, devolvera un objeto error.
      */
     suspend fun removeProduct(productId : Int) : BaseResult<Unit>{
-        delay(2000)
+        delay(1000)
         productWarehouse.remove(productId)
         return BaseResult.Success(Unit)
     }
