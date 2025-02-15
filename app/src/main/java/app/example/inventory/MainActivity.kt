@@ -1,4 +1,4 @@
-package com.example.inventory
+package app.example.inventory
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
