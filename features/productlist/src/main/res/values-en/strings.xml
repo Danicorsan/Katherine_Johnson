@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_appbar">Product List</string>
+    <string name="title_appbar_product_list">Product list</string>
     <string name="add_product_floatingbutton_description">Add product</string>
     <string name="product_image_description">Product image</string>
     <string name="delete_iconbutton_description">Delete product</string>

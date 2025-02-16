@@ -37,7 +37,7 @@ fun ProductCreationHost(
     productEvents : ProductEvents
 ){
     Scaffold(
-        topBar = { ProductCreationAppbar(stringResource(R.string.creation_product_title_appbar) , productEvents.onLeavePage) },
+        topBar = { ProductCreationAppbar(stringResource(R.string.title_appbar_product_creation) , productEvents.onLeavePage) },
         floatingActionButton = {
             ProductCreationFloatingActionButton(productEvents.onAcceptProduct)
         }

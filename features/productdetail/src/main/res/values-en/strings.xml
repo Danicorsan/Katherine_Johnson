@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_appbar">Product details</string>
+    <string name="title_appbar_product_details">Product details</string>
     <string name="field_without_value">No data</string>
     <string name="code_label">Code</string>
     <string name="name_label">Name</string>

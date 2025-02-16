@@ -35,7 +35,7 @@ private fun ProductEditionHost(
 ){
     Scaffold(
         topBar = { ProductCreationAppbar(
-            titleText = stringResource(R.string.product_edition_title_appbar),
+            titleText = stringResource(R.string.title_appbar_product_edition),
             onLeavePage = productEvents.onLeavePage) },
         floatingActionButton = {
             ProductCreationFloatingActionButton(productEvents.onAcceptProduct)

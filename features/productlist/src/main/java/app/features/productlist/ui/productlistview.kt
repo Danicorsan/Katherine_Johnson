@@ -43,7 +43,7 @@ private fun ProductListHost(
     Scaffold(
         topBar = {
             BaseAppBar(BaseAppBarState(
-                title = stringResource(R.string.title_appbar),
+                title = stringResource(R.string.title_appbar_product_list),
                 navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon(
                     onClick = productListEvents.onGoBack
                 )
