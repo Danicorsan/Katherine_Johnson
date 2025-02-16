@@ -39,7 +39,8 @@ class InventoryListViewModel(
         viewModelScope.launch {
             _uiState.value = uiState.copy(isLoading = true)
 
-            delay(3000)
+            delay(1500)
+
 
             loadInventories()
 
