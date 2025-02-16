@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok_button">Accept</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_dialog_positive_text">Eliminate</string>
+    <string name="discard_button">Discard</string>
+    <string name="discard_message">Do you wish to discard the currents changes?</string>
+    <string name="up">Go up</string>
+    <string name="action_more">Show more actions</string>
+    <string name="invoice_in_list_number">Bill #%d</string>
+    <string name="value_status_pending">Pending</string>
+    <string name="value_status_paid">Is paid</string>
+    <string name="value_status_overdue">Expired</string>
+    <string name="value_estimate_status_open">Open</string>
+    <string name="value_estimate_status_invoiced">Invoiced</string>
+    <string name="empty_state_title">There is not %s yet</string>
+    <string name="empty_state_support_text">Press button \'+\' for creating a new %s</string>
+    <string name="actions_icon_base_app_bar_content_description">Open actions menu</string>
+    <string name="drawer_menu_icon_content_description">Open or close drawer menú</string>
+    <string name="go_back_previous_screen_icon">Go to previous page</string>
+    <string name="edit_element_action_icon">Edit %s</string>
+    <string name="delete_element_action_icon">Delete %s</string>
+</resources>

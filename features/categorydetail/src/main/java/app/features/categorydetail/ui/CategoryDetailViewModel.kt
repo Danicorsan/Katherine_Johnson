@@ -1,21 +1,41 @@
 package app.features.categorydetail.ui
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.repository.CategoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CategoryDetailViewModel : ViewModel() {
-    // Estado que contiene la categoría actual
-    var category = mutableStateOf<Category?>(null)
+@HiltViewModel
+class CategoryDetailViewModel @Inject constructor() : ViewModel() {
+    var state by mutableStateOf(CategoryDetailState())
         private set
 
-    // Función para cargar los detalles de la categoría
-    fun loadCategory(category: Category) {
-        this.category.value = category
+    fun loadCategory(id: Int) {
+        val categoria: Category? = CategoryRepository.getCategoryById(id)
+        state = if (categoria != null) {
+            state.copy(category = categoria, notFoundError = false)
+        } else {
+            state.copy(notFoundError = true)
+        }
     }
 
-    // Función para actualizar la categoría (si se edita)
-    fun updateCategory(updatedCategory: Category) {
-        this.category.value = updatedCategory
+    fun requestDeleteCategory() {
+        state = state.copy(isDeleteDialogVisible = true)
+    }
+
+    fun confirmDeleteCategory(onGoBack: () -> Unit) {
+        state.category?.let {
+            CategoryRepository.deleteCategory(it.id)
+        }
+        state = state.copy(isDeleteDialogVisible = false)
+        onGoBack()
+    }
+
+    fun cancelDeleteCategory() {
+        state = state.copy(isDeleteDialogVisible = false)
     }
 }

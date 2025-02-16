@@ -9,4 +9,7 @@
     <string name="nueva_descripcion_del_inventario">Nueva Descripción del Inventario</string>
     <string name="guardar_cambios">Guardar Cambios</string>
     <string name="nuevo_nombre_del_inventario">Nuevo Nombre del Inventario</string>
+    <string name="volver">Volver\n</string>
+    <string name="inventario_creado_exito">Inventario creado con éxito</string>
+    <string name="aceptar">OK</string>
 </resources>

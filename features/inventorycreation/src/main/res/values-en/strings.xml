@@ -8,4 +8,6 @@
     <string name="crear_inventario">Create Inventory</string>
     <string name="nueva_descripcion_del_inventario">New Inventory Description</string>
     <string name="nuevo_nombre_del_inventario">New Inventory Name</string>
+    <string name="inventario_creado_exito">Inventory created successfully</string>
+    <string name="aceptar">OK</string>
 </resources>

@@ -1,32 +1,38 @@
 package app.features.inventorydetail.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.domain.invoicing.inventory.Item
-import app.domain.invoicing.repository.InventoryRepository
+import app.domain.invoicing.product.Product
 import app.features.inventorydetail.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,10 +40,8 @@ import app.features.inventorydetail.R
 fun InventoryDetailScreen(
     inventoryId: Int,
     onNavigateBack: () -> Unit,
-    viewModel: InventoryDetailViewModel,
-    onEditClick: () -> Unit
 ) {
-    val viewModel: InventoryDetailViewModel = viewModel(factory = InventoryDetailViewModelFactory(InventoryRepository()))
+    val viewModel: InventoryDetailViewModel = viewModel()
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -45,48 +49,95 @@ fun InventoryDetailScreen(
         viewModel.loadInventoryDetails(inventoryId)
     }
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    ) {
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(R.string.detalle_del_inventario),
-                    style = MaterialTheme.typography.headlineSmall
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { onNavigateBack() }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.volver)
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.detalle_del_inventario),
                     )
-                }
-            },
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onNavigateBack() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.volver)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { viewModel.onInfoClick() }) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = stringResource(R.string.info_inventario)
+                        )
+                    }
+                },
 
-        if (uiState.inventory == null) {
-            Text(text = stringResource(R.string.cargando_inventario))
-        } else {
-            uiState.inventory?.let { inventory ->
-                Text(
-                    text = stringResource(R.string.nombre, inventory.name),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            if (uiState.showInfoDialog) {
+                InfoInventoryAlertDialog(
+                    uiState = uiState,
+                    onDismiss = { viewModel.onInfoDialogDismiss() }
                 )
-
-                Text(
-                    text = stringResource(R.string.descripcion, inventory.description),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-
-                LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    items(uiState.items) { item ->
-                        ItemCard(item = item as Item)
+            }
+            if (uiState.inventory == null || uiState.items.isEmpty()) {
+                Text(text = stringResource(R.string.cargando_inventario))
+            } else {
+                uiState.inventory?.let { inventory ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.nombre) + " " + inventory.name,
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                            Text(
+                                text = stringResource(R.string.descripcion) + " " + inventory.description,
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(top = 8.dp)
+                            )
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                    ) {
+                        Text(
+                            text = "ID: " + " " + inventory.id,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = stringResource(R.string.fecha_creacion) + " " + inventory.createdAt,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = stringResource(R.string.fecha_actualizacion) + " " + inventory.updatedAt,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                        items(uiState.items) { item ->
+                            ItemCard(item = item)
+                        }
                     }
                 }
             }
@@ -94,8 +145,9 @@ fun InventoryDetailScreen(
     }
 }
 
+
 @Composable
-fun ItemCard(item: Item) {
+fun ItemCard(item: Product) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -111,17 +163,90 @@ fun ItemCard(item: Item) {
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp)
             )
+            Text(
+                text = item.code,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }
+@Composable
+fun InfoInventoryAlertDialog(
+    uiState: InventoryDetailState,
+    onDismiss: () -> Unit
+) {
+    val inventory = uiState.inventory
+    if (inventory != null) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = {
+                Text(
+                    text = stringResource(id = R.string.info_inventario),
+                    style = MaterialTheme.typography.displaySmall, // Estilo de título más grande y claro
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .padding(top = 12.dp)
+                ) {
+                    // Sección ID
+                    InfoRow(label = stringResource(id = R.string.id), value = inventory.id.toString())
 
-class InventoryDetailViewModelFactory(
-    private val inventoryRepository: InventoryRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return InventoryDetailViewModel(inventoryRepository) as T
+                    // Sección Nombre
+                    InfoRow(label = stringResource(id = R.string.nombre), value = inventory.name)
+
+                    // Sección Descripción
+                    InfoRow(label = stringResource(id = R.string.descripcion), value = inventory.description)
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = onDismiss,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
+                        .height(50.dp), // Botón más grande
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.primary, // Color de texto en el botón
+                    )
+                ) {
+                    Text(
+                        text = stringResource(id = android.R.string.ok),
+                        style = MaterialTheme.typography.labelSmall, // Estilo más prominente para el botón
+                        fontSize = 18.sp
+                    )
+                }
+            },
+            shape = MaterialTheme.shapes.medium // Bordes redondeados
+        )
     }
 }
+
+// Composable reutilizable para filas con datos
+@Composable
+fun InfoRow(label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 12.dp) // Espaciado más grande entre filas
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold), // Etiquetas más destacadas
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodySmall, // Valor con un estilo más suave
+            modifier = Modifier.weight(2f) // Mayor espacio para el valor
+        )
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
@@ -130,10 +255,6 @@ fun PreviewInventoryDetailScreen() {
         inventoryId = 1,
         onNavigateBack = {
             println("Volver a la lista de inventarios")
-        },
-        viewModel = InventoryDetailViewModel(InventoryRepository()),
-        onEditClick = {
-            println("Editar el inventario")
         }
     )
 }

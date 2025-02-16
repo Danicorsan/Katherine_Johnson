@@ -4,5 +4,6 @@ import app.domain.invoicing.inventory.Inventory
 
 data class InventoryListState(
     val inventories: List<Inventory> = emptyList(),
-    val isLoading: Boolean = false
+    var isLoading: Boolean,
+    val errorMessage: String?
 )

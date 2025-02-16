@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="categoria">Category</string>
     <string name="volver">Back</string>
     <string name="detalle_de_la_categoria">Details of the category</string>
     <string name="nombre">Name:</string>
     <string name="descripcion">Description:</string>
     <string name="editar_categoria">Edit Category</string>
+    <string name="detalles">Detail</string>
+    <string name="editar">Edit</string>
+    <string name="eliminar">Delete</string>
+    <string name="nombre_de_la_categoria">Name of category</string>
+    <string name="tipo_de_categoria">Type of category</string>
+    <string name="seguro_eliminar_categoria">¿Estás seguro de que quieres eliminar esta categoría?</string>
+    <string name="si_eliminar">Yes, delete</string>
+    <string name="cancelar">No, go back</string>
+    <string name="eliminar_categoria">Delete category</string>
 </resources>

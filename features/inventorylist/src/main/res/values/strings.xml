@@ -7,4 +7,5 @@
     <string name="crear_inventario">Crear Inventario</string>
     <string name="editar_inventario">Editar Inventario</string>
     <string name="eliminar_inventario">Eliminar Inventario</string>
+    <string name="seguro_que_quieres_eliminar_el_inventario">¿Seguro que quieres eliminar el inventario?</string>
 </resources>

@@ -1,70 +1,98 @@
 package com.example.inventory.navigation.graphs
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import app.features.categorycreation.ui.creation.CategoryCreationScreen
-import app.features.categorycreation.ui.creation.CategoryCreationViewModel
 import app.features.categorycreation.ui.edition.CategoryEditionScreen
-import app.features.categorycreation.ui.edition.CategoryEditionViewModel
+import app.features.categorydetail.ui.CategoryDetailScreen
 import app.features.categorylist.ui.CategoryListScreen
-import app.features.categorylist.ui.CategoryListViewModel
-import com.example.inventory.navigation.CategoryViewModels
-import com.example.inventory.navigation.graphs.CategoryGraph.categoryCreationRoute
-
+import com.example.inventory.navigation.graphs.CategoryGraph.ROUTE
 
 object CategoryGraph {
+    const val ID = "id"
     const val ROUTE = "category"
 
     fun categoryListRoute() = "$ROUTE/categoryList"
     fun categoryCreationRoute() = "$ROUTE/categoryCreation"
-    fun categoryEditionRoute() = "$ROUTE/categoryEdition"
+    fun categoryEditionRoute(id: Int) = "$ROUTE/categoryEdition/$id"
+    fun categoryDetailRoute(id: Int) = "$ROUTE/categoryDetail/$id"
 }
 
 fun NavGraphBuilder.categoryGraph(
     navController: NavController,
-    categoryViewModels: CategoryViewModels
 ) {
-
     navigation(startDestination = CategoryGraph.categoryListRoute(), route = CategoryGraph.ROUTE) {
-        categoryListRoute(navController, categoryViewModels.categoryListViewModel)
-        categoryCreationRoute(navController, categoryViewModels.categoryCreationViewModel)
-        categoryEditionRoute(navController, categoryViewModels.categoryEditionViewModel)
+        categoryListRoute(navController)
+        categoryCreationRoute(navController)
+        categoryEditionRoute(navController)
+        categoryDetailRoute(navController)
     }
 }
 
 private fun NavGraphBuilder.categoryListRoute(
     navController: NavController,
-    categoryListViewModel: CategoryListViewModel
 ) {
     composable(route = CategoryGraph.categoryListRoute()) {
         CategoryListScreen(
-            viewModel = categoryListViewModel,
+            viewModel = hiltViewModel(),
             onClickBack = { navController.popBackStack() },
-            onClickNewCategory = { navController.navigate(categoryCreationRoute()) } )
+            onClickNewCategory = { navController.navigate(CategoryGraph.categoryCreationRoute()) },
+            onClickDetails = { id -> navController.navigate(CategoryGraph.categoryDetailRoute(id)) }
+        )
     }
 }
 
 private fun NavGraphBuilder.categoryCreationRoute(
     navController: NavController,
-    categoryCreationViewModel: CategoryCreationViewModel
 ) {
-    composable(route = categoryCreationRoute()) {
+    composable(route = CategoryGraph.categoryCreationRoute()) {
         CategoryCreationScreen(
-            viewModel = categoryCreationViewModel,
+            viewModel = hiltViewModel(),
             onClickBack = { navController.popBackStack() },
-            onClickNewCategory = { navController.popBackStack() })
+            onClickNewCategory = { navController.popBackStack() }
+        )
     }
 }
 
 private fun NavGraphBuilder.categoryEditionRoute(
     navController: NavController,
-    categoryEditionViewModel: CategoryEditionViewModel
 ) {
-    composable(route = CategoryGraph.categoryEditionRoute()) {
+    composable(
+        route = "${ROUTE}/categoryEdition/{${CategoryGraph.ID}}",
+        arguments = listOf(
+            navArgument(CategoryGraph.ID) { type = NavType.IntType }
+        )
+    ) { backStackEntry ->
+        val id = backStackEntry.arguments?.getInt(CategoryGraph.ID) ?: 1
         CategoryEditionScreen(
-            categoryEditionViewModel = categoryEditionViewModel,
-            onClick = { navController.popBackStack() })
+            id = id,
+            viewModel = hiltViewModel(),
+            onClickBack = { navController.popBackStack() },
+            onClickNewCategory = { navController.popBackStack() },
+        )
+    }
+}
+
+private fun NavGraphBuilder.categoryDetailRoute(
+    navController: NavController,
+) {
+    composable(
+        route = "${ROUTE}/categoryDetail/{${CategoryGraph.ID}}",
+        arguments = listOf(
+            navArgument(CategoryGraph.ID) { type = NavType.IntType }
+        )
+    ) { backStackEntry ->
+        val id = backStackEntry.arguments?.getInt(CategoryGraph.ID) ?: return@composable
+        CategoryDetailScreen(
+            viewModel = hiltViewModel(),
+            id = id,
+            onEditCategory = { navController.navigate(CategoryGraph.categoryEditionRoute(id)) },
+            onGoBack = { navController.popBackStack() }
+        )
     }
 }

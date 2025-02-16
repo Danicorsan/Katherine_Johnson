@@ -4,11 +4,50 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.repository.CategoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoryListViewModel : ViewModel() {
+@HiltViewModel
+class CategoryListViewModel @Inject constructor(
+    private val repository: CategoryRepository
+) : ViewModel() {
 
-    var state by mutableStateOf(CategoryListState(CategoryRepository.getAllCategories()))
+    var state by mutableStateOf(CategoryListState())
         private set
 
+    init {
+        start()
+    }
+
+    private fun start() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            delay(5000)
+            state = state.copy(categories = CategoryRepository.getAllCategories(), isLoading = false)
+        }
+    }
+
+    fun requestDeleteCategory(id: Int) {
+        state = state.copy(categoryToDelete = id, isDeleteDialogVisible = true)
+    }
+
+    fun confirmDeleteCategory() {
+        state.categoryToDelete?.let { id ->
+            repository.deleteCategory(id)
+            state = state.copy(
+                isCategoryDeleted = true,
+                isDeleteDialogVisible = false,
+                categoryToDelete = null
+            )
+        }
+    }
+
+    fun cancelDeleteCategory() {
+        state = state.copy(isDeleteDialogVisible = false, categoryToDelete = null)
+    }
 }
+

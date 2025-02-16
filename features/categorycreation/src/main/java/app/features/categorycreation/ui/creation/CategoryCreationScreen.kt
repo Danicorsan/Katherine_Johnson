@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -34,7 +34,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import app.base.ui.composables.BaseAlertDialog
+import app.base.ui.composables.MediumButton
 import app.base.ui.composables.MediumSpace
 import app.domain.invoicing.category.TypeCategory
 import app.features.categorycreation.R
@@ -42,7 +44,7 @@ import app.features.categorycreation.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryCreationScreen(
-    viewModel: CategoryCreationViewModel = CategoryCreationViewModel(),
+    viewModel: CategoryCreationViewModel,
     onClickNewCategory: () -> Unit,
     onClickBack: () -> Unit
 ) {
@@ -63,23 +65,32 @@ fun CategoryCreationScreen(
                 }
             )
         },
+        floatingActionButton = {
+            MediumButton(
+                onClick = {
+                    viewModel.createCategory()
+                    if (!viewModel.state.isError)
+                        onClickNewCategory()
+                },
+                Icons.Filled.Check,
+                "Ok"
+            )
+        },
         content = { innerPadding ->
             CategoryCreationContent(
                 viewModel = viewModel,
-                onClickNewCategory = onClickNewCategory,
                 modifier = Modifier.padding(innerPadding)
             )
-        }
-    )
+        },
+
+        )
 }
 
 @Composable
 fun CategoryCreationContent(
     viewModel: CategoryCreationViewModel,
-    onClickNewCategory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var showDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -89,7 +100,6 @@ fun CategoryCreationContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-
         // Input Fields
         CategoryInputFields(viewModel)
 
@@ -98,26 +108,11 @@ fun CategoryCreationContent(
         // Dropdown for TypeCategory
         EditableExposedDropdownMenuTypeCategory(viewModel)
 
-        // Action Buttons
-        ActionButtons(
-            onDiscardChanges = {
-                onClickNewCategory()
-                viewModel.onDiscardChanges()
-            },
-            onCreateCategory = {
-                viewModel.createCategory()
-                if (viewModel.state.isError) {
-                    showDialog = true
-                } else {
-                    onClickNewCategory()
-                }
-            }
-        )
     }
 
     // Error Dialog
-    if (showDialog) {
-        ErrorDialog { showDialog = false }
+    if (viewModel.state.showDialog) {
+        ErrorDialog { viewModel.dimissDialog() }
     }
 }
 
@@ -259,26 +254,6 @@ fun FungibleSelectionField(
 }
 
 @Composable
-private fun ActionButtons(
-    onDiscardChanges: () -> Unit,
-    onCreateCategory: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Button(onClick = onDiscardChanges) {
-            Text(stringResource(R.string.descartar_cambios))
-        }
-        Button(onClick = onCreateCategory) {
-            Text(stringResource(R.string.crear_categoria))
-        }
-    }
-}
-
-@Composable
 private fun ErrorDialog(onDismiss: () -> Unit) {
     BaseAlertDialog(
         title = stringResource(R.string.error_al_crear_la_categoria),
@@ -337,5 +312,5 @@ fun EditableExposedDropdownMenuTypeCategory(viewModel: CategoryCreationViewModel
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewCategoryCreationScreen() {
-    CategoryCreationScreen(onClickNewCategory = {}, onClickBack = {})
+    CategoryCreationScreen(hiltViewModel(), onClickNewCategory = {}, onClickBack = {})
 }

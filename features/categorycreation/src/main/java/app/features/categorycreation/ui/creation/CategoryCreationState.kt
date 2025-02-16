@@ -1,7 +1,6 @@
-package app.features.categorycreation.ui.base
+package app.features.categorycreation.ui.creation
 
 import app.domain.invoicing.category.TypeCategory
-import app.features.categorycreation.R
 import java.util.Date
 
 data class CategoryCreationState(
@@ -16,5 +15,6 @@ data class CategoryCreationState(
     val isNameError: Boolean = false,
     val isDescriptionError: Boolean = false,
     val isShortNameError: Boolean = false,
-    val shortNameErrorMessage: String? = null
+    val shortNameErrorMessage: String? = null,
+    val showDialog: Boolean = false
 )
