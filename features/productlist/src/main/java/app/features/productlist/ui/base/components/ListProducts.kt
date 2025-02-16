@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -37,12 +36,13 @@ import app.features.productlist.ui.base.composable.PutInRowWithSeparation
 fun ListProducts(productList: List<Product>, productListEvents: ProductListEvents) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = Specification.BOTTOMPADDINGVALUETOPRODUCTLIST)
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = PaddingValues(bottom = Specification.BOTTOMCONTENTPADDINGFORPRODUCTLIST)
     ) {
         items(productList) {
             ProductInformationCard(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(Specification.RELATIVEWITHDFORPRODUCTINFORMATIONCARD)
                     .padding(vertical = Separations.Small),
                 product = it,
                 onSeeProductDetails = productListEvents.seeProductDetails,
