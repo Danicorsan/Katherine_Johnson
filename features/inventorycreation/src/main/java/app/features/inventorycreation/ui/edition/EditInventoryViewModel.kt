@@ -3,11 +3,12 @@ package app.features.inventorycreation.ui.edition
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.inventory.InventoryIcon
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
@@ -16,7 +17,15 @@ class EditInventoryViewModel @Inject constructor(
     private val repository: InventoryRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(EditInventoryState())
+    private val _uiState = MutableStateFlow(EditInventoryState(
+        inventoryId = 0,
+        inventoryName = "",
+        inventoryDescription = "",
+        inventoryIcon = InventoryIcon.NONE,
+        isSaveButtonEnabled = false,
+        isLoading = false,
+        errorMessage = ""
+    ))
     val uiState: StateFlow<EditInventoryState> get() = _uiState
 
     fun loadInventory(inventoryId: Int) {
@@ -54,6 +63,11 @@ class EditInventoryViewModel @Inject constructor(
             isSaveButtonEnabled = _uiState.value.inventoryName.isNotBlank() && newDescription.isNotBlank()
         )
     }
+    fun onInventoryIconChange(newIcon: InventoryIcon) {
+        _uiState.value = _uiState.value.copy(
+            inventoryIcon = newIcon
+        )
+    }
 
     fun saveChanges() {
         val updatedInventory = Inventory(
@@ -62,7 +76,8 @@ class EditInventoryViewModel @Inject constructor(
             description = _uiState.value.inventoryDescription,
             items = emptyList(),
             createdAt = Date(),
-            updatedAt = Date()
+            updatedAt = Date(),
+            icon = _uiState.value.inventoryIcon
         )
 
         viewModelScope.launch {

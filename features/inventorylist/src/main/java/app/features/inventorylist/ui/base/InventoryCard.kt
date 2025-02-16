@@ -1,6 +1,5 @@
 package app.features.inventorylist.ui.base
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +14,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -26,14 +31,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.inventory.InventoryIcon
 import app.features.inventorylist.R
+
+fun getIconForInventoryIcon(inventoryIcon: InventoryIcon): ImageVector {
+    return when (inventoryIcon) {
+        InventoryIcon.ELECTRONICS -> Icons.Filled.Call
+        InventoryIcon.TECHNOLOGY -> Icons.Filled.Settings
+        InventoryIcon.MATERIALS -> Icons.Filled.ShoppingCart
+        InventoryIcon.SERVICES -> Icons.Filled.Notifications
+        InventoryIcon.WAREHOUSE -> Icons.Filled.Home
+        InventoryIcon.NONE -> Icons.Filled.Warning
+    }
+}
 
 @Composable
 fun InventoryCard(
@@ -42,6 +58,8 @@ fun InventoryCard(
     onEditClick: (Inventory) -> Unit,
     onDeleteClick: (Inventory) -> Unit
 ) {
+    val icon = getIconForInventoryIcon(inventory.icon)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,14 +75,13 @@ fun InventoryCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.almacen1),
-                contentDescription = null,
+            Icon(
+                imageVector = icon,
+                contentDescription = "",
                 modifier = Modifier
                     .size(100.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.primaryContainer)
             )
+
             Spacer(modifier = Modifier.width(16.dp))
             Column(
                 modifier = Modifier.weight(1f)

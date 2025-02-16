@@ -5,13 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -22,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.base.ui.composables.baseappbar.BaseAppBar
+import app.base.ui.composables.baseappbar.BaseAppBarIcons
+import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditInventoryScreen(
     viewModel: EditInventoryViewModel,
@@ -38,15 +34,13 @@ fun EditInventoryScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(stringResource(R.string.editar_inventario))
-                        },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            BaseAppBar(
+                BaseAppBarState(
+                    title = stringResource(R.string.editar_inventario),
+                    navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon {
+                        onNavigateBack()
                     }
-                }
+                )
             )
         },
         content = { paddingValues ->
@@ -71,6 +65,7 @@ fun EditInventoryScreen(
                     label = { Text(stringResource(R.string.nueva_descripcion_del_inventario)) },
                     modifier = Modifier.fillMaxWidth()
                 )
+
 
                 Button(
                     onClick = {
