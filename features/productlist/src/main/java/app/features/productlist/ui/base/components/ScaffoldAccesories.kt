@@ -31,12 +31,3 @@ fun ProductListAppBar(
     )
 }
 
-@Composable
-fun AddProductFloatingActionButton(productListEvents: ProductListEvents){
-    FloatingActionButton(
-        onClick = productListEvents.onAddProduct,
-    ) {
-        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_product_floatingbutton_description))
-    }
-}
-

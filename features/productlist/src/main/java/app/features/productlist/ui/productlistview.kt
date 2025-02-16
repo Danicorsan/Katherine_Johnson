@@ -3,6 +3,8 @@ package app.features.productlist.ui
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -10,12 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
+import app.base.ui.composables.MediumButton
 import app.features.productlist.R
 import app.features.productlist.ui.base.components.ListProducts
 import app.features.productlist.ui.base.ProductListEvents
 import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
-import app.features.productlist.ui.base.components.AddProductFloatingActionButton
 import app.features.productlist.ui.base.components.ProductListAppBar
 
 
@@ -40,7 +42,11 @@ private fun ProductListHost(
             titleText = stringResource(R.string.title_appbar),
             onLeavePage = productListEvents.onGoBack
         ) },
-        floatingActionButton = { AddProductFloatingActionButton(productListEvents) }
+        floatingActionButton = { MediumButton(
+            onClick = productListEvents.onAddProduct,
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(R.string.add_product_floatingbutton_description)
+        ) }
     ) { contentPadding ->
         when {
             productListState.isLoading -> LoadingUi()

@@ -10,5 +10,5 @@ object Specification {
     const val EDITTEXTMAXWIDTHFRACTION : Float = 90/100f
     const val OBLIGATORYFIELDSMARK : String = "*"
     val FLOATINGACTIONBUTTONICON : ImageVector = Icons.Default.Check
-    val TEXTFIELDSCOLUMNBOTTOMPADDING : Dp = 75.dp
+    val TEXTFIELDSCOLUMNBOTTOMPADDING : Dp = 85.dp
 }

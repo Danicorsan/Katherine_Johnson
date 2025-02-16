@@ -10,6 +10,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import app.base.ui.composables.MediumButton
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.Specification
 
@@ -30,12 +31,9 @@ fun ProductCreationAppbar(titleText : String, onLeavePage : () -> Unit){
 
 @Composable
 fun ProductCreationFloatingActionButton(onCreateProduct : () -> Unit){
-    FloatingActionButton(
+    MediumButton(
         onClick = onCreateProduct,
-    ){
-        Icon(
-            imageVector = Specification.FLOATINGACTIONBUTTONICON,
-            contentDescription = stringResource(R.string.on_create_product_icon)
-        )
-    }
+        imageVector = Specification.FLOATINGACTIONBUTTONICON,
+        contentDescription = stringResource(R.string.on_create_product_icon)
+    )
 }
