@@ -6,6 +6,8 @@ import app.features.productlist.ui.ProductListViewModel
 data class ProductListEvents(
     val onAddProduct : () -> Unit,
     val onDeleteProduct : (Product) -> Unit,
+    val onConfirmDeleteProduct : () -> Unit,
+    val onDissmissDeleteProduct : () -> Unit,
     val seeProductDetails : (Product) -> Unit,
     val onEditProduct : (Product) -> Unit,
     val onGoBack : () -> Unit
@@ -15,6 +17,8 @@ data class ProductListEvents(
             return ProductListEvents(
                 onAddProduct = viewModel::onCreateProduct,
                 onDeleteProduct = viewModel::onDeleteProduct,
+                onConfirmDeleteProduct = viewModel::onConfirmDeleteProduct,
+                onDissmissDeleteProduct = viewModel::onDissmissDeleteProduct,
                 seeProductDetails = viewModel::onSeeProductDetails,
                 onEditProduct = viewModel::onEditProduct,
                 onGoBack = viewModel::onGoBack

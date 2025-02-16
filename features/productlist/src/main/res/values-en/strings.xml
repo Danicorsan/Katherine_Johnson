@@ -6,4 +6,8 @@
     <string name="delete_iconbutton_description">Delete product</string>
     <string name="edit_product_iconbutton">Edit product</string>
     <string name="go_back_iconbutton">Go back to previous screen</string>
+    <string name="delete_alert_dialog_title">¿Are you sure?</string>
+    <string name="delete_alert_dialog_message">The product will be permanently deleted.</string>
+    <string name="delete_alert_dialog_confirmation_text">Yes</string>
+    <string name="delete_alert_dialog_dismiss_text">No</string>
 </resources>

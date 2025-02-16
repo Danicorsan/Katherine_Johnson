@@ -6,4 +6,8 @@
     <string name="product_image_description">Imagen del producto</string>
     <string name="edit_product_iconbutton">Editar producto</string>
     <string name="go_back_iconbutton">Volver a la anterior pantalla</string>
+    <string name="delete_alert_dialog_title">¿Estás seguro?</string>
+    <string name="delete_alert_dialog_message">El producto será eliminado de forma permanente.</string>
+    <string name="delete_alert_dialog_confirmation_text">Si</string>
+    <string name="delete_alert_dialog_dismiss_text">No</string>
 </resources>

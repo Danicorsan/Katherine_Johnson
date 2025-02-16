@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
+import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.MediumButton
 import app.features.productlist.R
 import app.features.productlist.ui.base.components.ListProducts
@@ -50,6 +51,14 @@ private fun ProductListHost(
     ) { contentPadding ->
         when {
             productListState.isLoading -> LoadingUi()
+            productListState.productIsBeingDeleted -> BaseAlertDialog(
+                title = stringResource(R.string.delete_alert_dialog_title),
+                text = stringResource(R.string.delete_alert_dialog_message),
+                confirmText = stringResource(R.string.delete_alert_dialog_confirmation_text),
+                dismissText = stringResource(R.string.delete_alert_dialog_dismiss_text),
+                onConfirm = productListEvents.onConfirmDeleteProduct,
+                onDismiss = productListEvents.onDissmissDeleteProduct
+            )
             else -> ProductListContent(
                 modifier = Modifier.padding(contentPadding),
                 productListState = productListState,
