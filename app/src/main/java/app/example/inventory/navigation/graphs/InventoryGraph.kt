@@ -7,9 +7,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.ui.creation.CreateInventoryScreen
+import app.features.inventorycreation.ui.creation.CreateInventoryViewModel
 import app.features.inventorycreation.ui.edition.EditInventoryScreen
 import app.features.inventorycreation.ui.edition.EditInventoryViewModel
 import app.features.inventorydetail.ui.InventoryDetailScreen
+import app.features.inventorydetail.ui.InventoryDetailViewModel
 import app.features.inventorylist.ui.InventoryListScreen
 import app.features.inventorylist.ui.InventoryListViewModel
 
@@ -66,7 +68,7 @@ private fun NavGraphBuilder.inventoryCreationRoute(navController: NavController)
             onBackClick = {
                 navController.popBackStack()
             },
-            inventoryListViewModel = InventoryListViewModel(inventoryRepository)
+            viewModel = CreateInventoryViewModel(inventoryRepository)
         )
     }
 }
@@ -100,7 +102,7 @@ private fun NavGraphBuilder.inventoryDetailsRoute(navController: NavController) 
             inventoryId = inventoryId,
             onNavigateBack = {
                 navController.popBackStack()
-            }
+            },
         )
     }
 }

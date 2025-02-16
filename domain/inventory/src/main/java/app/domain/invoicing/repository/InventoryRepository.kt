@@ -11,10 +11,13 @@ object InventoryRepository {
     fun getInventoryById(id: Int): Inventory? =
         dataSet.find { it.id == id }
 
-    fun addInventory(inventory: Inventory): Boolean {
-        if (dataSet.any { it.id == inventory.id }) return false
-        dataSet.add(inventory)
-        return true
+    private var nextId = dataSet.maxByOrNull { it.id }?.id ?: 0
+
+    fun addInventory(inventory: Inventory): Int {
+        if (dataSet.any { it.id == inventory.id }) throw Exception("Inventory with same ID already exists")
+        nextId++
+        dataSet.add(inventory.copy(id = nextId))
+        return nextId
     }
 
     fun updateInventory(updatedInventory: Inventory): Boolean {
