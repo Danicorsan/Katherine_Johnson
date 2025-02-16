@@ -65,7 +65,7 @@ class EditInventoryViewModel @Inject constructor(
     }
     fun onInventoryIconChange(newIcon: InventoryIcon) {
         _uiState.value = _uiState.value.copy(
-            inventoryIcon = newIcon
+            inventoryIcon = newIcon,
         )
     }
 
