@@ -9,4 +9,9 @@
     <string name="eliminar_inventario">Eliminar Inventario</string>
     <string name="seguro_que_quieres_eliminar_el_inventario">¿Seguro que quieres eliminar el inventario?</string>
     <string name="inventario_eliminado">Se ha eliminado el inventario con exito</string>
+    <string name="si_quiero_eliminarlo">Sí, quiero eliminarlo</string>
+    <string name="no_no_quiero_eliminarlo">No, no quiero eliminarlo</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="no_hay_inventarios">No hay inventarios</string>
+    <string name="añadir_inventario">Añadir inventario</string>
 </resources>

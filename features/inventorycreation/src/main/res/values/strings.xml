@@ -12,4 +12,10 @@
     <string name="volver">Volver\n</string>
     <string name="inventario_creado_exito">Inventario creado con éxito</string>
     <string name="aceptar">OK</string>
+    <string name="ninguno">Ninguno</string>
+    <string name="electronica">Electrónica</string>
+    <string name="tecnologia">Tecnología</string>
+    <string name="materiales">Materiales</string>
+    <string name="servicios">Servicios</string>
+    <string name="almacen">Almacén</string>
 </resources>
