@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +30,7 @@ import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorylist.R
 import app.features.inventorylist.ui.base.InventoryCard
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,10 +43,12 @@ fun InventoryListScreen(
 ) {
     // Listar
     val state = viewModel.uiState
-    val inventories = state.inventories
+    val inventories = state.success
+    var loading = state.loading
 
     // Eliminar
     var showDialog by remember { mutableStateOf(false) }
+    var showConfirmDialog by remember { mutableStateOf(false) }
     var selectedInventory: Inventory? by remember { mutableStateOf(null) }
     val onDeleteInventoryClick: (Inventory) -> Unit = { inventory ->
         selectedInventory = inventory
@@ -77,9 +81,8 @@ fun InventoryListScreen(
             )
         },
         content = { paddingValues ->
-            // Mostrar LoadingUI cuando isLoading es true
-            if (state.isLoading) {
-                LoadingUi() // Esto se mostrará mientras el estado sea de carga
+            if (state.loading) {
+                LoadingUi()
             } else {
                 if (inventories.isEmpty()) {
                     Text(
@@ -106,7 +109,12 @@ fun InventoryListScreen(
             }
         }
     )
-    if (showDialog) {
+    LaunchedEffect(Unit) {
+        loading = true
+        delay(1500)
+        loading = false
+    }
+    if (showDialog && !loading) {
         selectedInventory?.let { inventory ->
             BaseAlertDialog(
                 title = stringResource(R.string.eliminar_inventario),
@@ -114,12 +122,24 @@ fun InventoryListScreen(
                 onDismiss = { showDialog = false },
                 onConfirm = {
                     showDialog = false
+                    loading = true
                     viewModel.deleteInventory(inventory)
+                    showConfirmDialog = true
+
                 },
                 confirmText = "Sí, quiero eliminarlo",
                 dismissText = "No, no quiero eliminarlo"
             )
         }
+    }
+    if (showConfirmDialog && !loading) {
+        BaseAlertDialog(
+            title = stringResource(R.string.eliminar_inventario),
+            text = stringResource(R.string.inventario_eliminado),
+            onConfirm = { showConfirmDialog = false },
+            confirmText = "Aceptar",
+            onDismiss = {}
+        )
     }
 }
 
