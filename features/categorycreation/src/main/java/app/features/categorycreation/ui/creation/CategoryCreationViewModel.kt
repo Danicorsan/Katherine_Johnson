@@ -4,10 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.TypeCategory
 import app.domain.invoicing.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
@@ -19,27 +21,40 @@ class CategoryCreationViewModel @Inject constructor(
     var state by mutableStateOf(CategoryCreationState())
         private set
 
+    /**
+     * Create category
+     *
+     */
     fun createCategory() {
-        if (validateFields()) {
-            val newCategory = Category(
-                id = repository.getAllCategories().size + 1,
-                name = state.name,
-                shortName = state.shortName,
-                description = state.description,
-                image = state.image,
-                createdAt = Date(),
-                typeCategory = state.typeCategory,
-                fungible = state.fungible
-            )
-            repository.addCategory(newCategory)
-            state = CategoryCreationState()
-            state = state.copy(isError = false)
-            println("Categoría creada: $newCategory")
-        } else {
-            state = state.copy(isError = true, showDialog = true)
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            if (validateFields()) {
+                val newCategory = Category(
+                    id = repository.getAllCategories().size + 1,
+                    name = state.name,
+                    shortName = state.shortName,
+                    description = state.description,
+                    image = state.image,
+                    createdAt = Date(),
+                    typeCategory = state.typeCategory,
+                    fungible = state.fungible
+                )
+                repository.addCategory(newCategory)
+                state = CategoryCreationState()
+                state = state.copy(isError = false)
+                println("Categoría creada: $newCategory")
+            } else {
+                state = state.copy(isError = true, showDialog = true)
+            }
+            state = state.copy(isLoading = false)
         }
     }
 
+    /**
+     * Validate fields
+     *
+     * @return
+     */
     private fun validateFields(): Boolean {
         var hasError = false
 
@@ -67,6 +82,11 @@ class CategoryCreationViewModel @Inject constructor(
         return !hasError
     }
 
+    /**
+     * On name change
+     *
+     * @param newName
+     */
     fun onNameChange(newName: String) {
         state = state.copy(isNameError = false, isError = false)
 
@@ -79,6 +99,11 @@ class CategoryCreationViewModel @Inject constructor(
         state = state.copy(name = newName)
     }
 
+    /**
+     * On description change
+     *
+     * @param newDescription
+     */
     fun onDescriptionChange(newDescription: String) {
         state = state.copy(isDescriptionError = false, isError = false)
 
@@ -91,6 +116,11 @@ class CategoryCreationViewModel @Inject constructor(
         state = state.copy(description = newDescription)
     }
 
+    /**
+     * On short name change
+     *
+     * @param shortName
+     */
     fun onShortNameChange(shortName: String) {
         state = state.copy(isShortNameError = false, isError = false, shortNameErrorMessage = null)
 
@@ -115,22 +145,45 @@ class CategoryCreationViewModel @Inject constructor(
         state = state.copy(shortName = shortName)
     }
 
+    /**
+     * On image change
+     *
+     * @param image
+     */
     fun onImageChange(image: String) {
         state = state.copy(image = image)
     }
 
+    /**
+     * On type category change
+     *
+     * @param typeCategory
+     */
     fun onTypeCategoryChange(typeCategory: TypeCategory) {
         state = state.copy(typeCategory = typeCategory)
     }
 
+    /**
+     * On discard changes
+     *
+     */
     fun onDiscardChanges() {
         state = CategoryCreationState()
     }
 
+    /**
+     * On fungible change
+     *
+     * @param fungible
+     */
     fun onFungibleChange(fungible: Boolean) {
         state = state.copy(fungible = fungible)
     }
 
+    /**
+     * Dimiss dialog
+     *
+     */
     fun dimissDialog() {
         state = state.copy(showDialog = false)
     }

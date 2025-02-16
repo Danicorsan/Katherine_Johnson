@@ -15,6 +15,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Normal button
+ *
+ * @param text
+ * @param onClick
+ * @param modifier
+ * @receiver
+ */
 @Composable
 fun NormalButton(
     text: String,
@@ -35,12 +43,20 @@ fun NormalButton(
     }
 }
 
+/**
+ * Medium button
+ *
+ * @param onClick
+ * @param imageVector
+ * @param contentDescription
+ * @receiver
+ */
 @Composable
 fun MediumButton(
     onClick: () -> Unit,
     imageVector: ImageVector,
-    contentDescription:String
-    ){
+    contentDescription: String
+) {
     FloatingActionButton(
         modifier = Modifier.size(75.dp),
         onClick = onClick,

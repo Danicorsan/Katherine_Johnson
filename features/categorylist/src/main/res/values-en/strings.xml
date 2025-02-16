@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add">Add</string>
-    <string name="icono_de_categoria">Icono de categoría</string>
+    <string name="icono_de_categoria">Icon of category</string>
+    <string name="estas_seguro_que_quieres_eliminar_la_categoria">Are you sure you want to delete the category?</string>
+    <string name="si_estoy_seguro">Yes, Im sure</string>
+    <string name="no_volver">No, go back</string>
+    <string name="borrar_categoria">Delete Category</string>
 </resources>

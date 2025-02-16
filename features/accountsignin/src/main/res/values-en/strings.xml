@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bienvenido">¡Welcome!</string>
+    <string name="bienvenido">Welcome!</string>
     <string name="correo">Email</string>
     <string name="contrasenia">Password</string>
     <string name="iniciar_sesion">Login</string>
-    <string name="no_tienes_cuenta">Havent got account</string>
-    <string name="crear_cuenta">Sign In</string>
+    <string name="no_tienes_cuenta">Do not have an account</string>
+    <string name="crear_cuenta">Create your account</string>
     <string name="error">Error</string>
-    <string name="hay_un_problema_con_las_credenciales">Hay un problema con las credenciales</string>
-    <string name="ok">Ok</string>
+    <string name="hay_un_problema_con_las_credenciales">There is an issue with the credentials</string>
+    <string name="ok">OK</string>
+    <string name="los_campos_no_pueden_estar_vacios">Fields cannot be empty</string>
+    <string name="credenciales_incorrectas">Incorrect credentials</string>
+    <string name="error_desconocido">Unknown error</string>
 </resources>

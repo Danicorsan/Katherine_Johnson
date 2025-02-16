@@ -8,4 +8,13 @@
     <string name="registrarse">Registrarse</string>
     <string name="ya_tienes_cuenta">¿Ya tienes cuenta?</string>
     <string name="inicia_sesion">Inicia sesión</string>
+    <string name="formato_de_nombre_incorrecto">Formato de nombre incorrecto</string>
+    <string name="formato_de_apellidos_incorrecto">Formato de apellidos incorrecto</string>
+    <string name="formato_de_email_incorrecto">Formato de email incorrecto</string>
+    <string name="error_contrasenia_caracteres">Debe tener 8 caracteres, 1 mayúscula, 1 número y 1 especial.</string>
+    <string name="el_nombre_y_los_apellidos_no_pueden_estar_vacios">El nombre y los apellidos no pueden estar vacíos</string>
+    <string name="ya_existe_una_cuenta_con_el_email_proporcionado">Ya existe una cuenta con el email proporcionado</string>
+    <string name="error_desconocido">Error desconocido</string>
+    <string name="error">Error</string>
+    <string name="hay_un_problema_con_las_credenciales">Hay un problema con las credenciales</string>
 </resources>

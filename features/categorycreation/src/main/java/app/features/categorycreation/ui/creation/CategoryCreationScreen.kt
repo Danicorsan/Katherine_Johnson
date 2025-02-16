@@ -2,46 +2,42 @@ package app.features.categorycreation.ui.creation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import app.base.ui.composables.BaseAlertDialog
+import app.base.ui.components.LoadingUi
 import app.base.ui.composables.MediumButton
 import app.base.ui.composables.MediumSpace
-import app.domain.invoicing.category.TypeCategory
+import app.base.ui.composables.baseappbar.BaseAppBar
+import app.base.ui.composables.baseappbar.BaseAppBarIcons
+import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.features.categorycreation.R
+import app.features.categorycreation.ui.base.EditableExposedDropdownMenuTypeCategory
+import app.features.categorycreation.ui.base.ErrorDialog
+import app.features.categorycreation.ui.base.FungibleSelectionField
+import app.features.categorycreation.ui.base.InputField
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Category creation screen
+ *
+ * @param viewModel
+ * @param onClickNewCategory
+ * @param onClickBack
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun CategoryCreationScreen(
     viewModel: CategoryCreationViewModel,
@@ -50,19 +46,16 @@ fun CategoryCreationScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(R.string.crear_categoria)) },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        onClickBack()
-                        viewModel.onDiscardChanges()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.volver)
-                        )
-                    }
-                }
+            BaseAppBar(
+                BaseAppBarState(
+                    title = stringResource(R.string.crear_categoria),
+                    navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon(
+                        onClick = {
+                            onClickBack()
+                            viewModel.onDiscardChanges()
+                        }
+                    )
+                )
             )
         },
         floatingActionButton = {
@@ -73,25 +66,35 @@ fun CategoryCreationScreen(
                         onClickNewCategory()
                 },
                 Icons.Filled.Check,
-                "Ok"
+                stringResource(app.base.ui.R.string.ok_button)
             )
         },
         content = { innerPadding ->
-            CategoryCreationContent(
-                viewModel = viewModel,
-                modifier = Modifier.padding(innerPadding)
-            )
+            if (viewModel.state.isLoading) {
+                LoadingUi()
+            } else {
+                CategoryCreationContent(
+                    viewModel = viewModel,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+
         },
 
         )
 }
 
+/**
+ * Category creation content
+ *
+ * @param viewModel
+ * @param modifier
+ */
 @Composable
 fun CategoryCreationContent(
     viewModel: CategoryCreationViewModel,
     modifier: Modifier = Modifier
 ) {
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -117,6 +120,11 @@ fun CategoryCreationContent(
 }
 
 
+/**
+ * Category input fields
+ *
+ * @param viewModel
+ */
 @Composable
 private fun CategoryInputFields(viewModel: CategoryCreationViewModel) {
     val state = viewModel.state
@@ -169,7 +177,6 @@ private fun CategoryInputFields(viewModel: CategoryCreationViewModel) {
         }
     )
 
-    //TODO Implementar imagen (pregunté a Lourdes y me dijo que de momento no lo implementase)
     OutlinedTextField(
         value = state.image ?: "",
         onValueChange = viewModel::onImageChange,
@@ -187,127 +194,6 @@ private fun CategoryInputFields(viewModel: CategoryCreationViewModel) {
 
 }
 
-@Composable
-private fun InputField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    isError: Boolean,
-    supportingText: @Composable () -> Unit = {},
-    maxLines: Int = 2
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        modifier = Modifier.fillMaxWidth(),
-        maxLines = maxLines,
-        isError = isError,
-        supportingText = supportingText
-    )
-}
-
-@Composable
-fun FungibleSelectionField(
-    isFungible: Boolean?,
-    onSelectionChange: (Boolean) -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        MediumSpace()
-        Text(
-            text = stringResource(R.string.fungible),
-            style = MaterialTheme.typography.titleMedium,
-            color = Color.Gray,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = isFungible == true,
-                    onClick = { onSelectionChange(true) }
-                )
-                Text(
-                    text = stringResource(R.string.si),
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = isFungible == false,
-                    onClick = { onSelectionChange(false) }
-                )
-                Text(
-                    text = stringResource(R.string.no),
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ErrorDialog(onDismiss: () -> Unit) {
-    BaseAlertDialog(
-        title = stringResource(R.string.error_al_crear_la_categoria),
-        text = stringResource(R.string.revisar_cambios_dialog),
-        confirmText = stringResource(R.string.aceptar),
-        onConfirm = onDismiss,
-        onDismiss = onDismiss
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EditableExposedDropdownMenuTypeCategory(viewModel: CategoryCreationViewModel) {
-    val options = TypeCategory.entries.map { it.name }
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options.first()) }
-
-    fun String.toEnum(): TypeCategory {
-        return TypeCategory.entries.firstOrNull { it.name == this } ?: TypeCategory.BASICOS
-    }
-
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = it }
-    ) {
-        TextField(
-            readOnly = true,
-            value = selectedOptionText,
-            onValueChange = {},
-            label = { Text(stringResource(R.string.selecciona_una_categoria)) },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-            },
-            modifier = Modifier
-                .menuAnchor(type = MenuAnchorType.PrimaryNotEditable, enabled = true)
-                .fillMaxWidth()
-        )
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { selectionOption ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedOptionText = selectionOption
-                        viewModel.onTypeCategoryChange(selectionOption.toEnum())
-                        expanded = false
-                    },
-                    text = { Text(selectionOption) }
-                )
-            }
-        }
-    }
-}
 
 @Preview(showSystemUi = true)
 @Composable

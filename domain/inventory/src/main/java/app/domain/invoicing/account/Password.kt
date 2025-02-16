@@ -1,5 +1,9 @@
 package app.domain.invoicing.account
 
-data class Password(val value: String) {
-
-}
+/**
+ * Password
+ *
+ * @property value
+ * @constructor Create empty Password
+ */
+data class Password(val value: String)

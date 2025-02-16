@@ -1,4 +1,9 @@
 package app.domain.invoicing.account
 
-data class Email(val value:String) {
-}
+/**
+ * Email
+ *
+ * @property value
+ * @constructor Create empty Email
+ */
+data class Email(val value:String)

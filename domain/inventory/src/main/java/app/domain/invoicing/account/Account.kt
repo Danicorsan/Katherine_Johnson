@@ -1,5 +1,17 @@
 package app.domain.invoicing.account
 
+/**
+ * Account
+ *
+ * @property id
+ * @property email
+ * @property password
+ * @property username
+ * @property name
+ * @property surname
+ * @property birthdate
+ * @constructor Create empty Account
+ */
 data class Account(
     val id:Int,
     val email: Email,

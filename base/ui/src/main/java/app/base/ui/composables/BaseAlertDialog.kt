@@ -5,6 +5,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 
+/**
+ * Base alert dialog
+ *
+ * @param title
+ * @param text
+ * @param confirmText
+ * @param dismissText
+ * @param onConfirm
+ * @param onDismiss
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun BaseAlertDialog(
     title: String? = null,

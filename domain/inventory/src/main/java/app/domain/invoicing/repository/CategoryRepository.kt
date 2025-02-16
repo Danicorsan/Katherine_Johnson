@@ -7,6 +7,11 @@ import java.util.Date
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
+/**
+ * Category repository
+ *
+ * @constructor Create empty Category repository
+ */
 object CategoryRepository {
 
     // Simulación de un dataset en memoria
@@ -52,22 +57,41 @@ object CategoryRepository {
         )
     }
 
-    // Método para obtener todas las categorías
+    /**
+     * Get all categories
+     *
+     * @return
+     */
     fun getAllCategories(): List<Category> = dataSet
 
-    // Método para obtener una categoría por ID
+    /**
+     * Get category by id
+     *
+     * @param id
+     * @return
+     */
     fun getCategoryById(id: Int): Category? {
         return dataSet.find { it.id == id }
     }
 
-    // Método para agregar una nueva categoría
+    /**
+     * Add category
+     *
+     * @param category
+     * @return
+     */
     fun addCategory(category: Category): Boolean {
         if (dataSet.any { it.id == category.id }) return false // ID duplicado
         dataSet.add(category)
         return true
     }
 
-    // Método para actualizar una categoría existente
+    /**
+     * Update category
+     *
+     * @param updatedCategory
+     * @return
+     */
     fun updateCategory(updatedCategory: Category): Boolean {
         val index = dataSet.indexOfFirst { it.id == updatedCategory.id }
         if (index == -1) return false
@@ -75,12 +99,22 @@ object CategoryRepository {
         return true
     }
 
-    // Método para eliminar una categoría por ID
+    /**
+     * Delete category
+     *
+     * @param id
+     * @return
+     */
     fun deleteCategory(id: Int): Boolean {
         return dataSet.removeIf { it.id == id }
     }
 
-
+    /**
+     * Image to byte array
+     *
+     * @param imagePath
+     * @return
+     */
     private fun imageToByteArray(imagePath: String): ByteArray {
         val image = ImageIcon(imagePath).image
         val bufferedImage = BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB)

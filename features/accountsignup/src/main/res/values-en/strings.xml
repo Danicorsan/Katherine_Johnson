@@ -6,6 +6,15 @@
     <string name="correo">Email</string>
     <string name="contrasenia">Password</string>
     <string name="registrarse">Sign Up</string>
-    <string name="ya_tienes_cuenta">¿Have got account?</string>
-    <string name="inicia_sesion">Sign in</string>
+    <string name="ya_tienes_cuenta">Already have an account?</string>
+    <string name="inicia_sesion">Sign In</string>
+    <string name="formato_de_nombre_incorrecto">Invalid name format</string>
+    <string name="formato_de_apellidos_incorrecto">Invalid surname format</string>
+    <string name="formato_de_email_incorrecto">Invalid email format</string>
+    <string name="error_contrasenia_caracteres">Must have 8 characters, 1 uppercase letter, 1 number, and 1 special character.</string>
+    <string name="el_nombre_y_los_apellidos_no_pueden_estar_vacios">Name and surname cannot be empty</string>
+    <string name="ya_existe_una_cuenta_con_el_email_proporcionado">An account with the provided email already exists</string>
+    <string name="error_desconocido">Unknown error</string>
+    <string name="error">Error</string>
+    <string name="hay_un_problema_con_las_credenciales">There is an issue with the credentials</string>
 </resources>
