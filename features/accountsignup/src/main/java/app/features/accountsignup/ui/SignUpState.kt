@@ -1,5 +1,26 @@
 package app.features.accountsignup.ui
 
+/**
+ * Account register state
+ *
+ * @property userName
+ * @property userSurname
+ * @property email
+ * @property password
+ * @property nameUserErrorFormat
+ * @property userErrorFormat
+ * @property emailErrorFormat
+ * @property passwordErrorFormat
+ * @property isNameError
+ * @property isSurnameError
+ * @property isEmailError
+ * @property isPasswordError
+ * @property accountExistsError
+ * @property serverError
+ * @property success
+ * @property isLoading
+ * @constructor Create empty Account register state
+ */
 data class AccountRegisterState(
     val userName: String = "",
     val userSurname: String = "",

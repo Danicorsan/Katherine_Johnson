@@ -9,5 +9,8 @@
     <string name="crear_cuenta">Crear cuenta</string>
     <string name="error">Error</string>
     <string name="hay_un_problema_con_las_credenciales">Hay un problema con las credenciales</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+    <string name="los_campos_no_pueden_estar_vacios">Los campos no pueden estar vacíos</string>
+    <string name="credenciales_incorrectas">Credenciales incorrectas</string>
+    <string name="error_desconocido">Error desconocido</string>
 </resources>

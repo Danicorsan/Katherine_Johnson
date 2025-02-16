@@ -23,18 +23,31 @@ class CategoryListViewModel @Inject constructor(
         start()
     }
 
+    /**
+     * Start
+     *
+     */
     private fun start() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            delay(5000)
+            delay(1000)
             state = state.copy(categories = CategoryRepository.getAllCategories(), isLoading = false)
         }
     }
 
+    /**
+     * Request delete category
+     *
+     * @param id
+     */
     fun requestDeleteCategory(id: Int) {
         state = state.copy(categoryToDelete = id, isDeleteDialogVisible = true)
     }
 
+    /**
+     * Confirm delete category
+     *
+     */
     fun confirmDeleteCategory() {
         state.categoryToDelete?.let { id ->
             repository.deleteCategory(id)
@@ -46,6 +59,10 @@ class CategoryListViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Cancel delete category
+     *
+     */
     fun cancelDeleteCategory() {
         state = state.copy(isDeleteDialogVisible = false, categoryToDelete = null)
     }

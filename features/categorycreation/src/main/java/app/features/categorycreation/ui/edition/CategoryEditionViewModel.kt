@@ -4,9 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import app.domain.invoicing.category.TypeCategory
+import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,86 +19,98 @@ class CategoryEditionViewModel @Inject constructor(
     var state by mutableStateOf(CategoryEditionState())
         private set
 
+    /**
+     * Load category
+     *
+     * @param id
+     */
     fun loadCategory(id: Int) {
-        val category = repository.getCategoryById(id)
-        state = if (category != null) {
-            CategoryEditionState(category = category)
-        } else {
-            state.copy(notFoundError = true)
-        }
-    }
-
-    fun confirmChanges() {
-        if (validateFields()) {
-            val updatedCategory = state.category?.copy(
-                name = state.name,
-                shortName = state.shortName,
-                description = state.description,
-                image = state.image,
-                typeCategory = state.typeCategory,
-                fungible = state.fungible
-            )
-            if (updatedCategory != null) {
-                repository.updateCategory(updatedCategory)
-                println("Categoria supuestamente actualizada: $updatedCategory")
-                state = state.copy(isError = false)
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            delay(1000)
+            val category = repository.getCategoryById(id)
+            state = if (category != null) {
+                CategoryEditionState(
+                    category = category,
+                    name = category.name,
+                    shortName = category.shortName,
+                    description = category.description,
+                    typeCategory = category.typeCategory
+                )
+            } else {
+                state.copy(notFoundError = true)
             }
-        } else {
-            state = state.copy(isError = true, showDialog = true)
+            state = state.copy(isLoading = false)
+        }
+
+    }
+
+    /**
+     * On event
+     *
+     * @param event
+     */
+    fun onEvent(event: CategoryEditionEvent) {
+        when (event) {
+            is CategoryEditionEvent.OnNameChange -> state =
+                state.copy(name = event.name, isNameError = event.name.isEmpty())
+
+            is CategoryEditionEvent.OnShortNameChange -> state = state.copy(
+                shortName = event.shortName,
+                isShortNameError = event.shortName.isEmpty()
+            )
+
+            is CategoryEditionEvent.OnDescriptionChange -> state = state.copy(
+                description = event.description,
+                isDescriptionError = event.description.isEmpty()
+            )
+
+            is CategoryEditionEvent.OnTypeCategoryChange -> state =
+                state.copy(typeCategory = event.typeCategory)
+
+            is CategoryEditionEvent.ConfirmChanges -> confirmChanges()
         }
     }
 
+    /**
+     * Confirm changes
+     *
+     */
+    private fun confirmChanges() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            if (validateFields()) {
+                state.category?.copy(
+                    name = state.name,
+                    shortName = state.shortName,
+                    description = state.description,
+                    typeCategory = state.typeCategory
+                )?.let {
+                    repository.updateCategory(it)
+                    state = state.copy(isError = false)
+                }
+            } else {
+                state = state.copy(isError = true, showDialog = true)
+            }
+            state = state.copy(isLoading = false)
+        }
+
+    }
+
+    /**
+     * Validate fields
+     *
+     * @return
+     */
     private fun validateFields(): Boolean {
-        var hasError = false
-
-        // Validación de nombre
-        if (state.name.isEmpty() || repository.getAllCategories()
-                .any { it.name == state.name && it.id != state.category?.id }
-        ) {
-            state = state.copy(isNameError = true)
-            hasError = true
-        }
-
-        // Validación de descripción
-        if (state.description.isEmpty()) {
-            state = state.copy(isDescriptionError = true)
-            hasError = true
-        }
-
-        // Validación de nombre corto
-        val shortNameRegex = Regex("^[a-zA-Z0-9]{3,}\$") // Validación de nombre corto con regex
-        if (!shortNameRegex.matches(state.shortName) || repository.getAllCategories()
-                .any { it.shortName == state.shortName && it.id != state.category?.id }
-        ) {
-            state = state.copy(isShortNameError = true)
-            hasError = true
-        }
-
-        state = state.copy(isError = hasError)
+        val hasError =
+            state.name.isEmpty() || state.shortName.isEmpty() || state.description.isEmpty()
+        state = state.copy(
+            isNameError = state.name.isEmpty(),
+            isShortNameError = state.shortName.isEmpty(),
+            isDescriptionError = state.description.isEmpty(),
+            isError = hasError
+        )
         return !hasError
-    }
-
-    fun onNameChange(newName: String) {
-        state = state.copy(name = newName, isNameError = false)
-    }
-
-    fun onDescriptionChange(newDescription: String) {
-        state = state.copy(description = newDescription, isDescriptionError = false)
-    }
-
-    fun onShortNameChange(shortName: String) {
-        state = state.copy(shortName = shortName, isShortNameError = false)
-    }
-
-    fun onTypeCategoryChange(typeCategory: TypeCategory) {
-        state = state.copy(typeCategory = typeCategory)
-    }
-
-    fun onFungibleChange(fungible: Boolean) {
-        state = state.copy(fungible = fungible)
-    }
-
-    fun dismissDialog() {
-        state = state.copy(showDialog = false)
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="creation_product_title_appbar">Crear Producto</string>
-    <string name="product_edition_title_appbar">Editar producto</string>
+    <string name="title_appbar_product_creation">Crear producto</string>
+    <string name="title_appbar_product_edition">Editar producto</string>
     <string name="name_label">Nombre</string>
     <string name="short_name_label">Nombre corto</string>
     <string name="description_label">Descripcion</string>
@@ -21,11 +21,10 @@
     <string name="minimun_stock_label">Cantidad mínima</string>
     <string name="labels_label">Etiquetas</string>
     <string name="notes_label">Notas</string>
-    <string name="accept_button_label">Aceptar</string>
     <string name="code_label">Código</string>
     <string name="tags_label">Etiquetas</string>
     <string name="no_selected_option">No seleccionado</string>
-    <string name="on_go_previus_screen_iconButton">Volver a la pantalla anterior</string>
+    <string name="on_go_previus_screen_icon">Volver a la pantalla anterior</string>
     <string name="cant_register_alert_dialog_title">Error</string>
     <string name="cant_register_alert_dialog_message">No se ha podido registrar el producto</string>
     <string name="empty_fields_alert_dialog_title">Campos vacios</string>
@@ -34,4 +33,7 @@
     <string name="product_registered_successful_alert_dialog_title">¡Éxito!</string>
     <string name="product_registered_successful_alert_dialog_message">Se ha registrado el producto</string>
     <string name="message_for_obligatory_fields">Los campos marcados con %s son obligatorios</string>
+    <string name="on_create_product_icon">Crear el nuevo producto</string>
+    <string name="cant_update_alert_dialog_message">No se ha podido actualizar el producto</string>
+    <string name="product_updated_successful_alert_dialog_message">El producto ha sido actualizado</string>
 </resources>

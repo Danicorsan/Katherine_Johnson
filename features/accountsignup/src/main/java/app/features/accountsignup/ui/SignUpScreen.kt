@@ -25,6 +25,15 @@ import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.CampoFormulario
 import app.features.accountsignup.R
 
+/**
+ * Sign up screen
+ *
+ * @param viewModel
+ * @param onRegisterSuccess
+ * @param onNavigateToLogin
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun SignUpScreen(
     viewModel: RegisterViewModel,
@@ -36,8 +45,8 @@ fun SignUpScreen(
     //Bandera para mostrar dialogo
     if (showErrorDialog) {
         BaseAlertDialog(
-            title = "Error",
-            text = "Hay un problema con las credenciales",
+            title = stringResource(R.string.error),
+            text = stringResource(R.string.hay_un_problema_con_las_credenciales),
             confirmText = "Ok",
             onConfirm = { showErrorDialog = false },
             onDismiss = { showErrorDialog = false }
@@ -56,6 +65,15 @@ fun SignUpScreen(
     )
 }
 
+/**
+ * Sign up host
+ *
+ * @param viewModel
+ * @param onRegister
+ * @param onNavigateToLogin
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun SignUpHost(
     viewModel: RegisterViewModel,
@@ -70,6 +88,16 @@ fun SignUpHost(
     )
 }
 
+/**
+ * Sign up content
+ *
+ * @param viewModel
+ * @param onRegister
+ * @param onLoginAccount
+ * @param isLoading
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun SignUpContent(
     viewModel: RegisterViewModel,
@@ -85,7 +113,10 @@ fun SignUpContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        Text(stringResource(R.string.crea_tu_cuenta), style = MaterialTheme.typography.headlineSmall)
+        Text(
+            stringResource(R.string.crea_tu_cuenta),
+            style = MaterialTheme.typography.headlineSmall
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
         CampoFormulario(

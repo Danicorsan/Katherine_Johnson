@@ -7,4 +7,8 @@
     <string name="nueva_categoria">Nueva Categoría</string>
     <string name="add">Add</string>
     <string name="icono_de_categoria">Icono de categoría</string>
+    <string name="estas_seguro_que_quieres_eliminar_la_categoria">¿Estás seguro que quieres eliminar la categoría?</string>
+    <string name="si_estoy_seguro">Sí, estoy seguro</string>
+    <string name="no_volver">No, volver</string>
+    <string name="borrar_categoria">Borrar Categoría</string>
 </resources>

@@ -8,8 +8,10 @@ data class ProductViewState(
     val errorDataState: ErrorDataState = ErrorDataState(),
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
+    val sectionsList : Iterable<String> = emptyList(),
     val productRegisterSuccessful : Boolean = false,
-    val sectionsList : Iterable<String> = emptyList()
+    val cantRegisterProduct : Boolean = false,
+    val productIsBeingAdded : Boolean = false
 )
 
 data class InputDataState(
@@ -35,7 +37,6 @@ data class InputDataState(
 
 data class ErrorDataState(
     val shortNameError : Boolean = false,
-    val cantRegisterProduct : Boolean = false,
     val emptyFields : Boolean = false,
     val priceError: Boolean = false,
     val stockError : Boolean = false

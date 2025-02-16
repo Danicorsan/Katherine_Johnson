@@ -25,4 +25,5 @@
     <string name="si">Yes</string>
     <string name="no">No</string>
     <string name="ya_hay_una_categoria_con_ese_nombre_corto">There is already a category with that shortname</string>
+    <string name="elige_la_categoria">Choose the category:</string>
 </resources>

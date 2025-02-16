@@ -3,6 +3,7 @@ package app.domain.invoicing.repository
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
+import app.domain.invoicing.product.ProductException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,7 +25,7 @@ object ProductRepository {
      */
     fun getAllProducts() : BaseResult<Flow<Map<Int, Product>>> {
         val allProductFlow = flow {
-            delay(2000)
+            delay(1000)
             emit(productWarehouse)
         }
         return BaseResult.Success(allProductFlow)
@@ -44,10 +45,27 @@ object ProductRepository {
             it.value.category.id == category.id
         }.values.toList()
         val flowWithProducts = flow {
-            delay(2000)
+            delay(1000)
             emit(productsFiltered)
         }
         return BaseResult.Success(flowWithProducts)
+    }
+
+    /**
+     * Permite obtener un objeto BaseResult para obtener un producto a traves de su id
+     *
+     * @return Un objeto base result que en caso de haber adquirido el producto con
+     *          exito de la infraestructura, este se introduce en un objeto BaseResult.Success
+     *          en caso contrario devuelve un BaseResult.Error.
+     *
+     */
+    suspend fun getProductById(id : Int) : BaseResult<Product> {
+        delay(1000)
+        productWarehouse[id]?.let {
+            return BaseResult.Success(it)
+        } ?: run {
+            return BaseResult.Error(ProductException.ProductNotFound)
+        }
     }
 
     /**
@@ -61,9 +79,23 @@ object ProductRepository {
      *          (Por ahora solo devuelve Success)
      */
     suspend fun addProduct(product : Product) : BaseResult<Unit>{
-        delay(2000)
+        delay(1000)
         val idToBeAssign = nextId++
         productWarehouse.put(idToBeAssign, product.copy(id = idToBeAssign))
+        return BaseResult.Success(Unit)
+    }
+
+    /**
+     * Actualiza un producto ya existente en la infraestructura.
+     *
+     * @param updatedProduct Se usa su id para buscar el producto a actualizar en la infraestrucutra y se actualiza
+     * con los demas datos
+     * @return Un objeto BaseResult.Success si todo ha ido bien (por ahora siempre
+     * devuelve BaseResult.Success)
+     */
+    suspend fun updateExistingProduct(updatedProduct: Product) : BaseResult<Unit>{
+        delay(1000)
+        productWarehouse[updatedProduct.id!!] = updatedProduct
         return BaseResult.Success(Unit)
     }
 
@@ -77,7 +109,7 @@ object ProductRepository {
      *          en caso de error, devolvera un objeto error.
      */
     suspend fun removeProduct(productId : Int) : BaseResult<Unit>{
-        delay(2000)
+        delay(1000)
         productWarehouse.remove(productId)
         return BaseResult.Success(Unit)
     }

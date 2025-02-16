@@ -2,7 +2,6 @@ package app.base.ui.composables.baseappbar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
@@ -11,11 +10,13 @@ import androidx.compose.ui.res.stringResource
 import app.base.ui.R
 
 
+/**
+ * Base app bar icons
+ *
+ */
+sealed class BaseAppBarIcons {
 
-
-sealed class BaseAppBarIcons{
-
-    companion object{
+    companion object {
         /**
          * Crea el objeto [NavigationIcon] correspondiente al icono normalizado para abrir el menú lateral
          * (drawer).
@@ -24,7 +25,7 @@ sealed class BaseAppBarIcons{
          * @return El objeto [NavigationIcon] correspondiente.
          */
         @Composable
-        fun drawerMenuIcon(onClick : () -> Unit) : NavigationIcon {
+        fun drawerMenuIcon(onClick: () -> Unit): NavigationIcon {
             return NavigationIcon(
                 icon = Icons.Default.Menu,
                 contentDescription = stringResource(R.string.drawer_menu_icon_content_description),
@@ -40,7 +41,7 @@ sealed class BaseAppBarIcons{
          * @return El objeto [NavigationIcon] correspondiente.
          */
         @Composable
-        fun goBackPreviousScreenIcon(onClick: () -> Unit) : NavigationIcon {
+        fun goBackPreviousScreenIcon(onClick: () -> Unit): NavigationIcon {
             return NavigationIcon(
                 icon = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.go_back_previous_screen_icon),
@@ -59,7 +60,7 @@ sealed class BaseAppBarIcons{
          * @return El objeto [Action] correspondiente.
          */
         @Composable
-        fun editElementVisibleIcon(typeElement : String, onClick: () -> Unit) : Action{
+        fun editElementVisibleIcon(typeElement: String, onClick: () -> Unit): Action {
             return Action(
                 icon = Icons.Default.Edit,
                 contentDescription = stringResource(R.string.edit_element_action_icon, typeElement),
@@ -77,10 +78,13 @@ sealed class BaseAppBarIcons{
          * @return El objeto [Action] correspondiente.
          */
         @Composable
-        fun deleteElementVisibleIcon(typeElement : String, onClick: () -> Unit) : Action{
+        fun deleteElementVisibleIcon(typeElement: String, onClick: () -> Unit): Action {
             return Action(
                 icon = Icons.Default.Delete,
-                contentDescription = stringResource(R.string.delete_element_action_icon, typeElement),
+                contentDescription = stringResource(
+                    R.string.delete_element_action_icon,
+                    typeElement
+                ),
                 onClick = onClick
             )
         }

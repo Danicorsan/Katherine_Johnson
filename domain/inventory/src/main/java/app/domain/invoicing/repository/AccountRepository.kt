@@ -8,6 +8,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+/**
+ * Account repository
+ *
+ * @constructor Create empty Account repository
+ */
 object AccountRepository {
     // Simulación de un dataset en memoria
     private val dataSet: MutableList<Account> = mutableListOf()
@@ -17,17 +22,6 @@ object AccountRepository {
     }
 
     private fun initialize() {
-        dataSet.add(
-            Account(
-                id = 1,
-                email = Email("daniel@gmail.com"),
-                password = Password("HolaHola19?"),
-                name = "Daniel",
-                surname = "Cortés",
-                username = "danics",
-                birthdate = "02/03/2001"
-            )
-        )
         dataSet.add(
             Account(
                 id = 1,
@@ -50,38 +44,19 @@ object AccountRepository {
                 birthdate = "02/03/2003"
             )
         )
-        dataSet.add(
-            Account(
-                id = 2,
-                email = Email("lucia@gmail.com"),
-                password = Password("Password123!"),
-                name = "Lucía",
-                surname = "García",
-                username = "lucygar",
-                birthdate = "15/07/1995"
-            )
-        )
     }
 
     /**
      * Valida las credenciales de inicio de sesión.
      */
     fun login(email: String, password: String): Flow<Result<Account>> = flow {
-        delay(2000) // Agrega un retraso de 2 segundos antes de procesar la autenticación
+        delay(1000) // Agrega un retraso de 2 segundos antes de procesar la autenticación
         val account = dataSet.firstOrNull { it.email.value == email && it.password.value == password }
         if (account != null) {
             emit(Result.success(account))
         } else {
             emit(Result.failure(AccountException.NoExistAccount))
         }
-    }
-
-    /**
-     * Devuelve una lista simulada de cuentas como flujo.
-     */
-    fun getAccounts(): Flow<List<Account>> = flow {
-        delay(2000) // Simula una carga lenta
-        emit(dataSet)
     }
 
     /**
@@ -110,9 +85,5 @@ object AccountRepository {
         )
         dataSet.add(newAccount)
         return Result.success(Unit)
-    }
-
-    fun deleteAccount(account: Account) {
-        dataSet.remove(account)
     }
 }

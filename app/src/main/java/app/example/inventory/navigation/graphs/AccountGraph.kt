@@ -14,6 +14,11 @@ import com.example.inventory.navigation.graphs.AccountGraph.EMAIL
 import com.example.inventory.navigation.graphs.AccountGraph.PASSWORD
 import com.example.inventory.navigation.graphs.AccountGraph.ROUTE
 
+/**
+ * Account graph
+ *
+ * @constructor Create empty Account graph
+ */
 object AccountGraph {
     const val ROUTE = "signUp"
     const val EMAIL = "email"
@@ -93,7 +98,9 @@ private fun NavGraphBuilder.signUp(navController: NavController) {
             onRegisterSuccess = { email, password ->
                 navController.navigate(
                     "$ROUTE/login?$EMAIL=$email&$PASSWORD=$password"
-                )
+                ){
+                    popUpTo(ROUTE) { inclusive = true }
+                }
             },
             onNavigateToLogin = { navController.navigate(ROUTE) }
         )
