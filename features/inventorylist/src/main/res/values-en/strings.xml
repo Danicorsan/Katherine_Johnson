@@ -6,4 +6,10 @@
     <string name="editar_inventario">Edit Inventory</string>
     <string name="eliminar_inventario">Delete Inventory</string>
     <string name="seguro_que_quieres_eliminar_el_inventario">Are you sure you want to delete the inventory?\n</string>
+    <string name="inventario_eliminado">The inventory has been deleted successfully</string>
+    <string name="si_quiero_eliminarlo">Yes, I want to delete it</string>
+    <string name="no_no_quiero_eliminarlo">No, I dont want to delete it</string>
+    <string name="aceptar">Accept</string>
+    <string name="no_hay_inventarios">There are no inventories</string>
+    <string name="añadir_inventario">Add Inventory</string>
 </resources>

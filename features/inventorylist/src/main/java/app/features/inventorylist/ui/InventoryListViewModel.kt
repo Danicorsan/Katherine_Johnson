@@ -8,27 +8,26 @@ import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class InventoryListViewModel(
+@HiltViewModel
+class InventoryListViewModel @Inject constructor(
     private val repository: InventoryRepository
 ) : ViewModel() {
 
     private val _inventories = mutableListOf<Inventory>()
-
     private val _uiState = mutableStateOf(InventoryListState(
-        inventories = _inventories,
-        isLoading = false,
-        errorMessage = null
+        success = _inventories,
+        loading = false,
+        error = null
     ))
     val uiState: InventoryListState get() = _uiState.value
-
     private var state: InventoryListState by mutableStateOf(InventoryListState(
-        inventories = _inventories,
-        isLoading = false,
-        errorMessage = null
+        success = _inventories,
+        loading = false,
+        error = null
     ))
 
     init {
@@ -37,13 +36,13 @@ class InventoryListViewModel(
 
     private fun loadInventoriesWithDelay() {
         viewModelScope.launch {
-            _uiState.value = uiState.copy(isLoading = true)
+            _uiState.value = uiState.copy(loading = true)
 
-            delay(3000)
+            delay(1500)
 
             loadInventories()
 
-            _uiState.value = uiState.copy(isLoading = false)
+            _uiState.value = uiState.copy(loading = false)
         }
     }
 
@@ -51,34 +50,21 @@ class InventoryListViewModel(
         viewModelScope.launch {
             _inventories.clear()
             _inventories.addAll(repository.getAllInventories())
-            _uiState.value = uiState.copy(inventories = _inventories, isLoading = false)
+            _uiState.value = uiState.copy(success = _inventories, loading = false)
         }
     }
 
     fun deleteInventory(inventory: Inventory) {
         viewModelScope.launch {
-            _uiState.value = uiState.copy(isLoading = true)
+            _uiState.value = uiState.copy(loading = true)
             val success = repository.deleteInventory(inventory.id)
             if (success) {
-                state.isLoading = true
+                state.loading = true
                 delay(2000)
-                state.isLoading = false
+                state.loading = false
                 loadInventories()
             } else {
-                _uiState.value = uiState.copy(errorMessage = "Error al eliminar el inventario", isLoading = false)
-            }
-        }
-    }
-
-    fun addInventory(inventory: Inventory) {
-        viewModelScope.launch {
-            _uiState.value = uiState.copy(isLoading = true)
-            val success = repository.addInventory(inventory)
-            if (success) {
-                _inventories.add(inventory)
-                _uiState.value = uiState.copy(inventories = _inventories, isLoading = false)
-            } else {
-                _uiState.value = uiState.copy(errorMessage = "Error al agregar el inventario", isLoading = false)
+                _uiState.value = uiState.copy(error = "Error al eliminar el inventario", loading = false)
             }
         }
     }

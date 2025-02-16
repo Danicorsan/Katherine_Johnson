@@ -10,4 +10,10 @@
     <string name="nuevo_nombre_del_inventario">New Inventory Name</string>
     <string name="inventario_creado_exito">Inventory created successfully</string>
     <string name="aceptar">OK</string>
+    <string name="ninguno">None</string>
+    <string name="electronica">Electronics</string>
+    <string name="tecnologia">Tecnology</string>
+    <string name="materiales">Materials</string>
+    <string name="servicios">Services</string>
+    <string name="almacen">Warehouse</string>
 </resources>

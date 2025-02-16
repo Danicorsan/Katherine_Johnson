@@ -11,41 +11,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InventoryDetailViewModel @Inject constructor(
-    private val repository: InventoryRepository// Uso directo de la implementación
+    private val repository: InventoryRepository
 ) : ViewModel() {
 
-    // Estado que contiene la información del inventario
     private val _uiState = MutableStateFlow(InventoryDetailState())
     val uiState: StateFlow<InventoryDetailState> get() = _uiState
 
-    // Función para cargar los detalles del inventario
     fun loadInventoryDetails(inventoryId: Int) {
         viewModelScope.launch {
-            val inventory = repository.getInventoryById(inventoryId) // Aquí se usa el repositorio
+            val inventory = repository.getInventoryById(inventoryId)
             if (inventory != null) {
                 _uiState.value = _uiState.value.copy(
                     inventory = inventory,
-                    items = inventory.items // Cargar los items asociados
+                    items = inventory.items
                 )
             }
-        }
-    }
-
-    fun onInfoClick() {
-        viewModelScope.launch {
-            val currentState = _uiState.value
-            _uiState.value = currentState.copy(
-                showInfoDialog = true
-            )
-        }
-    }
-
-    fun onInfoDialogDismiss() {
-        viewModelScope.launch {
-            val currentState = _uiState.value
-            _uiState.value = currentState.copy(
-                showInfoDialog = false
-            )
         }
     }
 }
