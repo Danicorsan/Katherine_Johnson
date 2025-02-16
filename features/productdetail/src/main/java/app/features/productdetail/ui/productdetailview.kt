@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
+import app.base.ui.composables.baseappbar.BaseAppBar
+import app.base.ui.composables.baseappbar.BaseAppBarIcons
+import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
@@ -37,11 +40,13 @@ private fun ProductDetailsHost(
     onGoBackNav: () -> Unit
 ) {
     Scaffold(
-        topBar = @Composable {
-            Appbar(
-                titleText = stringResource(R.string.title_appbar),
-                navigationAction = onGoBackNav
-            )
+        topBar = {
+            BaseAppBar(BaseAppBarState(
+                title = stringResource(R.string.title_appbar),
+                navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon(
+                    onClick = onGoBackNav
+                )
+            ))
         }
     ) { contentPadding ->
         when {

@@ -1,32 +1,20 @@
 package app.features.productcreation.ui.base.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import app.base.ui.composables.MediumButton
+import app.base.ui.composables.baseappbar.BaseAppBar
+import app.base.ui.composables.baseappbar.BaseAppBarIcons
+import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.Specification
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductCreationAppbar(titleText : String, onLeavePage : () -> Unit){
-    CenterAlignedTopAppBar(
-        title = {
-            Text(text = titleText)
-        },
-        navigationIcon = {
-            IconButton(onClick = onLeavePage) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
-            }
-        },
-    )
+    BaseAppBar(BaseAppBarState(
+        title = titleText,
+        navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon(onClick = onLeavePage)
+    ))
 }
 
 @Composable

@@ -14,12 +14,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.MediumButton
+import app.base.ui.composables.baseappbar.BaseAppBar
+import app.base.ui.composables.baseappbar.BaseAppBarIcons
+import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.features.productlist.R
 import app.features.productlist.ui.base.components.ListProducts
 import app.features.productlist.ui.base.ProductListEvents
 import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
-import app.features.productlist.ui.base.components.ProductListAppBar
 
 
 @Preview(showSystemUi = true)
@@ -39,10 +41,13 @@ private fun ProductListHost(
     productListEvents : ProductListEvents
 ){
     Scaffold(
-        topBar = { ProductListAppBar(
-            titleText = stringResource(R.string.title_appbar),
-            onLeavePage = productListEvents.onGoBack
-        ) },
+        topBar = {
+            BaseAppBar(BaseAppBarState(
+                title = stringResource(R.string.title_appbar),
+                navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon(
+                    onClick = productListEvents.onGoBack
+                )
+            ))},
         floatingActionButton = { MediumButton(
             onClick = productListEvents.onAddProduct,
             imageVector = Icons.Default.Add,
