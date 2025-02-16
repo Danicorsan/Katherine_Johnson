@@ -17,6 +17,8 @@ class ProductListViewModel(private val productListNavigationEvents : ProductList
     var productListState by mutableStateOf(ProductListState())
     private set
 
+    private var productToDelete : Product? = null
+
     init {
         productListState = productListState.copy(isLoading = true)
         viewModelScope.launch {
@@ -42,18 +44,54 @@ class ProductListViewModel(private val productListNavigationEvents : ProductList
     }
 
     fun onDeleteProduct(product: Product){
+        println("Producto siendo eliminado")
+        productToDelete = product
+        productListState = productListState.copy(
+            productIsBeingDeleted = true
+        )
     }
 
     fun onSeeProductDetails(product: Product){
-        productListNavigationEvents.onSeeProductDetailsNav(product)
+        productListNavigationEvents.onSeeProductDetailsNav(product.id!!)
     }
 
     fun onEditProduct(product : Product){
-        productListNavigationEvents.onEditProductNav(product)
+        productListNavigationEvents.onEditProductNav(product.id!!)
     }
 
     fun onGoBack(){
         productListNavigationEvents.onGoBackNav()
+    }
+
+    fun onConfirmDeleteProduct(){
+        productListState = productListState.copy(
+            isLoading = true,
+            productIsBeingDeleted = false
+        )
+        viewModelScope.launch {
+            ProductRepository.removeProduct(productToDelete!!.id!!)//Siempre habrá un producto con un id
+            val result = ProductRepository.getAllProducts()
+            if (result is BaseResult.Success){
+                result.data.collect{
+                    productListState = productListState.copy(
+                        isLoading = false,
+                        productList = it.values.toList()
+                    )
+                }
+            } else {
+                productListState = productListState.copy(
+                    isLoading = false,
+                    productList = emptyList()
+                )
+            }
+        }
+    }
+
+    fun onDissmissDeleteProduct() {
+        productToDelete = null
+        productListState = productListState.copy(
+            productIsBeingDeleted = false
+        )
     }
 
 }

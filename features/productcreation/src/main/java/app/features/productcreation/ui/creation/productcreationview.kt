@@ -1,6 +1,6 @@
 package app.features.productcreation.ui.creation
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -16,7 +16,8 @@ import app.features.productcreation.ui.base.components.AlertDialogOK
 import app.features.productcreation.ui.base.components.ProductForm
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.ProductEvents
-import app.features.productcreation.ui.base.components.Appbar
+import app.features.productcreation.ui.base.components.ProductCreationAppbar
+import app.features.productcreation.ui.base.components.ProductCreationFloatingActionButton
 
 
 @Preview(showBackground = true)
@@ -36,15 +37,14 @@ fun ProductCreationHost(
     productEvents : ProductEvents
 ){
     Scaffold(
-        topBar = @Composable { Appbar(
-            titleText = stringResource(R.string.creation_product_title_appbar),
-            onGoBack = productEvents.onLeavePage
-        )
+        topBar = { ProductCreationAppbar(stringResource(R.string.title_appbar_product_creation) , productEvents.onLeavePage) },
+        floatingActionButton = {
+            ProductCreationFloatingActionButton(productEvents.onAcceptProduct)
         }
     ) { contentPadding ->
         when {
             productState.isLoading -> LoadingUi()
-            productState.errorDataState.cantRegisterProduct -> AlertDialogOK(
+            productState.cantRegisterProduct -> AlertDialogOK(
                 title = stringResource(R.string.cant_register_alert_dialog_title),
                 message = stringResource(R.string.cant_register_alert_dialog_message),
                 onDismiss = productEvents.onDismissCantRegisterProductAlertDialog
@@ -74,15 +74,14 @@ fun ProductCreationContent(
     productState: ProductViewState,
     productEvents : ProductEvents
 ){
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
         ProductForm(
             productState,
-            productEvents,
-            stringResource(R.string.accept_button_label),
-            productEvents.onAcceptProduct
+            productEvents
         )
     }
 }

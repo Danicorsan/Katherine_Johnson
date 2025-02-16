@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import app.base.ui.composables.ExposedDropDownMenuTemplate
 import app.domain.invoicing.category.Category
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.Specification

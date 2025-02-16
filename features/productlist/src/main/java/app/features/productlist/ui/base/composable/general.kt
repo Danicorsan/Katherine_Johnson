@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,8 +15,6 @@ import androidx.compose.ui.res.stringResource
 import app.base.ui.composables.SmallSpace
 import app.features.productlist.R
 import app.features.productlist.ui.base.Specification
-import app.features.productlist.ui.base.ProductListEvents
-
 
 @Composable
 fun DefaultProductImage() {
@@ -43,15 +37,6 @@ fun PutInRowWithSeparation(
         composable1()
         SmallSpace()
         composable2()
-    }
-}
-
-@Composable
-fun AddProductFloatingActionButton(productListEvents: ProductListEvents){
-    LargeFloatingActionButton (
-        onClick = productListEvents.onAddProduct,
-    ) {
-        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_product_floatingbutton_description))
     }
 }
 

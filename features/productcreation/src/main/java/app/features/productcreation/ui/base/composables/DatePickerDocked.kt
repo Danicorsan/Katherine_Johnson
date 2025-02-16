@@ -35,10 +35,9 @@ fun DatePickerDocked(
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
 
-    Box(
-        modifier = Modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION)
-    ) {
+    Box{
         OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION),
             value = selectedDateText,
             onValueChange = { },
             readOnly = true,
@@ -63,7 +62,6 @@ fun DatePickerDocked(
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(80/100f)
                         .shadow(elevation = 4.dp)
                         .background(MaterialTheme.colorScheme.surface)
 

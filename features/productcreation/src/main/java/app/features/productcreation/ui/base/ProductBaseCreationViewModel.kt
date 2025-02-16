@@ -4,33 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import app.base.utils.format
 import app.domain.invoicing.category.Category
-import app.domain.invoicing.repository.CategoryRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import app.domain.invoicing.product.Product
+import app.domain.invoicing.product.complements.tags.Tag
+import app.domain.invoicing.product.complements.tags.Tags
 import kotlinx.datetime.Instant
 
 abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Unit) : ViewModel() {
     var productViewState by mutableStateOf(ProductViewState())
         protected set
-
-    init {
-        productViewState = productViewState.copy(isLoading = true)
-        viewModelScope.launch {
-            delay(2000)//Simulacion de tiempo de espera
-            val categories = CategoryRepository.getAllCategories()
-            productViewState = productViewState.copy(
-                isLoading = false,
-                categoriesList = categories,
-                sectionsList = listOf("Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3")
-            )
-        }
-    }
 
     fun onCodeChanged(newCode : String){
         productViewState = productViewState.copy(
@@ -224,9 +207,7 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
 
     fun onDismissCantRegisterAlertDialog(){
         productViewState = productViewState.copy(
-            errorDataState = productViewState.errorDataState.copy(
-                cantRegisterProduct = false
-            )
+            cantRegisterProduct = false
         )
     }
 
@@ -239,9 +220,6 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
     }
 
     fun onDismissProductHasBeenRegisteredAlertDialog(){
-        productViewState = productViewState.copy(
-            productRegisterSuccessful = false
-        )
         onGoBackNav()
     }
 
@@ -250,4 +228,70 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
     }
 
     abstract fun onAcceptChanges()
+
+    protected fun comprobateAndManageLocalErrors(whenNoErrorFound : () -> Unit){
+        if (productViewState.isLoading || productViewState.productIsBeingAdded)
+            return
+
+        val errorDataState = productViewState.errorDataState
+        when{
+            areThereAnyEmptyOrNotSelectedOnObligatoryFields() -> {
+                productViewState = productViewState.copy(
+                    errorDataState = errorDataState.copy(
+                        emptyFields = true
+                    )
+                )
+            }
+            isThereAnActiveError(errorDataState) -> {
+                productViewState = productViewState.copy(
+                    cantRegisterProduct = true
+                )
+            }
+            else -> whenNoErrorFound()
+        }
+    }
+
+    private fun isThereAnActiveError(errorDataState: ErrorDataState) =
+        errorDataState.priceError || errorDataState.stockError || errorDataState.shortNameError
+
+    private fun areThereAnyEmptyOrNotSelectedOnObligatoryFields() : Boolean{
+        val inputDataState = productViewState.inputDataState
+        return inputDataState.name.isEmpty() ||
+                inputDataState.shortName.isEmpty() ||
+                inputDataState.code.isEmpty() ||
+                inputDataState.serieNumber.isEmpty() ||
+                inputDataState.modelCode.isEmpty() ||
+                inputDataState.productType.isEmpty() ||
+                inputDataState.price.isEmpty() ||
+                inputDataState.stock.isEmpty() ||
+                inputDataState.adquisitionDate == null ||
+                inputDataState.selectedCategory == null ||
+                inputDataState.selectedSection == null ||
+                inputDataState.description.isEmpty()
+    }
+
+    protected fun makeProductFromFields() : Product {
+        val productData = productViewState.inputDataState
+        return Product(
+            code = productData.code,
+            name = productData.name,
+            shortName = productData.shortName,
+            description = productData.description,
+            serialNumber = productData.serieNumber,
+            modelCode = productData.modelCode,
+            productType = productData.productType,
+            category = productData.selectedCategory!! ,
+            section = productData.selectedSection!! ,
+            stock = productData.stock.toUInt(),
+            price = productData.price.toDouble(),
+            acquisitionDate = productData.adquisitionDate!!,
+            discontinuationDate = productData.discontinuationDate,
+            notes = productData.notes,
+            tags = Tags(productData.tags.split(",").map {
+                it.trim()
+                Tag(it)
+            }) ,
+            minimunStock = productData.minimunStock.toUIntOrNull()
+        )
+    }
 }

@@ -4,5 +4,6 @@ import app.domain.invoicing.product.Product
 
 data class ProductListState(
     val productList : List<Product> = emptyList(),
+    val productIsBeingDeleted : Boolean = false,
     val isLoading : Boolean = false
 )

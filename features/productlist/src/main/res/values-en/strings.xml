@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_appbar">Product List</string>
+    <string name="title_appbar_product_list">Product list</string>
     <string name="add_product_floatingbutton_description">Add product</string>
     <string name="product_image_description">Product image</string>
     <string name="delete_iconbutton_description">Delete product</string>
     <string name="edit_product_iconbutton">Edit product</string>
     <string name="go_back_iconbutton">Go back to previous screen</string>
+    <string name="delete_alert_dialog_title">¿Are you sure?</string>
+    <string name="delete_alert_dialog_message">The product will be permanently deleted.</string>
+    <string name="delete_alert_dialog_confirmation_text">Yes</string>
+    <string name="delete_alert_dialog_dismiss_text">No</string>
 </resources>
