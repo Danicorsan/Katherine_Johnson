@@ -98,7 +98,9 @@ private fun NavGraphBuilder.signUp(navController: NavController) {
             onRegisterSuccess = { email, password ->
                 navController.navigate(
                     "$ROUTE/login?$EMAIL=$email&$PASSWORD=$password"
-                )
+                ){
+                    popUpTo(ROUTE) { inclusive = true }
+                }
             },
             onNavigateToLogin = { navController.navigate(ROUTE) }
         )
