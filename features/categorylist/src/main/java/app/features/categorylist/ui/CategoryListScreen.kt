@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -34,6 +33,17 @@ import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.repository.CategoryRepository
 import app.features.categorylist.R
 
+/**
+ * Category list events
+ *
+ * @property onClickBack
+ * @property onClickNewCategory
+ * @property onClickDetails
+ * @property requestDeleteCategory
+ * @property confirmDeleteCategory
+ * @property cancelDeleteCategory
+ * @constructor Create empty Category list events
+ */
 data class CategoryListEvents(
     val onClickBack: () -> Unit,
     val onClickNewCategory: () -> Unit,
@@ -43,6 +53,17 @@ data class CategoryListEvents(
     val cancelDeleteCategory: () -> Unit
 )
 
+/**
+ * Category list screen
+ *
+ * @param viewModel
+ * @param onClickBack
+ * @param onClickNewCategory
+ * @param onClickDetails
+ * @receiver
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun CategoryListScreen(
     viewModel: CategoryListViewModel,
@@ -61,7 +82,12 @@ fun CategoryListScreen(
     CategoryListScreen(viewModel.state, categoryListEvents)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Category list screen
+ *
+ * @param state
+ * @param events
+ */
 @Composable
 fun CategoryListScreen(
     state: CategoryListState,
@@ -99,6 +125,13 @@ fun CategoryListScreen(
     )
 }
 
+/**
+ * Category list content
+ *
+ * @param state
+ * @param events
+ * @param modifier
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CategoryListContent(
@@ -112,10 +145,10 @@ fun CategoryListContent(
                 events.confirmDeleteCategory()
             },
             onDismiss = { events.cancelDeleteCategory() },
-            text = "¿Estás seguro que quieres eliminar la categoría?",
-            confirmText = "Sí, estoy seguro",
-            dismissText = "No, volver",
-            title = "Borrar Categoría"
+            text = stringResource(R.string.estas_seguro_que_quieres_eliminar_la_categoria),
+            confirmText = stringResource(R.string.si_estoy_seguro),
+            dismissText = stringResource(R.string.no_volver),
+            title = stringResource(R.string.borrar_categoria)
         )
     }
 

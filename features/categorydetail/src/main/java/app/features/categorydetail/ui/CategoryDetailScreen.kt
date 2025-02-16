@@ -1,23 +1,24 @@
 package app.features.categorydetail.ui
 
 import NoDataScreen
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,12 +28,44 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
+import app.base.ui.composables.baseappbar.Action
+import app.base.ui.composables.baseappbar.BaseAppBar
+import app.base.ui.composables.baseappbar.BaseAppBarIcons
+import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.category.Category
 import app.features.categorydetail.R
 
+/**
+ * Category detail events
+ *
+ * @property onEditCategory
+ * @property onGoBack
+ * @property onDeleteCategory
+ * @property onConfirmDelete
+ * @property onCancelDelete
+ * @constructor Create empty Category detail events
+ */
+data class CategoryDetailEvents(
+    val onEditCategory: (Int) -> Unit,
+    val onGoBack: () -> Unit,
+    val onDeleteCategory: () -> Unit,
+    val onConfirmDelete: () -> Unit,
+    val onCancelDelete: () -> Unit
+)
+
+/**
+ * Category detail screen
+ *
+ * @param viewModel
+ * @param id
+ * @param onEditCategory
+ * @param onGoBack
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun CategoryDetailScreen(
-    viewModel: CategoryDetailViewModel,
+    viewModel: CategoryDetailViewModel = hiltViewModel(),
     id: Int,
     onEditCategory: (Int) -> Unit,
     onGoBack: () -> Unit
@@ -41,56 +74,27 @@ fun CategoryDetailScreen(
         viewModel.loadCategory(id)
     }
 
-    when {
-        viewModel.state.notFoundError -> NoDataScreen()
-        viewModel.state.category == null -> {
-            LoadingUi()
-        }
-        else -> {
-            CategoryDetailContent(
-                category = viewModel.state.category!!,
-                onEditCategory = onEditCategory,
-                onGoBack = onGoBack,
-                onDeleteCategory = { viewModel.requestDeleteCategory() },
-                onConfirmDelete = { viewModel.confirmDeleteCategory(onGoBack) },
-                onCancelDelete = { viewModel.cancelDeleteCategory() },
-                isDeleteDialogVisible = viewModel.state.isDeleteDialogVisible
-            )
-        }
-    }
-}
+    val state = viewModel.state
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CategoryDetailContent(
-    category: Category,
-    onEditCategory: (Int) -> Unit,
-    onGoBack: () -> Unit,
-    onDeleteCategory: () -> Unit,
-    onConfirmDelete: () -> Unit,
-    onCancelDelete: () -> Unit,
-    isDeleteDialogVisible: Boolean
-) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.detalles)) },
-                navigationIcon = {
-                    IconButton(onClick = { onGoBack() }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.volver)
+            BaseAppBar(
+                BaseAppBarState(
+                    title = stringResource(R.string.detalle_de_la_categoria),
+                    navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon { onGoBack() },
+                    actions = listOf(
+                        Action(
+                            icon = Icons.Filled.Edit,
+                            onClick = { onEditCategory(state.category?.id ?: 0) },
+                            contentDescription = stringResource(R.string.editar)
+                        ),
+                        Action(
+                            icon = Icons.Filled.Delete,
+                            onClick = { viewModel.requestDeleteCategory() },
+                            contentDescription = stringResource(R.string.eliminar)
                         )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { onEditCategory(category.id) }) {
-                        Icon(Icons.Filled.Edit, stringResource(R.string.editar))
-                    }
-                    IconButton(onClick = { onDeleteCategory() }) {
-                        Icon(Icons.Filled.Delete, stringResource(R.string.eliminar))
-                    }
-                },
+                    )
+                )
             )
         }
     ) { paddingValues ->
@@ -98,89 +102,109 @@ fun CategoryDetailContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp)
         ) {
-            // Card with shadow for category details
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp)),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = stringResource(R.string.nombre_de_la_categoria),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
+            when {
+                state.isLoading -> LoadingUi()
+                state.notFoundError -> NoDataScreen()
+                state.category != null -> {
+                    CategoryDetailContent(
+                        category = state.category,
+                        events = CategoryDetailEvents(
+                            onEditCategory = onEditCategory,
+                            onGoBack = onGoBack,
+                            onDeleteCategory = { viewModel.requestDeleteCategory() },
+                            onConfirmDelete = { viewModel.confirmDeleteCategory(onGoBack) },
+                            onCancelDelete = { viewModel.cancelDeleteCategory() },
+                        ),
+                        isDeleteDialogVisible = state.isDeleteDialogVisible
                     )
-                    Text(
-                        text = category.name,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(bottom = 24.dp)
-                    )
-
-                    Text(
-                        text = stringResource(R.string.descripcion),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = category.description,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(bottom = 24.dp)
-                    )
-
-                    Text(
-                        text = stringResource(R.string.tipo_de_categoria),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = category.typeCategory.name,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 24.dp)
-                    )
-
-                    // If there's an image, show it
-                    /*
-                    if (category.image != null) {
-                        Image(
-                            painter = painterResource(id = R.drawable.category_image_placeholder), // Update this with the actual image resource
-                            contentDescription = "Imagen de la categoría",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                                .padding(vertical = 16.dp)
-                        )
-                    }
-
-                     */
                 }
             }
         }
     }
+}
 
-    // Diálogo de confirmación para eliminar categoría
+/**
+ * Category detail content
+ *
+ * @param category
+ * @param events
+ * @param isDeleteDialogVisible
+ */
+@Composable
+fun CategoryDetailContent(
+    category: Category,
+    events: CategoryDetailEvents,
+    isDeleteDialogVisible: Boolean
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(R.string.nombre_de_la_categoria),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
+                    text = category.name,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(bottom = 24.dp)
+                )
+
+                Text(
+                    text = stringResource(R.string.descripcion),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
+                    text = category.description,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 24.dp)
+                )
+
+                Text(
+                    text = stringResource(R.string.tipo_de_categoria),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
+                    text = category.typeCategory.name,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 24.dp)
+                )
+            }
+        }
+    }
+
     if (isDeleteDialogVisible) {
         BaseAlertDialog(
-            onConfirm = onConfirmDelete,
-            onDismiss = onCancelDelete,
+            onConfirm = events.onConfirmDelete,
+            onDismiss = events.onCancelDelete,
             text = stringResource(R.string.seguro_eliminar_categoria),
             confirmText = stringResource(R.string.si_eliminar),
             dismissText = stringResource(R.string.cancelar),
@@ -188,6 +212,7 @@ fun CategoryDetailContent(
         )
     }
 }
+
 
 @Preview(showSystemUi = true)
 @Composable

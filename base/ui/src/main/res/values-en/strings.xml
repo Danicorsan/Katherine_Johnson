@@ -20,4 +20,5 @@
     <string name="go_back_previous_screen_icon">Go to previous page</string>
     <string name="edit_element_action_icon">Edit %s</string>
     <string name="delete_element_action_icon">Delete %s</string>
+    <string name="formato_incorrecto">Incorrect format</string>
 </resources>

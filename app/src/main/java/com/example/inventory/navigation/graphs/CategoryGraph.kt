@@ -13,6 +13,11 @@ import app.features.categorydetail.ui.CategoryDetailScreen
 import app.features.categorylist.ui.CategoryListScreen
 import com.example.inventory.navigation.graphs.CategoryGraph.ROUTE
 
+/**
+ * Category graph
+ *
+ * @constructor Create empty Category graph
+ */
 object CategoryGraph {
     const val ID = "id"
     const val ROUTE = "category"
@@ -26,7 +31,7 @@ object CategoryGraph {
 fun NavGraphBuilder.categoryGraph(
     navController: NavController,
 ) {
-    navigation(startDestination = CategoryGraph.categoryListRoute(), route = CategoryGraph.ROUTE) {
+    navigation(startDestination = CategoryGraph.categoryListRoute(), route = ROUTE) {
         categoryListRoute(navController)
         categoryCreationRoute(navController)
         categoryEditionRoute(navController)
@@ -73,7 +78,6 @@ private fun NavGraphBuilder.categoryEditionRoute(
             id = id,
             viewModel = hiltViewModel(),
             onClickBack = { navController.popBackStack() },
-            onClickNewCategory = { navController.popBackStack() },
         )
     }
 }

@@ -25,4 +25,5 @@
     <string name="si">Si</string>
     <string name="no">No</string>
     <string name="ya_hay_una_categoria_con_ese_nombre_corto">Ya hay una categoria con ese nombre corto</string>
+    <string name="elige_la_categoria">Elige la categoría:</string>
 </resources>

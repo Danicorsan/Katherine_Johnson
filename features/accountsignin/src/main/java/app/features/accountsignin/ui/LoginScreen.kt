@@ -25,13 +25,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.CampoFormulario
 import app.features.accountsignin.R
 
+/**
+ * Login screen
+ *
+ * @param email
+ * @param password
+ * @param onClickCrearCuenta
+ * @param onSuccess
+ * @param viewModel
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun LoginScreen(
     email: String,
@@ -79,6 +92,19 @@ fun LoginScreen(
     }
 }
 
+/**
+ * Login screen host
+ *
+ * @param state
+ * @param onEmailChange
+ * @param onPasswordChange
+ * @param onLoginClick
+ * @param onClickCrearCuenta
+ * @receiver
+ * @receiver
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun LoginScreenHost(
     state: LoginState,
@@ -104,6 +130,19 @@ fun LoginScreenHost(
     }
 }
 
+/**
+ * Login screen content
+ *
+ * @param state
+ * @param onEmailChange
+ * @param onPasswordChange
+ * @param onLoginClick
+ * @param onClickCrearCuenta
+ * @receiver
+ * @receiver
+ * @receiver
+ * @receiver
+ */
 @Composable
 fun LoginScreenContent(
     state: LoginState,
@@ -163,14 +202,15 @@ fun LoginScreenContent(
 }
 
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
     LoginScreen(
-        onclickCrearCuenta = { /* No hacer nada en este ejemplo */ },
-        onSucces = {},
-        viewModel = LoginViewModel()
+        viewModel = hiltViewModel(),
+        email = "",
+        onClickCrearCuenta = {},
+        password = "",
+        onSuccess = {}
     )
 }
-*/

@@ -15,5 +15,11 @@
     <string name="categorias">Categorías</string>
     <string name="organiza_tus_productos_por_categorias">Organiza tus productos por categorías</string>
     <string name="inventario">Inventario</string>
-    <string name="consulta_y_gestiona_el_inventario">Consulta y gestiona el inventario</string>  <!-- Aquí también -->
+    <string name="consulta_y_gestiona_el_inventario">Consulta y gestiona el inventario</string>
+    <string name="cerrar_menu">Cerrar menú</string>
+    <string name="perfil">Perfil</string>
+    <string name="nombre_apellido">Nombre Apellidos</string>
+    <string name="ajustes">Ajustes</string>
+    <string name="acerca_de_nosotros">Acerca de nosotros</string>
+    <string name="menu">Menú</string>  <!-- Aquí también -->
 </resources>

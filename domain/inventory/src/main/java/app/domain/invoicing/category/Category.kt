@@ -2,6 +2,19 @@ package app.domain.invoicing.category
 
 import java.util.Date
 
+/**
+ * Category
+ *
+ * @property id
+ * @property name
+ * @property shortName
+ * @property description
+ * @property image
+ * @property createdAt
+ * @property typeCategory
+ * @property fungible
+ * @constructor Create empty Category
+ */
 data class Category(
     val id: Int,
     val name: String,
