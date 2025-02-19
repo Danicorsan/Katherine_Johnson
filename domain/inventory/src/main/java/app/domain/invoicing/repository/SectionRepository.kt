@@ -20,7 +20,7 @@ object SectionRepository {
     fun getAllSections() : BaseResult<Flow<List<Section>>>{
         return BaseResult.Success(
             flow {
-                delay(2000)
+                delay(1000)
                 emit(sectionRegistered)
             }
         )
