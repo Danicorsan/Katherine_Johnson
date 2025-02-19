@@ -9,7 +9,7 @@ data class CreateInventoryState(
     val inventoryIcon: InventoryIcon = InventoryIcon.NONE,
     val inventoryDescription: String = "",
     val isCreateButtonEnabled: Boolean = false,
-    var isLoading: Boolean = false,
-    val errorMessage: String? = null,
-    val inventories: List<Inventory> = emptyList(),
+    var loading: Boolean = false,
+    val error: String? = null,
+    val success: List<Inventory> = emptyList(),
 )

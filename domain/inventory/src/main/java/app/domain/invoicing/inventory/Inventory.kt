@@ -7,7 +7,7 @@ data class Inventory(
     val id: Int,
     val name: String,
     val description: String,
-    val items: List<Product>,
+    val items: List<Product>?,
     val createdAt: Date,
     var updatedAt: Date = Date(),
     var icon: InventoryIcon

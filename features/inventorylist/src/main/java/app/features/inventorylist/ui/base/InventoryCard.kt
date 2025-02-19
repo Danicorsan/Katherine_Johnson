@@ -35,10 +35,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
 import app.features.inventorylist.R
+import java.util.Date
 
 fun getIconForInventoryIcon(inventoryIcon: InventoryIcon): ImageVector {
     return when (inventoryIcon) {
@@ -67,7 +69,8 @@ fun InventoryCard(
             .clickable { onClick(inventory) },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        border = CardDefaults.outlinedCardBorder()
     ) {
         Row(
             modifier = Modifier
@@ -132,4 +135,22 @@ fun InventoryCard(
             }
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun InventoryCardPreview() {
+    InventoryCard(
+        inventory = Inventory(
+            id = 1,
+            name = "Inventario 1",
+            description = "Descripción del inventario 1",
+            icon = InventoryIcon.ELECTRONICS,
+            createdAt = Date(),
+            updatedAt = Date(),
+            items = null
+        ),
+        onClick = {},
+        onEditClick = {},
+        onDeleteClick = {}
+    )
 }

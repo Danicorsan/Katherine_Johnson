@@ -30,7 +30,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
@@ -48,7 +46,6 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
-import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
 import java.util.Date
 
@@ -58,15 +55,17 @@ fun CreateInventoryScreen(
     onBackClick: () -> Unit,
     viewModel: CreateInventoryViewModel
 ) {
-    val uiState = viewModel.uiState.collectAsState().value
-    var showDialog by remember { mutableStateOf(false) }
+    val uiState = viewModel.vmState
+    var showSuccessDialog by remember { mutableStateOf(false) }
     var isInventoryCreated by remember { mutableStateOf(false) }
+    var loading = uiState.loading
 
     val icons = InventoryIcon.entries.toTypedArray()
     var selectedIcon by remember { mutableStateOf(uiState.inventoryIcon) }
     var expanded by remember { mutableStateOf(false) }
 
-    if (uiState.isLoading) {
+    // Mostrar pantalla de carga si `loading` es `true`
+    if (loading) {
         LoadingUi()
     }
 
@@ -104,7 +103,7 @@ fun CreateInventoryScreen(
                     TextField(
                         value = uiState.inventoryDescription,
                         onValueChange = { viewModel.onInventoryDescriptionChange(it) },
-                        label = { Text(stringResource(R.string.descripcion_del_inventario))},
+                        label = { Text(stringResource(R.string.descripcion_del_inventario)) },
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -201,8 +200,7 @@ fun CreateInventoryScreen(
                         }
                     }
 
-
-                    uiState.errorMessage?.let {
+                    uiState.error?.let {
                         Text(
                             text = it,
                             color = Color.Red,
@@ -211,57 +209,50 @@ fun CreateInventoryScreen(
                         )
                     }
 
+                    var isProcessing by remember { mutableStateOf(false) }
+
                     Button(
                         onClick = {
                             viewModel.addInventory(
-                                inventory = Inventory(
-                                    id = uiState.inventoryId,
-                                    name = uiState.inventoryName,
-                                    description = uiState.inventoryDescription,
-                                    items = emptyList(),
-                                    createdAt = Date(),
-                                    updatedAt = Date(),
-                                    icon = uiState.inventoryIcon
-                                )
+                                Inventory(
+                                id = uiState.inventoryId,
+                                name = uiState.inventoryName,
+                                description = uiState.inventoryDescription,
+                                items = emptyList(),
+                                createdAt = Date(),
+                                updatedAt = Date(),
+                                icon = uiState.inventoryIcon
                             )
-                            isInventoryCreated = true
-                            showDialog = true
+                            )
+                            showSuccessDialog = true
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = uiState.isCreateButtonEnabled && !uiState.isLoading
+                        enabled = uiState.isCreateButtonEnabled && !uiState.loading
                     ) {
                         Text(stringResource(R.string.crear_inventario))
                     }
+
+
                 }
             }
         }
     )
 
-    if (showDialog) {
+    if (showSuccessDialog && !uiState.loading) {
         BaseAlertDialog(
             title = stringResource(R.string.inventario_creado_exito),
             text = stringResource(R.string.inventario_creado_exito),
             confirmText = stringResource(R.string.aceptar),
             onConfirm = {
-                showDialog = false
+                showSuccessDialog = false
                 isInventoryCreated = false
                 onNavigateToList()
             },
             onDismiss = {
-                showDialog = false
+                showSuccessDialog = false
                 isInventoryCreated = false
                 onNavigateToList()
             }
         )
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun PreviewCreateInventoryScreen() {
-    CreateInventoryScreen(
-        onNavigateToList = {},
-        onBackClick = {},
-        viewModel = CreateInventoryViewModel(InventoryRepository)
-    )
 }
