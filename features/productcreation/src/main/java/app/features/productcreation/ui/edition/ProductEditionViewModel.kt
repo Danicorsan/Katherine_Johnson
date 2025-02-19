@@ -62,7 +62,7 @@ class ProductEditionViewModel(
         (ProductRepository.getProductById(productToEditId) as BaseResult.Success).data
 
     private suspend fun getCategories() : List<Category> {
-        delay(2000)
+        delay(1000)
         return CategoryRepository.getAllCategories()
     }
 

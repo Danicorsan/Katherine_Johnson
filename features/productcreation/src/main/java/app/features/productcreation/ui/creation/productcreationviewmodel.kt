@@ -12,7 +12,7 @@ class ProductCreationViewModel(onGoBackNav : () -> Unit = {}) : ProductBaseCreat
     init {
         productViewState = productViewState.copy(isLoading = true)
         viewModelScope.launch {
-            delay(2000)//Simulacion de tiempo de espera
+            delay(1000)//Simulacion de tiempo de espera
             val categories = CategoryRepository.getAllCategories()
             productViewState = productViewState.copy(
                 isLoading = false,
