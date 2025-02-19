@@ -40,7 +40,7 @@ class InventoryListViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)
 
-            delay(1500)
+            delay(1000)
 
             loadInventories()
 
@@ -62,7 +62,7 @@ class InventoryListViewModel @Inject constructor(
             val success = repository.deleteInventory(inventory.id)
             if (success) {
                 state.loading = true
-                delay(2000)
+                delay(1000)
                 state.loading = false
                 loadInventories()
             } else {

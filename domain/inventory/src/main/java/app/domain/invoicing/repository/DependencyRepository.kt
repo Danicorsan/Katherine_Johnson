@@ -19,7 +19,7 @@ object DependencyRepository {
      */
     fun getAllDependencies() : BaseResult<Flow<List<Dependency>>> {
         return BaseResult.Success(flow {
-            delay(2000)
+            delay(1000)
             emit(dependenciesRegistered)
         })
     }

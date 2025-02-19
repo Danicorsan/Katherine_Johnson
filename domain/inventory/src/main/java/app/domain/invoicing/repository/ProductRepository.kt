@@ -35,12 +35,11 @@ object ProductRepository {
      * Obtener la lista de productos cuya categoria designada sea la pasada por por parametro.
      *
      * @param category La categoria que se busca de los productos
-     * @return Devuelve un objeto BaseResult, el cual devolverá un objeto Error en caso de algún
-     *         tipo de excepción o un objeto Success cuando no ha ocurrido problemas para obtener
-     *         los productos buscados. El objeto
+     * @return Un objeto Flow Con la lista de productos cuya [Product.category] sea la [Category]
+     * pasada por parametro
      */
 
-    fun getProductsByCategory(category: Category) : BaseResult<Flow<List<Product>>>{
+    fun getProductsByCategory(category: Category) : Flow<List<Product>>{
         val productsFiltered = productWarehouse.filter {
             it.value.category.id == category.id
         }.values.toList()
@@ -48,7 +47,7 @@ object ProductRepository {
             delay(1000)
             emit(productsFiltered)
         }
-        return BaseResult.Success(flowWithProducts)
+        return flowWithProducts
     }
 
     /**
