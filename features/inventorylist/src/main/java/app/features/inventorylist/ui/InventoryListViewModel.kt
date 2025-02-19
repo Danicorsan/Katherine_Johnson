@@ -21,13 +21,15 @@ class InventoryListViewModel @Inject constructor(
     private val _uiState = mutableStateOf(InventoryListState(
         success = _inventories,
         loading = false,
-        error = null
+        error = null,
+        noData = false
     ))
     val uiState: InventoryListState get() = _uiState.value
     private var state: InventoryListState by mutableStateOf(InventoryListState(
         success = _inventories,
         loading = false,
-        error = null
+        error = null,
+        noData = false
     ))
 
     init {

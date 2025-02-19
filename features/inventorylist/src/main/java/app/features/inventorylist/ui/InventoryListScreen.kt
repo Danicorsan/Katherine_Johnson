@@ -1,14 +1,13 @@
 package app.features.inventorylist.ui
 
+import NoDataScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,8 +39,9 @@ fun InventoryListScreen(
 ) {
     // Listar
     val state = viewModel.uiState
-    val inventories = state.success
+    val success = state.success
     var loading = state.loading
+    var noData = success.isEmpty()
 
     // Eliminar
     var showDialog by remember { mutableStateOf(false) }
@@ -74,19 +74,15 @@ fun InventoryListScreen(
             if (state.loading) {
                 LoadingUi()
             } else {
-                if (inventories.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.no_hay_inventarios),
-                        modifier = Modifier.fillMaxSize(),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                if (success.isEmpty()) {
+                    NoDataScreen()
                 } else {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(paddingValues)
                     ) {
-                        items(inventories) { inventory ->
+                        items(success) { inventory ->
                             InventoryCard(
                                 inventory = inventory,
                                 onClick = { onInventoryClick(inventory) },
@@ -132,6 +128,7 @@ fun InventoryListScreen(
         )
     }
 }
+
 
 
 

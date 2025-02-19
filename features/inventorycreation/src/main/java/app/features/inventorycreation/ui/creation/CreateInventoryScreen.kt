@@ -58,16 +58,13 @@ fun CreateInventoryScreen(
     val uiState = viewModel.vmState
     var showSuccessDialog by remember { mutableStateOf(false) }
     var isInventoryCreated by remember { mutableStateOf(false) }
-    var loading = uiState.loading
+    val loading = uiState.loading
+    
+    
 
     val icons = InventoryIcon.entries.toTypedArray()
     var selectedIcon by remember { mutableStateOf(uiState.inventoryIcon) }
     var expanded by remember { mutableStateOf(false) }
-
-    // Mostrar pantalla de carga si `loading` es `true`
-    if (loading) {
-        LoadingUi()
-    }
 
     Scaffold(
         topBar = {
@@ -76,11 +73,14 @@ fun CreateInventoryScreen(
                     title = stringResource(R.string.crear_inventario),
                     navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon {
                         onBackClick()
-                    }
-                )
-            )
+                    },
+            ))
         },
         content = { paddingValues ->
+            if (loading) {
+                LoadingUi()
+            }
+            else{
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -208,9 +208,6 @@ fun CreateInventoryScreen(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
-
-                    var isProcessing by remember { mutableStateOf(false) }
-
                     Button(
                         onClick = {
                             viewModel.addInventory(
@@ -236,7 +233,6 @@ fun CreateInventoryScreen(
                 }
             }
         }
-    )
 
     if (showSuccessDialog && !uiState.loading) {
         BaseAlertDialog(
@@ -254,5 +250,6 @@ fun CreateInventoryScreen(
                 onNavigateToList()
             }
         )
-    }
+    }}
+    )
 }
