@@ -1,5 +1,7 @@
 package app.domain.invoicing.account
 
+import androidx.room.Entity
+
 /**
  * Account
  *

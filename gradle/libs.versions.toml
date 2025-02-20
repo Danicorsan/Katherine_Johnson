@@ -14,8 +14,15 @@ kotlinxDatetime = "0.6.1"
 navigation = "2.8.4"
 navigationRuntimeKtx = "2.8.4"
 runtimeAndroid = "1.7.5"
+ksp = "2.0.21-1.0.27"
+room = "2.6.1"
+roomKtx = "2.6.1"
 
 [plugins]
+
+kotlin-ksp={ id="com.google.devtools.ksp", version.ref="ksp"}
+room = { id = "androidx.room", version.ref = "room" }
+
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -64,6 +71,12 @@ junit = "junit:junit:4.13.2"
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 robolectric = "org.robolectric:robolectric:4.13"
 mockk = "io.mockk:mockk:1.13.13"
+
+#room
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 # Dependencias usadas en archivo build.gradle.kts de :build-domain
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
