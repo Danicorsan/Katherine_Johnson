@@ -18,6 +18,12 @@ import com.example.inventory.navigation.graphs.CategoryGraph.ROUTE
  *
  * @constructor Create empty Category graph
  */
+@Deprecated("Por la introducción del BasedNavigationDrawer, se necesitará" +
+        "usar y modificar su versión en el modulo Base",
+    replaceWith = ReplaceWith("CategoryGraph",
+        "app.base.features.navigation.graphs.CategoryGraph"
+    ),
+)
 object CategoryGraph {
     const val ID = "id"
     const val ROUTE = "category"

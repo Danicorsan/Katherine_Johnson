@@ -23,6 +23,21 @@ import app.base.ui.composables.SmallSpace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * Un elemento Drawer normalizado para toda la aplicación.
+ *
+ * Se busca un uso sencillo, por lo que este elemento ya se encargá
+ * de gran parte de las interacciones, como la navegación a otras pantallas.
+ *
+ * @param drawerState Para poder controllar desde fuera la apertura o cierre
+ * del drawer se le debe pasar un estado. Este estado puede ser
+ * inicializado y guardado en los ViewModels.
+ *
+ * @param navController Se necesita el [NavController] de la aplicación para
+ * poder realizar las navegaciónes.
+ *
+ * @param screenContent El contenido de la pantalla.
+ */
 @Composable
 fun BaseNavigationDrawer(
     drawerState: DrawerState,

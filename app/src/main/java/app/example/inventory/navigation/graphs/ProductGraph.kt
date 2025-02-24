@@ -17,7 +17,12 @@ import app.features.productlist.ui.ProductListScreen
 import app.features.productlist.ui.ProductListViewModel
 import app.features.productlist.ui.base.ProductListNavigationEvents
 
-//TODO(Transformar el productGraph a una clase sellada para una mayor limpieza con los argumentos)
+@Deprecated("Por la introducción del BasedNavigationDrawer, se necesitará" +
+        "usar y modificar su versión en el modulo Base",
+    replaceWith = ReplaceWith("ProductGraph",
+        "app.base.features.navigation.graphs.ProductGraph"
+        ),
+)
 object ProductGraph {
     const val ROUTE = "product"
     const val PRODUCTID = "productId"

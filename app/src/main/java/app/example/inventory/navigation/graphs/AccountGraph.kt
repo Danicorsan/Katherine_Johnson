@@ -19,6 +19,12 @@ import com.example.inventory.navigation.graphs.AccountGraph.ROUTE
  *
  * @constructor Create empty Account graph
  */
+@Deprecated("Por la introducción del BasedNavigationDrawer, se necesitará" +
+        "usar y modificar su versión en el modulo Base",
+    replaceWith = ReplaceWith("AccountGraph",
+        "app.base.features.navigation.graphs.AccountGraph"
+    ),
+)
 object AccountGraph {
     const val ROUTE = "signUp"
     const val EMAIL = "email"

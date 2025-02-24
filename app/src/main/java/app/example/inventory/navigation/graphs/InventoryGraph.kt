@@ -15,6 +15,12 @@ import app.features.inventorydetail.ui.InventoryDetailViewModel
 import app.features.inventorylist.ui.InventoryListScreen
 import app.features.inventorylist.ui.InventoryListViewModel
 
+@Deprecated("Por la introducción del BasedNavigationDrawer, se necesitará" +
+        "usar y modificar su versión en el modulo Base",
+    replaceWith = ReplaceWith("InventoryGraph",
+        "app.base.features.navigation.graphs.InventoryGraph"
+    ),
+)
 object InventoryGraph {
     const val ROUTE = "inventory"
 

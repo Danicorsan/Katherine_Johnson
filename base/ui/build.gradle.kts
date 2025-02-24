@@ -9,8 +9,8 @@ android {
 
 dependencies {
     implementation(projects.base.utils)
+    implementation(projects.base.features)
     implementation(projects.domain.ddd)
-    implementation(projects.app)
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.navigation.compose)
 }
