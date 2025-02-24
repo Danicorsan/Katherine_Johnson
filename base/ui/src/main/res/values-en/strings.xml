@@ -21,4 +21,16 @@
     <string name="edit_element_action_icon">Edit %s</string>
     <string name="delete_element_action_icon">Delete %s</string>
     <string name="formato_incorrecto">Incorrect format</string>
+    <string name="content_description_avatar_image">Avatar</string>
+    <string name="drawer_account_name_default_text">Name Surname</string>
+    <string name="drawer_product_item_label">Product</string>
+    <string name="drawer_product_item_content_description">Navigate to products</string>
+    <string name="drawer_category_item_content_description">Navigate to categories</string>
+    <string name="drawer_category_item_label">Categories</string>
+    <string name="drawer_inventory_item_label">Inventories</string>
+    <string name="drawer_inventory_item_content_description">Navigate to inventories</string>
+    <string name="drawer_settings_item_label">Settings</string>
+    <string name="drawer_settings_item_content_description">Navigate to settings</string>
+    <string name="drawer_aboutus_item_label">About us</string>
+    <string name="drawer_aboutus_item_content_description">Navigate to about us</string>
 </resources>
