@@ -28,6 +28,11 @@ import app.features.productdetail.ui.base.composables.NormalTextBox
 import app.features.productdetail.ui.base.composables.LargeTextBox
 import app.features.productdetail.ui.base.composables.DetailsHead
 
+/**
+ * Crea un "formulario" de solo lectura para visualizar los datos de un producto.
+ *
+ * @param product El producto del cual se quiere visualizar los datos.
+ */
 @Composable
 fun ProductReadOnlyForm(product: Product){
     Column(

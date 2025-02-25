@@ -12,6 +12,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * El [ViewModel] correspondiente a la pantalla [app.features.productdetail.ui.ProductDetailScreen].
+ *
+ */
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor() : ViewModel(){
     var productDetailsState by mutableStateOf(ProductDetailsState())
@@ -21,6 +25,13 @@ class ProductDetailsViewModel @Inject constructor() : ViewModel(){
     private lateinit var onGoBackNavigation : () -> Unit
     private lateinit var onEditProductNav: (Int) -> Unit
 
+    /**
+     * Establece los eventos necesarios y carga los datos del productos.
+     *
+     * @param productId El id del producto del cual queremos obtener sus datos.
+     * @param onGoBackNavigationAction La acción para navegar a la pantalla anterior.
+     * @param onEditProductNav La acción para navegar a la pantalla de edición de un producto.
+     */
     fun loadDataAndStablishNavigationEvent(
         productId : Int,
         onGoBackNavigationAction : () -> Unit,
@@ -41,20 +52,36 @@ class ProductDetailsViewModel @Inject constructor() : ViewModel(){
         }
     }
 
+    /**
+     * Evento lanzado cuando el usuario quiere editar un producto.
+     *
+     */
     fun onEditProduct(){
         onEditProductNav(productId)
     }
 
+    /**
+     * Evento lanzado cuando el usuario quiere volver a la pantalla anterior.
+     *
+     */
     fun onGoBackNavigationClick(){
         onGoBackNavigation()
     }
 
+    /**
+     * Evento lanzado cuando el usuario quiere eliminar un producto.
+     *
+     */
     fun onDeleteProduct(){
         productDetailsState = productDetailsState.copy(
             productBeingDeleted = true
         )
     }
 
+    /**
+     * Evento lanzado cuando el usuario confirma que quiere eliminar un producto.
+     *
+     */
     fun onConfirmDeleteProduct(){
         productDetailsState = productDetailsState.copy(
             product = null
@@ -65,6 +92,10 @@ class ProductDetailsViewModel @Inject constructor() : ViewModel(){
         }
     }
 
+    /**
+     * Evento lanzado cuando el usuario decide cancelar la eliminación del producto.
+     *
+     */
     fun onDismissDeleteProduct(){
         productDetailsState = productDetailsState.copy(
             productBeingDeleted = false
