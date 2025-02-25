@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,8 +24,13 @@ import app.features.productcreation.ui.base.components.ProductCreationFloatingAc
 @Preview(showBackground = true)
 @Composable
 fun ProductCreationScreen(
-    viewModel: ProductCreationViewModel = remember{ ProductCreationViewModel() }
+    viewModel: ProductCreationViewModel = remember{ ProductCreationViewModel() },
+    onGoBackNav : () -> Unit = {}
 ){
+    LaunchedEffect(Unit) {
+        viewModel.stablishNavigationEvent(onGoBackNav)
+        viewModel.loadScreenData()
+    }
     ProductCreationHost(
         productState = viewModel.productViewState,
         productEvents = ProductEvents.build(viewModel)

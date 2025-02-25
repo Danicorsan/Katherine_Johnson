@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,8 +21,14 @@ import app.features.productcreation.ui.base.components.ProductCreationFloatingAc
 
 @Composable
 fun ProductEditionScreen(
-    viewModel: ProductEditionViewModel
+    viewModel: ProductEditionViewModel,
+    productToEditId : Int,
+    onGoBackNav : () -> Unit
 ){
+    LaunchedEffect(Unit) {
+        viewModel.stablishNavigationEvent(onGoBackNav)
+        viewModel.loadScreenData(productToEditId)
+    }
     ProductEditionHost(
         productEditionState = viewModel.productViewState,
         productEvents = ProductEvents.build(viewModel)

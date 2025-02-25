@@ -7,15 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.repository.ProductRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductDetailsViewModel : ViewModel(){
+@HiltViewModel
+class ProductDetailsViewModel @Inject constructor() : ViewModel(){
     var productDetailsState by mutableStateOf(ProductDetailsState())
     private set
 
     private lateinit var onGoBackNavigation : () -> Unit
 
-    fun getReady(
+    fun loadDataAndStablishNavigationEvent(
         idProduct : Int,
         onGoBackNavigationAction : () -> Unit
     ){

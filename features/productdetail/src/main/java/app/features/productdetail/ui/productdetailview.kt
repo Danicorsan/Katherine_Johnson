@@ -26,7 +26,7 @@ fun ProductDetailScreen(
     onGoBackNav: () -> Unit
 ) {
     LaunchedEffect(Unit) {
-        viewModel.getReady(productId, onGoBackNav)
+        viewModel.loadDataAndStablishNavigationEvent(productId, onGoBackNav)
     }
     ProductDetailsHost(
         productDetailsState = viewModel.productDetailsState,
@@ -84,7 +84,7 @@ private fun ProductDetailPreview() {
         fungible = false
     )
     val section = "Nombre Seccion"
-    val product: Product = Product(
+    val product = Product(
         code = "dependenciaSeccion3",
         name = "Esponja duradera max",
         shortName = "Esponja",

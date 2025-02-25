@@ -11,9 +11,17 @@ import app.domain.invoicing.product.complements.tags.Tag
 import app.domain.invoicing.product.complements.tags.Tags
 import kotlinx.datetime.Instant
 
-abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Unit) : ViewModel() {
+abstract class ProductBaseCreationViewModel : ViewModel() {
     var productViewState by mutableStateOf(ProductViewState())
         protected set
+
+    protected lateinit var onGoBackNav : () -> Unit
+
+    abstract fun onAcceptChanges()
+
+    fun stablishNavigationEvent(onGoBackNav : () -> Unit){
+        this.onGoBackNav = onGoBackNav
+    }
 
     fun onCodeChanged(newCode : String){
         productViewState = productViewState.copy(
@@ -226,8 +234,6 @@ abstract class ProductBaseCreationViewModel(protected val onGoBackNav : () -> Un
     fun onLeavePage(){
         onGoBackNav()
     }
-
-    abstract fun onAcceptChanges()
 
     protected fun comprobateAndManageLocalErrors(whenNoErrorFound : () -> Unit){
         if (productViewState.isLoading || productViewState.productIsBeingAdded)

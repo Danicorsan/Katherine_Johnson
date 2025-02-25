@@ -9,18 +9,21 @@ import app.domain.invoicing.product.ProductState
 import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.properties.Delegates
 
+@HiltViewModel
+class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewModel() {
 
-class ProductEditionViewModel(
-    onGoBackNav: () -> Unit = {},
-    private val productToEditId: Int
-) : ProductBaseCreationViewModel(onGoBackNav) {
+    private var productToEditId : Int = -1
 
-    init {
+    fun loadScreenData(productToEditId: Int) {
+        this.productToEditId = productToEditId
         productViewState = productViewState.copy(isLoading = true)
         viewModelScope.launch {
             val categoriesDeferred = async(Dispatchers.IO) { getCategories() }
@@ -55,7 +58,6 @@ class ProductEditionViewModel(
                 )
             )
         }
-
     }
 
     private suspend fun getProductById (productToEditId: Int) : Product =

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,8 +28,13 @@ import app.features.productlist.ui.base.ProductListState
 @Preview(showSystemUi = true)
 @Composable
 fun ProductListScreen(
-    viewModel: ProductListViewModel = remember { ProductListViewModel(ProductListNavigationEvents())},
+    viewModel: ProductListViewModel = remember { ProductListViewModel()},
+    navigationEvents: ProductListNavigationEvents = ProductListNavigationEvents()
 ){
+    LaunchedEffect(Unit) {
+        viewModel.getAllProductList()
+        viewModel.stablishNavigationEvents(navigationEvents)
+    }
     ProductListHost(
         productListState = viewModel.productListState,
         productListEvents = ProductListEvents.build(viewModel)

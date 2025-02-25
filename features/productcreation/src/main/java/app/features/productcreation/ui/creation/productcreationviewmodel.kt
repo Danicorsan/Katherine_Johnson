@@ -4,12 +4,15 @@ import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductCreationViewModel(onGoBackNav : () -> Unit = {}) : ProductBaseCreationViewModel(onGoBackNav) {
+@HiltViewModel
+class ProductCreationViewModel @Inject constructor() : ProductBaseCreationViewModel() {
 
-    init {
+    fun loadScreenData() {
         productViewState = productViewState.copy(isLoading = true)
         viewModelScope.launch {
             delay(1000)//Simulacion de tiempo de espera
