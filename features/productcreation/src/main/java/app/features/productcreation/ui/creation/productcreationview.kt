@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
+import app.base.ui.composables.BaseAlertDialog
 import app.features.productcreation.R
-import app.features.productcreation.ui.base.components.AlertDialogOK
 import app.features.productcreation.ui.base.components.ProductForm
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.ProductEvents
@@ -50,19 +50,25 @@ fun ProductCreationHost(
     ) { contentPadding ->
         when {
             productState.isLoading -> LoadingUi()
-            productState.cantRegisterProduct -> AlertDialogOK(
+            productState.cantRegisterProduct -> BaseAlertDialog(
                 title = stringResource(R.string.cant_register_alert_dialog_title),
-                message = stringResource(R.string.cant_register_alert_dialog_message),
+                text = stringResource(R.string.cant_register_alert_dialog_message),
+                confirmText = stringResource(R.string.confirm_button_alert_dialog),
+                onConfirm = productEvents.onDismissCantRegisterProductAlertDialog,
                 onDismiss = productEvents.onDismissCantRegisterProductAlertDialog
             )
-            productState.errorDataState.emptyFields -> AlertDialogOK(
+            productState.errorDataState.emptyFields -> BaseAlertDialog(
                 title = stringResource(R.string.empty_fields_alert_dialog_title),
-                message = stringResource(R.string.empty_fields_alert_dialog_message),
+                text = stringResource(R.string.empty_fields_alert_dialog_message),
+                confirmText = stringResource(R.string.confirm_button_alert_dialog),
+                onConfirm = productEvents.onDismissEmptyFieldsAlertDialog,
                 onDismiss = productEvents.onDismissEmptyFieldsAlertDialog
             )
-            productState.productRegisterSuccessful -> AlertDialogOK(
+            productState.productRegisterSuccessful -> BaseAlertDialog(
                 title = stringResource(R.string.product_registered_successful_alert_dialog_title),
-                message = stringResource(R.string.product_registered_successful_alert_dialog_message),
+                text = stringResource(R.string.product_registered_successful_alert_dialog_message),
+                confirmText = stringResource(R.string.confirm_button_alert_dialog),
+                onConfirm = productEvents.onDismissProductHasBeenRegisteredAlertDialog,
                 onDismiss = productEvents.onDismissProductHasBeenRegisteredAlertDialog
             )
             else -> ProductCreationContent(
