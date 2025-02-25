@@ -14,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.base.ui.Separations
 import app.base.ui.composables.HighSpace
 import app.base.ui.composables.MediumSpace
-import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace
 import app.base.utils.format
 import app.base.utils.toCurrency

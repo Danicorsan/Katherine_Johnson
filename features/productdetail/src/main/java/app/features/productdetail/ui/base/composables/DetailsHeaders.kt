@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import app.base.ui.composables.Separations
+import app.base.ui.Separations
 import app.base.ui.composables.TitleText
 
 @Composable
