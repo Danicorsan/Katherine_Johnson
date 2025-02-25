@@ -23,7 +23,7 @@ object InventoryRepository {
     fun updateInventory(updatedInventory: Inventory): Boolean {
         val index = dataSet.indexOfFirst { it.id == updatedInventory.id }
         if (index == -1) return false
-        dataSet[index] = updatedInventory.copy(items = dataSet[index].items)
+        dataSet[index] = updatedInventory.copy(/*items = dataSet[index].items*/)
         return true
     }
 

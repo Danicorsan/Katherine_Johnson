@@ -1,17 +1,26 @@
 package app.domain.invoicing.inventory
 
-import app.domain.invoicing.product.Product
-import java.util.Date
+import java.time.LocalDate
 
 data class Inventory(
     val id: Int,
     val name: String,
     val description: String,
-    val items: List<Product>?,
-    val createdAt: Date,
-    var updatedAt: Date = Date(),
+    val itemsCount: Int?,
+    val inventoryType: InventoryType,
+    val createdAt: LocalDate,
+    var updatedAt: LocalDate = LocalDate.now(),
     var icon: InventoryIcon
 )
+
+enum class InventoryType {
+    WEEKLY,
+    MONTHLY,
+    TRIMESTRAL,
+    SEMESTRAL,
+    ANNUAL,
+    PERMANENT
+}
 
 enum class InventoryIcon {
     ELECTRONICS,

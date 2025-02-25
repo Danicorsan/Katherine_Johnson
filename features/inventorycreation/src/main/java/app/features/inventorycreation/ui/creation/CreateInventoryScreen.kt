@@ -22,8 +22,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -46,8 +44,10 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryType
 import app.features.inventorycreation.R
-import java.util.Date
+import app.features.inventorycreation.ui.composables.CustomDropdownMenu
+import java.time.LocalDate
 
 @Composable
 fun CreateInventoryScreen(
@@ -59,12 +59,11 @@ fun CreateInventoryScreen(
     var showSuccessDialog by remember { mutableStateOf(false) }
     var isInventoryCreated by remember { mutableStateOf(false) }
     val loading = uiState.loading
-    
-    
 
-    val icons = InventoryIcon.entries.toTypedArray()
+    var selectedType by remember { mutableStateOf(uiState.inventoryType) }
     var selectedIcon by remember { mutableStateOf(uiState.inventoryIcon) }
-    var expanded by remember { mutableStateOf(false) }
+    var isIconExpanded by remember { mutableStateOf(false) }
+    var isTypeExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -110,7 +109,7 @@ fun CreateInventoryScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { expanded = true }
+                            .clickable { isIconExpanded = true }
                             .border(
                                 1.dp,
                                 MaterialTheme.colorScheme.onSurface,
@@ -158,45 +157,88 @@ fun CreateInventoryScreen(
                             )
                         }
 
-                        DropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
+                        CustomDropdownMenu(
+                            expanded = isIconExpanded,
+                            onDismissRequest = { isIconExpanded = false },
+                            items = InventoryIcon.entries,
+                            onItemSelected = { icon ->
+                                selectedIcon = icon
+                                viewModel.onInventoryIconChange(icon)
+                            },
+                            itemText = { icon ->
+                                when (icon) {
+                                    InventoryIcon.NONE -> stringResource(R.string.ninguno)
+                                    InventoryIcon.ELECTRONICS -> stringResource(R.string.electronica)
+                                    InventoryIcon.TECHNOLOGY -> stringResource(R.string.tecnologia)
+                                    InventoryIcon.MATERIALS -> stringResource(R.string.materiales)
+                                    InventoryIcon.SERVICES -> stringResource(R.string.servicios)
+                                    InventoryIcon.WAREHOUSE -> stringResource(R.string.almacen)
+                                }
+                            },
+                            itemIcon = { icon ->
+                                when (icon) {
+                                    InventoryIcon.ELECTRONICS -> Icons.Filled.Call
+                                    InventoryIcon.TECHNOLOGY -> Icons.Filled.Settings
+                                    InventoryIcon.MATERIALS -> Icons.Filled.ShoppingCart
+                                    InventoryIcon.SERVICES -> Icons.Filled.Notifications
+                                    InventoryIcon.WAREHOUSE -> Icons.Filled.Home
+                                    InventoryIcon.NONE -> Icons.Filled.Warning
+                                }
+                            }
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { isTypeExpanded = true }
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.onSurface,
+                                RoundedCornerShape(8.dp)
+                            )
+                            .padding(12.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            icons.forEach { icon ->
-                                DropdownMenuItem(
-                                    onClick = {
-                                        expanded = false
-                                        selectedIcon = icon
-                                        viewModel.onInventoryIconChange(icon)
-                                    },
-                                    text = {
-                                        Text(
-                                            text = when (icon) {
-                                                InventoryIcon.NONE -> stringResource(R.string.ninguno)
-                                                InventoryIcon.ELECTRONICS -> stringResource(R.string.electronica)
-                                                InventoryIcon.TECHNOLOGY -> stringResource(R.string.tecnologia)
-                                                InventoryIcon.MATERIALS -> stringResource(R.string.materiales)
-                                                InventoryIcon.SERVICES -> stringResource(R.string.servicios)
-                                                InventoryIcon.WAREHOUSE -> stringResource(R.string.almacen)
-                                            }
-                                        )
-                                    },
-                                    leadingIcon = {
-                                        Icon(
-                                            imageVector = when (icon) {
-                                                InventoryIcon.ELECTRONICS -> Icons.Filled.Call
-                                                InventoryIcon.TECHNOLOGY -> Icons.Filled.Settings
-                                                InventoryIcon.MATERIALS -> Icons.Filled.ShoppingCart
-                                                InventoryIcon.SERVICES -> Icons.Filled.Notifications
-                                                InventoryIcon.WAREHOUSE -> Icons.Filled.Home
-                                                InventoryIcon.NONE -> Icons.Filled.Warning
-                                            },
-                                            contentDescription = "Icon"
-                                        )
+                            Text(
+                                text = when (selectedType) {
+                                    InventoryType.WEEKLY -> stringResource(R.string.semanal)
+                                    InventoryType.MONTHLY -> stringResource(R.string.mensual)
+                                    InventoryType.TRIMESTRAL -> stringResource(R.string.trimestral)
+                                    InventoryType.SEMESTRAL -> stringResource(R.string.semestral)
+                                    InventoryType.ANNUAL -> stringResource(R.string.anual)
+                                    InventoryType.PERMANENT -> stringResource(R.string.permanente)
+                                },
+                                modifier = Modifier.weight(1f),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+
+                            Icon(
+                                imageVector = Icons.Filled.ArrowDropDown,
+                                contentDescription = "Expand Menu",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                            CustomDropdownMenu(
+                                expanded = isTypeExpanded,
+                                onDismissRequest = { isTypeExpanded = false },
+                                items = InventoryType.entries,
+                                onItemSelected = { type ->
+                                    selectedType = type
+                                    viewModel.onInventoryTypeChange(type)
+                                },
+                                itemText = { type ->
+                                    when (type) {
+                                        InventoryType.WEEKLY -> stringResource(R.string.semanal)
+                                        InventoryType.MONTHLY -> stringResource(R.string.mensual)
+                                        InventoryType.TRIMESTRAL -> stringResource(R.string.trimestral)
+                                        InventoryType.SEMESTRAL -> stringResource(R.string.semestral)
+                                        InventoryType.ANNUAL -> stringResource(R.string.anual)
+                                        InventoryType.PERMANENT -> stringResource(R.string.permanente)
                                     }
-                                )
-                            }
+                                }
+                            )
                         }
                     }
 
@@ -212,14 +254,15 @@ fun CreateInventoryScreen(
                         onClick = {
                             viewModel.addInventory(
                                 Inventory(
-                                id = uiState.inventoryId,
-                                name = uiState.inventoryName,
-                                description = uiState.inventoryDescription,
-                                items = emptyList(),
-                                createdAt = Date(),
-                                updatedAt = Date(),
-                                icon = uiState.inventoryIcon
-                            )
+                                    id = uiState.inventoryId,
+                                    name = uiState.inventoryName,
+                                    description = uiState.inventoryDescription,
+                                    createdAt = LocalDate.now(),
+                                    updatedAt = LocalDate.now(),
+                                    icon = uiState.inventoryIcon,
+                                    itemsCount = uiState.inventoryItemsCount,
+                                    inventoryType = uiState.inventoryType
+                                )
                             )
                             showSuccessDialog = true
                         },
@@ -250,6 +293,5 @@ fun CreateInventoryScreen(
                 onNavigateToList()
             }
         )
-    }}
-    )
-}
+    }
+})}

@@ -87,6 +87,7 @@ fun InventoryDetailScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 TableRow(label = stringResource(R.string.id), value = inventory.id.toString())
+                TableRow(label = stringResource(R.string.tipo_de_inventario), value = inventory.inventoryType.name)
                 TableRow(label = stringResource(R.string.fecha_creacion), value = inventory.createdAt.toString())
                 TableRow(label = stringResource(R.string.fecha_actualizacion), value = inventory.updatedAt.toString())
             }

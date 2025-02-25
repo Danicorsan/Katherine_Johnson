@@ -39,8 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryType
 import app.features.inventorylist.R
-import java.util.Date
+import java.time.LocalDate
 
 fun getIconForInventoryIcon(inventoryIcon: InventoryIcon): ImageVector {
     return when (inventoryIcon) {
@@ -145,9 +146,10 @@ fun InventoryCardPreview() {
             name = "Inventario 1",
             description = "Descripción del inventario 1",
             icon = InventoryIcon.ELECTRONICS,
-            createdAt = Date(),
-            updatedAt = Date(),
-            items = null
+            createdAt = LocalDate.now(),
+            updatedAt = LocalDate.now(),
+            itemsCount = 10,
+            inventoryType = InventoryType.SEMESTRAL,
         ),
         onClick = {},
         onEditClick = {},

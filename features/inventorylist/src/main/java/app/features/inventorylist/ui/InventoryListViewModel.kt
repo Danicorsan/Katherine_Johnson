@@ -33,10 +33,10 @@ class InventoryListViewModel @Inject constructor(
     ))
 
     init {
-        loadInventoriesWithDelay()
+        loadInventories()
     }
-
-    private fun loadInventoriesWithDelay() {
+/*
+    fun loadInventoriesWithDelay() {
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)
 
@@ -46,10 +46,12 @@ class InventoryListViewModel @Inject constructor(
 
             _uiState.value = uiState.copy(loading = false)
         }
-    }
+    }*/
 
     private fun loadInventories() {
         viewModelScope.launch {
+            _uiState.value = uiState.copy(loading = true)
+            delay(1000)
             _inventories.clear()
             _inventories.addAll(repository.getAllInventories())
             _uiState.value = uiState.copy(success = _inventories, loading = false)

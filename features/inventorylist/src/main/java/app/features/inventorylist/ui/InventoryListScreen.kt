@@ -41,7 +41,7 @@ fun InventoryListScreen(
     val state = viewModel.uiState
     val success = state.success
     var loading = state.loading
-    var noData = success.isEmpty()
+    val noData = success.isEmpty()
 
     // Eliminar
     var showDialog by remember { mutableStateOf(false) }
@@ -74,7 +74,7 @@ fun InventoryListScreen(
             if (state.loading) {
                 LoadingUi()
             } else {
-                if (success.isEmpty()) {
+                if (noData) {
                     NoDataScreen()
                 } else {
                     LazyColumn(

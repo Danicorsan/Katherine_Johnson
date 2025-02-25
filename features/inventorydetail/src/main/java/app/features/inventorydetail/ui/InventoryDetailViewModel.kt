@@ -21,12 +21,9 @@ class InventoryDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val inventory = repository.getInventoryById(inventoryId)
             if (inventory != null) {
-                _uiState.value = inventory.items?.let {
-                    _uiState.value.copy(
-                        inventory = inventory,
-                        items = it
-                    )
-                }!!
+                _uiState.value = _uiState.value.copy(
+                    inventory = inventory
+                )
             }
         }
     }
