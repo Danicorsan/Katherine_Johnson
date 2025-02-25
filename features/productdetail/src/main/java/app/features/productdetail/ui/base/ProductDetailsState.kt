@@ -1,4 +1,4 @@
-package app.features.productdetail.ui
+package app.features.productdetail.ui.base
 
 import app.domain.invoicing.product.Product
 

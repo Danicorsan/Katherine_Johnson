@@ -16,6 +16,8 @@ import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
 import app.features.productdetail.R
+import app.features.productdetail.ui.base.ProductDetailsState
+import app.features.productdetail.ui.base.components.ProductReadOnlyForm
 import kotlinx.datetime.Instant
 import java.util.Date
 
@@ -67,7 +69,7 @@ private fun ProductDetailContent(
     Box(
         modifier = modifier
     ) {
-        ScrollableContentColumn(product = product)
+        ProductReadOnlyForm(product = product)
     }
 }
 

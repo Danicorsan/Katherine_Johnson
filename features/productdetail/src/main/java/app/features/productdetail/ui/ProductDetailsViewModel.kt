@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.repository.ProductRepository
+import app.features.productdetail.ui.base.ProductDetailsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
