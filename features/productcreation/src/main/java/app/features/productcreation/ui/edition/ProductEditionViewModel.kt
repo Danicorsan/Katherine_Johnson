@@ -17,11 +17,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
+/**
+ * El ViewModel correspondiente a la pantalla de edición de productos.
+ *
+ */
 @HiltViewModel
 class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewModel() {
 
     private var productToEditId : Int = -1
 
+    /**
+     * Carga los datos necesarios para crear un producto, como cuales son
+     * las categorias y secciones existentes.
+     *
+     * Ademas, en edición se debe cargar del respositorios los datos
+     * del productos a traves de su ID
+     *
+     * @param productToEditId El ID del producto que queremos editar.
+     *
+     */
     fun loadScreenData(productToEditId: Int) {
         this.productToEditId = productToEditId
         productViewState = productViewState.copy(isLoading = true)
@@ -77,9 +91,9 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
 
     override fun onAcceptChanges() {
         comprobateAndManageLocalErrors {
+            productIsBeingAdded = true
             productViewState = productViewState.copy(
-                isLoading = true,
-                productIsBeingAdded = true
+                isLoading = true
             )
             viewModelScope.launch {
                 val productToUpdate = makeProductFromFields().copy(
