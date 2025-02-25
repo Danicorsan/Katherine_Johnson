@@ -64,10 +64,6 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
         productListNavigationEvents.onSeeProductDetailsNav(product.id!!)
     }
 
-    fun onEditProduct(product : Product){
-        productListNavigationEvents.onEditProductNav(product.id!!)
-    }
-
     fun onGoBack(){
         productListNavigationEvents.onGoBackNav()
     }

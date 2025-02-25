@@ -52,7 +52,6 @@ fun ListProducts(productList: List<Product>, productListEvents: ProductListEvent
                     .padding(vertical = Separations.Small),
                 product = it,
                 onSeeProductDetails = productListEvents.seeProductDetails,
-                onEditProduct = productListEvents.onEditProduct,
                 onDeleteProduct = productListEvents.onDeleteProduct
             )
         }
@@ -68,7 +67,6 @@ private fun ProductInformationCard(
     modifier: Modifier = Modifier,
     product: Product,
     onSeeProductDetails: (Product) -> Unit,
-    onEditProduct: (Product) -> Unit,
     onDeleteProduct: (Product) -> Unit,
 ) {
     Card(
@@ -85,10 +83,6 @@ private fun ProductInformationCard(
         ) {
             ShowProductImage(product)
             ShowBasicInformation(product)
-            ShowIconActions(
-                product = product,
-                onEditIconButtonPressed = onEditProduct
-            )
         }
     }
 }
@@ -97,7 +91,7 @@ private fun ProductInformationCard(
 private fun ShowProductImage(product: Product) {//Mantener parametro de cara a la implementación de imagenes
     Box(
         modifier = Modifier
-            .padding(start = Separations.Small)
+            .padding(start = Separations.Medium)
     ) {
         DefaultProductImage()
     }
@@ -106,7 +100,7 @@ private fun ShowProductImage(product: Product) {//Mantener parametro de cara a l
 @Composable
 private fun ShowBasicInformation(product: Product) {
     Column(
-        modifier = Modifier.fillMaxWidth(Specification.RELATIVESPACEFORPRODUCTBASICINFORMATION),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ShowProductsName(product)
@@ -129,20 +123,5 @@ private fun ShowProductsName(product: Product) {
         contentAlignment = Alignment.Center
     ) {
         MediumTitleText(product.name)
-    }
-}
-
-@Composable
-private fun ShowIconActions(
-    product: Product,
-    onEditIconButtonPressed: (Product) -> Unit
-) {
-    IconButton(
-        onClick = { onEditIconButtonPressed(product) }
-    ) {
-        Icon(
-            Icons.Default.Edit,
-            contentDescription = stringResource(R.string.edit_product_iconbutton)
-        )
     }
 }

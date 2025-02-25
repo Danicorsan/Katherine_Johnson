@@ -9,7 +9,6 @@ data class ProductListEvents(
     val onConfirmDeleteProduct : () -> Unit,
     val onDissmissDeleteProduct : () -> Unit,
     val seeProductDetails : (Product) -> Unit,
-    val onEditProduct : (Product) -> Unit,
     val onGoBack : () -> Unit
 ){
     companion object{
@@ -20,7 +19,6 @@ data class ProductListEvents(
                 onConfirmDeleteProduct = viewModel::onConfirmDeleteProduct,
                 onDissmissDeleteProduct = viewModel::onDissmissDeleteProduct,
                 seeProductDetails = viewModel::onSeeProductDetails,
-                onEditProduct = viewModel::onEditProduct,
                 onGoBack = viewModel::onGoBack
             )
         }
@@ -30,6 +28,5 @@ data class ProductListEvents(
 data class ProductListNavigationEvents(
     val onCreateProductNav: () -> Unit = {},
     val onSeeProductDetailsNav : (Int) -> Unit = {},
-    val onEditProductNav : (Int) -> Unit = {},
     val onGoBackNav : () -> Unit = {}
 )

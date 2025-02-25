@@ -161,13 +161,13 @@ private fun ProductDetailsStamp(dataType : String, data : String?){
 
 @Composable
 private fun ProductDetailsStamp(dataType : String, state : ProductState){
-    val textoMostrar = when(state){
+    val textToShow = when(state){
         ProductState.new -> stringResource(R.string.state_as_new)
         ProductState.modified -> stringResource(R.string.state_as_modified)
         ProductState.verified -> stringResource(R.string.state_as_verified)
     }
 
-    ProductDetailsStamp(dataType = dataType, data = textoMostrar)
+    ProductDetailsStamp(dataType = dataType, data = textToShow)
 }
 
 @Composable

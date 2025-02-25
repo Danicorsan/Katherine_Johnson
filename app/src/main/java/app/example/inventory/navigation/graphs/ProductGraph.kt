@@ -58,9 +58,6 @@ private fun NavGraphBuilder.productListRoute(
                 onSeeProductDetailsNav = { idProduct ->
                     navController.navigate(ProductGraph.productDetailsRoute(idProduct))
                 },
-                onEditProductNav = { idProduct ->
-                    navController.navigate(ProductGraph.productEditionRoute(idProduct))
-                },
                 onGoBackNav = {
                     navController.popBackStack()
                 }
@@ -119,6 +116,9 @@ private fun NavGraphBuilder.productDetailsRoute(
             productId = id!!,
             onGoBackNav = {
                 navController.popBackStack()
+            },
+            onEditProductNav = { productId ->
+                navController.navigate(ProductGraph.productEditionRoute(productId))
             }
         )
     }

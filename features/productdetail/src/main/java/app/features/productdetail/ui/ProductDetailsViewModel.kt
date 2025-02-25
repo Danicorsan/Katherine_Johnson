@@ -17,15 +17,20 @@ class ProductDetailsViewModel @Inject constructor() : ViewModel(){
     var productDetailsState by mutableStateOf(ProductDetailsState())
     private set
 
+    private var productId : Int = -1
     private lateinit var onGoBackNavigation : () -> Unit
+    private lateinit var onEditProductNav: (Int) -> Unit
 
     fun loadDataAndStablishNavigationEvent(
-        idProduct : Int,
-        onGoBackNavigationAction : () -> Unit
+        productId : Int,
+        onGoBackNavigationAction : () -> Unit,
+        onEditProductNav : (Int) -> Unit
     ){
         this.onGoBackNavigation = onGoBackNavigationAction
+        this.onEditProductNav = onEditProductNav
+        this.productId = productId
         viewModelScope.launch {
-           val response = ProductRepository.getProductById(idProduct)
+           val response = ProductRepository.getProductById(productId)
             if (response is BaseResult.Success){
                 productDetailsState = productDetailsState.copy(
                     product = response.data
@@ -36,7 +41,33 @@ class ProductDetailsViewModel @Inject constructor() : ViewModel(){
         }
     }
 
-    fun onGoBackNavigationButtonClick(){
+    fun onEditProduct(){
+        onEditProductNav(productId)
+    }
+
+    fun onGoBackNavigationClick(){
         onGoBackNavigation()
+    }
+
+    fun onDeleteProduct(){
+        productDetailsState = productDetailsState.copy(
+            productBeingDeleted = true
+        )
+    }
+
+    fun onConfirmDeleteProduct(){
+        productDetailsState = productDetailsState.copy(
+            product = null
+        )
+        viewModelScope.launch {
+            ProductRepository.removeProduct(productId)
+            onGoBackNavigation()
+        }
+    }
+
+    fun onDismissDeleteProduct(){
+        productDetailsState = productDetailsState.copy(
+            productBeingDeleted = false
+        )
     }
 }
