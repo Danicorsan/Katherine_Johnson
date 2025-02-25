@@ -26,6 +26,14 @@ import app.features.productlist.ui.base.Specification
 import app.features.productlist.ui.base.ProductListEvents
 import app.features.productlist.ui.base.composable.PutInRowWithSeparation
 
+/**
+ * Permite listar todos los productos pasados por parametros a traves
+ * de un [LazyColumn].
+ *
+ * @param productList La lista de productos que pueden ser mostrados.
+ * @param productListEvents Un objeto [ProductListEvents] para recoger los eventos que necesiten
+ * usarse en listado.
+ */
 @Composable
 fun ListProducts(productList: List<Product>, productListEvents: ProductListEvents) {
     LazyColumn(

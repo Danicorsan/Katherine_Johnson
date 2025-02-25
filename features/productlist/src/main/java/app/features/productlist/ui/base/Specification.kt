@@ -3,6 +3,11 @@ package app.features.productlist.ui.base
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * Contiene variables constantes que afectan a la visualización de
+ * [app.features.productlist.ui.ProductListScreen]
+ *
+ */
 object Specification {
     const val RELATIVEIMAGESIZE : Float = 15/100f
     const val RELATIVEROUNDEDCORNERSHAPE : Float= 20f
