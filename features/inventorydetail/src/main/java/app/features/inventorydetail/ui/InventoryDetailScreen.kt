@@ -118,8 +118,8 @@ fun InventoryDetailScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Confirmar eliminación") },
-            text = { Text("¿Estás seguro de que quieres eliminar este inventario?") },
+            title = { Text(stringResource(R.string.confirmar_eliminacion)) },
+            text = { Text(stringResource(R.string.estas_seguro_de_que_quieres_eliminar_este_inventario)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -130,12 +130,12 @@ fun InventoryDetailScreen(
                         }
                     }
                 ) {
-                    Text("Sí, eliminar")
+                    Text(stringResource(R.string.si_eliminar))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.cancelar))
                 }
             }
         )

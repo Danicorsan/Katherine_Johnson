@@ -14,4 +14,10 @@
     <string name="aceptar">Aceptar</string>
     <string name="no_hay_inventarios">No hay inventarios</string>
     <string name="añadir_inventario">Añadir inventario</string>
+    <string name="inventory_type_semanal">SEMANAL</string>
+    <string name="inventory_type_mensual">MENSUAL</string>
+    <string name="inventory_type_trimestral">TRIMESTRAL</string>
+    <string name="inventory_type_semestral">SEMESTRAL</string>
+    <string name="inventory_type_anual">ANUAL</string>
+    <string name="inventory_type_permanente">PERMANENTE</string>
 </resources>

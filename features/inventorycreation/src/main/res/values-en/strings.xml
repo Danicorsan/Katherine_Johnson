@@ -16,4 +16,11 @@
     <string name="materiales">Materials</string>
     <string name="servicios">Services</string>
     <string name="almacen">Warehouse</string>
+    <string name="semanal">Weekly</string>
+    <string name="mensual">Monthly</string>
+    <string name="trimestral">Trimestral</string>
+    <string name="semestral">Semestral</string>
+    <string name="anual">Annual</string>
+    <string name="permanente">Permanent</string>
+    <string name="tipo_de_inventario">Type of Inventory</string>
 </resources>

@@ -13,4 +13,8 @@
     <string name="id">"ID"</string>
     <string name="tipo_de_inventario">Tipo de inventario</string>
     <string name="eliminar">Eliminar</string>
+    <string name="confirmar_eliminacion">Confirmar eliminación</string>
+    <string name="estas_seguro_de_que_quieres_eliminar_este_inventario">¿Estás seguro de que quieres eliminar este inventario?</string>
+    <string name="si_eliminar">Sí, eliminar</string>
+    <string name="cancelar">Cancelar</string>
 </resources>
