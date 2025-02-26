@@ -1,6 +1,7 @@
 package app.features.productcreation.ui.base
 
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.section.Section
 import kotlinx.datetime.Instant
 
 /**
@@ -20,7 +21,7 @@ data class ProductViewState(
     val errorDataState: ErrorDataState = ErrorDataState(),
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
-    val sectionsList : Iterable<String> = emptyList(),
+    val sectionsList : Iterable<Section> = emptyList(),
     val productRegisterSuccessful : Boolean = false,
     val cantRegisterProduct : Boolean = false,
 )
@@ -43,7 +44,7 @@ data class ProductViewState(
  * @property discontinuationDate La fecha de discontinuación a traves de un objeto [Instant]
  * @property discontinuationDateRepresentation La representación de la fecha de discontinuación como un String
  * @property selectedCategory La categoria seleccionada para el producto.
- * @property selectedSection La sección seleccionada por el producto.
+ * @property selectedSection La [Section] seleccionada por el producto.
  * @property notes Las notas del producto.
  * @property tags La etiquetas del producto.
  */
@@ -63,7 +64,7 @@ data class InputDataState(
     val discontinuationDate : Instant? = null,
     val discontinuationDateRepresentation : String? = null,
     val selectedCategory : Category? = null,
-    val selectedSection : String? = null,
+    val selectedSection : Section? = null,
     val notes : String = "",
     val tags : String = ""
 )

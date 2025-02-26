@@ -40,16 +40,15 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
         this.productToEditId = productToEditId
         productViewState = productViewState.copy(isLoading = true)
         viewModelScope.launch {
-            val categoriesDeferred = async(Dispatchers.IO) { getCategories() }
+            val categoriesDeferred =getCategoriesAsync()
             val productDeferred = async(Dispatchers.IO) { getProductById(productToEditId) }
-            val sections = getSection()
-            val categories = categoriesDeferred.await()
+            val sections = getSectionsAsync()
             val product = productDeferred.await()
 
             productViewState = productViewState.copy(
                 isLoading = false,
-                categoriesList = categories,
-                sectionsList = sections,
+                categoriesList = categoriesDeferred.await(),
+                sectionsList = sections.await(),
                 inputDataState = productViewState.inputDataState.copy(
                     code = product.code,
                     name = product.name,
@@ -77,17 +76,6 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
     private suspend fun getProductById (productToEditId: Int) : Product =
         (ProductRepository.getProductById(productToEditId) as BaseResult.Success).data
 
-    private suspend fun getCategories() : List<Category> {
-        delay(1000)
-        return CategoryRepository.getAllCategories()
-    }
-
-    private fun getSection() = listOf( //Se espera que esté metodo se vuelva realmete asincrono en el futuro
-            "Sección 1", "Sección 2", "Sección 3",
-            "Sección 1", "Sección 2", "Sección 3",
-            "Sección 1", "Sección 2", "Sección 3",
-            "Sección 1", "Sección 2", "Sección 3"
-    )
 
     override fun onAcceptChanges() {
         comprobateAndManageLocalErrors {

@@ -87,7 +87,7 @@ fun ProductReadOnlyForm(product: Product){
         SeparatedRow(
             {
                 ProductDetailsStamp(
-                dataType = stringResource(R.string.section_label), data = product.section
+                dataType = stringResource(R.string.section_label), data = product.section.name
             )
             },
             {

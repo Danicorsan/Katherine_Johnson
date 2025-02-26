@@ -14,8 +14,10 @@ import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
+import app.domain.invoicing.section.Section
 import app.features.productdetail.R
 import app.features.productdetail.ui.base.ProductDetailsEvents
 import app.features.productdetail.ui.base.ProductDetailsState
@@ -106,7 +108,20 @@ private fun ProductDetailPreview() {
         createdAt = Date(342422424),
         fungible = false
     )
-    val section = "Nombre Seccion"
+    val section = Section(
+        id = 2,
+        name = "Seccion nombre largo",
+        shortName = "Seccion nombre corto",
+        image = "",
+        belongedDependency = Dependency(
+            id = 1,
+            name = "Dependencia",
+            shortName = "depend",
+            image = "",
+            description = "ksfjks"
+        ),
+        releaseDate = Instant.fromEpochMilliseconds(425256343),
+    )
     val product = Product(
         code = "dependenciaSeccion3",
         name = "Esponja duradera max",

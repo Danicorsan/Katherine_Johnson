@@ -1,6 +1,7 @@
 package app.features.productcreation.ui.base
 
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.section.Section
 
 /**
  * Data class que recoge todos los eventos para las pantallas de creación y edición de un producto.
@@ -22,7 +23,7 @@ import app.domain.invoicing.category.Category
  * @property onNewAcquisitionDateSelected Cuando la fecha de adquisición del producto se modifican.
  * @property onNewDiscontinuationDateSelected Cuando la fecha de discontinuación del producto se modifica.
  * @property onNewCategorySelected Cuando la [Category] del producto se modifica.
- * @property onNewSectionSelected Cuando la sección del producto se modifica.
+ * @property onNewSectionSelected Cuando la [Section] del producto se modifica.
  * @property onDismissCantRegisterProductAlertDialog Cuando el usuario ha leido y acepta que no se ha podido registrar los cambios
  * @property onDismissEmptyFieldsAlertDialog Cuando el usuario ha leido y acepta que hay campos vacios.
  * @property onDismissProductHasBeenRegisteredAlertDialog Cuando el usuario ha leido y acepta que los cambios se han guardado.
@@ -46,7 +47,7 @@ data class ProductEvents(
     val onNewAcquisitionDateSelected : (Long?) -> Unit,
     val onNewDiscontinuationDateSelected : (Long?) -> Unit,
     val onNewCategorySelected : (Category) -> Unit,
-    val onNewSectionSelected : (String) -> Unit,
+    val onNewSectionSelected : (Section) -> Unit,
     val onDismissCantRegisterProductAlertDialog : () -> Unit,
     val onDismissEmptyFieldsAlertDialog : () -> Unit,
     val onDismissProductHasBeenRegisteredAlertDialog : () -> Unit

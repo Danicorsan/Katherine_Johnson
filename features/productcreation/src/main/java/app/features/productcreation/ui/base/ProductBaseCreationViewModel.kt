@@ -4,12 +4,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import app.base.utils.format
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.complements.tags.Tag
 import app.domain.invoicing.product.complements.tags.Tags
+import app.domain.invoicing.repository.CategoryRepository
+import app.domain.invoicing.repository.SectionRepository
+import app.domain.invoicing.section.Section
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
+import java.util.concurrent.Flow
 
 /**
  * Una clase abtracta que recoge las funciones y variables comunes que se necesitan
@@ -234,7 +247,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
      *
      * @param newSection La nueva sección introducida por el usuario.
      */
-    fun onNewSectionSelected(newSection : String){
+    fun onNewSectionSelected(newSection : Section){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 selectedSection = newSection
@@ -439,5 +452,28 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
             }) ,
             minimunStock = productData.minimunStock.toUIntOrNull()
         )
+    }
+
+    /**
+     * Permite obtener todas las categorias de forma asincrona.
+     *
+     * @return Un objeto [Deferred] con la lista de secciones existentes.
+     */
+    protected suspend fun getCategoriesAsync() : Deferred<List<Category>> {
+        return viewModelScope.async(Dispatchers.IO) {
+            delay(1000)
+            CategoryRepository.getAllCategories()
+        }
+    }
+
+    /**
+     * Permite obtenr todas las secciones de forma asincrona.
+     *
+     * @return Un objeto [Deferred] con la lista de secciones existentes
+     */
+    protected suspend fun getSectionsAsync() : Deferred<List<Section>>{
+        return viewModelScope.async (Dispatchers.IO) {
+            (SectionRepository.getAllSections() as BaseResult.Success).data.first()
+        }
     }
 }
