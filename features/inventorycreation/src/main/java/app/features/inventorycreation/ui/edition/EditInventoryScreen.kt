@@ -175,26 +175,6 @@ fun EditInventoryScreen(
                             }
                         }
                     )
-                    CustomDropdownMenu(
-                        expanded = isIconExpanded,
-                        onDismissRequest = { isIconExpanded = false },
-                        items = InventoryType.entries,
-                        onItemSelected = { type ->
-                            selectedType = type
-                            viewModel.onInventoryTypeChange(type)
-                        },
-                        itemText = { type ->
-                            when (type) {
-                                InventoryType.WEEKLY -> stringResource(R.string.semanal)
-                                InventoryType.MONTHLY -> stringResource(R.string.mensual)
-                                InventoryType.TRIMESTRAL -> stringResource(R.string.trimestral)
-                                InventoryType.SEMESTRAL -> stringResource(R.string.semestral)
-                                InventoryType.ANNUAL -> stringResource(R.string.anual)
-                                InventoryType.PERMANENT -> stringResource(R.string.permanente)
-                            }
-                        }
-                    )
-
                 }
                 Box(
                     modifier = Modifier

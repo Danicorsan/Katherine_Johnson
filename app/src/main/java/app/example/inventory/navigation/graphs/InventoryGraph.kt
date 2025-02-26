@@ -11,7 +11,6 @@ import app.features.inventorycreation.ui.creation.CreateInventoryViewModel
 import app.features.inventorycreation.ui.edition.EditInventoryScreen
 import app.features.inventorycreation.ui.edition.EditInventoryViewModel
 import app.features.inventorydetail.ui.InventoryDetailScreen
-import app.features.inventorydetail.ui.InventoryDetailViewModel
 import app.features.inventorylist.ui.InventoryListScreen
 import app.features.inventorylist.ui.InventoryListViewModel
 
@@ -49,9 +48,6 @@ private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
             },
             onCreateInventoryClick = {
                 navController.navigate(InventoryGraph.inventoryCreationRoute())
-            },
-            onEditInventoryClick = { inventory ->
-                navController.navigate(InventoryGraph.inventoryEditionRoute(inventory.id.toString()))
             },
         )
     }
@@ -102,6 +98,9 @@ private fun NavGraphBuilder.inventoryDetailsRoute(navController: NavController) 
             inventoryId = inventoryId,
             onNavigateBack = {
                 navController.popBackStack()
+            },
+            onEditInventoryClick = { inventory ->
+                navController.navigate(InventoryGraph.inventoryEditionRoute(inventory.id.toString()))
             },
         )
     }
