@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.base.ui.composables.ExposedDropDownMenuTemplate
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.section.Section
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.Specification
@@ -83,4 +84,24 @@ fun ExposedDropDownMenuForSection(
     )
 }
 
+@Composable
+fun ExposedDropDownMenuForDependencies(
+    dependencies : Iterable<Dependency>,
+    dependencySelected : Dependency?,
+    onNewDependencySelected : (Dependency) -> Unit
+){
+    val noItemSelectedMessage = stringResource(R.string.no_selected_option)
 
+    ExposedDropDownMenuTemplate(
+        modifier = Modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION),
+        showSelectedValueInTextField = {
+            dependencySelected?.name ?: noItemSelectedMessage
+        },
+        elementList = dependencies,
+        onNewItemSelected = onNewDependencySelected,
+        howShowEachItemInMenu = {
+            Text(it.name)
+        },
+        label = stringResource(R.string.dependency_label) + Specification.OBLIGATORYFIELDSMARK
+    )
+}

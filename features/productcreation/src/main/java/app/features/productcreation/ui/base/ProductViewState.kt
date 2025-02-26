@@ -1,6 +1,7 @@
 package app.features.productcreation.ui.base
 
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.section.Section
 import kotlinx.datetime.Instant
 
@@ -12,7 +13,8 @@ import kotlinx.datetime.Instant
  * @property errorDataState Objeto [ErrorDataState] para guardar las variables relacionadas con la gestión de errores.
  * @property isLoading Indica si la pantalla está cargando.
  * @property categoriesList La lista de [Category] seleccionables.
- * @property sectionsList La lista de secciones seleccionables.
+ * @property sectionsList La lista de [Section] seleccionables.
+ * @property dependenciesList La lista de [Dependency] seleccionables.
  * @property productRegisterSuccessful Indica si se han guardado los cambios con exito.
  * @property cantRegisterProduct Indica si ha habido un error al querer guardar los cambios.
  */
@@ -22,6 +24,7 @@ data class ProductViewState(
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
     val sectionsList : Iterable<Section> = emptyList(),
+    val dependenciesList : Iterable<Dependency> = emptyList(),
     val productRegisterSuccessful : Boolean = false,
     val cantRegisterProduct : Boolean = false,
 )
@@ -45,6 +48,8 @@ data class ProductViewState(
  * @property discontinuationDateRepresentation La representación de la fecha de discontinuación como un String
  * @property selectedCategory La categoria seleccionada para el producto.
  * @property selectedSection La [Section] seleccionada por el producto.
+ * @property selectedDependency La [Dependency] seleccionada que afectará a las secciones mostradas en el
+ * [app.features.productcreation.ui.base.composables.ExposedDropDownMenuForSection]
  * @property notes Las notas del producto.
  * @property tags La etiquetas del producto.
  */
@@ -65,6 +70,7 @@ data class InputDataState(
     val discontinuationDateRepresentation : String? = null,
     val selectedCategory : Category? = null,
     val selectedSection : Section? = null,
+    val selectedDependency : Dependency? = null,
     val notes : String = "",
     val tags : String = ""
 )

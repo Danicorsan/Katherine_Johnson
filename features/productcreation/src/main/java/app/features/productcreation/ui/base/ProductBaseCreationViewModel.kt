@@ -7,26 +7,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.base.utils.format
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.complements.tags.Tag
 import app.domain.invoicing.product.complements.tags.Tags
 import app.domain.invoicing.repository.CategoryRepository
+import app.domain.invoicing.repository.DependencyRepository
 import app.domain.invoicing.repository.SectionRepository
 import app.domain.invoicing.section.Section
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
-import java.util.concurrent.Flow
 
 /**
  * Una clase abtracta que recoge las funciones y variables comunes que se necesitan
- * en las pantallas de creación y edición de productos
+ * en las pantallas de creación y edición de productos.
  *
  */
 abstract class ProductBaseCreationViewModel : ViewModel() {
@@ -36,6 +35,8 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
     protected lateinit var onGoBackNav : () -> Unit
 
     protected var productIsBeingAdded = false
+
+    protected var allExistingSections = emptyList<Section>()
 
     /**
      * Se ejecuta cuando el usuario decide querer guardar los cambios.
@@ -256,6 +257,25 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
     }
 
     /**
+     * Cuando el campo de las dependencias se ha modificado.
+     *
+     * Cabe destacar que este metodo también filtra las secciones seleccionables
+     * en [ProductViewState.sectionsList] para que las secciones que aparezcan
+     * sean pertenecientes a la dependencia seleccionada en [ProductViewState.inputDataState]
+     *
+     * @param newDependency La nueva dependencia seleccionada por el usuario.
+     */
+    fun onNewDependencySelected(newDependency: Dependency){
+        productViewState = productViewState.copy(
+            sectionsList = getSelectableSectionsFrom(newDependency),
+            inputDataState = productViewState.inputDataState.copy(
+                selectedDependency = newDependency,
+                selectedSection = null
+            )
+        )
+    }
+
+    /**
      * Cuando el campo de la fecha de adquisición es modificado.
      *
      * @param newAcquisitionDate La nueva fecha de adquisición introducida por el usuario.
@@ -418,6 +438,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
                 inputDataState.adquisitionDate == null ||
                 inputDataState.selectedCategory == null ||
                 inputDataState.selectedSection == null ||
+                inputDataState.selectedDependency == null ||
                 inputDataState.description.isEmpty()
     }
 
@@ -455,9 +476,29 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
     }
 
     /**
-     * Permite obtener todas las categorias de forma asincrona.
+     * Advertencias: Este metodo debe ser usando cuando [ProductBaseCreationViewModel.allExistingSections]
+     * haya sido inicializado.
      *
-     * @return Un objeto [Deferred] con la lista de secciones existentes.
+     * Permite obtener una lista de [Section] que pertenezcan a la [Dependency]
+     * pasada por parametro.
+     *
+     * @return Una lista con las [Section] que pertenezcan a la [Dependency] pasada por parametro
+     * cuando esté no es nulo, y si lo es, devuelve una lista vacia.
+     *
+     */
+    protected fun getSelectableSectionsFrom(selectedDependency : Dependency?) : List<Section>{
+        return if (selectedDependency != null)
+            allExistingSections.filter {
+                it.belongedDependency == selectedDependency
+            }
+         else
+             emptyList()
+    }
+
+    /**
+     * Permite obtener todas las categorias de su repositorio de forma asincrona.
+     *
+     * @return Un objeto [Deferred] con la lista de [Category] existentes.
      */
     protected suspend fun getCategoriesAsync() : Deferred<List<Category>> {
         return viewModelScope.async(Dispatchers.IO) {
@@ -467,13 +508,24 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
     }
 
     /**
-     * Permite obtenr todas las secciones de forma asincrona.
+     * Permite obtener todas las secciones de su repositorio de forma asincrona.
      *
-     * @return Un objeto [Deferred] con la lista de secciones existentes
+     * @return Un objeto [Deferred] con la lista de [Section] existentes.
      */
     protected suspend fun getSectionsAsync() : Deferred<List<Section>>{
         return viewModelScope.async (Dispatchers.IO) {
             (SectionRepository.getAllSections() as BaseResult.Success).data.first()
+        }
+    }
+
+    /**
+     * Permite obtener todas las dependencias de su repositorio de forma asincrona
+     *
+     * @return Un objeto [Deferred] con la lista de [Dependency] existentes.
+     */
+    protected suspend fun getDependenciesAsync() : Deferred<List<Dependency>>{
+        return viewModelScope.async {
+            (DependencyRepository.getAllDependencies() as BaseResult.Success).data.first()
         }
     }
 }

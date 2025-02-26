@@ -1,24 +1,21 @@
 package app.features.productcreation.ui.creation
 
 import androidx.lifecycle.viewModelScope
-import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * El ViewModel correspondiente para la pantalla de creación de productos.
+ * El ViewModel correspondiente a [app.features.productcreation.ui.creation.ProductCreationScreen]
  *
  */
 @HiltViewModel
 class ProductCreationViewModel @Inject constructor() : ProductBaseCreationViewModel() {
 
     /**
-     * Carga los datos necesarios para crear un producto, como cuales son
-     * las categorias y secciones existentes.
+     * Carga e inicializa los datos necesarios para [app.features.productcreation.ui.creation.ProductCreationScreen]
      *
      */
     fun loadScreenData() {
@@ -26,10 +23,12 @@ class ProductCreationViewModel @Inject constructor() : ProductBaseCreationViewMo
         viewModelScope.launch {
             val deferredCategories = getCategoriesAsync()
             val deferredSections = getSectionsAsync()
+            val deferredDependencies = getDependenciesAsync()
+            allExistingSections = deferredSections.await()
             productViewState = productViewState.copy(
                 isLoading = false,
                 categoriesList = deferredCategories.await(),
-                sectionsList = deferredSections.await()
+                dependenciesList = deferredDependencies.await()
             )
         }
     }

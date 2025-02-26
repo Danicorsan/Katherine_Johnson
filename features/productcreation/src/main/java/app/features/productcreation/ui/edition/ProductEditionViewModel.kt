@@ -2,23 +2,19 @@ package app.features.productcreation.ui.edition
 
 import androidx.lifecycle.viewModelScope
 import app.base.utils.format
-import app.domain.invoicing.category.Category
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
-import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 /**
- * El ViewModel correspondiente a la pantalla de edición de productos.
+ * El ViewModel correspondiente a [app.features.productcreation.ui.edition.ProductEditionScreen]
  *
  */
 @HiltViewModel
@@ -27,8 +23,7 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
     private var productToEditId : Int = -1
 
     /**
-     * Carga los datos necesarios para crear un producto, como cuales son
-     * las categorias y secciones existentes.
+     * Carga e inicializa los datos para la pantalla [app.features.productcreation.ui.edition.ProductEditionScreen]
      *
      * Ademas, en edición se debe cargar del respositorios los datos
      * del productos a traves de su ID
@@ -40,15 +35,19 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
         this.productToEditId = productToEditId
         productViewState = productViewState.copy(isLoading = true)
         viewModelScope.launch {
-            val categoriesDeferred =getCategoriesAsync()
-            val productDeferred = async(Dispatchers.IO) { getProductById(productToEditId) }
-            val sections = getSectionsAsync()
-            val product = productDeferred.await()
+            val deferredCategories = getCategoriesAsync()
+            val deferredProduct = async(Dispatchers.IO) { getProductById(productToEditId) }
+            val deferredSections = getSectionsAsync()
+            val deferredDependencies = getDependenciesAsync()
+
+            allExistingSections = deferredSections.await()
+            val product = deferredProduct.await()
 
             productViewState = productViewState.copy(
                 isLoading = false,
-                categoriesList = categoriesDeferred.await(),
-                sectionsList = sections.await(),
+                categoriesList = deferredCategories.await(),
+                sectionsList = getSelectableSectionsFrom(product.section.belongedDependency),
+                dependenciesList = deferredDependencies.await(),
                 inputDataState = productViewState.inputDataState.copy(
                     code = product.code,
                     name = product.name,
@@ -66,6 +65,7 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
                     discontinuationDateRepresentation = product.discontinuationDate?.format(),
                     selectedCategory = product.category,
                     selectedSection = product.section,
+                    selectedDependency = product.section.belongedDependency,
                     notes = product.notes,
                     tags = product.tags.toString()
                 )

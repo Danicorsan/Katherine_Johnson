@@ -21,6 +21,7 @@ import app.features.productcreation.ui.base.composables.OneLineEditText
 import app.features.productcreation.ui.base.ProductEvents
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.Specification
+import app.features.productcreation.ui.base.composables.ExposedDropDownMenuForDependencies
 
 /**
  * Permite crear un formularios para un producto que puede ser usado
@@ -40,7 +41,7 @@ fun ProductForm(
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .padding(bottom = Specification.TEXTFIELDSCOLUMNBOTTOMPADDING ),
+            .padding(bottom = Specification.TEXTFIELDSCOLUMNBOTTOMPADDING),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MessageOfObligatoryTextFields()
@@ -90,17 +91,23 @@ fun ProductForm(
 
         SmallSpace()
         ExposedDropDownMenuForCategory(
-            productViewState.categoriesList,
-            productViewState.inputDataState.selectedCategory,
-            productEvents.onNewCategorySelected,
+            categories = productViewState.categoriesList,
+            categorySelected = productViewState.inputDataState.selectedCategory,
+            onNewCategorySelected = productEvents.onNewCategorySelected,
+        )
 
-            )
+        SmallSpace()
+        ExposedDropDownMenuForDependencies(
+            dependencies = productViewState.dependenciesList,
+            dependencySelected = productViewState.inputDataState.selectedDependency,
+            onNewDependencySelected = productEvents.onNewDependencySelected
+        )
 
         SmallSpace()
         ExposedDropDownMenuForSection(
-            productViewState.sectionsList,
-            productViewState.inputDataState.selectedSection,
-            productEvents.onNewSectionSelected
+            sections = productViewState.sectionsList,
+            sectionSelected = productViewState.inputDataState.selectedSection,
+            onNewSectionSelected = productEvents.onNewSectionSelected
         )
 
         OneLineEditText(
