@@ -1,11 +1,7 @@
 package app.domain.invoicing.repository
 
 import app.domain.invoicing.category.Category
-import java.awt.image.BufferedImage
-import java.io.ByteArrayOutputStream
 import java.util.Date
-import javax.imageio.ImageIO
-import javax.swing.ImageIcon
 
 /**
  * Category repository
@@ -107,24 +103,6 @@ object CategoryRepository {
      */
     fun deleteCategory(id: Int): Boolean {
         return dataSet.removeIf { it.id == id }
-    }
-
-    /**
-     * Image to byte array
-     *
-     * @param imagePath
-     * @return
-     */
-    private fun imageToByteArray(imagePath: String): ByteArray {
-        val image = ImageIcon(imagePath).image
-        val bufferedImage = BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB)
-        val graphics = bufferedImage.createGraphics()
-        graphics.drawImage(image, 0, 0, null)
-        graphics.dispose()
-
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        ImageIO.write(bufferedImage, "png", byteArrayOutputStream)
-        return byteArrayOutputStream.toByteArray()
     }
 
 }

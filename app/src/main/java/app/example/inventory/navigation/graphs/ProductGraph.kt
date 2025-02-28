@@ -18,7 +18,6 @@ import app.features.productlist.ui.ProductListScreen
 import app.features.productlist.ui.ProductListViewModel
 import app.features.productlist.ui.base.ProductListNavigationEvents
 
-//TODO(Transformar el productGraph a una clase sellada para una mayor limpieza con los argumentos)
 object ProductGraph {
     const val ROUTE = "product"
     const val PRODUCTID = "productId"
@@ -26,16 +25,16 @@ object ProductGraph {
     fun productListRoute() = "$ROUTE/productList"
     fun productCreationRoute() = "$ROUTE/productCreation"
     fun productEditionRoute() = "$ROUTE/productEdition/{$PRODUCTID}"
-    fun productEditionRoute(idParameter : Int) = "$ROUTE/productEdition/$idParameter"
+    fun productEditionRoute(idParameter: Int) = "$ROUTE/productEdition/$idParameter"
     fun productDetailsRoute() = "$ROUTE/productDetails/{$PRODUCTID}"
-    fun productDetailsRoute(idParameter : Int) = "$ROUTE/productDetails/$idParameter"
+    fun productDetailsRoute(idParameter: Int) = "$ROUTE/productDetails/$idParameter"
 }
 
-fun NavGraphBuilder.productGraph(navController: NavController){
+fun NavGraphBuilder.productGraph(navController: NavController) {
     navigation(
         startDestination = ProductGraph.productListRoute(),
         route = ProductGraph.ROUTE
-    ){
+    ) {
         productListRoute(navController)
         productCreationRoute(navController)
         productEditionRoute(navController)
@@ -44,8 +43,8 @@ fun NavGraphBuilder.productGraph(navController: NavController){
 }
 
 private fun NavGraphBuilder.productListRoute(
-    navController: NavController
-){
+    navController: NavController,
+) {
     composable(
         route = ProductGraph.productListRoute()
     ) {
@@ -61,14 +60,17 @@ private fun NavGraphBuilder.productListRoute(
                 onGoBackNav = {
                     navController.popBackStack()
                 }
+            ),
+            onNavigateProducts = { navController.navigate(ProductGraph.ROUTE) },
+            onNavigateCategories = { navController.navigate(CategoryGraph.ROUTE) },
+            onNavigateInventory = { navController.navigate(InventoryGraph.ROUTE) }
             )
-        )
     }
 }
 
 private fun NavGraphBuilder.productCreationRoute(
-    navController: NavController
-){
+    navController: NavController,
+) {
     composable(
         route = ProductGraph.productCreationRoute()
     ) {
@@ -80,12 +82,12 @@ private fun NavGraphBuilder.productCreationRoute(
 }
 
 private fun NavGraphBuilder.productEditionRoute(
-    navController: NavController
-){
+    navController: NavController,
+) {
     composable(
         route = ProductGraph.productEditionRoute(),
         arguments = listOf(
-            navArgument(ProductGraph.PRODUCTID){
+            navArgument(ProductGraph.PRODUCTID) {
                 type = NavType.IntType
             }
         )
@@ -100,12 +102,12 @@ private fun NavGraphBuilder.productEditionRoute(
 }
 
 private fun NavGraphBuilder.productDetailsRoute(
-    navController: NavController
-){
+    navController: NavController,
+) {
     composable(
         route = ProductGraph.productDetailsRoute(),
         arguments = listOf(
-            navArgument(ProductGraph.PRODUCTID){
+            navArgument(ProductGraph.PRODUCTID) {
                 type = NavType.IntType
             }
         )
