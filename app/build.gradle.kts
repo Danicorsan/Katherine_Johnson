@@ -83,6 +83,8 @@ dependencies {
     androidTestImplementation(libs.androidx.test.core)
     kaptAndroidTest(libs.hilt.compiler)
 
+    //Para guardar imagenes
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Dependencias de Room
     implementation(libs.room.runtime)

@@ -79,7 +79,7 @@ private fun ProductDetailPreview() {
         name = "Nombre Categoria",
         shortName = "cat",
         description = "",
-        image = "Una imagen",
+        image = null,
         createdAt = Date(342422424),
         fungible = false
     )

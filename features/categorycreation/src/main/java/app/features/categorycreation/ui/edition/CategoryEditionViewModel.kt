@@ -1,5 +1,6 @@
 package app.features.categorycreation.ui.edition
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -35,7 +36,9 @@ class CategoryEditionViewModel @Inject constructor(
                     name = category.name,
                     shortName = category.shortName,
                     description = category.description,
-                    typeCategory = category.typeCategory
+                    typeCategory = category.typeCategory,
+                    fungible = category.fungible,
+                    image = category.image
                 )
             } else {
                 state.copy(notFoundError = true)
@@ -112,5 +115,13 @@ class CategoryEditionViewModel @Inject constructor(
             isError = hasError
         )
         return !hasError
+    }
+
+    fun onFungibleChange(fungible: Boolean) {
+        state = state.copy(fungible = fungible)
+    }
+
+    fun onImageChange(image: Uri) {
+        state = state.copy(image = image)
     }
 }
