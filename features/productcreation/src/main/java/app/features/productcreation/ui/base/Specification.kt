@@ -6,6 +6,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * Objeto que almacena constantes relacionadas con la UI.
+ *
+ */
 object Specification {
     const val EDITTEXTMAXWIDTHFRACTION : Float = 90/100f
     const val OBLIGATORYFIELDSMARK : String = "*"

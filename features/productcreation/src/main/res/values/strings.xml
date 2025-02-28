@@ -10,6 +10,7 @@
     <string name="product_type_label">Tipo producto</string>
     <string name="category_label">Categoria</string>
     <string name="section_label">Sección</string>
+    <string name="dependency_label">Dependencia</string>
     <string name="state_label">Estado</string>
     <string name="stock_label">Cantidad</string>
     <string name="price_label">Precio</string>

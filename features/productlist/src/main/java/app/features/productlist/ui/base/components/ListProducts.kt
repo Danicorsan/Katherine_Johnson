@@ -1,10 +1,7 @@
 package app.features.productlist.ui.base.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,30 +11,29 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.res.stringResource
+import app.base.ui.Separations
 import app.base.ui.composables.MediumTitleText
-import app.base.ui.composables.Separations
 import app.base.ui.composables.SmallSpace
 import app.domain.invoicing.product.Product
-import app.features.productlist.R
 import app.features.productlist.ui.base.composable.CustomSpacerBetweenEachProduct
 import app.features.productlist.ui.base.composable.DefaultProductImage
 import app.features.productlist.ui.base.Specification
 import app.features.productlist.ui.base.ProductListEvents
 import app.features.productlist.ui.base.composable.PutInRowWithSeparation
 
+/**
+ * Permite listar todos los productos pasados por parametros a traves
+ * de un [LazyColumn].
+ *
+ * @param productList La lista de productos que pueden ser mostrados.
+ * @param productListEvents Un objeto [ProductListEvents] para recoger los eventos que necesiten
+ * usarse en listado.
+ */
 @Composable
 fun ListProducts(productList: List<Product>, productListEvents: ProductListEvents) {
     LazyColumn(
@@ -52,7 +48,6 @@ fun ListProducts(productList: List<Product>, productListEvents: ProductListEvent
                     .padding(vertical = Separations.Small),
                 product = it,
                 onSeeProductDetails = productListEvents.seeProductDetails,
-                onEditProduct = productListEvents.onEditProduct,
                 onDeleteProduct = productListEvents.onDeleteProduct
             )
         }
@@ -68,7 +63,6 @@ private fun ProductInformationCard(
     modifier: Modifier = Modifier,
     product: Product,
     onSeeProductDetails: (Product) -> Unit,
-    onEditProduct: (Product) -> Unit,
     onDeleteProduct: (Product) -> Unit,
 ) {
     Card(
@@ -85,10 +79,6 @@ private fun ProductInformationCard(
         ) {
             ShowProductImage(product)
             ShowBasicInformation(product)
-            ShowIconActions(
-                product = product,
-                onEditIconButtonPressed = onEditProduct
-            )
         }
     }
 }
@@ -97,7 +87,7 @@ private fun ProductInformationCard(
 private fun ShowProductImage(product: Product) {//Mantener parametro de cara a la implementación de imagenes
     Box(
         modifier = Modifier
-            .padding(start = Separations.Small)
+            .padding(start = Separations.Medium)
     ) {
         DefaultProductImage()
     }
@@ -106,7 +96,7 @@ private fun ShowProductImage(product: Product) {//Mantener parametro de cara a l
 @Composable
 private fun ShowBasicInformation(product: Product) {
     Column(
-        modifier = Modifier.fillMaxWidth(Specification.RELATIVESPACEFORPRODUCTBASICINFORMATION),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ShowProductsName(product)
@@ -129,20 +119,5 @@ private fun ShowProductsName(product: Product) {
         contentAlignment = Alignment.Center
     ) {
         MediumTitleText(product.name)
-    }
-}
-
-@Composable
-private fun ShowIconActions(
-    product: Product,
-    onEditIconButtonPressed: (Product) -> Unit
-) {
-    IconButton(
-        onClick = { onEditIconButtonPressed(product) }
-    ) {
-        Icon(
-            Icons.Default.Edit,
-            contentDescription = stringResource(R.string.edit_product_iconbutton)
-        )
     }
 }

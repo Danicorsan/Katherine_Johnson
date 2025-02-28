@@ -106,7 +106,7 @@ fun AppDrawer(
  * @param modifier
  */
 @Composable
-fun DrawerHeader(
+private fun DrawerHeader(
     icon: ImageVector,
     title: String,
     modifier: Modifier = Modifier,
@@ -142,7 +142,7 @@ fun DrawerHeader(
  * @receiver
  */
 @Composable
-fun DrawerItem(
+private fun DrawerItem(
     title: String,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     onClick: () -> Unit,

@@ -1,4 +1,4 @@
-package app.features.productdetail.ui
+package app.features.productdetail.ui.base.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,13 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import app.base.ui.composables.Separations
+import app.base.ui.Separations
 import app.base.ui.composables.TitleText
 
 @Composable
-fun TextTag(text : String){
-    CakeColorBox(
-       modifier = Modifier.fillMaxWidth(85/100f)
+fun DetailsHead(text : String){
+    PrimaryColoredBox(
+        modifier = Modifier.fillMaxWidth(85 / 100f)
     ) {
         Text(
             text,
@@ -30,7 +30,7 @@ fun TextTag(text : String){
 
 @Composable
 fun DetailsProductScreenTitle(text: String){
-    CakeColorBox{
+    PrimaryColoredBox{
         TitleText(
             text,
             modifier = Modifier.padding(Separations.Medium)
@@ -39,27 +39,11 @@ fun DetailsProductScreenTitle(text: String){
 }
 
 @Composable
-fun InformativeText(text: String){
-    Text(
-        text,
-        textAlign = TextAlign.Center
-    )
-}
-
-@Composable
-fun CakeColorBox(modifier: Modifier = Modifier, contenido : @Composable () -> Unit){
+fun PrimaryColoredBox(modifier: Modifier = Modifier, contenido : @Composable () -> Unit){
     Box(
         modifier = modifier.background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center
     ){
         contenido.invoke()
     }
-}
-
-@Composable
-fun LargeTextBox(contenido : String){
-    Text(
-        contenido,
-        modifier = Modifier.fillMaxWidth(80/100f)
-    )
 }

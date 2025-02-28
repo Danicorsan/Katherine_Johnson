@@ -9,13 +9,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.base.ui.components.LoadingUi
+import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
+import app.domain.invoicing.section.Section
 import app.features.productdetail.R
+import app.features.productdetail.ui.base.ProductDetailsEvents
+import app.features.productdetail.ui.base.ProductDetailsState
+import app.features.productdetail.ui.base.components.ProductReadOnlyForm
 import kotlinx.datetime.Instant
 import java.util.Date
 
@@ -23,34 +29,53 @@ import java.util.Date
 fun ProductDetailScreen(
     viewModel: ProductDetailsViewModel,
     productId: Int,
-    onGoBackNav: () -> Unit
+    onGoBackNav: () -> Unit,
+    onEditProductNav : (Int) -> Unit
 ) {
     LaunchedEffect(Unit) {
-        viewModel.getReady(productId, onGoBackNav)
+        viewModel.loadDataAndStablishNavigationEvent(productId, onGoBackNav, onEditProductNav)
     }
     ProductDetailsHost(
         productDetailsState = viewModel.productDetailsState,
-        onGoBackNav = viewModel::onGoBackNavigationButtonClick
+        productDetailsEvents = ProductDetailsEvents(viewModel)
     )
 }
 
 @Composable
 private fun ProductDetailsHost(
     productDetailsState: ProductDetailsState,
-    onGoBackNav: () -> Unit
+    productDetailsEvents: ProductDetailsEvents
 ) {
     Scaffold(
         topBar = {
             BaseAppBar(BaseAppBarState(
                 title = stringResource(R.string.title_appbar_product_details),
                 navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon(
-                    onClick = onGoBackNav
+                    onClick = productDetailsEvents.onGoBack
+                ),
+                listOf(
+                    BaseAppBarIcons.editElementVisibleIcon(
+                        typeElement = stringResource(R.string.action_icons_type_element),
+                        onClick = productDetailsEvents.onEditProduct
+                    ),
+                    BaseAppBarIcons.deleteElementVisibleIcon(
+                        typeElement = stringResource(R.string.action_icons_type_element),
+                        onClick = productDetailsEvents.onDeleteProduct
+                    )
                 )
             ))
         }
     ) { contentPadding ->
         when {
             productDetailsState.product == null -> LoadingUi()
+            productDetailsState.productBeingDeleted -> BaseAlertDialog(
+                title = stringResource(R.string.alert_dialog_delete_title),
+                text = stringResource(R.string.alert_dialog_delete_message),
+                confirmText = stringResource(R.string.alert_dialog_on_confirm_button),
+                dismissText = stringResource(R.string.alert_dialog_on_cancel_button),
+                onConfirm = productDetailsEvents.onConfirmDeleteProduct,
+                onDismiss = productDetailsEvents.onDismissDeleteProduct
+            )
             else -> ProductDetailContent(
                 modifier = Modifier.padding(contentPadding),
                 product = productDetailsState.product
@@ -67,7 +92,7 @@ private fun ProductDetailContent(
     Box(
         modifier = modifier
     ) {
-        ScrollableContentColumn(product = product)
+        ProductReadOnlyForm(product = product)
     }
 }
 
@@ -83,8 +108,21 @@ private fun ProductDetailPreview() {
         createdAt = Date(342422424),
         fungible = false
     )
-    val section = "Nombre Seccion"
-    val product: Product = Product(
+    val section = Section(
+        id = 2,
+        name = "Seccion nombre largo",
+        shortName = "Seccion nombre corto",
+        image = "",
+        belongedDependency = Dependency(
+            id = 1,
+            name = "Dependencia",
+            shortName = "depend",
+            image = "",
+            description = "ksfjks"
+        ),
+        releaseDate = Instant.fromEpochMilliseconds(425256343),
+    )
+    val product = Product(
         code = "dependenciaSeccion3",
         name = "Esponja duradera max",
         shortName = "Esponja",

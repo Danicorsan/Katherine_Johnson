@@ -5,10 +5,12 @@ import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
 import app.domain.invoicing.product.complements.tags.Tag
 import app.domain.invoicing.product.complements.tags.Tags
+import app.domain.invoicing.repository.demodata.sectionDemoData
 import kotlinx.datetime.Instant
 import java.util.Date
 
 internal fun initializeProductsDemo() : MutableMap<Int , Product>{
+    val sections = sectionDemoData()
     return mutableMapOf(
         1 to Product(
             id = 1,
@@ -28,7 +30,7 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
                 createdAt = Date(),
                 fungible = true
             ),
-            section = "Tecnología",
+            section = sections[8],
             state = ProductState.new,
             stock = 10u,
             price = 1500.99,
@@ -56,7 +58,7 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
                 createdAt = Date(),
                 fungible = true
             ),
-            section = "Accesorios",
+            section = sections[3],
             state = ProductState.verified,
             stock = 50u,
             price = 200.00,
@@ -83,7 +85,7 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
                 createdAt = Date(),
                 fungible = false
             ),
-            section = "Mobiliario",
+            section = sections[2],
             state = ProductState.modified,
             stock = 20u,
             price = 120.50,
@@ -111,7 +113,7 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
                 createdAt = Date(),
                 fungible = true
             ),
-            section = "Tecnología",
+            section = sections[5],
             state = ProductState.verified,
             stock = 30u,
             price = 899.99,
@@ -139,7 +141,7 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
                 createdAt = Date(),
                 fungible = true
             ),
-            section = "Tecnología",
+            section = sections[7],
             state = ProductState.new,
             stock = 15u,
             price = 499.99,
@@ -166,7 +168,7 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
                 createdAt = Date(),
                 fungible = true
             ),
-            section = "Tecnología",
+            section = sections[0],
             state = ProductState.new,
             stock = 15u,
             price = 499.99,
@@ -193,7 +195,7 @@ internal fun initializeProductsDemo() : MutableMap<Int , Product>{
                 createdAt = Date(),
                 fungible = false
             ),
-            section = "Libros",
+            section = sections[2],
             state = ProductState.new,
             stock = 15u,
             price = 499.99,
