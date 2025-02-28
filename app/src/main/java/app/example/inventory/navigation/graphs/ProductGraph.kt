@@ -1,6 +1,5 @@
 package com.example.inventory.navigation.graphs
 
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -51,19 +50,15 @@ private fun NavGraphBuilder.productListRoute(
         ProductListScreen(
             viewModel = hiltViewModel<ProductListViewModel>(),
             navigationEvents = ProductListNavigationEvents(
-                onCreateProductNav = {
-                    navController.navigate(ProductGraph.productCreationRoute())
-                },
+                onCreateProductNav = { navController.navigate(ProductGraph.productCreationRoute()) },
                 onSeeProductDetailsNav = { idProduct ->
                     navController.navigate(ProductGraph.productDetailsRoute(idProduct))
-                },
-                onGoBackNav = {
-                    navController.popBackStack()
-                }
-            ),
-            onNavigateProducts = { navController.navigate(ProductGraph.ROUTE) },
-            onNavigateCategories = { navController.navigate(CategoryGraph.ROUTE) },
-            onNavigateInventory = { navController.navigate(InventoryGraph.ROUTE) }
+                                         },
+                onGoBackNav = { navController.popBackStack() },
+                onNavigateProducts = { navController.navigate(ProductGraph.ROUTE) },
+                onNavigateCategories = { navController.navigate(CategoryGraph.ROUTE) },
+                onNavigateInventory = { navController.navigate(InventoryGraph.ROUTE) }
+            )
             )
     }
 }
@@ -116,9 +111,7 @@ private fun NavGraphBuilder.productDetailsRoute(
         ProductDetailScreen(
             viewModel = hiltViewModel<ProductDetailsViewModel>(),
             productId = id!!,
-            onGoBackNav = {
-                navController.popBackStack()
-            },
+            onGoBackNav = { navController.popBackStack() },
             onEditProductNav = { productId ->
                 navController.navigate(ProductGraph.productEditionRoute(productId))
             }

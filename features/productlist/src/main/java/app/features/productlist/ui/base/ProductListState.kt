@@ -1,5 +1,7 @@
 package app.features.productlist.ui.base
 
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import app.domain.invoicing.product.Product
 
 /**
@@ -13,5 +15,6 @@ import app.domain.invoicing.product.Product
 data class ProductListState(
     val productList : List<Product> = emptyList(),
     val productIsBeingDeleted : Boolean = false,
-    val isLoading : Boolean = false
+    val isLoading : Boolean = false,
+    val drawerState : DrawerState = DrawerState(initialValue = DrawerValue.Closed)
 )

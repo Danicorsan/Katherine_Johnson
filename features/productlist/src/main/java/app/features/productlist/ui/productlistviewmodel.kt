@@ -11,6 +11,7 @@ import app.domain.invoicing.repository.ProductRepository
 import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -99,6 +100,17 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
      */
     fun onGoBack(){
         productListNavigationEvents.onGoBackNav()
+    }
+
+    /**
+     * Abre el menú lateral de la pantalla.
+     *
+     * @param Un [CoroutineScope] para poder abrir el drawer.
+     */
+    fun onOpenDrawer(scope : CoroutineScope){
+        scope.launch {
+            productListState.drawerState.open()
+        }
     }
 
     /**
