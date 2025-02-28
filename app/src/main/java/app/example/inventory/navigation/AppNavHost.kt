@@ -7,7 +7,6 @@ import com.example.inventory.navigation.graphs.AccountGraph
 import com.example.inventory.navigation.graphs.accountGraph
 import com.example.inventory.navigation.graphs.categoryGraph
 import com.example.inventory.navigation.graphs.inventoryGraph
-import com.example.inventory.navigation.graphs.mainGraph
 import com.example.inventory.navigation.graphs.productGraph
 
 @Composable
@@ -19,10 +18,6 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-
-        mainGraph(
-            navController = navController
-        )
 
         categoryGraph(
             navController = navController,

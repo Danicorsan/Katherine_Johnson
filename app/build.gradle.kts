@@ -5,6 +5,7 @@ plugins {
     //alias(libs.plugins.gms.googleServices)
 }
 
+
 android {
 
     defaultConfig {
@@ -34,17 +35,12 @@ android {
 dependencies {
     // Módulos
     implementation(projects.base.ui)
-
-    implementation(projects.domain.ddd)
+    implementation(projects.base.features)
     implementation(projects.domain.inventory)
-    implementation(projects.domain.navigation)
-
     implementation(projects.infrastructure.printer)
     //implementation(projects.infrastructure.firebase)
-
     implementation(projects.features.accountsignup)
     implementation(projects.features.accountsignin)
-    implementation(projects.features.accountsettings)
     implementation(projects.features.productcreation)
     implementation(projects.features.productlist)
     implementation(projects.features.productdetail)
@@ -61,9 +57,8 @@ dependencies {
     implementation(projects.features.inventorylist)
     implementation(projects.features.inventorydetail)
 
-
-
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
 
     // UI
     implementation(libs.androidx.navigation.compose)
@@ -87,4 +82,10 @@ dependencies {
     androidTestImplementation(libs.hilt.testing)
     androidTestImplementation(libs.androidx.test.core)
     kaptAndroidTest(libs.hilt.compiler)
+
+
+    // Dependencias de Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
 }
