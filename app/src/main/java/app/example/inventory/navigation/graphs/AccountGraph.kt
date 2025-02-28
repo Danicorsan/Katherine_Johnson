@@ -9,7 +9,6 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import app.features.accountsignin.ui.LoginScreen
 import app.features.accountsignup.ui.SignUpScreen
-import com.example.inventory.home.HomeScreen
 import com.example.inventory.navigation.graphs.AccountGraph.EMAIL
 import com.example.inventory.navigation.graphs.AccountGraph.PASSWORD
 import com.example.inventory.navigation.graphs.AccountGraph.ROUTE
@@ -28,37 +27,14 @@ object AccountGraph {
     fun register() = "register_screen"
 }
 
-object MainGraph {
-    const val ROUTE = "main"
-}
-
 fun NavGraphBuilder.accountGraph(
-    navController: NavController
+    navController: NavController,
 ) {
     navigation(startDestination = AccountGraph.login(), route = ROUTE) {
         login(navController)
         signUp(navController)
     }
 }
-
-fun NavGraphBuilder.mainGraph(
-    navController: NavController
-) {
-    composable(MainGraph.ROUTE) {
-        HomeScreen(
-            onNavigateCategories = {
-                navController.navigate(CategoryGraph.categoryListRoute())
-            },
-            onNavigateProducts = {
-                navController.navigate(ProductGraph.ROUTE)
-            },
-            onNavigateInventory = {
-                navController.navigate(InventoryGraph.ROUTE)
-            }
-        )
-    }
-}
-
 
 private fun NavGraphBuilder.login(navController: NavController) {
     composable(
@@ -82,7 +58,7 @@ private fun NavGraphBuilder.login(navController: NavController) {
             onClickCrearCuenta = { navController.navigate(AccountGraph.register()) },
             viewModel = hiltViewModel(),
             onSuccess = {
-                navController.navigate(MainGraph.ROUTE) {
+                navController.navigate(ProductGraph.ROUTE) {
                     popUpTo(ROUTE) { inclusive = true } // Borra la pila de login
                 }
             },
@@ -98,7 +74,7 @@ private fun NavGraphBuilder.signUp(navController: NavController) {
             onRegisterSuccess = { email, password ->
                 navController.navigate(
                     "$ROUTE/login?$EMAIL=$email&$PASSWORD=$password"
-                ){
+                ) {
                     popUpTo(ROUTE) { inclusive = true }
                 }
             },

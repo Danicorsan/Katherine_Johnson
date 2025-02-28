@@ -7,9 +7,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.base.ui.composables.ExposedDropDownMenuTemplate
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.dependency.Dependency
+import app.domain.invoicing.section.Section
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.Specification
 
+/**
+ * Una implementación del elemento [ExposedDropDownMenuTemplate]
+ * para escoger categorias.
+ *
+ * @param categories La lista de [Category] ha escoger.
+ *
+ * @param categorySelected La categoria actualmente seleccionada,
+ * si el parametro es nulo, se mostraŕa un "No seleccionado".
+ *
+ * @param onNewCategorySelected El evento ha lanzar cuando
+ * el usuario escoge una categoria del menú. Pasando
+ * por parametro la categoría escogida.
+ * @receiver
+ */
 @Composable
 fun ExposedDropDownMenuForCategory(
     categories : Iterable<Category>,
@@ -32,26 +48,60 @@ fun ExposedDropDownMenuForCategory(
     )
 }
 
+/**
+ * Una implementación del elemento [ExposedDropDownMenuTemplate]
+ * para escoger secciones.
+ *
+ * @param sections La lista de secciones (representados como [String]) ha escoger.
+ *
+ * @param sectionSelected La sección actualmente seleccionada,
+ *  si el parametro es nulo, se mostraŕa un "No seleccionado".
+ *
+ * @param onNewSectionSelected El evento ha lanzar cuando
+ *  el usuario escoge una sección del menú. Pasando
+ *  por parametro la seccion escogida.
+ * @receiver
+ */
 @Composable
 fun ExposedDropDownMenuForSection(
-    sections : Iterable<String>,
-    sectionSelected: String?,
-    onNewSectionSelected: (String) -> Unit
+    sections : Iterable<Section>,
+    sectionSelected: Section?,
+    onNewSectionSelected: (Section) -> Unit
 ){
     val noItemSelectedMessage = stringResource(R.string.no_selected_option)
 
     ExposedDropDownMenuTemplate(
         modifier = Modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION),
         showSelectedValueInTextField = {
-            sectionSelected ?: noItemSelectedMessage
+            sectionSelected?.name ?: noItemSelectedMessage
         },
         elementList = sections,
         onNewItemSelected = onNewSectionSelected,
         howShowEachItemInMenu = {
-            Text(it)
+            Text(it.name)
         },
         label = stringResource(R.string.section_label) + Specification.OBLIGATORYFIELDSMARK
     )
 }
 
+@Composable
+fun ExposedDropDownMenuForDependencies(
+    dependencies : Iterable<Dependency>,
+    dependencySelected : Dependency?,
+    onNewDependencySelected : (Dependency) -> Unit
+){
+    val noItemSelectedMessage = stringResource(R.string.no_selected_option)
 
+    ExposedDropDownMenuTemplate(
+        modifier = Modifier.fillMaxWidth(Specification.EDITTEXTMAXWIDTHFRACTION),
+        showSelectedValueInTextField = {
+            dependencySelected?.name ?: noItemSelectedMessage
+        },
+        elementList = dependencies,
+        onNewItemSelected = onNewDependencySelected,
+        howShowEachItemInMenu = {
+            Text(it.name)
+        },
+        label = stringResource(R.string.dependency_label) + Specification.OBLIGATORYFIELDSMARK
+    )
+}

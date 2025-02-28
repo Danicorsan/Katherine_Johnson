@@ -4,6 +4,7 @@ package app.domain.invoicing.product
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.complements.ProductAlarm
 import app.domain.invoicing.product.complements.tags.Tags
+import app.domain.invoicing.section.Section
 import kotlinx.datetime.Instant
 
 data class Product(
@@ -16,7 +17,7 @@ data class Product(
     var modelCode : String,
     var productType : String,
     var category : Category,
-    var section : String,
+    var section : Section,
     var state : ProductState = ProductState.new,
     var stock : UInt,
     var price : Double,
