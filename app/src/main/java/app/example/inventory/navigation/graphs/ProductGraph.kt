@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import app.example.inventory.navigation.graphs.drawerNavigation
 import app.features.productcreation.ui.creation.ProductCreationScreen
 import app.features.productcreation.ui.creation.ProductCreationViewModel
 import app.features.productcreation.ui.edition.ProductEditionScreen
@@ -55,9 +56,9 @@ private fun NavGraphBuilder.productListRoute(
                     navController.navigate(ProductGraph.productDetailsRoute(idProduct))
                                          },
                 onGoBackNav = { navController.popBackStack() },
-                onNavigateProducts = { navController.navigate(ProductGraph.ROUTE) },
-                onNavigateCategories = { navController.navigate(CategoryGraph.ROUTE) },
-                onNavigateInventory = { navController.navigate(InventoryGraph.ROUTE) }
+                onNavigateProducts = {  drawerNavigation(navController, ProductGraph.ROUTE) },
+                onNavigateCategories = { drawerNavigation(navController, CategoryGraph.ROUTE) },
+                onNavigateInventory = { drawerNavigation(navController, InventoryGraph.ROUTE) }
             )
             )
     }
