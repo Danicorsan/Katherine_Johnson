@@ -1,35 +1,43 @@
 package app.features.productcreation.ui.creation
 
 import androidx.lifecycle.viewModelScope
-import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
-import kotlinx.coroutines.delay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductCreationViewModel(onGoBackNav : () -> Unit = {}) : ProductBaseCreationViewModel(onGoBackNav) {
+/**
+ * El ViewModel correspondiente a [app.features.productcreation.ui.creation.ProductCreationScreen]
+ *
+ */
+@HiltViewModel
+class ProductCreationViewModel @Inject constructor() : ProductBaseCreationViewModel() {
 
-    init {
+    /**
+     * Carga e inicializa los datos necesarios para [app.features.productcreation.ui.creation.ProductCreationScreen]
+     *
+     */
+    fun loadScreenData() {
         productViewState = productViewState.copy(isLoading = true)
         viewModelScope.launch {
-            delay(1000)//Simulacion de tiempo de espera
-            val categories = CategoryRepository.getAllCategories()
+            val deferredCategories = getCategoriesAsync()
+            val deferredSections = getSectionsAsync()
+            val deferredDependencies = getDependenciesAsync()
+            allExistingSections = deferredSections.await()
             productViewState = productViewState.copy(
                 isLoading = false,
-                categoriesList = categories,
-                sectionsList = listOf("Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3",
-                    "Sección 1", "Sección 2", "Sección 3")
+                categoriesList = deferredCategories.await(),
+                dependenciesList = deferredDependencies.await()
             )
         }
     }
 
     override fun onAcceptChanges() {
         comprobateAndManageLocalErrors{
+            this.productIsBeingAdded = true
             productViewState = productViewState.copy(
-                isLoading = true,
-                productIsBeingAdded = true
+                isLoading = true
             )
             viewModelScope.launch {
                 ProductRepository.addProduct(makeProductFromFields())

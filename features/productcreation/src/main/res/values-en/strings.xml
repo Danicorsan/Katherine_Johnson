@@ -36,4 +36,5 @@
     <string name="on_create_product_icon">Create the new product</string>
     <string name="cant_update_alert_dialog_message">The product couldnt be updated</string>
     <string name="product_updated_successful_alert_dialog_message">The product has been updated</string>
+    <string name="dependency_label">Dependency</string>
 </resources>

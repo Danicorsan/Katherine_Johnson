@@ -18,11 +18,9 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-
         categoryGraph(
             navController = navController,
         )
-
         productGraph(
             navController = navController
         )

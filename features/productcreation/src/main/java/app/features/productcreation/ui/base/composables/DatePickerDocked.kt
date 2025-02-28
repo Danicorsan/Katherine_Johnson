@@ -25,6 +25,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import app.features.productcreation.ui.base.Specification
 
+/**
+ * Permite crear un campo para escoger fechas a patir de
+ * un [DatePicker]
+ *
+ * @param selectedDateText El texto a mostrar en el campo,
+ * puede ser tanto la fecha seleccionada como un "no selecionado"
+ * @param label Una etiqueta para el campo que indica a que corresponde
+ * la fecha.
+ * @param onNewDateSelected El evento lanzado cuando el usuario
+ * ha escogido una fecha con [DatePicker]
+ * @receiver
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDocked(

@@ -22,4 +22,9 @@
     <string name="minimun_stock_label">Cantidad mínima</string>
     <string name="labels_label">Etiquetas</string>
     <string name="notes_label">Notas</string>
+    <string name="alert_dialog_delete_title">¡Atención!</string>
+    <string name="alert_dialog_delete_message">¿Desea eliminar este producto?</string>
+    <string name="alert_dialog_on_confirm_button">Aceptar</string>
+    <string name="alert_dialog_on_cancel_button">Cancelar</string>
+    <string name="action_icons_type_element">producto</string>
 </resources>

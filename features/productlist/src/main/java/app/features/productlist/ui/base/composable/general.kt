@@ -16,23 +16,33 @@ import app.base.ui.composables.SmallSpace
 import app.features.productlist.R
 import app.features.productlist.ui.base.Specification
 
+/**
+ * Permite obtener la imagen por defecto a ser mostrada.
+ *
+ */
 @Composable
 fun DefaultProductImage() {
-        Image(
-            painter = painterResource(R.drawable.product_default),
-            contentDescription = stringResource(R.string.product_image_description),
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .fillMaxSize(Specification.RELATIVEIMAGESIZE)
-                .clip(RoundedCornerShape(Specification.RELATIVEROUNDEDCORNERSHAPE))
-        )
+    Image(
+        painter = painterResource(R.drawable.product_default),
+        contentDescription = stringResource(R.string.product_image_description),
+        contentScale = ContentScale.Fit,
+        modifier = Modifier
+            .fillMaxSize(Specification.RELATIVEIMAGESIZE)
+            .clip(RoundedCornerShape(Specification.RELATIVEROUNDEDCORNERSHAPE))
+    )
 }
 
+/**
+ * Permite poner dos funciones composables en un [Row] con una misma separación.
+ *
+ * @param composable1 Elemento a la izquierda o antes del [composable2].
+ * @param composable2 Elemento a la derecha o despues del [composable1].
+ */
 @Composable
 fun PutInRowWithSeparation(
-    composable1 : @Composable () -> Unit,
-    composable2 : @Composable () -> Unit
-){
+    composable1: @Composable () -> Unit,
+    composable2: @Composable () -> Unit
+) {
     Row {
         composable1()
         SmallSpace()
@@ -41,6 +51,6 @@ fun PutInRowWithSeparation(
 }
 
 @Composable
-fun CustomSpacerBetweenEachProduct(){
+fun CustomSpacerBetweenEachProduct() {
     Spacer(modifier = Modifier.fillMaxHeight(Specification.RELATIVESPACEFORCUSTOMSPACERFORPRODUCTLIST))
 }

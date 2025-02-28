@@ -1,12 +1,13 @@
 package com.example.inventory.navigation.graphs
 
-import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import app.example.inventory.navigation.graphs.drawerNavigation
 import app.features.productcreation.ui.creation.ProductCreationScreen
 import app.features.productcreation.ui.creation.ProductCreationViewModel
 import app.features.productcreation.ui.edition.ProductEditionScreen
@@ -17,7 +18,6 @@ import app.features.productlist.ui.ProductListScreen
 import app.features.productlist.ui.ProductListViewModel
 import app.features.productlist.ui.base.ProductListNavigationEvents
 
-//TODO(Transformar el productGraph a una clase sellada para una mayor limpieza con los argumentos)
 object ProductGraph {
     const val ROUTE = "product"
     const val PRODUCTID = "productId"
@@ -49,28 +49,17 @@ private fun NavGraphBuilder.productListRoute(
         route = ProductGraph.productListRoute()
     ) {
         ProductListScreen(
-            onNavigateProducts = { navController.navigate(ProductGraph.ROUTE) },
-            onNavigateCategories = { navController.navigate(CategoryGraph.ROUTE) },
-            onNavigateInventory = { navController.navigate(InventoryGraph.ROUTE) },
-            viewModel = remember {
-                ProductListViewModel(
-                    ProductListNavigationEvents(
-                        onCreateProductNav = {
-                            navController.navigate(ProductGraph.productCreationRoute())
-                        },
-                        onSeeProductDetailsNav = { idProduct ->
-                            navController.navigate(ProductGraph.productDetailsRoute(idProduct))
-                        },
-                        onEditProductNav = { idProduct ->
-                            navController.navigate(ProductGraph.productEditionRoute(idProduct))
-                        },
-                        onGoBackNav = {
-                            navController.popBackStack()
-                        }
-                    )
-                )
-            },
-
+            viewModel = hiltViewModel<ProductListViewModel>(),
+            navigationEvents = ProductListNavigationEvents(
+                onCreateProductNav = { navController.navigate(ProductGraph.productCreationRoute()) },
+                onSeeProductDetailsNav = { idProduct ->
+                    navController.navigate(ProductGraph.productDetailsRoute(idProduct))
+                                         },
+                onGoBackNav = { navController.popBackStack() },
+                onNavigateProducts = {  drawerNavigation(navController, ProductGraph.ROUTE) },
+                onNavigateCategories = { drawerNavigation(navController, CategoryGraph.ROUTE) },
+                onNavigateInventory = { drawerNavigation(navController, InventoryGraph.ROUTE) }
+            )
             )
     }
 }
@@ -82,11 +71,8 @@ private fun NavGraphBuilder.productCreationRoute(
         route = ProductGraph.productCreationRoute()
     ) {
         ProductCreationScreen(
-            viewModel = remember {
-                ProductCreationViewModel {
-                    navController.popBackStack()
-                }
-            }
+            viewModel = hiltViewModel<ProductCreationViewModel>(),
+            onGoBackNav = { navController.popBackStack() }
         )
     }
 }
@@ -104,14 +90,9 @@ private fun NavGraphBuilder.productEditionRoute(
     ) { navBackStackEntry ->
         val id = navBackStackEntry.arguments?.getInt(ProductGraph.PRODUCTID)
         ProductEditionScreen(
-            viewModel = remember {
-                ProductEditionViewModel(
-                    onGoBackNav = {
-                        navController.popBackStack()
-                    },
-                    productToEditId = id!!
-                )
-            }
+            viewModel = hiltViewModel<ProductEditionViewModel>(),
+            productToEditId = id!!,
+            onGoBackNav = { navController.popBackStack() }
         )
     }
 }
@@ -129,10 +110,11 @@ private fun NavGraphBuilder.productDetailsRoute(
     ) { navBackStackEntry ->
         val id = navBackStackEntry.arguments?.getInt(ProductGraph.PRODUCTID)
         ProductDetailScreen(
-            viewModel = remember { ProductDetailsViewModel() },
+            viewModel = hiltViewModel<ProductDetailsViewModel>(),
             productId = id!!,
-            onGoBackNav = {
-                navController.popBackStack()
+            onGoBackNav = { navController.popBackStack() },
+            onEditProductNav = { productId ->
+                navController.navigate(ProductGraph.productEditionRoute(productId))
             }
         )
     }

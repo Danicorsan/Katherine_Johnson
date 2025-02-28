@@ -21,7 +21,18 @@ import app.features.productcreation.ui.base.composables.OneLineEditText
 import app.features.productcreation.ui.base.ProductEvents
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.Specification
+import app.features.productcreation.ui.base.composables.ExposedDropDownMenuForDependencies
 
+/**
+ * Permite crear un formularios para un producto que puede ser usado
+ * tanto para la edición como creación de los productos.
+ *
+ * @param productViewState El estado de la vista ya que contiene los valores
+ * de cada campo del formulario
+ *
+ * @param productEvents Los eventos necesarios para la actualización correcta
+ * de la vista.
+ */
 @Composable
 fun ProductForm(
     productViewState: ProductViewState,
@@ -30,21 +41,21 @@ fun ProductForm(
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .padding(bottom = Specification.TEXTFIELDSCOLUMNBOTTOMPADDING ),
+            .padding(bottom = Specification.TEXTFIELDSCOLUMNBOTTOMPADDING),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MessageOfObligatoryTextFields()
 
         OneLineEditText(
             text = productViewState.inputDataState.name,
-            change = productEvents.onNameChange,
+            onValueChange = productEvents.onNameChange,
             label = stringResource(R.string.name_label),
             obligatoryField = true
         )
 
         OneLineEditText(
             text = productViewState.inputDataState.shortName,
-            change = productEvents.onShortNameChange,
+            onValueChange = productEvents.onShortNameChange,
             label = stringResource(R.string.short_name_label),
             error = productViewState.errorDataState.shortNameError,
             obligatoryField = true
@@ -52,50 +63,56 @@ fun ProductForm(
 
         OneLineEditText(
             text = productViewState.inputDataState.code,
-            change = productEvents.onCodeChange,
+            onValueChange = productEvents.onCodeChange,
             label = stringResource(R.string.code_label),
             obligatoryField = true
         )
 
         OneLineEditText(
             text = productViewState.inputDataState.serieNumber,
-            change = productEvents.onSerialNumberChange,
+            onValueChange = productEvents.onSerialNumberChange,
             label = stringResource(R.string.serial_number_label),
             obligatoryField = true
         )
 
         OneLineEditText(
             text = productViewState.inputDataState.modelCode,
-            change = productEvents.onModelCodeChange,
+            onValueChange = productEvents.onModelCodeChange,
             label = stringResource(R.string.model_code_label),
             obligatoryField = true
         )
 
         OneLineEditText(
             text = productViewState.inputDataState.productType,
-            change = productEvents.onProductTypeChange,
+            onValueChange = productEvents.onProductTypeChange,
             label = stringResource(R.string.product_type_label),
             obligatoryField = true
         )
 
         SmallSpace()
         ExposedDropDownMenuForCategory(
-            productViewState.categoriesList,
-            productViewState.inputDataState.selectedCategory,
-            productEvents.onNewCategorySelected,
+            categories = productViewState.categoriesList,
+            categorySelected = productViewState.inputDataState.selectedCategory,
+            onNewCategorySelected = productEvents.onNewCategorySelected,
+        )
 
-            )
+        SmallSpace()
+        ExposedDropDownMenuForDependencies(
+            dependencies = productViewState.dependenciesList,
+            dependencySelected = productViewState.inputDataState.selectedDependency,
+            onNewDependencySelected = productEvents.onNewDependencySelected
+        )
 
         SmallSpace()
         ExposedDropDownMenuForSection(
-            productViewState.sectionsList,
-            productViewState.inputDataState.selectedSection,
-            productEvents.onNewSectionSelected
+            sections = productViewState.sectionsList,
+            sectionSelected = productViewState.inputDataState.selectedSection,
+            onNewSectionSelected = productEvents.onNewSectionSelected
         )
 
         OneLineEditText(
             text = productViewState.inputDataState.price,
-            change = productEvents.onPriceChange,
+            onValueChange = productEvents.onPriceChange,
             label = stringResource(R.string.price_label),
             error = productViewState.errorDataState.priceError,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
@@ -104,7 +121,7 @@ fun ProductForm(
 
         OneLineEditText(
             text = productViewState.inputDataState.stock,
-            change = productEvents.onStockChange,
+            onValueChange = productEvents.onStockChange,
             label = stringResource(R.string.stock_label),
             error = productViewState.errorDataState.stockError,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
@@ -129,20 +146,20 @@ fun ProductForm(
 
         MultipleLineEditText(
             text = productViewState.inputDataState.description,
-            change = productEvents.onDescriptionChange,
+            onValueChange = productEvents.onDescriptionChange,
             label = stringResource(R.string.description_label),
             obligatoryField = true
         )
 
         MultipleLineEditText(
             text = productViewState.inputDataState.notes,
-            change = productEvents.onNotesChanged,
+            onValueChange = productEvents.onNotesChanged,
             label = stringResource(R.string.notes_label)
         )
 
         OneLineEditText(
             text = productViewState.inputDataState.tags,
-            change = productEvents.onTagsChanged,
+            onValueChange = productEvents.onTagsChanged,
             label = stringResource(R.string.tags_label)
         )
     }
