@@ -15,7 +15,13 @@ import kotlinx.coroutines.CoroutineScope
  * @property seeProductDetails Cuando el usuario quiere ver los detalles de un producto.
  * @property onGoBack Cuando el usuario quiere volver a la pantalla anterior.
  * @property onOpenDrawer Cuando el usuario quiere abrir el ménu lateral.
- * @constructor Create empty Product list events
+ * @property onSortList Cuando el usuario quiere ordenar la lista de [Product].
+ * @property onNavigateProducts Navegación a [app.features.productlist.ui.ProductListScreen]
+ * desde el [app.base.ui.composables.AppDrawer]
+ * @property onNavigateCategories Navegación a [app.features.categorylist.ui.CategoryListScreen]
+ * desde el [app.base.ui.composables.AppDrawer]
+ * @property onNavigateInventory Navegación a [app.features.inventorylist.ui.InventoryListScreen]
+ * desde el [app.base.ui.composables.AppDrawer]
  */
 data class ProductListEvents(
     val onAddProduct : () -> Unit = {},
@@ -25,6 +31,7 @@ data class ProductListEvents(
     val seeProductDetails : (Product) -> Unit = {},
     val onGoBack : () -> Unit = {},
     val onOpenDrawer : (CoroutineScope) -> Unit = {},
+    val onSortList: () -> Unit = {},
     val onNavigateProducts: () -> Unit = {},
     val onNavigateCategories: () -> Unit = {},
     val onNavigateInventory: () -> Unit = {}
@@ -40,10 +47,10 @@ data class ProductListEvents(
         seeProductDetails = viewModel::onSeeProductDetails,
         onGoBack = viewModel::onGoBack,
         onOpenDrawer = viewModel::onOpenDrawer,
+        onSortList = viewModel::onSortList,
         onNavigateProducts = navigationEvents.onNavigateProducts,
         onNavigateCategories = navigationEvents.onNavigateCategories,
         onNavigateInventory = navigationEvents.onNavigateInventory
-
     )
 }
 
