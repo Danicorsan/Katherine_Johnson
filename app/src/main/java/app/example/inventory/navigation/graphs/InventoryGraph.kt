@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import app.domain.invoicing.repository.InventoryRepository
+import app.example.inventory.navigation.graphs.drawerNavigation
 import app.features.inventorycreation.ui.creation.CreateInventoryScreen
 import app.features.inventorycreation.ui.creation.CreateInventoryViewModel
 import app.features.inventorycreation.ui.edition.EditInventoryScreen
@@ -40,15 +41,15 @@ private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
         val viewModel = remember { InventoryListViewModel(InventoryRepository) }
         InventoryListScreen(
             viewModel = viewModel,
-            onBackClick = {
-                navController.popBackStack()
-            },
             onInventoryClick = { inventory ->
                 navController.navigate(InventoryGraph.inventoryDetailsRoute(inventory.id.toString()))
             },
             onCreateInventoryClick = {
                 navController.navigate(InventoryGraph.inventoryCreationRoute())
             },
+            onNavigateProducts = {  drawerNavigation(navController, ProductGraph.ROUTE) },
+            onNavigateCategories = { drawerNavigation(navController, CategoryGraph.ROUTE) },
+            onNavigateInventory = { drawerNavigation(navController, InventoryGraph.ROUTE) }
         )
     }
 }

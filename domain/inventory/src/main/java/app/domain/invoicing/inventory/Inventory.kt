@@ -8,7 +8,7 @@ data class Inventory(
     val description: String,
     val itemsCount: Int?,
     val inventoryType: InventoryType,
-    val createdAt: LocalDate,
+    val createdAt: LocalDate?,
     var updatedAt: LocalDate = LocalDate.now(),
     var icon: InventoryIcon
 )

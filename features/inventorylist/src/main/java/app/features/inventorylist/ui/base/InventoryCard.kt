@@ -73,7 +73,7 @@ fun InventoryCard(
                 imageVector = icon,
                 contentDescription = "",
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(50.dp)
             )
 
             Spacer(modifier = Modifier.width(16.dp))

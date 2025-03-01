@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,6 +36,19 @@ class InventoryListViewModel @Inject constructor(
             _inventories.clear()
             _inventories.addAll(repository.getAllInventories())
             _uiState.value = uiState.copy(success = _inventories, loading = false)
+        }
+    }
+    fun onOpenDrawer(scope : CoroutineScope){
+        scope.launch {
+            uiState.drawerState.open()
+        }
+    }
+    private var sortByDesc = false
+    fun onSortByDesc() {
+        sortByDesc = !sortByDesc
+        _inventories.sortBy { it.createdAt }
+        if (sortByDesc) {
+            _inventories.reverse()
         }
     }
 }

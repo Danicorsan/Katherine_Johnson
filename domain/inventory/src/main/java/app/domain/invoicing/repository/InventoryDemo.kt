@@ -12,8 +12,8 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             id = 1,
             name = "Electrónica",
             description = "Objetos de electrónica",
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
+            createdAt = LocalDate.of(2022, 1, 1),
+            updatedAt = LocalDate.of(2022, 1, 1),
             icon = InventoryIcon.ELECTRONICS,
             itemsCount = 1,
             inventoryType = InventoryType.SEMESTRAL

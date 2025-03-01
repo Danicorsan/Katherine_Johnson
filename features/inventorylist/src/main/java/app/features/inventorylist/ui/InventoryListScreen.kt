@@ -15,11 +15,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.base.ui.components.LoadingUi
+import app.base.ui.composables.AppDrawer
 import app.base.ui.composables.MediumButton
 import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
@@ -33,21 +35,31 @@ import app.features.inventorylist.ui.base.InventoryCard
 @Composable
 fun InventoryListScreen(
     viewModel: InventoryListViewModel,
-    onBackClick: () -> Unit,
     onInventoryClick: (Inventory) -> Unit,
     onCreateInventoryClick: () -> Unit,
+    onNavigateProducts: () -> Unit = {},
+    onNavigateCategories: () -> Unit = {},
+    onNavigateInventory: () -> Unit = {},
 ) {
     val state = viewModel.uiState
     val success = state.success
     val noData = success.isEmpty()
-
+    val scopeCoroutine = rememberCoroutineScope()
+    AppDrawer(
+        drawerState = state.drawerState,
+        onNavigateProducts = onNavigateProducts,
+        onNavigateCategories = onNavigateCategories,
+        onNavigateInventory = onNavigateInventory,
+        content = {
     Scaffold(
         topBar = {
             BaseAppBar(
                 BaseAppBarState(
                     title = stringResource(R.string.lista_de_inventarios),
-                    navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon {
-                        onBackClick()
+                    navigationIcon = BaseAppBarIcons.drawerMenuIcon {
+                        viewModel.onOpenDrawer(
+                            scope = scopeCoroutine
+                        )
                     }
                 )
             )
@@ -76,6 +88,7 @@ fun InventoryListScreen(
         }
     )
 }
+    )}
 
 @Composable
 fun InventoryListContent(
@@ -133,7 +146,6 @@ fun InventoryTypeHeader(type: InventoryType) {
 fun InventoryListPreview() {
     InventoryListScreen(
         viewModel = InventoryListViewModel(InventoryRepository),
-        onBackClick = {},
         onInventoryClick = {},
         onCreateInventoryClick = {},
     )
