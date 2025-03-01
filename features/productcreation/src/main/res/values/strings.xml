@@ -37,4 +37,6 @@
     <string name="on_create_product_icon">Crear el nuevo producto</string>
     <string name="cant_update_alert_dialog_message">No se ha podido actualizar el producto</string>
     <string name="product_updated_successful_alert_dialog_message">El producto ha sido actualizado</string>
+    <string name="image_picker_add_icon_conent_description">Añadir imagen</string>
+    <string name="image_picker_image_content_description">Imagen seleccionanda</string>
 </resources>

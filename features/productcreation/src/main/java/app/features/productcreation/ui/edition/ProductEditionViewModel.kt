@@ -57,6 +57,7 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
                     modelCode = product.modelCode,
                     productType = product.productType,
                     stock = product.stock.toString(),
+                    uriImage = product.image,
                     price = product.price.toString(),
                     minimunStock = product.minimunStock?.toString() ?: "",
                     adquisitionDate = product.acquisitionDate,

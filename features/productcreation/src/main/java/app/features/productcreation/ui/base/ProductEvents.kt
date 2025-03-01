@@ -1,5 +1,6 @@
 package app.features.productcreation.ui.base
 
+import android.net.Uri
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.section.Section
@@ -9,6 +10,7 @@ import app.domain.invoicing.section.Section
  *
  * @property onAcceptProduct Cuando el usuario quiere guardar los cambios.
  * @property onLeavePage Cuando el usuario se quiere ir de la pagina sin guardar los cambios.
+ * @property onNewImageSelected Cuando el usuario selecciona una imagen, pasa por parametro su [Uri]
  * @property onCodeChange Cuando el codigo del producto se modifica.
  * @property onNameChange Cuando el nombre del producto se modifica.
  * @property onShortNameChange Cuando el nombre corto del producto se modifica.
@@ -34,6 +36,7 @@ import app.domain.invoicing.section.Section
 data class ProductEvents(
     val onAcceptProduct : () -> Unit,
     val onLeavePage : () -> Unit,
+    val onNewImageSelected : (Uri) -> Unit,
     val onCodeChange : (String) -> Unit,
     val onNameChange : (String) -> Unit,
     val onShortNameChange : (String) -> Unit,
@@ -67,6 +70,7 @@ data class ProductEvents(
             return ProductEvents(
                 onAcceptProduct = viewModel::onAcceptChanges,
                 onLeavePage = viewModel::onLeavePage,
+                onNewImageSelected = viewModel::onNewImageSelected,
                 onCodeChange = viewModel::onCodeChanged,
                 onNameChange = viewModel::onNameChanged,
                 onShortNameChange = viewModel::onShortNameChanged,

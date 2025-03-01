@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import app.base.ui.composables.MediumSpace
 import app.base.ui.composables.SmallSpace
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.composables.DatePickerDocked
@@ -22,6 +24,7 @@ import app.features.productcreation.ui.base.ProductEvents
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.Specification
 import app.features.productcreation.ui.base.composables.ExposedDropDownMenuForDependencies
+import app.features.productcreation.ui.base.composables.ProductImagePicker
 
 /**
  * Permite crear un formularios para un producto que puede ser usado
@@ -45,6 +48,10 @@ fun ProductForm(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MessageOfObligatoryTextFields()
+
+        MediumSpace()
+        ProductImagePicker(onUriImageSelected = productEvents.onNewImageSelected)
+        MediumSpace()
 
         OneLineEditText(
             text = productViewState.inputDataState.name,
@@ -167,5 +174,7 @@ fun ProductForm(
 
 @Composable
 private fun MessageOfObligatoryTextFields() {
-    Text(stringResource(R.string.message_for_obligatory_fields, Specification.OBLIGATORYFIELDSMARK))
+    Text(stringResource(R.string.message_for_obligatory_fields, Specification.OBLIGATORYFIELDSMARK),
+    textAlign = TextAlign.Center
+    )
 }

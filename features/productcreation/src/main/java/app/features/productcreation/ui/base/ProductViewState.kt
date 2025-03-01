@@ -1,5 +1,6 @@
 package app.features.productcreation.ui.base
 
+import android.net.Uri
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.section.Section
@@ -40,6 +41,7 @@ data class ProductViewState(
  * @property modelCode El código de modelo del producto.
  * @property productType El tipo de producto.
  * @property stock El stock del producto.
+ * @property uriImage El [Uri] de la imagen seleccionada, o null si no hay ninguna seleccionada.
  * @property price El precio del producto.
  * @property minimunStock El stock mínimo del producto. (Todavia sin usar)
  * @property adquisitionDate La fecha de adquisición del producto a traves de un objeto [Instant]
@@ -62,6 +64,7 @@ data class InputDataState(
     val modelCode : String = "",
     val productType : String = "",
     val stock : String = "",
+    val uriImage : Uri? = null,
     val price : String = "",
     val minimunStock: String = "",
     val adquisitionDate : Instant? = null,

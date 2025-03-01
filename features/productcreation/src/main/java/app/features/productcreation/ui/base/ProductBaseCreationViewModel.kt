@@ -1,5 +1,6 @@
 package app.features.productcreation.ui.base
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -55,6 +56,19 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
      */
     fun stablishNavigationEvent(onGoBackNav : () -> Unit){
         this.onGoBackNav = onGoBackNav
+    }
+
+    /**
+     * Cuando el campo de la seleccion de imagen ha sido modificado
+     *
+     * @param newUri La nueva [Uri] de la imagen.
+     */
+    fun onNewImageSelected(newUri : Uri?){
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                uriImage = newUri
+            )
+        )
     }
 
     /**
@@ -462,6 +476,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
             productType = productData.productType,
             category = productData.selectedCategory!! ,
             section = productData.selectedSection!! ,
+            image = productData.uriImage,
             stock = productData.stock.toUInt(),
             price = productData.price.toDouble(),
             acquisitionDate = productData.adquisitionDate!!,
