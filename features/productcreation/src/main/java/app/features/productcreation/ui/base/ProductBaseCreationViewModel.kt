@@ -1,5 +1,6 @@
 package app.features.productcreation.ui.base
 
+import android.content.res.Resources
 import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,14 +23,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
+import javax.inject.Inject
 
 /**
  * Una clase abtracta que recoge las funciones y variables comunes que se necesitan
  * en las pantallas de creación y edición de productos.
  *
+ * @param resources Injectado a traves de la injección de dependencias,
+ * permitirá acceder a los recursos de la aplicación fuera de los composabes.
+ *
  */
-abstract class ProductBaseCreationViewModel : ViewModel() {
+abstract class ProductBaseCreationViewModel(
+    protected val resources: Resources
+) : ViewModel() {
     var productViewState by mutableStateOf(ProductViewState())
         protected set
 
@@ -388,15 +396,6 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
     }
 
     /**
-     *  Cuando el usuario haya leido y aceptado el cuadro informativo cuando
-     *  el producto haya sido guardado con exito.
-     *
-     */
-    fun onDismissProductHasBeenRegisteredAlertDialog(){
-        onGoBackNav()
-    }
-
-    /**
      * Cuando el usuario decide irse de la pantalla sin guardar los
      * cambios.
      *
@@ -508,6 +507,20 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
             }
          else
              emptyList()
+    }
+
+    /**
+     * Permite mostrar un mensaje en la vista a traves de un SnackBar.
+     *
+     * @param message El mensaje a mostrar a traves del SnackBar.
+     */
+    protected fun showSnackBar(message : String){
+        viewModelScope.launch {
+            productViewState.snackbarHostState.showSnackbar(
+                message = message,
+                withDismissAction = true
+            )
+        }
     }
 
     /**

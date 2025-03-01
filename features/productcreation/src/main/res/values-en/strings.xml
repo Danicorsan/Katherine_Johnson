@@ -30,12 +30,11 @@
     <string name="empty_fields_alert_dialog_title">Empty fields</string>
     <string name="empty_fields_alert_dialog_message">Empty fields have been detected</string>
     <string name="confirm_button_alert_dialog">Ok</string>
-    <string name="product_registered_successful_alert_dialog_title">Success!</string>
-    <string name="product_registered_successful_alert_dialog_message">The product has been registered</string>
+    <string name="product_registered_successful_message">The product has been registered</string>
     <string name="message_for_obligatory_fields">Fields marked with %s must be filled</string>
     <string name="on_create_product_icon">Create the new product</string>
     <string name="cant_update_alert_dialog_message">The product couldnt be updated</string>
-    <string name="product_updated_successful_alert_dialog_message">The product has been updated</string>
+    <string name="product_updated_successful_message">The product has been updated</string>
     <string name="dependency_label">Dependency</string>
     <string name="image_picker_add_icon_conent_description">Add image</string>
     <string name="image_picker_image_content_description">Selected image</string>

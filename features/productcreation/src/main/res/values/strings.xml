@@ -31,12 +31,11 @@
     <string name="empty_fields_alert_dialog_title">Campos vacios</string>
     <string name="empty_fields_alert_dialog_message">Se ha detectado campos vacios</string>
     <string name="confirm_button_alert_dialog">Vale</string>
-    <string name="product_registered_successful_alert_dialog_title">¡Éxito!</string>
-    <string name="product_registered_successful_alert_dialog_message">Se ha registrado el producto</string>
+    <string name="product_registered_successful_message">Se ha registrado el producto</string>
     <string name="message_for_obligatory_fields">Los campos marcados con %s son obligatorios</string>
     <string name="on_create_product_icon">Crear el nuevo producto</string>
     <string name="cant_update_alert_dialog_message">No se ha podido actualizar el producto</string>
-    <string name="product_updated_successful_alert_dialog_message">El producto ha sido actualizado</string>
+    <string name="product_updated_successful_message">El producto ha sido actualizado</string>
     <string name="image_picker_add_icon_conent_description">Añadir imagen</string>
     <string name="image_picker_image_content_description">Imagen seleccionanda</string>
 </resources>

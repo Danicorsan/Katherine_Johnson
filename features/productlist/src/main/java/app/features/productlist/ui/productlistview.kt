@@ -79,7 +79,7 @@ private fun ProductListHost(
                 when {
                     productListState.isLoading -> LoadingUi()
                     productListState.productList.isEmpty() -> NoDataAnimatedScreen()
-                        productListState.productIsBeingDeleted -> BaseAlertDialog(
+                    productListState.productIsBeingDeleted -> BaseAlertDialog(
                         title = stringResource(R.string.delete_alert_dialog_title),
                         text = stringResource(R.string.delete_alert_dialog_message),
                         confirmText = stringResource(R.string.delete_alert_dialog_confirmation_text),

@@ -1,6 +1,7 @@
 package app.features.productcreation.ui.base
 
 import android.net.Uri
+import androidx.compose.material3.SnackbarHostState
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.section.Section
@@ -12,21 +13,21 @@ import kotlinx.datetime.Instant
  *
  * @property inputDataState Objeto [InputDataState] para almacenar toda la información a mostrar en los campos.
  * @property errorDataState Objeto [ErrorDataState] para guardar las variables relacionadas con la gestión de errores.
+ * @property snackbarHostState Objeto [SnackbarHostState] que permite manipular la aparición de los snackbar en las vistas.
  * @property isLoading Indica si la pantalla está cargando.
  * @property categoriesList La lista de [Category] seleccionables.
  * @property sectionsList La lista de [Section] seleccionables.
  * @property dependenciesList La lista de [Dependency] seleccionables.
- * @property productRegisterSuccessful Indica si se han guardado los cambios con exito.
  * @property cantRegisterProduct Indica si ha habido un error al querer guardar los cambios.
  */
 data class ProductViewState(
     val inputDataState: InputDataState = InputDataState(),
     val errorDataState: ErrorDataState = ErrorDataState(),
+    val snackbarHostState : SnackbarHostState = SnackbarHostState(),
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
     val sectionsList : Iterable<Section> = emptyList(),
     val dependenciesList : Iterable<Dependency> = emptyList(),
-    val productRegisterSuccessful : Boolean = false,
     val cantRegisterProduct : Boolean = false,
 )
 

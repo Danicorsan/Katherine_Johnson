@@ -30,7 +30,6 @@ import app.domain.invoicing.section.Section
  * @property onNewDependencySelected Cuando la [Dependency] selecionada en el formulario cambia.
  * @property onDismissCantRegisterProductAlertDialog Cuando el usuario ha leido y acepta que no se ha podido registrar los cambios
  * @property onDismissEmptyFieldsAlertDialog Cuando el usuario ha leido y acepta que hay campos vacios.
- * @property onDismissProductHasBeenRegisteredAlertDialog Cuando el usuario ha leido y acepta que los cambios se han guardado.
  * @constructor Create empty Product events
  */
 data class ProductEvents(
@@ -55,8 +54,7 @@ data class ProductEvents(
     val onNewSectionSelected : (Section) -> Unit,
     val onNewDependencySelected : (Dependency) -> Unit,
     val onDismissCantRegisterProductAlertDialog : () -> Unit,
-    val onDismissEmptyFieldsAlertDialog : () -> Unit,
-    val onDismissProductHasBeenRegisteredAlertDialog : () -> Unit
+    val onDismissEmptyFieldsAlertDialog : () -> Unit
     ){
     companion object{
         /**
@@ -89,8 +87,7 @@ data class ProductEvents(
                 onNewSectionSelected = viewModel::onNewSectionSelected,
                 onNewDependencySelected = viewModel::onNewDependencySelected,
                 onDismissCantRegisterProductAlertDialog = viewModel::onDismissCantRegisterAlertDialog,
-                onDismissEmptyFieldsAlertDialog = viewModel::onDismissEmptyFieldsAlertDialog,
-                onDismissProductHasBeenRegisteredAlertDialog = viewModel:: onDismissProductHasBeenRegisteredAlertDialog
+                onDismissEmptyFieldsAlertDialog = viewModel::onDismissEmptyFieldsAlertDialog
             )
         }
     }
