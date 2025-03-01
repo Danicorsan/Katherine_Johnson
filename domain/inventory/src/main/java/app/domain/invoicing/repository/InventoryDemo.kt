@@ -1,8 +1,6 @@
 package app.domain.invoicing.repository
 
 import app.domain.invoicing.inventory.Inventory
-import app.domain.invoicing.inventory.InventoryIcon
-import app.domain.invoicing.inventory.InventoryType
 import java.time.LocalDate
 
 fun initialiceInventoryDemo(): MutableList<Inventory> {

@@ -1,5 +1,6 @@
 package app.features.inventorylist.ui
 
+import InventoryType
 import NoDataScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -34,7 +35,6 @@ import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
-import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorylist.R
 import app.features.inventorylist.ui.base.InventoryCard
