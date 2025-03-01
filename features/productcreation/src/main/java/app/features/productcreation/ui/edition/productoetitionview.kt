@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -31,7 +32,7 @@ fun ProductEditionScreen(
     }
     ProductEditionHost(
         productEditionState = viewModel.productViewState,
-        productEvents = ProductEvents.build(viewModel)
+        productEvents = ProductEvents(viewModel)
     )
 }
 
@@ -46,11 +47,14 @@ private fun ProductEditionHost(
             onLeavePage = productEvents.onLeavePage) },
         floatingActionButton = {
             ProductCreationFloatingActionButton(productEvents.onAcceptProduct)
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = productEditionState.snackbarHostState)
         }
     ) { contentPadding ->
         when {
             productEditionState.isLoading -> LoadingUi()
-            productEditionState.cantRegisterProduct -> BaseAlertDialog(
+            productEditionState.errorDataState.cantRegisterProduct -> BaseAlertDialog(
                 title = stringResource(R.string.cant_register_alert_dialog_title),
                 text = stringResource(R.string.cant_update_alert_dialog_message),
                 confirmText = stringResource(R.string.confirm_button_alert_dialog),
@@ -63,13 +67,6 @@ private fun ProductEditionHost(
                 confirmText = stringResource(R.string.confirm_button_alert_dialog),
                 onConfirm = productEvents.onDismissEmptyFieldsAlertDialog,
                 onDismiss = productEvents.onDismissEmptyFieldsAlertDialog
-            )
-            productEditionState.productRegisterSuccessful -> BaseAlertDialog(
-                title = stringResource(R.string.product_registered_successful_alert_dialog_title),
-                text = stringResource(R.string.product_updated_successful_alert_dialog_message),
-                confirmText = stringResource(R.string.confirm_button_alert_dialog),
-                onConfirm = productEvents.onDismissProductHasBeenRegisteredAlertDialog,
-                onDismiss = productEvents.onDismissProductHasBeenRegisteredAlertDialog
             )
             else -> ProductEditionContent(
                 modifier = Modifier.padding(contentPadding),

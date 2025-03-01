@@ -1,11 +1,11 @@
 package app.features.productlist.ui
 
+import NoDataAnimatedScreen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,8 +25,6 @@ import app.features.productlist.ui.base.ProductListEvents
 import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
 import app.features.productlist.ui.base.components.ListProducts
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -80,6 +78,7 @@ private fun ProductListHost(
             ) { contentPadding ->
                 when {
                     productListState.isLoading -> LoadingUi()
+                    productListState.productList.isEmpty() -> NoDataAnimatedScreen()
                     productListState.productIsBeingDeleted -> BaseAlertDialog(
                         title = stringResource(R.string.delete_alert_dialog_title),
                         text = stringResource(R.string.delete_alert_dialog_message),
@@ -88,7 +87,6 @@ private fun ProductListHost(
                         onConfirm = productListEvents.onConfirmDeleteProduct,
                         onDismiss = productListEvents.onDissmissDeleteProduct
                     )
-
                     else -> ProductListContent(
                         modifier = Modifier.padding(contentPadding),
                         productListState = productListState,

@@ -1,5 +1,7 @@
 package app.features.productcreation.ui.base
 
+import android.net.Uri
+import androidx.compose.material3.SnackbarHostState
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.section.Section
@@ -11,22 +13,21 @@ import kotlinx.datetime.Instant
  *
  * @property inputDataState Objeto [InputDataState] para almacenar toda la información a mostrar en los campos.
  * @property errorDataState Objeto [ErrorDataState] para guardar las variables relacionadas con la gestión de errores.
+ * @property snackbarHostState Objeto [SnackbarHostState] que permite manipular la aparición de los snackbar en las vistas.
  * @property isLoading Indica si la pantalla está cargando.
  * @property categoriesList La lista de [Category] seleccionables.
  * @property sectionsList La lista de [Section] seleccionables.
  * @property dependenciesList La lista de [Dependency] seleccionables.
- * @property productRegisterSuccessful Indica si se han guardado los cambios con exito.
  * @property cantRegisterProduct Indica si ha habido un error al querer guardar los cambios.
  */
 data class ProductViewState(
     val inputDataState: InputDataState = InputDataState(),
     val errorDataState: ErrorDataState = ErrorDataState(),
+    val snackbarHostState : SnackbarHostState = SnackbarHostState(),
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
     val sectionsList : Iterable<Section> = emptyList(),
-    val dependenciesList : Iterable<Dependency> = emptyList(),
-    val productRegisterSuccessful : Boolean = false,
-    val cantRegisterProduct : Boolean = false,
+    val dependenciesList : Iterable<Dependency> = emptyList()
 )
 
 /**
@@ -40,6 +41,7 @@ data class ProductViewState(
  * @property modelCode El código de modelo del producto.
  * @property productType El tipo de producto.
  * @property stock El stock del producto.
+ * @property uriImage El [Uri] de la imagen seleccionada, o null si no hay ninguna seleccionada.
  * @property price El precio del producto.
  * @property minimunStock El stock mínimo del producto. (Todavia sin usar)
  * @property adquisitionDate La fecha de adquisición del producto a traves de un objeto [Instant]
@@ -62,6 +64,7 @@ data class InputDataState(
     val modelCode : String = "",
     val productType : String = "",
     val stock : String = "",
+    val uriImage : Uri? = null,
     val price : String = "",
     val minimunStock: String = "",
     val adquisitionDate : Instant? = null,
@@ -78,14 +81,26 @@ data class InputDataState(
 /**
  * Un data class que almacena en variables indicativas de errores en los campos.
  *
- * @property shortNameError Cuando el campo del nombre corto es erroneo.
- * @property emptyFields Cuando hay campos obligatorios vacios.
- * @property priceError Cuando el campo del precio es erroneo.
- * @property stockError Cuando el campo del stock es erroneo.
+ * @property cantRegisterProduct Indica que no se ha podido registra o actualizar el producto.
+ * @property emptyFields Indica que hay campos obligatorios vacios.
+ * @property shortNameError Indica si el campo del nombre corto es erroneo.
+ * @property shortNameText Indica a que se debe el error en el nombre corto.
+ * @property priceError Indica si el campo del precio es erroneo.
+ * @property priceText Indica a que se debe el error en el precio.
+ * @property stockError Indica si el campo del stock es erroneo.
+ * @property stockText Indica a que se debe el error en el stock.
+ * @property minimunStockError Indica si el campo del stock mínimo es erroneo.
+ * @property minimunStockText Indica a que se debe el error en el stock mínimo.
  */
 data class ErrorDataState(
-    val shortNameError : Boolean = false,
+    val cantRegisterProduct : Boolean = false,
     val emptyFields : Boolean = false,
+    val shortNameError : Boolean = false,
+    val shortNameText : String = "",
     val priceError: Boolean = false,
-    val stockError : Boolean = false
+    val priceText : String = "",
+    val stockError : Boolean = false,
+    val stockText : String = "",
+    val minimunStockError : Boolean = false,
+    val minimunStockText : String = ""
     )

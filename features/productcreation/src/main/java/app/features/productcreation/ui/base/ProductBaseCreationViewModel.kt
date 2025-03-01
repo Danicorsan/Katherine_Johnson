@@ -1,5 +1,7 @@
 package app.features.productcreation.ui.base
 
+import android.content.res.Resources
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,19 +18,25 @@ import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.DependencyRepository
 import app.domain.invoicing.repository.SectionRepository
 import app.domain.invoicing.section.Section
+import app.features.productcreation.R
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 
 /**
  * Una clase abtracta que recoge las funciones y variables comunes que se necesitan
  * en las pantallas de creación y edición de productos.
  *
+ * @param resources Necesario para acceder a los recursos de la aplicación fuera de los composabes.
+ *
  */
-abstract class ProductBaseCreationViewModel : ViewModel() {
+abstract class ProductBaseCreationViewModel(
+    protected val resources: Resources
+) : ViewModel() {
     var productViewState by mutableStateOf(ProductViewState())
         protected set
 
@@ -55,6 +63,19 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
      */
     fun stablishNavigationEvent(onGoBackNav : () -> Unit){
         this.onGoBackNav = onGoBackNav
+    }
+
+    /**
+     * Cuando el campo de la seleccion de imagen ha sido modificado
+     *
+     * @param newUri La nueva [Uri] de la imagen.
+     */
+    fun onNewImageSelected(newUri : Uri?){
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                uriImage = newUri
+            )
+        )
     }
 
     /**
@@ -89,22 +110,32 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
      * @param newShort El núevo nombre corto introducido por el usuario.
      */
     fun onShortNameChanged(newShort : String) {
-        fun hasRightLength() = newShort.length <= 3
+        val minimunLength = 3
+        fun notRightLength() = newShort.length < minimunLength
         fun thereAreSpecialCharacter() = Regex("[^a-zA-Z0-9]").containsMatchIn(newShort)
-        if (hasRightLength() || thereAreSpecialCharacter()) {
-            shortNameChanged(newShort, true)
-        } else {
-            shortNameChanged(newShort, false)
+        when {
+            notRightLength() -> shortNameChanged(
+                newShort,
+                true,
+                resources.getString(R.string.error_short_name_not_rigth_length, minimunLength)
+            )
+            thereAreSpecialCharacter() -> shortNameChanged(
+                newShort,
+                true,
+                resources.getString(R.string.error_short_name_special_caracters)
+            )
+            else -> shortNameChanged(newShort, false)
         }
     }
 
-    private fun shortNameChanged(newShortName: String, error : Boolean) {
+    private fun shortNameChanged(newShortName: String, error : Boolean, errorText: String = "") {
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 shortName = newShortName
             ),
             errorDataState = productViewState.errorDataState.copy(
-                shortNameError = error
+                shortNameError = error,
+                shortNameText = errorText
             )
         )
     }
@@ -166,23 +197,73 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
      *
      * @param newStock El núevo stock introducido por el usuario.
      */
-    fun onStockChange(newStock : String){
+    fun onStockChanged(newStock : String){
+        val minimunValue = 0u
         fun notAUintNumber() = newStock.toUIntOrNull() == null
-        fun notEnougthStock() = newStock.toUInt() < 1u
-        if (notAUintNumber() || notEnougthStock()){
-            stockChanged(newStock, true)
-        } else{
-            stockChanged(newStock, false)
+        fun notEnougthStock() = newStock.toUInt() <= minimunValue
+        when {
+            notAUintNumber() -> stockChanged(
+                newStock,
+                true,
+                resources.getString(R.string.error_value_must_be_numeric)
+            )
+            notEnougthStock() -> stockChanged(
+                newStock,
+                true,
+                resources.getString(R.string.error_value_not_correct_range, minimunValue.toString())
+            )
+            else -> stockChanged(newStock, false)
         }
     }
 
-    private fun stockChanged(newStock : String, error : Boolean){
+    private fun stockChanged(newStock : String, error : Boolean, errorText : String = ""){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 stock = newStock
             ),
             errorDataState = productViewState.errorDataState.copy(
-                stockError = error
+                stockError = error,
+                stockText = errorText
+            )
+        )
+    }
+
+    /**
+     * Cuando el campo del Stock minimo se modifica.
+     *
+     * @param newMinimunStock El nuevo stock mínimo cuando se modifica
+     */
+    fun onMinimunStockChanged(newMinimunStock : String){
+        if (newMinimunStock.isEmpty()){
+            minimunStockChanged("", false)
+            return;
+        }
+        val minimunValue = 0u
+        fun notAUintNumber() = newMinimunStock.toUIntOrNull() == null
+        fun notEnougthStock() = newMinimunStock.toUInt() <= minimunValue
+        when {
+            notAUintNumber() -> minimunStockChanged(
+                newMinimunStock,
+                true,
+                resources.getString(R.string.error_value_must_be_numeric)
+            )
+            notEnougthStock() -> minimunStockChanged(
+                newMinimunStock,
+                true,
+                resources.getString(R.string.error_value_not_correct_range, minimunValue.toString())
+            )
+            else -> minimunStockChanged(newMinimunStock, false)
+        }
+    }
+
+    private fun minimunStockChanged(newStock : String, error : Boolean, errorText : String = ""){
+        productViewState = productViewState.copy(
+            inputDataState = productViewState.inputDataState.copy(
+                minimunStock = newStock
+            ),
+            errorDataState = productViewState.errorDataState.copy(
+                minimunStockError = error,
+                minimunStockText = errorText
             )
         )
     }
@@ -193,39 +274,33 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
      * @param newPrice El núevo precio introducido por el usuario.
      */
     fun onPriceChanged(newPrice : String){
+        val minimunPrice = 0
         val price = newPrice.toDoubleOrNull()
-        fun itIsANumber() = price == null
-        fun isNotPositive() = price!! < 0
-        if (itIsANumber() || isNotPositive()){
-            priceChanged(newPrice, true)
-        } else {
-            priceChanged(newPrice, false)
+        fun notANumber() = price == null
+        fun isNotPositive() = price!! < minimunPrice
+        when {
+            notANumber() ->  priceChanged(
+                newPrice,
+                true,
+                resources.getString(R.string.error_value_must_be_numeric)
+            )
+            isNotPositive() -> priceChanged(
+                newPrice,
+                true,
+                resources.getString(R.string.error_value_not_correct_range, minimunPrice.toString())
+            )
+            else -> priceChanged(newPrice, false)
         }
     }
 
-    private fun priceChanged(newPrice : String, error: Boolean){
+    private fun priceChanged(newPrice : String, error: Boolean, errorText : String = ""){
         productViewState = productViewState.copy(
             inputDataState = productViewState.inputDataState.copy(
                 price = newPrice
             ),
             errorDataState = productViewState.errorDataState.copy(
-                priceError = error
-            )
-        )
-    }
-
-    /**
-     * Cuando el campo del Stock minimo se modifica.
-     *
-     * La implementación de Alarma de un producto cuando llega a cierto stock mínimo
-     * no se ha implementado. Por lo que el evento todavia no está en uso.
-     *
-     * @param newMinimunStock El nuevo stock mínimo cuando se modifica
-     */
-    fun onMinimunStockChanged(newMinimunStock : String){
-        productViewState = productViewState.copy(
-            inputDataState = productViewState.inputDataState.copy(
-                minimunStock = newMinimunStock
+                priceError = error,
+                priceText = errorText
             )
         )
     }
@@ -356,7 +431,9 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
      */
     fun onDismissCantRegisterAlertDialog(){
         productViewState = productViewState.copy(
-            cantRegisterProduct = false
+            errorDataState = productViewState.errorDataState.copy(
+                cantRegisterProduct = false
+            ),
         )
     }
 
@@ -371,15 +448,6 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
                 emptyFields = false
             )
         )
-    }
-
-    /**
-     *  Cuando el usuario haya leido y aceptado el cuadro informativo cuando
-     *  el producto haya sido guardado con exito.
-     *
-     */
-    fun onDismissProductHasBeenRegisteredAlertDialog(){
-        onGoBackNav()
     }
 
     /**
@@ -415,7 +483,9 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
             }
             isThereAnActiveError(errorDataState) -> {
                 productViewState = productViewState.copy(
-                    cantRegisterProduct = true
+                    errorDataState = productViewState.errorDataState.copy(
+                        cantRegisterProduct = true
+                    ),
                 )
             }
             else -> whenNoErrorFound()
@@ -424,6 +494,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
 
     private fun isThereAnActiveError(errorDataState: ErrorDataState) =
         errorDataState.priceError || errorDataState.stockError || errorDataState.shortNameError
+                || errorDataState.minimunStockError
 
     private fun areThereAnyEmptyOrNotSelectedOnObligatoryFields() : Boolean{
         val inputDataState = productViewState.inputDataState
@@ -462,6 +533,7 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
             productType = productData.productType,
             category = productData.selectedCategory!! ,
             section = productData.selectedSection!! ,
+            image = productData.uriImage,
             stock = productData.stock.toUInt(),
             price = productData.price.toDouble(),
             acquisitionDate = productData.adquisitionDate!!,
@@ -493,6 +565,20 @@ abstract class ProductBaseCreationViewModel : ViewModel() {
             }
          else
              emptyList()
+    }
+
+    /**
+     * Permite mostrar un mensaje en la vista a traves de un SnackBar.
+     *
+     * @param message El mensaje a mostrar a traves del SnackBar.
+     */
+    protected fun showSnackBar(message : String){
+        viewModelScope.launch {
+            productViewState.snackbarHostState.showSnackbar(
+                message = message,
+                withDismissAction = true
+            )
+        }
     }
 
     /**

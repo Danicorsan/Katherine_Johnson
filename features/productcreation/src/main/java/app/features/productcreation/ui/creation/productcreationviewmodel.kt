@@ -1,7 +1,10 @@
 package app.features.productcreation.ui.creation
 
+import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.repository.ProductRepository
+import app.features.productcreation.R
+import app.features.productcreation.ui.base.InputDataState
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,7 +15,9 @@ import javax.inject.Inject
  *
  */
 @HiltViewModel
-class ProductCreationViewModel @Inject constructor() : ProductBaseCreationViewModel() {
+class ProductCreationViewModel @Inject constructor(
+    resources: Resources
+) : ProductBaseCreationViewModel(resources) {
 
     /**
      * Carga e inicializa los datos necesarios para [app.features.productcreation.ui.creation.ProductCreationScreen]
@@ -41,9 +46,10 @@ class ProductCreationViewModel @Inject constructor() : ProductBaseCreationViewMo
             )
             viewModelScope.launch {
                 ProductRepository.addProduct(makeProductFromFields())
+                showSnackBar(resources.getString(R.string.product_registered_successful_message))
                 productViewState = productViewState.copy(
                     isLoading = false,
-                    productRegisterSuccessful = true
+                    inputDataState = InputDataState()
                 )
             }
         }
