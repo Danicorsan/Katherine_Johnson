@@ -11,4 +11,5 @@ dependencies {
     implementation(projects.base.utils)
     implementation(projects.domain.ddd)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.animation.lottie)
 }
