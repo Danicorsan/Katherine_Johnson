@@ -1,5 +1,6 @@
 package app.domain.invoicing.section
 
+import android.net.Uri
 import app.domain.invoicing.dependency.Dependency
 import kotlinx.datetime.Instant
 
@@ -8,6 +9,20 @@ data class Section(
     val name : String,
     val shortName : String,
     val belongedDependency : Dependency,
-    val image : String? = null, //Tipo String hasta que se decida el tipo para imagenes
-    val releaseDate : Instant //Referido a la fecha de alta de una sección, ha ser posible, buscar un mejor nombre
-)
+    val description : String = "",
+    val image : Uri? = null,
+    val releaseDate : Instant
+){
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Section
+
+        return name == other.name
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
+}

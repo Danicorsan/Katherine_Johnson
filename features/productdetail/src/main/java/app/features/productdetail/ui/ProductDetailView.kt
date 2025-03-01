@@ -112,12 +112,10 @@ private fun ProductDetailPreview() {
         id = 2,
         name = "Seccion nombre largo",
         shortName = "Seccion nombre corto",
-        image = "",
         belongedDependency = Dependency(
             id = 1,
             name = "Dependencia",
             shortName = "depend",
-            image = "",
             description = "ksfjks"
         ),
         releaseDate = Instant.fromEpochMilliseconds(425256343),
