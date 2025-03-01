@@ -92,7 +92,7 @@ class EditInventoryViewModel @Inject constructor(
             icon = vmState.value.inventoryIcon,
             itemsCount = vmState.value.inventoryItemsCount,
             inventoryType = vmState.value.inventoryType,
-            createdAt = LocalDate.now(),
+            createdAt = LocalDate.now()
         )
 
         viewModelScope.launch {
