@@ -1,7 +1,5 @@
 package app.domain.data.inventory
 
-import InventoryIcon
-import InventoryType
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.inventory.Inventory
@@ -115,5 +113,64 @@ class InventoryTest {
         Assert.assertEquals(InventoryType.SEMESTRAL, inventory.inventoryType)
         Assert.assertEquals(InventoryIcon.MATERIALS, inventory.icon)
         Assert.assertEquals(now, inventory.createdAt)
+    }
+
+    @Test
+    fun inventoryWithSameIdShouldBeEqual() {
+        // Arrange
+        val inventory1 = Inventory(
+            id = 1,
+            name = "Tech Inventory",
+            description = "Inventory for IT department",
+            itemsCount = 0,
+            inventoryType = InventoryType.SEMESTRAL,
+            createdAt = LocalDate.now(),
+            updatedAt = LocalDate.now(),
+            icon = InventoryIcon.MATERIALS,
+        )
+
+        val inventory2 = Inventory(
+            id = 1,
+            name = "Tech Inventory",
+            description = "Inventory for IT department",
+            itemsCount = 0,
+            inventoryType = InventoryType.SEMESTRAL,
+            createdAt = LocalDate.now(),
+            updatedAt = LocalDate.now(),
+            icon = InventoryIcon.MATERIALS,
+        )
+
+        // Assert
+        Assert.assertEquals(inventory1, inventory2)
+        Assert.assertEquals(inventory1.hashCode(), inventory2.hashCode())
+    }
+
+    @Test
+    fun inventoryWithDifferentIdsShouldNotBeEqual() {
+        // Arrange
+        val inventory1 = Inventory(
+            id = 1,
+            name = "Tech Inventory",
+            description = "Inventory for IT department",
+            itemsCount = 0,
+            inventoryType = InventoryType.SEMESTRAL,
+            createdAt = LocalDate.now(),
+            updatedAt = LocalDate.now(),
+            icon = InventoryIcon.MATERIALS,
+        )
+
+        val inventory2 = Inventory(
+            id = 2,
+            name = "Tech Inventory 2",
+            description = "Inventory for IT department",
+            itemsCount = 0,
+            inventoryType = InventoryType.SEMESTRAL,
+            createdAt = LocalDate.now(),
+            updatedAt = LocalDate.now(),
+            icon = InventoryIcon.MATERIALS,
+        )
+
+        // Assert
+        Assert.assertNotEquals(inventory1, inventory2)
     }
 }

@@ -1,7 +1,5 @@
 package app.features.inventorylist.ui.base
 
-import InventoryIcon
-import InventoryType
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -35,6 +33,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryType
 import java.time.LocalDate
 
 /**

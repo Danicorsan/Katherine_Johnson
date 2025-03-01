@@ -1,7 +1,6 @@
 package app.features.inventorylist.ui
 
-import InventoryType
-import NoDataScreen
+import NoDataAnimatedScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +34,7 @@ import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorylist.R
 import app.features.inventorylist.ui.base.InventoryCard
@@ -85,7 +85,7 @@ fun InventoryListScreen(
                     if (state.loading) {
                         LoadingUi()
                     } else if (noData) {
-                        NoDataScreen()
+                        NoDataAnimatedScreen()
                     } else {
                         InventoryListContent(
                             inventories = success,
