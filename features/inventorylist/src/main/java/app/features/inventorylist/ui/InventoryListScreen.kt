@@ -25,7 +25,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.AppDrawer
@@ -35,7 +34,6 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryType
-import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorylist.R
 import app.features.inventorylist.ui.base.InventoryCard
 
@@ -176,7 +174,7 @@ fun InventoryTypeHeader(type: InventoryType) {
             .padding(16.dp)
     )
 }
-
+/*
 @Preview(showSystemUi = true)
 @Composable
 fun InventoryListPreview() {
@@ -185,4 +183,4 @@ fun InventoryListPreview() {
         onInventoryClick = {},
         onCreateInventoryClick = {},
     )
-}
+}*/

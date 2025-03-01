@@ -43,14 +43,6 @@ class InventoryListViewModel @Inject constructor(
             uiState.drawerState.open()
         }
     }
-    private var sortByDesc = false
-    fun onSortByDesc() {
-        sortByDesc = !sortByDesc
-        _inventories.sortBy { it.createdAt }
-        if (sortByDesc) {
-            _inventories.reverse()
-        }
-    }
     fun deleteInventory(inventory: Inventory) {
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)

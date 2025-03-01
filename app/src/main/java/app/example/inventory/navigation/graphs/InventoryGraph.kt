@@ -53,6 +53,39 @@ private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
         )
     }
 }
+/*
+private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
+    composable(route = InventoryGraph.inventoryListRoute()) {
+        val context = LocalContext.current
+        val database = remember {
+            Room.databaseBuilder(
+                context,
+                InventoryDatabase::class.java,
+                "inventory_database"
+            ).build()
+        }
+        val inventoryDAO = remember { database.inventoryDAO() }
+        val viewModel = remember {
+            InventoryListViewModel(
+                InventoryRepositoryDB(inventoryDAO = inventoryDAO)
+            )
+        }
+
+        InventoryListScreen(
+            viewModel = viewModel,
+            onInventoryClick = { inventory ->
+                navController.navigate(InventoryGraph.inventoryDetailsRoute(inventory.id.toString()))
+            },
+            onCreateInventoryClick = {
+                navController.navigate(InventoryGraph.inventoryCreationRoute())
+            },
+            onNavigateProducts = { drawerNavigation(navController, ProductGraph.ROUTE) },
+            onNavigateCategories = { drawerNavigation(navController, CategoryGraph.ROUTE) },
+            onNavigateInventory = { drawerNavigation(navController, InventoryGraph.ROUTE) },
+        )
+    }
+}
+ */
 
 private fun NavGraphBuilder.inventoryCreationRoute(navController: NavController) {
     composable(route = InventoryGraph.inventoryCreationRoute()) {
