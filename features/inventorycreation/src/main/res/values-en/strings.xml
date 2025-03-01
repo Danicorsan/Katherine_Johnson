@@ -2,7 +2,7 @@
 <resources>
 
     <string name="editar_inventario">Edit Inventory</string>
-    <string name="nombre_del_inventario">Inventory Name</string>
+    <string name="nombre_del_inventario">Inventory Name*</string>
     <string name="descripcion_del_inventario">Inventory Description</string>
     <string name="guardar_cambios">Save Changes</string>
     <string name="crear_inventario">Create Inventory</string>

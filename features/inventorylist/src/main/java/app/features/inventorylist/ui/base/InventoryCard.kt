@@ -1,6 +1,10 @@
 package app.features.inventorylist.ui.base
 
+import InventoryIcon
+import InventoryType
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,10 +35,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.domain.invoicing.inventory.Inventory
-import app.domain.invoicing.inventory.InventoryIcon
-import app.domain.invoicing.inventory.InventoryType
 import java.time.LocalDate
 
+/**
+ * Obtiene el icono para un InventoryIcon
+ *
+ * @param inventoryIcon Icono del inventario
+ * @return El icono asociado al InventoryIcon
+ */
 fun getIconForInventoryIcon(inventoryIcon: InventoryIcon): ImageVector {
     return when (inventoryIcon) {
         InventoryIcon.ELECTRONICS -> Icons.Filled.Call
@@ -46,10 +54,19 @@ fun getIconForInventoryIcon(inventoryIcon: InventoryIcon): ImageVector {
     }
 }
 
+/**
+ * Componente que representa una tarjeta de inventario
+ *
+ * @param inventory inventario que se va a mostrar
+ * @param onClick callback que se llama cuando se hace clic en la tarjeta
+ * @param onLongClick callback que se llama cuando se hace clic largo en la tarjeta
+ */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InventoryCard(
     inventory: Inventory,
     onClick: (Inventory) -> Unit,
+    onLongClick: (Inventory) -> Unit
 ) {
     val icon = getIconForInventoryIcon(inventory.icon)
 
@@ -57,7 +74,11 @@ fun InventoryCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onClick(inventory) },
+            .clickable { onClick(inventory) }
+            .combinedClickable(
+                onClick = { onClick(inventory) },
+                onLongClick = { onLongClick(inventory) }
+            ),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
@@ -94,10 +115,10 @@ fun InventoryCard(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                }
             }
         }
     }
+}
 @Preview(showBackground = true)
 @Composable
 fun InventoryCardPreview() {
@@ -105,7 +126,7 @@ fun InventoryCardPreview() {
         inventory = Inventory(
             id = 1,
             name = "Inventario 1",
-            description = "Descripción del inventario 1",
+            description = "Descripción del inventario 1",
             icon = InventoryIcon.ELECTRONICS,
             createdAt = LocalDate.now(),
             updatedAt = LocalDate.now(),
@@ -113,5 +134,6 @@ fun InventoryCardPreview() {
             inventoryType = InventoryType.SEMESTRAL,
         ),
         onClick = {},
+        onLongClick = {},
     )
 }

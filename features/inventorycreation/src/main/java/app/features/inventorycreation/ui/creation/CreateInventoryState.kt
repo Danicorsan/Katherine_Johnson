@@ -15,4 +15,5 @@ data class CreateInventoryState(
     var loading: Boolean = false,
     val error: String? = null,
     val success: List<Inventory> = emptyList(),
+    val nameErrorMessage: String? = null
 )

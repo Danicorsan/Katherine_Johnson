@@ -5,13 +5,12 @@ import app.domain.invoicing.inventory.Inventory
 object InventoryRepository {
 
     private val dataSet: MutableList<Inventory> = initialiceInventoryDemo()
+    private var nextId = dataSet.maxByOrNull { it.id }?.id ?: 0
 
     fun getAllInventories(): List<Inventory> = dataSet
 
     fun getInventoryById(id: Int): Inventory? =
         dataSet.find { it.id == id }
-
-    private var nextId = dataSet.maxByOrNull { it.id }?.id ?: 0
 
     fun addInventory(inventory: Inventory): Int {
         if (dataSet.any { it.id == inventory.id }) throw Exception("Inventory with same ID already exists")

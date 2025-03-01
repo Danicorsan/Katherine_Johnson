@@ -11,11 +11,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,56 +52,89 @@ fun InventoryListScreen(
     val success = state.success
     val noData = success.isEmpty()
     val scopeCoroutine = rememberCoroutineScope()
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var inventoryToDelete: Inventory? by remember { mutableStateOf(null) }
+
     AppDrawer(
         drawerState = state.drawerState,
         onNavigateProducts = onNavigateProducts,
         onNavigateCategories = onNavigateCategories,
         onNavigateInventory = onNavigateInventory,
         content = {
-    Scaffold(
-        topBar = {
-            BaseAppBar(
-                BaseAppBarState(
-                    title = stringResource(R.string.lista_de_inventarios),
-                    navigationIcon = BaseAppBarIcons.drawerMenuIcon {
-                        viewModel.onOpenDrawer(
-                            scope = scopeCoroutine
+            Scaffold(
+                topBar = {
+                    BaseAppBar(
+                        BaseAppBarState(
+                            title = stringResource(R.string.lista_de_inventarios),
+                            navigationIcon = BaseAppBarIcons.drawerMenuIcon {
+                                viewModel.onOpenDrawer(
+                                    scope = scopeCoroutine
+                                )
+                            }
+                        )
+                    )
+                },
+                floatingActionButton = {
+                    MediumButton(
+                        onClick = onCreateInventoryClick,
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.añadir_inventario)
+                    )
+                },
+                content = { paddingValues ->
+                    if (state.loading) {
+                        LoadingUi()
+                    } else if (noData) {
+                        NoDataScreen()
+                    } else {
+                        InventoryListContent(
+                            inventories = success,
+                            onInventoryClick = onInventoryClick,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(paddingValues),
+                            onLongClick = { inventory ->
+                                inventoryToDelete = inventory
+                                showDeleteDialog = true
+                            }
                         )
                     }
-                )
+                    if (showDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showDeleteDialog = false },
+                            title = { Text(stringResource(R.string.confirmar_eliminacion)) },
+                            text = { Text(stringResource(R.string.estas_seguro_de_que_quieres_eliminar_este_inventario)) },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        showDeleteDialog = false
+                                        inventoryToDelete?.let { inventory ->
+                                            viewModel.deleteInventory(inventory)
+                                        }
+                                    }
+                                ) {
+                                    Text(stringResource(R.string.si_eliminar))
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = { showDeleteDialog = false }) {
+                                    Text(stringResource(R.string.cancelar))
+                                }
+                            }
+                        )
+                    }
+                }
             )
-        },
-        floatingActionButton = {
-            MediumButton(
-                onClick = onCreateInventoryClick,
-                imageVector = Icons.Default.Add,
-                contentDescription = stringResource(R.string.añadir_inventario)
-            )
-        },
-        content = { paddingValues ->
-            if (state.loading) {
-                LoadingUi()
-            } else if (noData) {
-                NoDataScreen()
-            } else {
-                InventoryListContent(
-                    inventories = success,
-                    onInventoryClick = onInventoryClick,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                )
-            }
         }
     )
 }
-    )}
 
 @Composable
 fun InventoryListContent(
     inventories: List<Inventory>,
     onInventoryClick: (Inventory) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onLongClick: (Inventory) -> Unit
 ) {
     val groupedInventories = inventories.groupBy { it.inventoryType }
 
@@ -107,6 +147,7 @@ fun InventoryListContent(
                 InventoryCard(
                     inventory = inventory,
                     onClick = { onInventoryClick(inventory) },
+                    onLongClick = { onLongClick(inventory) },
                 )
             }
             item {
@@ -135,11 +176,6 @@ fun InventoryTypeHeader(type: InventoryType) {
             .padding(16.dp)
     )
 }
-
-
-
-
-
 
 @Preview(showSystemUi = true)
 @Composable

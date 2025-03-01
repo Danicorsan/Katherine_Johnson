@@ -51,4 +51,19 @@ class InventoryListViewModel @Inject constructor(
             _inventories.reverse()
         }
     }
+    fun deleteInventory(inventory: Inventory) {
+        viewModelScope.launch {
+            _uiState.value = uiState.copy(loading = true)
+            val success = repository.deleteInventory(inventory.id)
+            if (success) {
+                delay(1000)
+                loadInventories()
+            } else {
+                _uiState.value = uiState.copy(
+                    error = "Error al eliminar el inventario",
+                    loading = false
+                )
+            }
+        }
+    }
 }

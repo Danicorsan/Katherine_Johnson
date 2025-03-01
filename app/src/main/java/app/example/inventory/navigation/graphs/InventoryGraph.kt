@@ -47,9 +47,9 @@ private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
             onCreateInventoryClick = {
                 navController.navigate(InventoryGraph.inventoryCreationRoute())
             },
-            onNavigateProducts = {  drawerNavigation(navController, ProductGraph.ROUTE) },
+            onNavigateProducts = { drawerNavigation(navController, ProductGraph.ROUTE) },
             onNavigateCategories = { drawerNavigation(navController, CategoryGraph.ROUTE) },
-            onNavigateInventory = { drawerNavigation(navController, InventoryGraph.ROUTE) }
+            onNavigateInventory = { drawerNavigation(navController, InventoryGraph.ROUTE) },
         )
     }
 }

@@ -16,51 +16,70 @@ import javax.inject.Inject
 class CreateInventoryViewModel @Inject constructor(
     private val repository: InventoryRepository
 ) : ViewModel() {
-    private val _vmState = mutableStateOf(CreateInventoryState(
-        inventoryId = 0,
-        inventoryName = "",
-        inventoryDescription = "",
-        isCreateButtonEnabled = false,
-        loading = false,
-        error = null,
-        inventoryIcon = InventoryIcon.NONE,
-        inventoryItemsCount = 0,
-        inventoryType = InventoryType.PERMANENT,
-        success = emptyList(),
-    ))
+    private val _vmState = mutableStateOf(
+        CreateInventoryState(
+            inventoryId = 0,
+            inventoryName = "",
+            inventoryDescription = "",
+            isCreateButtonEnabled = false,
+            loading = false,
+            error = null,
+            inventoryIcon = InventoryIcon.NONE,
+            inventoryItemsCount = 0,
+            inventoryType = InventoryType.PERMANENT,
+            success = emptyList(),
+            nameErrorMessage = null
+        )
+    )
     val vmState: CreateInventoryState get() = _vmState.value
 
     fun onInventoryNameChange(newName: String) {
+        val nameValidationResult = validateInventoryName(newName)
+
         _vmState.value = vmState.copy(
             inventoryName = newName,
-            isCreateButtonEnabled = newName.isNotBlank() && vmState.inventoryDescription.isNotBlank()
+            isCreateButtonEnabled = nameValidationResult == null,
+            nameErrorMessage = nameValidationResult
         )
+    }
+    private fun validateInventoryName(name: String): String? {
+        if (name.isBlank()) {
+            return "El nombre del inventario no puede estar vacío."
+        }
+        if (name.length < 3) {
+            return "El nombre del inventario no puede tener menos de 3 caracteres."
+        }
+        return null
     }
 
     fun onInventoryDescriptionChange(newDescription: String) {
         _vmState.value = vmState.copy(
             inventoryDescription = newDescription,
-            isCreateButtonEnabled = vmState.inventoryName.isNotBlank() && newDescription.isNotBlank()
+            isCreateButtonEnabled = vmState.inventoryName.isNotBlank() && vmState.nameErrorMessage == null
         )
     }
+
     fun onInventoryIconChange(newIcon: InventoryIcon) {
         _vmState.value = _vmState.value.copy(
-            inventoryIcon = newIcon
+            inventoryIcon = newIcon,
+            isCreateButtonEnabled = vmState.inventoryName.isNotBlank() && vmState.nameErrorMessage == null
+
         )
     }
 
     fun onInventoryTypeChange(newType: InventoryType) {
         _vmState.value = vmState.copy(
             inventoryType = newType,
+            isCreateButtonEnabled = vmState.inventoryName.isNotBlank() && vmState.nameErrorMessage == null
         )
     }
 
     fun addInventory(inventory: Inventory) {
-        _vmState.value = vmState.copy(loading = true) // Mostrar pantalla de carga
+        _vmState.value = vmState.copy(loading = true)
 
         viewModelScope.launch {
 
-            delay(1000) // Retardo de un segundo antes de cualquier operación
+            delay(1000)
 
             try {
                 val newId = repository.addInventory(inventory)
@@ -69,7 +88,7 @@ class CreateInventoryViewModel @Inject constructor(
 
                     _vmState.value = vmState.copy(
                         success = updatedInventories,
-                        loading = false // Ocultar pantalla de carga
+                        loading = false
                     )
                 } else {
                     _vmState.value = vmState.copy(
@@ -85,8 +104,4 @@ class CreateInventoryViewModel @Inject constructor(
             }
         }
     }
-
-
-
-
 }

@@ -3,7 +3,7 @@
 
 
     <string name="crear_inventario">Crear Inventario</string>
-    <string name="nombre_del_inventario">Nombre del Inventario</string>
+    <string name="nombre_del_inventario">Nombre del Inventario*</string>
     <string name="descripcion_del_inventario">Descripción del Inventario</string>
     <string name="editar_inventario">Editar Inventario</string>
     <string name="nueva_descripcion_del_inventario">Nueva Descripción del Inventario</string>
