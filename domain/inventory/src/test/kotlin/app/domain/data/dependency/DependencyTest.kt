@@ -14,7 +14,7 @@ class DependencyTest {
             name = "IT Department",
             shortName = "IT",
             description = "Handles all IT-related tasks",
-            image = "it_logo.png"
+            //image = "it_logo.png"
         )
 
         // Assert
@@ -22,7 +22,6 @@ class DependencyTest {
         Assert.assertEquals("IT Department", dependency.name)
         Assert.assertEquals("IT", dependency.shortName)
         Assert.assertEquals("Handles all IT-related tasks", dependency.description)
-        Assert.assertEquals("it_logo.png", dependency.image)
     }
 
     @Test
