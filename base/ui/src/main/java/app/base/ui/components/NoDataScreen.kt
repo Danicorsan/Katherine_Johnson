@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +21,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.base.ui.R
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 
+@Deprecated("Se pide una pantalla no data que contenga una animación Lottie, " +
+        "por lo que debe usar NoDataAnimatedScreen",
+    replaceWith = ReplaceWith("NoDataAnimatedScreen"))
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoDataScreen(onRetry: () -> Unit = {}) {
@@ -70,5 +78,22 @@ fun NoDataScreen(onRetry: () -> Unit = {}) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun NoDataAnimatedScreen(modifier: Modifier = Modifier) {
+    val lottieComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.nodatalottieanimation)
+    )
+    val loaderProgress by animateLottieCompositionAsState(lottieComposition)
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        LottieAnimation(
+            composition = lottieComposition,
+            progress = { loaderProgress }
+        )
     }
 }

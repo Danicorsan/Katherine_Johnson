@@ -1,11 +1,13 @@
 package app.features.productcreation.ui.edition
 
+import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
 import app.base.utils.format
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
 import app.domain.invoicing.repository.ProductRepository
+import app.features.productcreation.R
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,9 @@ import javax.inject.Inject
  *
  */
 @HiltViewModel
-class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewModel() {
+class ProductEditionViewModel @Inject constructor(
+    resources: Resources
+) : ProductBaseCreationViewModel(resources) {
 
     private var productToEditId : Int = -1
 
@@ -57,6 +61,7 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
                     modelCode = product.modelCode,
                     productType = product.productType,
                     stock = product.stock.toString(),
+                    uriImage = product.image,
                     price = product.price.toString(),
                     minimunStock = product.minimunStock?.toString() ?: "",
                     adquisitionDate = product.acquisitionDate,
@@ -89,9 +94,9 @@ class ProductEditionViewModel @Inject constructor() : ProductBaseCreationViewMod
                     state = ProductState.modified
                 )
                 ProductRepository.updateExistingProduct(productToUpdate)
+                showSnackBar(resources.getString(R.string.product_updated_successful_message))
                 productViewState = productViewState.copy(
-                    isLoading = false,
-                    productRegisterSuccessful = true
+                    isLoading = false
                 )
             }
         }

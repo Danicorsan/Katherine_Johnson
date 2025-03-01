@@ -15,7 +15,7 @@
     <string name="stock_label">Cantidad</string>
     <string name="price_label">Precio</string>
     <string name="acquisition_date_label">Fecha adquisición</string>
-    <string name="discontinuation_date_label">Fecha modificacion</string>
+    <string name="discontinuation_date_label">Fecha de baja</string>
     <string name="state_as_new">Nuevo</string>
     <string name="state_as_modified">Modificado</string>
     <string name="state_as_verified">Verificado</string>
@@ -31,10 +31,15 @@
     <string name="empty_fields_alert_dialog_title">Campos vacios</string>
     <string name="empty_fields_alert_dialog_message">Se ha detectado campos vacios</string>
     <string name="confirm_button_alert_dialog">Vale</string>
-    <string name="product_registered_successful_alert_dialog_title">¡Éxito!</string>
-    <string name="product_registered_successful_alert_dialog_message">Se ha registrado el producto</string>
+    <string name="product_registered_successful_message">Se ha registrado el producto</string>
     <string name="message_for_obligatory_fields">Los campos marcados con %s son obligatorios</string>
     <string name="on_create_product_icon">Crear el nuevo producto</string>
     <string name="cant_update_alert_dialog_message">No se ha podido actualizar el producto</string>
-    <string name="product_updated_successful_alert_dialog_message">El producto ha sido actualizado</string>
+    <string name="product_updated_successful_message">El producto ha sido actualizado</string>
+    <string name="image_picker_add_icon_conent_description">Añadir imagen</string>
+    <string name="image_picker_image_content_description">Imagen seleccionanda</string>
+    <string name="error_value_not_correct_range">El valor debe ser mayor ha %s</string>
+    <string name="error_value_must_be_numeric">El valor no es valido</string>
+    <string name="error_short_name_special_caracters">No debe haber caracteres especiales</string>
+    <string name="error_short_name_not_rigth_length">Debe tener %d letras</string>
 </resources>

@@ -1,6 +1,7 @@
 package app.domain.invoicing.product
 
 
+import android.net.Uri
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.complements.ProductAlarm
 import app.domain.invoicing.product.complements.tags.Tags
@@ -19,6 +20,7 @@ data class Product(
     var category : Category,
     var section : Section,
     var state : ProductState = ProductState.new,
+    var image : Uri? = null,
     var stock : UInt,
     var price : Double,
     var productImage : String? = null,

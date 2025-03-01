@@ -11,6 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import app.base.ui.composables.HighSpace
+import app.base.ui.composables.MediumSpace
 import app.base.ui.composables.SmallSpace
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.composables.DatePickerDocked
@@ -22,6 +25,7 @@ import app.features.productcreation.ui.base.ProductEvents
 import app.features.productcreation.ui.base.ProductViewState
 import app.features.productcreation.ui.base.Specification
 import app.features.productcreation.ui.base.composables.ExposedDropDownMenuForDependencies
+import app.features.productcreation.ui.base.composables.ProductImagePicker
 
 /**
  * Permite crear un formularios para un producto que puede ser usado
@@ -46,6 +50,10 @@ fun ProductForm(
     ) {
         MessageOfObligatoryTextFields()
 
+        HighSpace()
+        ProductImagePicker(onUriImageSelected = productEvents.onNewImageSelected)
+        HighSpace()
+
         OneLineEditText(
             text = productViewState.inputDataState.name,
             onValueChange = productEvents.onNameChange,
@@ -58,7 +66,8 @@ fun ProductForm(
             onValueChange = productEvents.onShortNameChange,
             label = stringResource(R.string.short_name_label),
             error = productViewState.errorDataState.shortNameError,
-            obligatoryField = true
+            obligatoryField = true,
+            onErrorText = productViewState.errorDataState.shortNameText
         )
 
         OneLineEditText(
@@ -89,26 +98,29 @@ fun ProductForm(
             obligatoryField = true
         )
 
-        SmallSpace()
         ExposedDropDownMenuForCategory(
             categories = productViewState.categoriesList,
             categorySelected = productViewState.inputDataState.selectedCategory,
             onNewCategorySelected = productEvents.onNewCategorySelected,
         )
 
-        SmallSpace()
+        MediumSpace()
+
         ExposedDropDownMenuForDependencies(
             dependencies = productViewState.dependenciesList,
             dependencySelected = productViewState.inputDataState.selectedDependency,
             onNewDependencySelected = productEvents.onNewDependencySelected
         )
 
-        SmallSpace()
+        MediumSpace()
+
         ExposedDropDownMenuForSection(
             sections = productViewState.sectionsList,
             sectionSelected = productViewState.inputDataState.selectedSection,
             onNewSectionSelected = productEvents.onNewSectionSelected
         )
+
+        MediumSpace()
 
         OneLineEditText(
             text = productViewState.inputDataState.price,
@@ -116,7 +128,8 @@ fun ProductForm(
             label = stringResource(R.string.price_label),
             error = productViewState.errorDataState.priceError,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-            obligatoryField = true
+            obligatoryField = true,
+            onErrorText = productViewState.errorDataState.priceText
         )
 
         OneLineEditText(
@@ -125,10 +138,20 @@ fun ProductForm(
             label = stringResource(R.string.stock_label),
             error = productViewState.errorDataState.stockError,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-            obligatoryField = true
+            obligatoryField = true,
+            onErrorText = productViewState.errorDataState.stockText
         )
 
-        SmallSpace()
+        OneLineEditText(
+            text = productViewState.inputDataState.minimunStock,
+            onValueChange = productEvents.onMinimunStockChanged,
+            label = stringResource(R.string.minimun_stock_label),
+            error = productViewState.errorDataState.minimunStockError,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            obligatoryField = false,
+            onErrorText = productViewState.errorDataState.minimunStockText
+        )
+
         DatePickerDocked(
             selectedDateText = productViewState.inputDataState.adquisitionDateRepresentation
                 ?: stringResource(R.string.no_selected_option),
@@ -136,13 +159,16 @@ fun ProductForm(
             onNewDateSelected = productEvents.onNewAcquisitionDateSelected
         )
 
-        SmallSpace()
+        MediumSpace()
+
         DatePickerDocked(
             selectedDateText = productViewState.inputDataState.discontinuationDateRepresentation
                 ?: stringResource(R.string.no_selected_option),
             label = stringResource(R.string.discontinuation_date_label),
             onNewDateSelected = productEvents.onNewDiscontinuationDateSelected
         )
+
+        MediumSpace()
 
         MultipleLineEditText(
             text = productViewState.inputDataState.description,
@@ -151,11 +177,15 @@ fun ProductForm(
             obligatoryField = true
         )
 
+        MediumSpace()
+
         MultipleLineEditText(
             text = productViewState.inputDataState.notes,
             onValueChange = productEvents.onNotesChanged,
             label = stringResource(R.string.notes_label)
         )
+
+        MediumSpace()
 
         OneLineEditText(
             text = productViewState.inputDataState.tags,
@@ -167,5 +197,7 @@ fun ProductForm(
 
 @Composable
 private fun MessageOfObligatoryTextFields() {
-    Text(stringResource(R.string.message_for_obligatory_fields, Specification.OBLIGATORYFIELDSMARK))
+    Text(stringResource(R.string.message_for_obligatory_fields, Specification.OBLIGATORYFIELDSMARK),
+    textAlign = TextAlign.Center
+    )
 }

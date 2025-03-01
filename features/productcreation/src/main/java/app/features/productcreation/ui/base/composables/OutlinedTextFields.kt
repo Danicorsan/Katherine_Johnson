@@ -29,6 +29,7 @@ fun OneLineEditText(
     onValueChange : (String) -> Unit,
     label : String,
     error : Boolean = false,
+    onErrorText : String = "",
     keyboardOptions : KeyboardOptions = KeyboardOptions.Default,
     obligatoryField : Boolean = false
     ){
@@ -39,6 +40,10 @@ fun OneLineEditText(
         isError = error,
         label = @Composable { Text(label +
                 if (obligatoryField) Specification.OBLIGATORYFIELDSMARK else "") },
+        supportingText = {
+            if (error)
+                Text(onErrorText)
+        },
         singleLine = true,
         keyboardOptions = keyboardOptions,
     )
