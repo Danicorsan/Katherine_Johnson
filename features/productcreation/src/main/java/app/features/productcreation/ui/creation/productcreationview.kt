@@ -35,7 +35,7 @@ fun ProductCreationScreen(
     }
     ProductCreationHost(
         productState = viewModel.productViewState,
-        productEvents = ProductEvents.build(viewModel)
+        productEvents = ProductEvents(viewModel)
     )
 }
 
@@ -55,7 +55,7 @@ fun ProductCreationHost(
     ) { contentPadding ->
         when {
             productState.isLoading -> LoadingUi()
-            productState.cantRegisterProduct -> BaseAlertDialog(
+            productState.errorDataState.cantRegisterProduct -> BaseAlertDialog(
                 title = stringResource(R.string.cant_register_alert_dialog_title),
                 text = stringResource(R.string.cant_register_alert_dialog_message),
                 confirmText = stringResource(R.string.confirm_button_alert_dialog),

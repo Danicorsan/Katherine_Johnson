@@ -20,7 +20,7 @@ import app.domain.invoicing.section.Section
  * @property onProductTypeChange Cuando el tipo del producto se modifica.
  * @property onStockChange Cuando el stock del producto se modifica.
  * @property onPriceChange Cuando el precio del producto se modifica.
- * @property onMinimunStock Cuando el mínimo del stock de producto se modifica (Todavia no está siendo usado).
+ * @property onMinimunStockChanged Cuando el mínimo del stock de producto se modifica.
  * @property onNotesChanged Cuando las notas del producto se modifican.
  * @property onTagsChanged Cuando las etiquetas del producto se modifican.
  * @property onNewAcquisitionDateSelected Cuando la fecha de adquisición del producto se modifican.
@@ -33,62 +33,51 @@ import app.domain.invoicing.section.Section
  * @constructor Create empty Product events
  */
 data class ProductEvents(
-    val onAcceptProduct : () -> Unit,
-    val onLeavePage : () -> Unit,
-    val onNewImageSelected : (Uri) -> Unit,
-    val onCodeChange : (String) -> Unit,
-    val onNameChange : (String) -> Unit,
-    val onShortNameChange : (String) -> Unit,
-    val onDescriptionChange : (String) -> Unit,
-    val onSerialNumberChange : (String) -> Unit,
-    val onModelCodeChange : (String) -> Unit,
-    val onProductTypeChange : (String) -> Unit,
-    val onStockChange : (String) -> Unit,
-    val onPriceChange : (String) -> Unit,
-    val onMinimunStock : (String) -> Unit,
-    val onNotesChanged : (String) -> Unit,
-    val onTagsChanged : (String) -> Unit,
-    val onNewAcquisitionDateSelected : (Long?) -> Unit,
-    val onNewDiscontinuationDateSelected : (Long?) -> Unit,
-    val onNewCategorySelected : (Category) -> Unit,
-    val onNewSectionSelected : (Section) -> Unit,
-    val onNewDependencySelected : (Dependency) -> Unit,
-    val onDismissCantRegisterProductAlertDialog : () -> Unit,
-    val onDismissEmptyFieldsAlertDialog : () -> Unit
-    ){
-    companion object{
-        /**
-         * Permite construir a partir de un [ProductBaseCreationViewModel] un objeto
-         * [ProductEvents] en el que se initicalizan todos los campos.
-         *
-         * @param viewModel El viewModel del cual obtener los eventos a realizar.
-         * @return Un [ProductEvents] con todas sus propiedades inicializadas.
-         */
-        fun build(viewModel : ProductBaseCreationViewModel) : ProductEvents{
-            return ProductEvents(
-                onAcceptProduct = viewModel::onAcceptChanges,
-                onLeavePage = viewModel::onLeavePage,
-                onNewImageSelected = viewModel::onNewImageSelected,
-                onCodeChange = viewModel::onCodeChanged,
-                onNameChange = viewModel::onNameChanged,
-                onShortNameChange = viewModel::onShortNameChanged,
-                onDescriptionChange = viewModel::onDescriptionChanged,
-                onSerialNumberChange = viewModel::onSerialNumberChanged,
-                onModelCodeChange = viewModel::onModelCodeChanged,
-                onProductTypeChange = viewModel::onProductTypeChanged,
-                onStockChange = viewModel::onStockChange,
-                onPriceChange = viewModel::onPriceChanged,
-                onMinimunStock = viewModel::onMinimunStockChanged,
-                onNotesChanged = viewModel::onNotesChanged,
-                onTagsChanged = viewModel::onTagsChanged,
-                onNewAcquisitionDateSelected = viewModel::onAcquisitonDateChanged,
-                onNewDiscontinuationDateSelected = viewModel::onDiscontinuationDateChanged,
-                onNewCategorySelected = viewModel::onNewCategorySelected,
-                onNewSectionSelected = viewModel::onNewSectionSelected,
-                onNewDependencySelected = viewModel::onNewDependencySelected,
-                onDismissCantRegisterProductAlertDialog = viewModel::onDismissCantRegisterAlertDialog,
-                onDismissEmptyFieldsAlertDialog = viewModel::onDismissEmptyFieldsAlertDialog
-            )
-        }
-    }
+    val onAcceptProduct: () -> Unit,
+    val onLeavePage: () -> Unit,
+    val onNewImageSelected: (Uri) -> Unit,
+    val onCodeChange: (String) -> Unit,
+    val onNameChange: (String) -> Unit,
+    val onShortNameChange: (String) -> Unit,
+    val onDescriptionChange: (String) -> Unit,
+    val onSerialNumberChange: (String) -> Unit,
+    val onModelCodeChange: (String) -> Unit,
+    val onProductTypeChange: (String) -> Unit,
+    val onStockChange: (String) -> Unit,
+    val onPriceChange: (String) -> Unit,
+    val onMinimunStockChanged: (String) -> Unit,
+    val onNotesChanged: (String) -> Unit,
+    val onTagsChanged: (String) -> Unit,
+    val onNewAcquisitionDateSelected: (Long?) -> Unit,
+    val onNewDiscontinuationDateSelected: (Long?) -> Unit,
+    val onNewCategorySelected: (Category) -> Unit,
+    val onNewSectionSelected: (Section) -> Unit,
+    val onNewDependencySelected: (Dependency) -> Unit,
+    val onDismissCantRegisterProductAlertDialog: () -> Unit,
+    val onDismissEmptyFieldsAlertDialog: () -> Unit
+) {
+    constructor(viewModel: ProductBaseCreationViewModel) : this(
+        onAcceptProduct = viewModel::onAcceptChanges,
+        onLeavePage = viewModel::onLeavePage,
+        onNewImageSelected = viewModel::onNewImageSelected,
+        onCodeChange = viewModel::onCodeChanged,
+        onNameChange = viewModel::onNameChanged,
+        onShortNameChange = viewModel::onShortNameChanged,
+        onDescriptionChange = viewModel::onDescriptionChanged,
+        onSerialNumberChange = viewModel::onSerialNumberChanged,
+        onModelCodeChange = viewModel::onModelCodeChanged,
+        onProductTypeChange = viewModel::onProductTypeChanged,
+        onStockChange = viewModel::onStockChanged,
+        onPriceChange = viewModel::onPriceChanged,
+        onMinimunStockChanged = viewModel::onMinimunStockChanged,
+        onNotesChanged = viewModel::onNotesChanged,
+        onTagsChanged = viewModel::onTagsChanged,
+        onNewAcquisitionDateSelected = viewModel::onAcquisitonDateChanged,
+        onNewDiscontinuationDateSelected = viewModel::onDiscontinuationDateChanged,
+        onNewCategorySelected = viewModel::onNewCategorySelected,
+        onNewSectionSelected = viewModel::onNewSectionSelected,
+        onNewDependencySelected = viewModel::onNewDependencySelected,
+        onDismissCantRegisterProductAlertDialog = viewModel::onDismissCantRegisterAlertDialog,
+        onDismissEmptyFieldsAlertDialog = viewModel::onDismissEmptyFieldsAlertDialog
+    )
 }

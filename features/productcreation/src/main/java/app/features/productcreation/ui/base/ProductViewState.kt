@@ -27,8 +27,7 @@ data class ProductViewState(
     val isLoading : Boolean = false,
     val categoriesList : Iterable<Category> = emptyList(),
     val sectionsList : Iterable<Section> = emptyList(),
-    val dependenciesList : Iterable<Dependency> = emptyList(),
-    val cantRegisterProduct : Boolean = false,
+    val dependenciesList : Iterable<Dependency> = emptyList()
 )
 
 /**
@@ -82,14 +81,26 @@ data class InputDataState(
 /**
  * Un data class que almacena en variables indicativas de errores en los campos.
  *
- * @property shortNameError Cuando el campo del nombre corto es erroneo.
- * @property emptyFields Cuando hay campos obligatorios vacios.
- * @property priceError Cuando el campo del precio es erroneo.
- * @property stockError Cuando el campo del stock es erroneo.
+ * @property cantRegisterProduct Indica que no se ha podido registra o actualizar el producto.
+ * @property emptyFields Indica que hay campos obligatorios vacios.
+ * @property shortNameError Indica si el campo del nombre corto es erroneo.
+ * @property shortNameText Indica a que se debe el error en el nombre corto.
+ * @property priceError Indica si el campo del precio es erroneo.
+ * @property priceText Indica a que se debe el error en el precio.
+ * @property stockError Indica si el campo del stock es erroneo.
+ * @property stockText Indica a que se debe el error en el stock.
+ * @property minimunStockError Indica si el campo del stock mínimo es erroneo.
+ * @property minimunStockText Indica a que se debe el error en el stock mínimo.
  */
 data class ErrorDataState(
-    val shortNameError : Boolean = false,
+    val cantRegisterProduct : Boolean = false,
     val emptyFields : Boolean = false,
+    val shortNameError : Boolean = false,
+    val shortNameText : String = "",
     val priceError: Boolean = false,
-    val stockError : Boolean = false
+    val priceText : String = "",
+    val stockError : Boolean = false,
+    val stockText : String = "",
+    val minimunStockError : Boolean = false,
+    val minimunStockText : String = ""
     )
