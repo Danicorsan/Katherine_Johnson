@@ -24,6 +24,7 @@ import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.features.categorycreation.R
+import app.features.categorycreation.ui.base.CategoryImagePicker
 import app.features.categorycreation.ui.base.EditableExposedDropdownMenuTypeCategory
 import app.features.categorycreation.ui.base.ErrorDialog
 import app.features.categorycreation.ui.base.FungibleSelectionField
@@ -102,7 +103,8 @@ fun CategoryCreationContent(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        CategoryImagePicker(viewModel)
+        MediumSpace()
         // Input Fields
         CategoryInputFields(viewModel)
 
@@ -176,15 +178,6 @@ private fun CategoryInputFields(viewModel: CategoryCreationViewModel) {
             }
         }
     )
-
-    OutlinedTextField(
-        value = state.image ?: "",
-        onValueChange = viewModel::onImageChange,
-        enabled = false,
-        label = { Text(stringResource(R.string.imagen)) },
-        modifier = Modifier.fillMaxWidth()
-    )
-
 
     FungibleSelectionField(
         isFungible = state.fungible,
