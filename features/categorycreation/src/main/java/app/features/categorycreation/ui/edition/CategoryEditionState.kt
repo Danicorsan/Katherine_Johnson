@@ -1,5 +1,6 @@
 package app.features.categorycreation.ui.edition
 
+import android.net.Uri
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.TypeCategory
 
@@ -25,7 +26,9 @@ data class CategoryEditionState(
     val shortName: String = "",
     val description: String = "",
     val typeCategory: TypeCategory = TypeCategory.BASICOS,
+    val image: Uri? = null,
     val isNameError: Boolean = false,
+    val fungible: Boolean = false,
     val isShortNameError: Boolean = false,
     val isDescriptionError: Boolean = false,
     val isError: Boolean = false,

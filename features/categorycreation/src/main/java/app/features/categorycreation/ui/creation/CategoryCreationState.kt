@@ -1,5 +1,6 @@
 package app.features.categorycreation.ui.creation
 
+import android.net.Uri
 import app.domain.invoicing.category.TypeCategory
 import java.util.Date
 
@@ -26,7 +27,7 @@ data class CategoryCreationState(
     var name: String = "",
     var description: String = "",
     val shortName: String = "",
-    val image: String? = null,
+    val image: Uri? = null,
     val createdAt: Date = Date(),
     val typeCategory: TypeCategory = TypeCategory.BASICOS,
     val fungible: Boolean = false,

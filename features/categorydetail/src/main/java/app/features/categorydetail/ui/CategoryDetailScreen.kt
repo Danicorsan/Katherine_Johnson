@@ -1,12 +1,22 @@
 package app.features.categorydetail.ui
 
 import NoDataScreen
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -19,6 +29,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +46,8 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.category.Category
 import app.features.categorydetail.R
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 
 /**
  * Category detail events
@@ -137,6 +151,8 @@ fun CategoryDetailContent(
     events: CategoryDetailEvents,
     isDeleteDialogVisible: Boolean
 ) {
+    val scrollState = rememberScrollState() // Estado del scroll
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -153,9 +169,28 @@ fun CategoryDetailContent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .verticalScroll(scrollState), // Habilita el scroll vertical
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Imagen de la categoría
+                if (category.image != null ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                    ) {
+                        Image(
+                            painter = rememberAsyncImagePainter(category.image),
+                            contentDescription = "Selected Image",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                }
+
                 Text(
                     text = stringResource(R.string.nombre_de_la_categoria),
                     fontSize = 20.sp,

@@ -17,6 +17,7 @@ runtimeAndroid = "1.7.5"
 ksp = "2.0.21-1.0.27"
 room = "2.6.1"
 roomKtx = "2.6.1"
+compose-coil = "2.5.0"
 
 [plugins]
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
@@ -84,3 +85,6 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
+
+# Libreria de extención para la manipulación de imagenes
+compose-coil = {group= "io.coil-kt", name = "coil-compose", version.ref="compose-coil"}

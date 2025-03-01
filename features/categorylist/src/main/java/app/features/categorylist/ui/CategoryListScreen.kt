@@ -1,14 +1,19 @@
 package app.features.categorylist.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
@@ -20,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +39,7 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.repository.CategoryRepository
 import app.features.categorylist.R
+import coil.compose.rememberAsyncImagePainter
 
 /**
  * Category list events
@@ -177,6 +185,7 @@ fun CategoryListContent(
                             .fillMaxWidth()
                             .padding(8.dp)
                     ) {
+                        if (category.image == null){
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.List,
                             contentDescription = stringResource(R.string.icono_de_categoria),
@@ -184,7 +193,23 @@ fun CategoryListContent(
                                 .size(48.dp)
                                 .padding(end = 8.dp),
                             tint = MaterialTheme.colorScheme.primary
-                        )
+                        )}
+                        else{
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                            ) {
+                                Image(
+                                    painter = rememberAsyncImagePainter(category.image),
+                                    contentDescription = "Selected Image",
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+                        }
 
                         Text(
                             text = category.name,
@@ -192,7 +217,7 @@ fun CategoryListContent(
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
-                                .padding(4.dp)
+                                .padding(12.dp)
                         )
                     }
                 }

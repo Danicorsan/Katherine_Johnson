@@ -1,5 +1,6 @@
 package app.features.categorycreation.ui.creation
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -150,7 +151,7 @@ class CategoryCreationViewModel @Inject constructor(
      *
      * @param image
      */
-    fun onImageChange(image: String) {
+    fun onImageChange(image: Uri) {
         state = state.copy(image = image)
     }
 

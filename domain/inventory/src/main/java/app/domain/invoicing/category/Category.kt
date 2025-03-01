@@ -1,5 +1,8 @@
 package app.domain.invoicing.category
 
+import android.net.Uri
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.Date
 
 /**
@@ -15,12 +18,13 @@ import java.util.Date
  * @property fungible
  * @constructor Create empty Category
  */
+@Entity(tableName = "Categoria")
 data class Category(
-    val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val shortName: String,
     val description: String,
-    val image: String?,
+    val image: Uri?,
     val createdAt: Date,
     val typeCategory: TypeCategory = TypeCategory.BASICOS,
     val fungible: Boolean

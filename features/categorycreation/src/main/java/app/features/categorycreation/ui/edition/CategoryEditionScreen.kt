@@ -1,11 +1,21 @@
 package app.features.categorycreation.ui.edition
 
 import NoDataScreen
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
@@ -25,6 +35,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,7 +50,10 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.category.TypeCategory
 import app.features.categorycreation.R
+import app.features.categorycreation.ui.base.CategoryImagePicker
 import app.features.categorycreation.ui.base.InputField
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 
 /**
  * Category edition event
@@ -65,7 +80,7 @@ sealed class CategoryEditionEvent {
 fun CategoryEditionScreen(
     viewModel: CategoryEditionViewModel,
     id: Int,
-    onClickBack: () -> Unit
+    onClickBack: () -> Unit,
 ) {
     LaunchedEffect(id) {
         viewModel.loadCategory(id)
@@ -102,7 +117,9 @@ fun CategoryEditionScreen(
             CategoryEditionContent(
                 state = state,
                 onEvent = viewModel::onEvent,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                onFungibleChange = viewModel::onFungibleChange,
+                onImageChange = viewModel::onImageChange
             )
         } else if (!state.isLoading && state.notFoundError) {
             NoDataScreen()  // Si no hay categoría
@@ -123,15 +140,45 @@ fun CategoryEditionScreen(
 fun CategoryEditionContent(
     state: CategoryEditionState,
     onEvent: (CategoryEditionEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFungibleChange: (Boolean) -> Unit,
+    onImageChange:(Uri) -> Unit
 ) {
+    val scrollState = rememberScrollState() // Estado del scroll
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(scrollState), // Permitir desplazamiento
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
+        if (state.image != null) {
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.GetContent()
+            ) { uri: Uri? ->
+                uri?.let { onImageChange(it) }
+            }
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .clickable { launcher.launch("image/*") }
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(state.image),
+                    contentDescription = "Selected Image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+
+
         InputField(
             isError = state.isNameError,
             value = state.name,
@@ -170,6 +217,7 @@ fun CategoryEditionContent(
 
         MediumSpace()
 
+        // Selector de Tipo de Categoría
         Text(
             text = stringResource(R.string.elige_la_categoria),
             style = MaterialTheme.typography.bodyMedium,
@@ -179,7 +227,7 @@ fun CategoryEditionContent(
                 .fillMaxWidth()
                 .padding(bottom = 4.dp)
         )
-        // Dropdown para seleccionar el tipo de categoría
+
         var expanded by remember { mutableStateOf(false) }
 
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -202,6 +250,47 @@ fun CategoryEditionContent(
                         expanded = false
                     }, text = { Text(text = category.name) })
                 }
+            }
+        }
+
+        MediumSpace()
+
+        // Selector de si es Fungible o No Fungible
+        Text(
+            text = "Es fungible?",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Left,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 4.dp)
+        )
+
+        var fungibleExpanded by remember { mutableStateOf(false) }
+
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(
+                onClick = { fungibleExpanded = true },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = if (state.fungible) "Fungible" else "No Fungible")
+                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
+            }
+
+            DropdownMenu(
+                expanded = fungibleExpanded,
+                onDismissRequest = { fungibleExpanded = false },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                DropdownMenuItem(onClick = {
+                    onFungibleChange(true)
+                    fungibleExpanded = false
+                }, text = { Text(text = "Fungible") })
+
+                DropdownMenuItem(onClick = {
+                    onFungibleChange(false)
+                    fungibleExpanded = false
+                }, text = { Text(text = "No Fungible") })
             }
         }
     }
