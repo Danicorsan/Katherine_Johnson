@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -69,5 +70,17 @@ class CategoryListViewModel @Inject constructor(
     fun cancelDeleteCategory() {
         state = state.copy(isDeleteDialogVisible = false, categoryToDelete = null)
     }
+
+    /**
+     * Abre el menú lateral de la pantalla.
+     *
+     * @param Un [CoroutineScope] para poder abrir el drawer.
+     */
+    fun onOpenDrawer(scope: CoroutineScope) {
+        scope.launch {
+            state.drawerState.open()
+        }
+    }
+
 }
 

@@ -1,7 +1,6 @@
 package app.features.categorylist.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -18,14 +17,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.base.ui.components.LoadingUi
+import app.base.ui.composables.AppDrawer
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.MediumButton
 import app.base.ui.composables.baseappbar.BaseAppBar
@@ -43,6 +46,7 @@ import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.features.categorylist.R
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * Category list events
@@ -61,7 +65,10 @@ data class CategoryListEvents(
     val onClickDetails: (Int) -> Unit,
     val requestDeleteCategory: (Int) -> Unit,
     val confirmDeleteCategory: () -> Unit,
-    val cancelDeleteCategory: () -> Unit
+    val cancelDeleteCategory: () -> Unit,
+    val onOpenDrawer: (CoroutineScope) -> Unit,
+    val onClickInventory: () -> Unit,
+    val onClicProduct: () -> Unit,
 )
 
 /**
@@ -80,7 +87,9 @@ fun CategoryListScreen(
     viewModel: CategoryListViewModel,
     onClickBack: () -> Unit,
     onClickNewCategory: () -> Unit,
-    onClickDetails: (Int) -> Unit
+    onClickDetails: (Int) -> Unit,
+    onClickInventory: () -> Unit,
+    onClicProduct: () -> Unit,
 ) {
     val categoryListEvents = CategoryListEvents(
         onClickBack = onClickBack,
@@ -88,7 +97,10 @@ fun CategoryListScreen(
         onClickDetails = onClickDetails,
         requestDeleteCategory = viewModel::requestDeleteCategory,
         confirmDeleteCategory = viewModel::confirmDeleteCategory,
-        cancelDeleteCategory = viewModel::cancelDeleteCategory
+        cancelDeleteCategory = viewModel::cancelDeleteCategory,
+        onOpenDrawer = viewModel::onOpenDrawer,
+        onClickInventory = onClickInventory,
+        onClicProduct = onClicProduct
     )
     CategoryListScreen(viewModel.state, categoryListEvents)
 }
@@ -102,38 +114,46 @@ fun CategoryListScreen(
 @Composable
 fun CategoryListScreen(
     state: CategoryListState,
-    events: CategoryListEvents
+    events: CategoryListEvents,
 ) {
-    Scaffold(
-        topBar = {
-            BaseAppBar(
-                BaseAppBarState(
-                    title = stringResource(R.string.lista_de_categoria),
-                    navigationIcon = BaseAppBarIcons.goBackPreviousScreenIcon(
-                        onClick = {
-                            events.onClickBack()
-                        }
+    val scopeCoroutine = rememberCoroutineScope()
+    AppDrawer(
+        drawerState = state.drawerState,
+        onNavigateProducts = { events.onClicProduct() },
+        onNavigateCategories = {},
+        onNavigateInventory = { events.onClickInventory() },
+        content = {
+            Scaffold(
+                topBar = {
+                    BaseAppBar(
+                        BaseAppBarState(
+                            title = stringResource(R.string.lista_de_categoria),
+                            navigationIcon = BaseAppBarIcons.drawerMenuIcon(
+                                onClick = {
+                                    events.onOpenDrawer(scopeCoroutine)
+                                }
+                            )
+                        )
                     )
-                )
-            )
-        },
-        floatingActionButton = {
-            MediumButton(
-                contentDescription = stringResource(R.string.add),
-                imageVector = Icons.Filled.Add,
-                onClick = { events.onClickNewCategory() },
-            )
-        },
-        content = { innerPadding ->
+                },
+                floatingActionButton = {
+                    MediumButton(
+                        contentDescription = stringResource(R.string.add),
+                        imageVector = Icons.Filled.Add,
+                        onClick = { events.onClickNewCategory() },
+                    )
+                },
+                content = { innerPadding ->
 
-            when {
-                state.isLoading -> LoadingUi()
-                else -> CategoryListContent(
-                    state, events, modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-    )
+                    when {
+                        state.isLoading -> LoadingUi()
+                        else -> CategoryListContent(
+                            state, events, modifier = Modifier.padding(innerPadding)
+                        )
+                    }
+                }
+            )
+        })
 }
 
 /**
@@ -148,7 +168,7 @@ fun CategoryListScreen(
 fun CategoryListContent(
     state: CategoryListState,
     events: CategoryListEvents,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     if (state.isDeleteDialogVisible) {
         BaseAlertDialog(
@@ -163,7 +183,9 @@ fun CategoryListContent(
         )
     }
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+    ) {
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
@@ -171,6 +193,7 @@ fun CategoryListContent(
         ) {
             items(state.categories) { category ->
                 Card(
+
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
@@ -182,6 +205,8 @@ fun CategoryListContent(
                                 events.onClickDetails(category.id)
                             }
                         )
+                        .shadow(8.dp, shape = CircleShape), // Sombra con forma personalizada
+                    elevation = CardDefaults.elevatedCardElevation(3.dp) // Usa CardDefaults.elevation()
                 ) {
                     Row(
                         modifier = Modifier
@@ -242,6 +267,8 @@ fun PreviewCategoryListScreen() {
         viewModel = hiltViewModel(),
         onClickBack = {},
         onClickNewCategory = {},
-        onClickDetails = {}
+        onClickDetails = {},
+        {},
+        {}
     )
 }
