@@ -25,5 +25,5 @@
     <string name="no_puedes_editar_un_inventario_con_estado">No puedes editar un inventario con ese estado </string>
     <string name="introducido_en_historico">Introducido en histórico</string>
     <string name="introducido_en_activo">Introducido en activo</string>
-    <string name="introducido_en_proceso">Introducido en proceso</string>
+    <string name="introducido_en_proceso">Introducido en progreso</string>
 </resources>

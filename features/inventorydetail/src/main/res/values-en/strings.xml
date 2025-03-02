@@ -22,4 +22,7 @@
     <string name="no_puedes_eliminar_un_inventario_con_estado">You cannot delete an inventory with this status</string>
     <string name="no_puedes_editar_un_inventario_con_estado">You cannot edit an inventory with this status</string>
     <string name="estado">State</string>
+    <string name="introducido_en_historico">Introduced in history</string>
+    <string name="introducido_en_activo">Introduced in active</string>
+    <string name="introducido_en_proceso">Introduced in progress</string>
 </resources>

@@ -30,4 +30,5 @@
     <string name="codigo_del_inventario">Inventory Code</string>
     <string name="nuevo_nombre_corto_del_inventario">New Short Inventory Name</string>
     <string name="nuevo_codigo_del_inventario">New Inventory Code</string>
+    <string name="bianual">Biannual</string>
 </resources>
