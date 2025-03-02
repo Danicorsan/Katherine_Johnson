@@ -9,7 +9,6 @@ import app.domain.invoicing.databases.InventoryDatabase
 import app.domain.invoicing.repository.AccountRepository
 import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.InventoryRepository
-import app.domain.invoicing.section.Section
 import app.domain.invoicing.section.SectionDao
 import dagger.Module
 import dagger.Provides
@@ -102,4 +101,10 @@ object AppModule {
     fun provideDependencyDao(inventoryDatabase: InventoryDatabase) : DependencyDao {
         return inventoryDatabase.getDependencyDao()
     }
+/*
+    @Provides
+    @Singleton
+    fun provideProductDao(inventoryDatabase: InventoryDatabase) : ProductDao {
+        return inventoryDatabase.getProductDao()
+    }*/
 }

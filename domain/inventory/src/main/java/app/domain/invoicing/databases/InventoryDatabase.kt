@@ -1,11 +1,13 @@
 package app.domain.invoicing.databases
 
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import app.domain.invoicing.converters.CategoryConverter
 import app.domain.invoicing.account.Account
 import app.domain.invoicing.account.AccountDao
 import app.domain.invoicing.category.Category
@@ -13,6 +15,8 @@ import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.converters.AccountConverters
 import app.domain.invoicing.converters.DateTimeConverter
 import app.domain.invoicing.converters.DependencyConverter
+import app.domain.invoicing.converters.ProductConveters
+import app.domain.invoicing.converters.SectionConverter
 import app.domain.invoicing.converters.UriConverter
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.dependency.DependencyDao
@@ -33,10 +37,13 @@ import java.util.concurrent.Executors
     entities = [Section::class, Dependency::class, Category::class, Inventory::class, Account::class],
     exportSchema = false
 )
-@TypeConverters(DateTimeConverter::class, UriConverter::class, DependencyConverter::class, AccountConverters::class)
+@TypeConverters(DateTimeConverter::class, UriConverter::class, DependencyConverter::class,
+    SectionConverter::class, CategoryConverter::class, ProductConveters::class,
+    AccountConverters::class)
 abstract class InventoryDatabase : RoomDatabase() {
-    abstract fun getSectionDao(): SectionDao
-    abstract fun getDependencyDao(): DependencyDao
+    abstract fun getSectionDao() : SectionDao
+    abstract fun getDependencyDao() : DependencyDao
+    //abstract fun getProductDao() : ProductDao
     abstract fun categoryDao(): CategoryDao
     abstract fun accountDao(): AccountDao
 

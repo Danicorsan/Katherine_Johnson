@@ -2,6 +2,19 @@ package app.domain.invoicing.product.complements.tags
 
 
 class Tags(tagList: Iterable<Tag>? = null) : Iterable<Tag>, Collection<Tag> {
+    companion object {
+        fun fromString(tagsRepresentation: String?) : Tags {
+            if (tagsRepresentation == null)
+                return Tags()
+            val list : MutableList<Tag> = mutableListOf()
+            tagsRepresentation.split(", ").forEach{
+                if (it.isNotEmpty())
+                    list.add(Tag(it.trim()))
+            }
+            return Tags(list)
+        }
+    }
+
     override val size : Int
         get() = tagList.size
 
