@@ -99,3 +99,15 @@ Caracteristica implementada por **Leandro Orellana Martos**. La funcionalidad pe
 
 ![Imagen de la lista de inventarios](READMEresources/InventoryListScreen.png)
 ![Imagen de creación de inventarios](READMEresources/InventoryCreationScreen.png) 
+
+-----------------
+## Para tener en consideración
+Para poder usar animaciones Lottie y guardado de imagenes se han usado las siguientes librerias:
+
+```
+compose-coil = "2.5.0"
+compose-coil = {group= "io.coil-kt", name = "coil-compose", version.ref="compose-coil"}
+
+lottieAnimations = "6.1.0"
+animation-lottie = {group="com.airbnb.android", name="lottie-compose", version.ref="lottieAnimations"}
+```
