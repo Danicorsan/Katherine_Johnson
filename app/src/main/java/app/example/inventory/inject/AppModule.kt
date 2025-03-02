@@ -6,6 +6,8 @@ import app.domain.invoicing.account.AccountDao
 import app.domain.invoicing.dependency.DependencyDao
 import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.databases.InventoryDatabase
+import app.domain.invoicing.dependency.DependencyDao
+import app.domain.invoicing.inventory.InventoryDAO
 import app.domain.invoicing.repository.AccountRepository
 import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.InventoryRepository
@@ -80,8 +82,13 @@ object AppModule {
      */
     @Provides
     @Singleton
-    fun provideInventoryRepository(): InventoryRepository {
-        return InventoryRepository
+    fun provideInventoryRepository(dao: InventoryDAO): InventoryRepository {
+        return InventoryRepository(dao)
+    }
+    @Provides
+    @Singleton
+    fun provideInventoryDao(database: InventoryDatabase): InventoryDAO {
+        return database.inventoryDao()
     }
 
     @Provides

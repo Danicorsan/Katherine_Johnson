@@ -16,13 +16,14 @@ class InventoryListViewModel @Inject constructor(
     private val repository: InventoryRepository
 ) : ViewModel() {
 
-    private val _inventories = mutableListOf<Inventory>()
-    private val _uiState = mutableStateOf(InventoryListState(
-        success = _inventories,
-        loading = false,
-        error = null,
-        noData = false
-    ))
+    private val _uiState = mutableStateOf(
+        InventoryListState(
+            success = emptyList(),
+            loading = false,
+            error = null,
+            noData = false,
+        )
+    )
     val uiState: InventoryListState get() = _uiState.value
 
     init {
@@ -32,30 +33,52 @@ class InventoryListViewModel @Inject constructor(
     private fun loadInventories() {
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)
-            delay(1000)
-            _inventories.clear()
-            _inventories.addAll(repository.getAllInventories())
-            _uiState.value = uiState.copy(success = _inventories, loading = false)
-        }
-    }
-    fun onOpenDrawer(scope : CoroutineScope){
-        scope.launch {
-            uiState.drawerState.open()
-        }
-    }
-    fun deleteInventory(inventory: Inventory) {
-        viewModelScope.launch {
-            _uiState.value = uiState.copy(loading = true)
-            val success = repository.deleteInventory(inventory.id)
-            if (success) {
+            try {
                 delay(1000)
-                loadInventories()
-            } else {
+                val inventories = repository.getAllInventories()
                 _uiState.value = uiState.copy(
-                    error = "Error al eliminar el inventario",
+                    success = inventories,
+                    loading = false,
+                    noData = inventories.isEmpty()
+                )
+            } catch (e: Exception) {
+                _uiState.value = uiState.copy(
+                    error = "Error al cargar los inventarios: ${e.message}",
                     loading = false
                 )
             }
         }
+    }
+
+    fun onOpenDrawer(scope: CoroutineScope) {
+        scope.launch {
+            uiState.drawerState.open()
+        }
+    }
+
+    fun deleteInventory(inventory: Inventory) {
+        viewModelScope.launch {
+            _uiState.value = uiState.copy(loading = true)
+            try {
+                val success = repository.deleteInventory(inventory.id)
+                if (success) {
+                    loadInventories()
+                } else {
+                    _uiState.value = uiState.copy(
+                        error = "No se pudo eliminar el inventario",
+                        loading = false
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = uiState.copy(
+                    error = "Error al eliminar el inventario: ${e.message}",
+                    loading = false
+                )
+            }
+        }
+    }
+
+    fun refreshInventories() {
+        loadInventories()
     }
 }

@@ -4,12 +4,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import java.util.Date
 
 @Dao
 interface InventoryDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addInventory(inventory: Inventory)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addAllInventories(inventory: Inventory)
 
     @Query("SELECT * FROM inventories")
     suspend fun getAllInventories(): List<Inventory>
@@ -20,13 +24,18 @@ interface InventoryDAO {
     @Query("DELETE FROM inventories WHERE id = :id")
     suspend fun deleteInventoryById(id: Int)
 
-    @Query("UPDATE inventories SET name = :name, description = :description, icon = :icon, inventory_type = :type WHERE id = :id")
+    @Query("UPDATE inventories SET name = :name, short_name = :shortName, code = :code, description = :description, inventory_type = :type, history_date_at = :historyDateAt, in_progress_date_at = :inProgressDateAt, active_date_at = :activeDateAt, icon = :icon, state = :state WHERE id = :id")
     suspend fun updateInventory(
         id: Int,
         name: String,
+        shortName: String,
+        code: String,
         description: String,
-        icon: InventoryIcon,
-        type: InventoryType
+        type: InventoryType?,
+        historyDateAt: Date?,
+        inProgressDateAt: Date,
+        activeDateAt: Date?,
+        icon: InventoryIcon?,
+        state: InventoryState?
     )
-
 }

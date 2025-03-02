@@ -3,21 +3,22 @@ package app.domain.invoicing.inventory
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import app.domain.invoicing.converters.DateTimeConverter
 import app.domain.invoicing.inventory.InventoryIcon.ELECTRONICS
 import app.domain.invoicing.inventory.InventoryIcon.MATERIALS
 import app.domain.invoicing.inventory.InventoryIcon.NONE
 import app.domain.invoicing.inventory.InventoryIcon.SERVICES
 import app.domain.invoicing.inventory.InventoryIcon.TECHNOLOGY
 import app.domain.invoicing.inventory.InventoryIcon.WAREHOUSE
+import app.domain.invoicing.inventory.InventoryState.ACTIVE
+import app.domain.invoicing.inventory.InventoryState.HISTORY
+import app.domain.invoicing.inventory.InventoryState.IN_PROGRESS
 import app.domain.invoicing.inventory.InventoryType.ANNUAL
 import app.domain.invoicing.inventory.InventoryType.MONTHLY
 import app.domain.invoicing.inventory.InventoryType.PERMANENT
 import app.domain.invoicing.inventory.InventoryType.SEMESTRAL
 import app.domain.invoicing.inventory.InventoryType.TRIMESTRAL
 import app.domain.invoicing.inventory.InventoryType.WEEKLY
-import java.time.LocalDate
+import java.util.Date
 
 /**
  * Representa un inventario.
@@ -25,42 +26,49 @@ import java.time.LocalDate
  * @property id Identificador único del inventario.
  * @property name Nombre del inventario.
  * @property description Descripción del inventario.
- * @property itemsCount Número de artículos en el inventario, puede ser nulo.
  * @property inventoryType Tipo de inventario, definido por la enumeración InventoryType.
- * @property createdAt Fecha de creación del inventario.
- * @property updatedAt Fecha de la última actualización del inventario.
+ * @property historyDateAt Fecha en la que el inventario se colocó en histórico.
+ * @property inProgressDateAt Fecha en la que el inventario se encuentra en progreso.
+ * @property activeDateAt Fecha en la que el inventario se encuentra activo.
  * @property icon Icono representativo del inventario, definido por la enumeración InventoryIcon.
  */
 @Entity(
     tableName = "inventories",
 )
 data class Inventory(
-    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
 
     @ColumnInfo(name = "name")
     val name: String,
 
+    @ColumnInfo(name = "short_name")
+    val shortName: String,
+    @ColumnInfo(name = "code")
+    val code: String,
+
     @ColumnInfo(name = "description")
     val description: String,
-
-    @ColumnInfo(name = "items_count")
-    val itemsCount: Int? = null,
 
     @ColumnInfo(name = "inventory_type")
     val inventoryType: InventoryType,
 
-    @ColumnInfo(name = "created_at")
-    @TypeConverters(DateTimeConverter::class)
-    val createdAt: LocalDate,
+    @ColumnInfo(name = "history_date_at")
+    val historyDateAt: Date? = null,
 
-    @ColumnInfo(name = "updated_at")
-    var updatedAt: LocalDate,
+    @ColumnInfo(name = "in_progress_date_at")
+    val inProgressDateAt: Date,
+
+    @ColumnInfo(name = "active_date_at")
+    val activeDateAt: Date? = null,
 
     @ColumnInfo(name = "icon")
-    var icon: InventoryIcon = NONE
+    var icon: InventoryIcon = NONE,
+
+    @ColumnInfo(name = "state")
+    var state: InventoryState = IN_PROGRESS
 )
+
 /**
  * Enumeración que representa los diferentes iconos para las categorías de inventario.
  *
@@ -126,5 +134,26 @@ enum class InventoryType {
     TRIMESTRAL,
     SEMESTRAL,
     ANNUAL,
+    BIANNUAL,
     PERMANENT
+}
+/**
+ * Estados en los que puede estar un inventario.
+ *
+ * @property ACTIVE Activo, el inventario está actualmente en uso.
+ *
+ * El inventario se encuentra actualmente en uso y se puede realizar un conteo en él.
+ *
+ * @property IN_PROGRESS En progreso, el inventario se encuentra en conteo.
+ *
+ * El inventario se encuentra en conteo y no se puede realizar un conteo en él.
+ *
+ * @property HISTORY Histórico, el inventario no se encuentra en uso y se guardan los resultados del conteo.
+ *
+ * El inventario no se encuentra en uso y se guardan los resultados del conteo en histórico.
+ */
+enum class InventoryState {
+    ACTIVE,
+    IN_PROGRESS,
+    HISTORY
 }

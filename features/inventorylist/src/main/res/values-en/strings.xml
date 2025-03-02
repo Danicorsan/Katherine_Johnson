@@ -18,4 +18,13 @@
     <string name="inventory_type_semestral">SEMESTRAL</string>
     <string name="inventory_type_anual">ANNUAL</string>
     <string name="inventory_type_permanente">PERMANENT</string>
+    <string name="confirmar_eliminacion">Confirmar eliminación</string>
+    <string name="estas_seguro_de_que_quieres_eliminar_este_inventario">Are you sure you want to delete this inventory?</string>
+    <string name="si_eliminar">Yes, delete</string>
+    <string name="cancelar">Cancel</string>
+    <string name="activo">ACTIVE</string>
+    <string name="historico">HISTORY</string>
+    <string name="en_proceso">IN PROGRESS</string>
+    <string name="error">Error</string>
+    <string name="no_puedes_eliminar_un_inventario_con_estado">You can not delete an inventory with that status</string>
 </resources>

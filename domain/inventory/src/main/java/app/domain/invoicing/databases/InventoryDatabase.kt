@@ -7,12 +7,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import app.domain.invoicing.converters.CategoryConverter
 import app.domain.invoicing.account.Account
 import app.domain.invoicing.account.AccountDao
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.converters.AccountConverters
+import app.domain.invoicing.converters.CategoryConverter
 import app.domain.invoicing.converters.DateTimeConverter
 import app.domain.invoicing.converters.DependencyConverter
 import app.domain.invoicing.converters.ProductConveters
@@ -20,10 +20,13 @@ import app.domain.invoicing.converters.SectionConverter
 import app.domain.invoicing.converters.UriConverter
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.dependency.DependencyDao
+import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.inventory.InventoryDAO
+import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
+import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.section.Section
 import app.domain.invoicing.section.SectionDao
-import app.domain.invoicing.inventory.Inventory
-import app.domain.invoicing.product.Product
 import kotlinx.coroutines.runBlocking
 import java.util.Date
 import java.util.concurrent.Executors
@@ -44,6 +47,8 @@ abstract class InventoryDatabase : RoomDatabase() {
     abstract fun getSectionDao() : SectionDao
     abstract fun getDependencyDao() : DependencyDao
     //abstract fun getProductDao() : ProductDao
+    abstract fun inventoryDao(): InventoryDAO
+
     abstract fun categoryDao(): CategoryDao
     abstract fun accountDao(): AccountDao
 
@@ -87,6 +92,22 @@ abstract class InventoryDatabase : RoomDatabase() {
                         createdAt = Date(),
                         fungible = true
                     )
+                )
+                val inventoryDao = database.inventoryDao()
+                inventoryDao.addInventory(
+                    Inventory(
+                        name = "Inventory 1",
+                        shortName = "Inv 1",
+                        code = "INV001",
+                        description = "Default inventory",
+                        inventoryType = InventoryType.BIANNUAL,
+                        inProgressDateAt = Date(),
+                        icon = InventoryIcon.MATERIALS,
+                        state = InventoryState.IN_PROGRESS,
+                        historyDateAt = null,
+                        activeDateAt = null,
+                    )
+
                 )
             }
         }

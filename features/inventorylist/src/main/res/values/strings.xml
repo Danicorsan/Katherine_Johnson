@@ -24,4 +24,9 @@
     <string name="estas_seguro_de_que_quieres_eliminar_este_inventario">¿Estás seguro de que quieres eliminar este inventario?</string>
     <string name="si_eliminar">Sí, eliminar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="activo">ACTIVO</string>
+    <string name="historico">HISTÓRICO</string>
+    <string name="en_proceso">EN PROGRESO</string>
+    <string name="error">Error</string>
+    <string name="no_puedes_eliminar_un_inventario_con_estado">"No puedes eliminar un inventario con ese estado"</string>
 </resources>

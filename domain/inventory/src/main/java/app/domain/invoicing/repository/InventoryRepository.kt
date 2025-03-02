@@ -1,37 +1,47 @@
 package app.domain.invoicing.repository
 
 import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.inventory.InventoryDAO
 
-object InventoryRepository {
+class InventoryRepository(private val inventoryDAO: InventoryDAO) {
 
-    private val dataSet: MutableList<Inventory> = initialiceInventoryDemo()
-    private var nextId = dataSet.maxByOrNull { it.id!! }?.id ?: 0
+    suspend fun getAllInventories(): List<Inventory> = inventoryDAO.getAllInventories()
 
-    fun getAllInventories(): List<Inventory> = dataSet
+    suspend fun getInventoryById(id: Int): Inventory? = inventoryDAO.getInventoryById(id)
 
-    fun getInventoryById(id: Int): Inventory? =
-        dataSet.find { it.id == id }
-
-    fun addInventory(inventory: Inventory): Int {
-        if (dataSet.any { it.id == inventory.id }) throw Exception("Inventory with same ID already exists")
-        nextId++
-        dataSet.add(inventory.copy(id = nextId))
-        return nextId
+    suspend fun addInventory(inventory: Inventory): Int {
+        inventoryDAO.addInventory(inventory)
+        return inventory.id
     }
 
-    fun updateInventory(updatedInventory: Inventory): Boolean {
-        val index = dataSet.indexOfFirst { it.id == updatedInventory.id }
-        if (index == -1) return false
-        dataSet[index] = updatedInventory.copy(/*items = dataSet[index].items*/)
-        return true
-    }
-
-    fun deleteInventory(id: Int): Boolean {
-        val index = dataSet.indexOfFirst { it.id == id }
-        if (index == -1) {
-            return false
+    suspend fun updateInventory(updatedInventory: Inventory): Boolean {
+        val existingInventory = inventoryDAO.getInventoryById(updatedInventory.id)
+        return if (existingInventory != null) {
+            inventoryDAO.updateInventory(
+                updatedInventory.id,
+                updatedInventory.name,
+                updatedInventory.shortName,
+                updatedInventory.code,
+                updatedInventory.description,
+                updatedInventory.inventoryType,
+                updatedInventory.historyDateAt,
+                updatedInventory.inProgressDateAt,
+                updatedInventory.activeDateAt,
+                updatedInventory.icon,
+                updatedInventory.state
+            )
+            true
+        } else {
+            false
         }
-        dataSet.removeAt(index)
-        return true
+    }
+
+    suspend fun deleteInventory(id: Int): Boolean {
+        return try {
+            inventoryDAO.deleteInventoryById(id)
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }

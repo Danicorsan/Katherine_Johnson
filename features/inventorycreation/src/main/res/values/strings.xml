@@ -4,7 +4,7 @@
 
     <string name="crear_inventario">Crear Inventario</string>
     <string name="nombre_del_inventario">Nombre del Inventario*</string>
-    <string name="descripcion_del_inventario">Descripción del Inventario</string>
+    <string name="descripcion_del_inventario">Descripción del Inventario*</string>
     <string name="editar_inventario">Editar Inventario</string>
     <string name="nueva_descripcion_del_inventario">Nueva Descripción del Inventario</string>
     <string name="guardar_cambios">Guardar Cambios</string>
@@ -25,4 +25,20 @@
     <string name="anual">Anual</string>
     <string name="permanente">Permanente</string>
     <string name="tipo_de_inventario">Tipo de inventario</string>
+    <string name="nombre_corto_del_inventario">Nombre corto del inventario*</string>
+    <string name="historico">Histórico</string>
+    <string name="activo">Activo</string>
+    <string name="en_proceso">En proceso</string>
+    <string name="codigo_del_inventario">Código del inventario</string>
+    <string name="nuevo_nombre_corto_del_inventario">Nuevo nombre corto del inventario</string>
+    <string name="nuevo_codigo_del_inventario">Nuevo código del inventario</string>
+    <string name="bianual">Bianual</string>
+    <string name="inventory_notifications_create_channel_name">Canal CreateInventory</string>
+    <string name="inventory_notifications_create_channel_description">Canal de la screen CreateInventpryScreen</string>
+    <string name="inventory_created_title">Inventario creado (CreateInventoryScreen)</string>
+    <string name="inventory_created_message">El nuevo inventario ha sido creado con éxito</string>
+    <string name="inventory_notifications_edit_channel_name">Canal de notificaciones de inventario</string>
+    <string name="inventory_notifications_edit_channel_description">Descripción del canal de notificaciones de inventario</string>
+    <string name="inventory_edited_title">Inventario editado (EditInventoryScreen)</string>
+    <string name="inventory_edited_message">El inventario seleccionado ha sido editado con éxito</string>
 </resources>

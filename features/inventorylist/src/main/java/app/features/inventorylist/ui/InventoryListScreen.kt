@@ -1,19 +1,17 @@
 package app.features.inventorylist.ui
 
 import NoDataAnimatedScreen
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,13 +27,15 @@ import androidx.compose.ui.unit.dp
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.AppDrawer
 import app.base.ui.composables.MediumButton
+import app.base.ui.composables.baseappbar.Action
 import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
-import app.domain.invoicing.inventory.InventoryType
+import app.domain.invoicing.inventory.InventoryState
 import app.features.inventorylist.R
-import app.features.inventorylist.ui.base.InventoryCard
+import app.features.inventorylist.ui.base.composables.InventoryCard
+import app.features.inventorylist.ui.base.composables.InventoryTypeHeader
 
 @Composable
 fun InventoryListScreen(
@@ -51,6 +51,7 @@ fun InventoryListScreen(
     val noData = success.isEmpty()
     val scopeCoroutine = rememberCoroutineScope()
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var cannotDeleteDialog by remember { mutableStateOf(false) }
     var inventoryToDelete: Inventory? by remember { mutableStateOf(null) }
 
     AppDrawer(
@@ -65,10 +66,15 @@ fun InventoryListScreen(
                         BaseAppBarState(
                             title = stringResource(R.string.lista_de_inventarios),
                             navigationIcon = BaseAppBarIcons.drawerMenuIcon {
-                                viewModel.onOpenDrawer(
-                                    scope = scopeCoroutine
+                                viewModel.onOpenDrawer(scope = scopeCoroutine)
+                            },
+                            actions = listOf(
+                                Action(
+                                    icon = Icons.Filled.Refresh,
+                                    contentDescription = "Refresh",
+                                    onClick = { viewModel.refreshInventories() }
                                 )
-                            }
+                            )
                         )
                     )
                 },
@@ -92,9 +98,28 @@ fun InventoryListScreen(
                                 .fillMaxSize()
                                 .padding(paddingValues),
                             onLongClick = { inventory ->
-                                inventoryToDelete = inventory
-                                showDeleteDialog = true
+                                if (inventory.state != InventoryState.IN_PROGRESS) {
+                                    cannotDeleteDialog = true
+                                } else {
+                                    inventoryToDelete = inventory
+                                    showDeleteDialog = true
+                                }
                             }
+                        )
+                    }
+                    if (cannotDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = { cannotDeleteDialog = false },
+                            title = { Text(stringResource(R.string.error)) },
+                            text = {
+                                val inventoryState = inventoryToDelete?.state?.name ?: ""
+                                Text(stringResource(R.string.no_puedes_eliminar_un_inventario_con_estado, inventoryState))
+                            },
+                            confirmButton = {
+                                TextButton(onClick = { cannotDeleteDialog = false }) {
+                                    Text(stringResource(R.string.aceptar))
+                                }
+                            },
                         )
                     }
                     if (showDeleteDialog) {
@@ -134,14 +159,14 @@ fun InventoryListContent(
     modifier: Modifier = Modifier,
     onLongClick: (Inventory) -> Unit
 ) {
-    val groupedInventories = inventories.groupBy { it.inventoryType }
+    val groupedInventories = inventories.groupBy { it.state }
 
     LazyColumn(modifier = modifier) {
-        groupedInventories.forEach { (type, inventoriesOfType) ->
+        groupedInventories.forEach { (state, stateInventories) ->
             item {
-                InventoryTypeHeader(type)
+                InventoryTypeHeader(state)
             }
-            items(inventoriesOfType) { inventory ->
+            items(stateInventories) { inventory ->
                 InventoryCard(
                     inventory = inventory,
                     onClick = { onInventoryClick(inventory) },
@@ -154,33 +179,3 @@ fun InventoryListContent(
         }
     }
 }
-
-@Composable
-fun InventoryTypeHeader(type: InventoryType) {
-    val typeNameResId = when (type) {
-        InventoryType.WEEKLY -> R.string.inventory_type_semanal
-        InventoryType.MONTHLY -> R.string.inventory_type_mensual
-        InventoryType.TRIMESTRAL -> R.string.inventory_type_trimestral
-        InventoryType.SEMESTRAL -> R.string.inventory_type_semestral
-        InventoryType.ANNUAL -> R.string.inventory_type_anual
-        InventoryType.PERMANENT -> R.string.inventory_type_permanente
-    }
-
-    Text(
-        text = stringResource(typeNameResId),
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp)
-    )
-}
-/*
-@Preview(showSystemUi = true)
-@Composable
-fun InventoryListPreview() {
-    InventoryListScreen(
-        viewModel = InventoryListViewModel(InventoryRepository),
-        onInventoryClick = {},
-        onCreateInventoryClick = {},
-    )
-}*/

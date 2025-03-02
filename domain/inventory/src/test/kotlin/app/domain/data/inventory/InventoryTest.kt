@@ -3,6 +3,9 @@ package app.domain.data.inventory
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
+import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
 import app.domain.invoicing.product.complements.tags.Tags
@@ -18,10 +21,10 @@ class InventoryTest {
     @Test
     fun inventoryShouldBeCreatedCorrectly() {
         // Arrange
-        val now = LocalDate.now()
+        LocalDate.now()
         val category = Category(1, "Electronics", "Elec", "Devices", null, Date(2,3,4), fungible = false )
 
-        val products = listOf(
+        listOf(
             Product(
                 id = 1,
                 code = "LPT123",
@@ -96,21 +99,22 @@ class InventoryTest {
             id = 1,
             name = "Tech Inventory",
             description = "Inventory for IT department",
-            itemsCount = 0,
             inventoryType = InventoryType.SEMESTRAL,
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
+            shortName = "Tech Inv",
+            code = "TINV",
+            historyDateAt = null,
+            inProgressDateAt = Date(2,3,4),
+            activeDateAt = null,
+            state = InventoryState.IN_PROGRESS,
         )
 
         // Assert
         Assert.assertEquals(1, inventory.id)
         Assert.assertEquals("Tech Inventory", inventory.name)
         Assert.assertEquals("Inventory for IT department", inventory.description)
-        Assert.assertEquals(0, inventory.itemsCount)
         Assert.assertEquals(InventoryType.SEMESTRAL, inventory.inventoryType)
         Assert.assertEquals(InventoryIcon.MATERIALS, inventory.icon)
-        Assert.assertEquals(now, inventory.createdAt)
     }
 
     @Test
@@ -120,22 +124,28 @@ class InventoryTest {
             id = 1,
             name = "Tech Inventory",
             description = "Inventory for IT department",
-            itemsCount = 0,
             inventoryType = InventoryType.SEMESTRAL,
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
+            shortName = "Tech Inv",
+            code = "TINV",
+            historyDateAt = null,
+            inProgressDateAt = Date(2,3,4),
+            activeDateAt = null,
+            state = InventoryState.IN_PROGRESS,
         )
 
         val inventory2 = Inventory(
             id = 1,
             name = "Tech Inventory",
             description = "Inventory for IT department",
-            itemsCount = 0,
             inventoryType = InventoryType.SEMESTRAL,
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
+            shortName = "Tech Inv",
+            code = "TINV",
+            historyDateAt = null,
+            inProgressDateAt = Date(2,3,4),
+            activeDateAt = null,
+            state = InventoryState.IN_PROGRESS,
         )
 
         // Assert
@@ -150,22 +160,28 @@ class InventoryTest {
             id = 1,
             name = "Tech Inventory",
             description = "Inventory for IT department",
-            itemsCount = 0,
             inventoryType = InventoryType.SEMESTRAL,
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
+            shortName = "Tech Inv",
+            code = "TINV",
+            historyDateAt = null,
+            inProgressDateAt = Date(2,3,4),
+            activeDateAt = null,
+            state = InventoryState.IN_PROGRESS,
         )
 
         val inventory2 = Inventory(
             id = 2,
             name = "Tech Inventory 2",
             description = "Inventory for IT department",
-            itemsCount = 0,
             inventoryType = InventoryType.SEMESTRAL,
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
+            shortName = "Tech Inv 2",
+            code = "TINV2",
+            historyDateAt = null,
+            inProgressDateAt = Date(2,3,4),
+            activeDateAt = null,
+            state = InventoryState.IN_PROGRESS,
         )
 
         // Assert

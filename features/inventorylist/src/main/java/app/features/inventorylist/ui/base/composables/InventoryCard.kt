@@ -1,4 +1,4 @@
-package app.features.inventorylist.ui.base
+package app.features.inventorylist.ui.base.composables
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -34,8 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
-import java.time.LocalDate
+import java.util.Date
 
 /**
  * Obtiene el icono para un InventoryIcon
@@ -128,10 +129,13 @@ fun InventoryCardPreview() {
             name = "Inventario 1",
             description = "Descripción del inventario 1",
             icon = InventoryIcon.ELECTRONICS,
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
-            itemsCount = 10,
             inventoryType = InventoryType.SEMESTRAL,
+            shortName = "Inv1",
+            state = InventoryState.ACTIVE,
+            code = "INV-001",
+            historyDateAt = null,
+            inProgressDateAt = Date(),
+            activeDateAt = null,
         ),
         onClick = {},
         onLongClick = {},

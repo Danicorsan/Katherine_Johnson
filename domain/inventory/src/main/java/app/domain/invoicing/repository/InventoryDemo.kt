@@ -2,8 +2,9 @@ package app.domain.invoicing.repository
 
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
-import java.time.LocalDate
+import java.util.Date
 
 fun initialiceInventoryDemo(): MutableList<Inventory> {
     initializeProductsDemo().values.toList()
@@ -12,81 +13,101 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             id = 1,
             name = "Electrónica",
             description = "Objetos de electrónica",
-            createdAt = LocalDate.of(2022, 1, 1),
-            updatedAt = LocalDate.of(2022, 1, 1),
             icon = InventoryIcon.ELECTRONICS,
-            itemsCount = 1,
-            inventoryType = InventoryType.SEMESTRAL
+            inventoryType = InventoryType.MONTHLY,
+            shortName = "Elec",
+            state = InventoryState.ACTIVE,
+            activeDateAt = Date(),
+            code = "ELEC-001",
+            historyDateAt = Date(0),
+            inProgressDateAt = Date(0)
         ),
         Inventory(
             id = 2,
             name = "Tecnología",
             description = "Objetos de tecnología",
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.TECHNOLOGY,
-            itemsCount = 1,
-            inventoryType = InventoryType.TRIMESTRAL
+            inventoryType = InventoryType.SEMESTRAL,
+            shortName = "Tech",
+            state = InventoryState.ACTIVE,
+            activeDateAt = Date(),
+            code = "TECH-002",
+            historyDateAt = Date(0),
+            inProgressDateAt = Date(0)
         ),
         Inventory(
             id = 3,
             name = "Materiales",
             description = "Objetos de materiales",
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
-            itemsCount = 1,
-            inventoryType = InventoryType.PERMANENT
+            inventoryType = InventoryType.ANNUAL,
+            shortName = "Mat",
+            state = InventoryState.HISTORY,
+            historyDateAt = Date(),
+            code = "MAT-003",
+            inProgressDateAt = Date(0),
+            activeDateAt = Date(0)
         ),
         Inventory(
             id = 4,
             name = "Servicios",
             description = "Objetos de servicios",
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.SERVICES,
-            itemsCount = 1,
-            inventoryType = InventoryType.ANNUAL
+            inventoryType = InventoryType.WEEKLY,
+            shortName = "Serv",
+            state = InventoryState.IN_PROGRESS,
+            inProgressDateAt = Date(),
+            code = "SERV-004"
         ),
         Inventory(
             id = 5,
             name = "Muebles",
             description = "Objetos de muebles",
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.WAREHOUSE,
-            itemsCount = 1,
-            inventoryType = InventoryType.PERMANENT
+            inventoryType = InventoryType.PERMANENT,
+            shortName = "Mueb",
+            state = InventoryState.ACTIVE,
+            activeDateAt = Date(),
+            code = "MUEB-005",
+            historyDateAt = Date(0),
+            inProgressDateAt = Date(0)
         ),
         Inventory(
             id = 6,
             name = "Otros",
             description = "Objetos de otros",
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.NONE,
-            itemsCount = 1,
-            inventoryType = InventoryType.WEEKLY
+            inventoryType = InventoryType.TRIMESTRAL,
+            shortName = "Otro",
+            state = InventoryState.HISTORY,
+            historyDateAt = Date(),
+            code = "OTRO-006",
+            inProgressDateAt = Date(0),
+            activeDateAt = Date(0)
         ),
         Inventory(
             id = 7,
             name = "Oficina",
             description = "Objetos de oficina",
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.TECHNOLOGY,
-            itemsCount = 1,
-            inventoryType = InventoryType.PERMANENT
+            inventoryType = InventoryType.MONTHLY,
+            shortName = "Ofic",
+            state = InventoryState.ACTIVE,
+            activeDateAt = Date(),
+            code = "OFIC-007",
+            historyDateAt = Date(0,),
+            inProgressDateAt = Date(0)
         ),
         Inventory(
             id = 8,
             name = "Almacenamiento",
             description = "Objetos de almacenamiento",
-            createdAt = LocalDate.now(),
-            updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
-            itemsCount = 1,
-            inventoryType = InventoryType.MONTHLY
+            inventoryType = InventoryType.ANNUAL,
+            shortName = "Almac",
+            state = InventoryState.IN_PROGRESS,
+            inProgressDateAt = Date(),
+            code = "ALMAC-008"
         )
     )
 }
