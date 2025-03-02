@@ -6,4 +6,5 @@
     <string name="si_estoy_seguro">Yes, Im sure</string>
     <string name="no_volver">No, go back</string>
     <string name="borrar_categoria">Delete Category</string>
+    <string name="no_hay_datos">No data</string>
 </resources>

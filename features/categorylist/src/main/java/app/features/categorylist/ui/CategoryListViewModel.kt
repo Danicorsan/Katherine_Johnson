@@ -13,6 +13,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Category list view model
+ *
+ * @property repository
+ * @constructor Create empty Category list view model
+ */
 @HiltViewModel
 class CategoryListViewModel @Inject constructor(
     private val repository: CategoryRepository,
@@ -74,7 +80,7 @@ class CategoryListViewModel @Inject constructor(
     /**
      * Abre el menú lateral de la pantalla.
      *
-     * @param Un [CoroutineScope] para poder abrir el drawer.
+     * @param[scope] para poder abrir el drawer.
      */
     fun onOpenDrawer(scope: CoroutineScope) {
         scope.launch {

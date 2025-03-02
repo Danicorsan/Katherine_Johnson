@@ -13,9 +13,15 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Category edition view model
+ *
+ * @property repository
+ * @constructor Create empty Category edition view model
+ */
 @HiltViewModel
 class CategoryEditionViewModel @Inject constructor(
-    private val repository: CategoryRepository
+    private val repository: CategoryRepository,
 ) : ViewModel() {
 
     var state by mutableStateOf(CategoryEditionState())
@@ -23,6 +29,8 @@ class CategoryEditionViewModel @Inject constructor(
 
     /**
      * Load category
+     *
+     * @param id
      */
     fun loadCategory(id: Int) {
         viewModelScope.launch {
@@ -48,6 +56,8 @@ class CategoryEditionViewModel @Inject constructor(
 
     /**
      * On event
+     *
+     * @param event
      */
     fun onEvent(event: CategoryEditionEvent) {
         when (event) {
@@ -55,16 +65,23 @@ class CategoryEditionViewModel @Inject constructor(
                 state = state.copy(name = event.name, isNameError = false)
                 validateName(event.name)
             }
+
             is CategoryEditionEvent.OnShortNameChange -> {
                 state = state.copy(shortName = event.shortName, isShortNameError = false)
                 validateShortName(event.shortName)
             }
+
             is CategoryEditionEvent.OnDescriptionChange -> {
-                state = state.copy(description = event.description, isDescriptionError = event.description.isEmpty())
+                state = state.copy(
+                    description = event.description,
+                    isDescriptionError = event.description.isEmpty()
+                )
             }
+
             is CategoryEditionEvent.OnTypeCategoryChange -> {
                 state = state.copy(typeCategory = event.typeCategory)
             }
+
             is CategoryEditionEvent.ConfirmChanges -> confirmChanges()
         }
     }
@@ -100,8 +117,10 @@ class CategoryEditionViewModel @Inject constructor(
     private suspend fun validateFields(): Boolean {
         val categories = repository.getAllCategories().first()
 
-        val isNameDuplicate = categories.any { it.id != state.category?.id && it.name == state.name }
-        val isShortNameDuplicate = categories.any { it.id != state.category?.id && it.shortName == state.shortName }
+        val isNameDuplicate =
+            categories.any { it.id != state.category?.id && it.name == state.name }
+        val isShortNameDuplicate =
+            categories.any { it.id != state.category?.id && it.shortName == state.shortName }
 
         val hasError = state.name.isEmpty() || isNameDuplicate ||
                 state.shortName.isEmpty() || isShortNameDuplicate ||
