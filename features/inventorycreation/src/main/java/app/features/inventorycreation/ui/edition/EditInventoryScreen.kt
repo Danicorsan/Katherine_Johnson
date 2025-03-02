@@ -1,5 +1,7 @@
 package app.features.inventorycreation.ui.edition
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.base.ui.composables.baseappbar.BaseAppBar
@@ -44,6 +47,7 @@ import app.domain.invoicing.inventory.InventoryIcon
 import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
 import app.features.inventorycreation.R
+import app.features.inventorycreation.ui.components.NotificationHelperEditInventory
 import app.features.inventorycreation.ui.composables.CustomDropdownMenu
 
 @Composable
@@ -62,7 +66,15 @@ fun EditInventoryScreen(
     var selectedState by remember { mutableStateOf(uiState.inventoryState) }
 
     if (uiState.inventoryId != inventoryId) viewModel.loadInventory(inventoryId)
+    val context = LocalContext.current
 
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            NotificationHelperEditInventory.showNotification(context)
+        }
+    }
     Scaffold(
         topBar = {
             BaseAppBar(
@@ -298,6 +310,8 @@ fun EditInventoryScreen(
                 Button(
                     onClick = {
                         viewModel.saveChanges()
+                        NotificationHelperEditInventory.createNotificationChannel(context)
+                        NotificationHelperEditInventory.askNotificationPermission(context, requestPermissionLauncher)
                         onNavigateBack()
                     },
                     modifier = Modifier.fillMaxWidth(),

@@ -33,4 +33,12 @@
     <string name="nuevo_nombre_corto_del_inventario">Nuevo nombre corto del inventario</string>
     <string name="nuevo_codigo_del_inventario">Nuevo código del inventario</string>
     <string name="bianual">Bianual</string>
+    <string name="inventory_notifications_create_channel_name">Canal CreateInventory</string>
+    <string name="inventory_notifications_create_channel_description">Canal de la screen CreateInventpryScreen</string>
+    <string name="inventory_created_title">Inventario creado (CreateInventoryScreen)</string>
+    <string name="inventory_created_message">El nuevo inventario ha sido creado con éxito</string>
+    <string name="inventory_notifications_edit_channel_name">Canal de notificaciones de inventario</string>
+    <string name="inventory_notifications_edit_channel_description">Descripción del canal de notificaciones de inventario</string>
+    <string name="inventory_edited_title">Inventario editado (EditInventoryScreen)</string>
+    <string name="inventory_edited_message">El inventario seleccionado ha sido editado con éxito</string>
 </resources>

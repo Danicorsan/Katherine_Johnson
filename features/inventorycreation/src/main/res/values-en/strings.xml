@@ -31,4 +31,12 @@
     <string name="nuevo_nombre_corto_del_inventario">New Short Inventory Name</string>
     <string name="nuevo_codigo_del_inventario">New Inventory Code</string>
     <string name="bianual">Biannual</string>
+    <string name="inventory_notifications_create_channel_name">Notifications Channel</string>
+    <string name="inventory_notifications_create_channel_description">Screen notifications channel</string>
+    <string name="inventory_created_title">Inventory created (CreateInventoryScreen)</string>
+    <string name="inventory_created_message">The new inventory has been created successfully</string>
+    <string name="inventory_notifications_edit_channel_name">Inventory Notifications Channel</string>
+    <string name="inventory_notifications_edit_channel_description">Inventory notifications channel description</string>
+    <string name="inventory_edited_title">Inventory edited (EditInventoryScreen)</string>
+    <string name="inventory_edited_message">The selected inventory has been successfully edited</string>
 </resources>
