@@ -13,6 +13,8 @@ import app.features.productlist.ui.base.OrdenationState
  * @property isDeleteDialogVisible
  * @property isCategoryDeleted
  * @property categoryToDelete
+ * @property drawerState
+ * @property ordenationState
  * @constructor Create empty Category list state
  */
 data class CategoryListState(
@@ -21,6 +23,6 @@ data class CategoryListState(
     var isDeleteDialogVisible: Boolean = false,
     var isCategoryDeleted: Boolean = false,
     var categoryToDelete: Int? = null, // Nueva propiedad para almacenar la categoría a eliminar
-    val drawerState : DrawerState = DrawerState(initialValue = DrawerValue.Closed),
-    val ordenationState: OrdenationState = OrdenationState.DESCENDING
+    val drawerState: DrawerState = DrawerState(initialValue = DrawerValue.Closed),
+    val ordenationState: OrdenationState = OrdenationState.DESCENDING,
 )

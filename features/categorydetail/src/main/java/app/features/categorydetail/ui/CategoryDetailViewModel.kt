@@ -11,6 +11,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Category detail view model
+ *
+ * @property repository
+ * @constructor Create empty Category detail view model
+ */
 @HiltViewModel
 class CategoryDetailViewModel @Inject constructor(
     private val repository: CategoryRepository,
@@ -61,7 +67,7 @@ class CategoryDetailViewModel @Inject constructor(
             onGoBack() // Navegación después de la eliminación
         }
     }
-    
+
 
     /**
      * Cancel delete category

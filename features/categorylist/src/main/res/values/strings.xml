@@ -11,4 +11,5 @@
     <string name="si_estoy_seguro">Sí, estoy seguro</string>
     <string name="no_volver">No, volver</string>
     <string name="borrar_categoria">Borrar Categoría</string>
+    <string name="no_hay_datos">No hay datos</string>
 </resources>
