@@ -1,5 +1,6 @@
 package app.domain.invoicing.databases
 
+/*
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -7,7 +8,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import app.domain.invoicing.converters.DateTimeConverter
+import app.domain.invoicing.converters.ProductConveters
 import app.domain.invoicing.converters.UriConverter
+import app.domain.invoicing.product.Product
+import app.domain.invoicing.product.ProductDao
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
@@ -17,11 +21,12 @@ import java.util.concurrent.Executors
  */
 @Database(
     version = 1,
-    entities = [],
+    entities = [Product::class],
     exportSchema = false
 )
-@TypeConverters(DateTimeConverter::class, UriConverter::class)
+@TypeConverters(DateTimeConverter::class, UriConverter::class, ProductConveters::class)
 abstract class InventoryDatabase : RoomDatabase() {
+    abstract fun getProductDao() : ProductDao
 
     companion object {
         @Volatile
@@ -57,4 +62,4 @@ abstract class InventoryDatabase : RoomDatabase() {
             }
         }
     }
-}
+}*/
