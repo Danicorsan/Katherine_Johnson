@@ -5,10 +5,12 @@ import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.base.utils.format
 import app.domain.invoicing.category.Category
+import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
@@ -19,13 +21,16 @@ import app.domain.invoicing.repository.DependencyRepository
 import app.domain.invoicing.repository.SectionRepository
 import app.domain.invoicing.section.Section
 import app.features.productcreation.R
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
+import javax.inject.Inject
 
 /**
  * Una clase abtracta que recoge las funciones y variables comunes que se necesitan
@@ -35,6 +40,7 @@ import kotlinx.datetime.Instant
  *
  */
 abstract class ProductBaseCreationViewModel(
+    private val repository: CategoryRepository,
     protected val resources: Resources
 ) : ViewModel() {
     var productViewState by mutableStateOf(ProductViewState())
@@ -589,7 +595,7 @@ abstract class ProductBaseCreationViewModel(
     protected suspend fun getCategoriesAsync() : Deferred<List<Category>> {
         return viewModelScope.async(Dispatchers.IO) {
             delay(1000)
-            CategoryRepository.getAllCategories()
+            repository.getAllCategories().firstOrNull()!!
         }
     }
 

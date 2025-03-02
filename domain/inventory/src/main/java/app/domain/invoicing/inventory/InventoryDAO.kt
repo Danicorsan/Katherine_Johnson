@@ -12,6 +12,9 @@ interface InventoryDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addInventory(inventory: Inventory)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addAllInventories(inventory: Inventory)
+
     @Query("SELECT * FROM inventories")
     suspend fun getAllInventories(): List<Inventory>
 

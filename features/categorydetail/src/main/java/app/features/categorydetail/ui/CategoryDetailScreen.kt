@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
+import app.base.ui.composables.MediumSpace
 import app.base.ui.composables.baseappbar.Action
 import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
@@ -189,6 +190,7 @@ fun CategoryDetailContent(
                             contentScale = ContentScale.Crop
                         )
                     }
+                    MediumSpace()
                 }
 
                 Text(

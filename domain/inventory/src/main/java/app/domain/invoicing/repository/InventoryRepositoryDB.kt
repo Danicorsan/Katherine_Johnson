@@ -1,5 +1,5 @@
 package app.domain.invoicing.repository
-
+/*
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryDAO
 
@@ -45,3 +45,6 @@ class InventoryRepositoryDB(private val inventoryDAO: InventoryDAO) {
         }
     }
 }
+
+
+ */
