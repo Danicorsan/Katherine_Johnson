@@ -3,10 +3,8 @@ package app.domain.invoicing.product
 import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import app.domain.invoicing.category.Category
-import app.domain.invoicing.product.complements.ProductAlarm
 import app.domain.invoicing.product.complements.tags.Tags
 import app.domain.invoicing.section.Section
 import kotlinx.datetime.Instant
@@ -65,5 +63,3 @@ data class Product(
     @ColumnInfo(name = "minimun_stock")
     var minimunStock : UInt? = null
 )
-{
-}
