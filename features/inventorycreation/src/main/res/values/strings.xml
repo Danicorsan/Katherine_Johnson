@@ -3,7 +3,7 @@
 
 
     <string name="crear_inventario">Crear Inventario</string>
-    <string name="nombre_del_inventario">Nombre del Inventario</string>
+    <string name="nombre_del_inventario">Nombre del Inventario*</string>
     <string name="descripcion_del_inventario">Descripción del Inventario</string>
     <string name="editar_inventario">Editar Inventario</string>
     <string name="nueva_descripcion_del_inventario">Nueva Descripción del Inventario</string>
@@ -18,4 +18,11 @@
     <string name="materiales">Materiales</string>
     <string name="servicios">Servicios</string>
     <string name="almacen">Almacén</string>
+    <string name="semanal">Semanal</string>
+    <string name="mensual">Mensual</string>
+    <string name="trimestral">Trimestral</string>
+    <string name="semestral">Semestral</string>
+    <string name="anual">Anual</string>
+    <string name="permanente">Permanente</string>
+    <string name="tipo_de_inventario">Tipo de inventario</string>
 </resources>

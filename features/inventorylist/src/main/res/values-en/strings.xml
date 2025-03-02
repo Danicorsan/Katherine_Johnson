@@ -12,4 +12,10 @@
     <string name="aceptar">Accept</string>
     <string name="no_hay_inventarios">There are no inventories</string>
     <string name="añadir_inventario">Add Inventory</string>
+    <string name="inventory_type_semanal">WEEKLY</string>
+    <string name="inventory_type_mensual">MONTHLY</string>
+    <string name="inventory_type_trimestral">TRIMESTRAL</string>
+    <string name="inventory_type_semestral">SEMESTRAL</string>
+    <string name="inventory_type_anual">ANNUAL</string>
+    <string name="inventory_type_permanente">PERMANENT</string>
 </resources>

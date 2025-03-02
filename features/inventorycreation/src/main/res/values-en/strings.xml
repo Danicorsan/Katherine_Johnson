@@ -2,7 +2,7 @@
 <resources>
 
     <string name="editar_inventario">Edit Inventory</string>
-    <string name="nombre_del_inventario">Inventory Name</string>
+    <string name="nombre_del_inventario">Inventory Name*</string>
     <string name="descripcion_del_inventario">Inventory Description</string>
     <string name="guardar_cambios">Save Changes</string>
     <string name="crear_inventario">Create Inventory</string>
@@ -16,4 +16,11 @@
     <string name="materiales">Materials</string>
     <string name="servicios">Services</string>
     <string name="almacen">Warehouse</string>
+    <string name="semanal">Weekly</string>
+    <string name="mensual">Monthly</string>
+    <string name="trimestral">Trimestral</string>
+    <string name="semestral">Semestral</string>
+    <string name="anual">Annual</string>
+    <string name="permanente">Permanent</string>
+    <string name="tipo_de_inventario">Type of Inventory</string>
 </resources>

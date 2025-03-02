@@ -1,13 +1,14 @@
 package app.features.inventorycreation.ui.creation
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,58 +16,92 @@ import javax.inject.Inject
 class CreateInventoryViewModel @Inject constructor(
     private val repository: InventoryRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(CreateInventoryState(
-        inventoryId = 0,
-        inventoryName = "",
-        inventoryDescription = "",
-        isCreateButtonEnabled = false,
-        isLoading = false,
-        errorMessage = null,
-        inventoryIcon = InventoryIcon.NONE,
-    ))
-    val uiState: StateFlow<CreateInventoryState> get() = _uiState
+    private val _vmState = mutableStateOf(
+        CreateInventoryState(
+            inventoryId = 0,
+            inventoryName = "",
+            inventoryDescription = "",
+            isCreateButtonEnabled = false,
+            loading = false,
+            error = null,
+            inventoryIcon = InventoryIcon.NONE,
+            inventoryItemsCount = 0,
+            inventoryType = InventoryType.PERMANENT,
+            success = emptyList(),
+            nameErrorMessage = null
+        )
+    )
+    val vmState: CreateInventoryState get() = _vmState.value
 
     fun onInventoryNameChange(newName: String) {
-        _uiState.value = _uiState.value.copy(
+        val nameValidationResult = validateInventoryName(newName)
+
+        _vmState.value = vmState.copy(
             inventoryName = newName,
-            isCreateButtonEnabled = newName.isNotBlank() && _uiState.value.inventoryDescription.isNotBlank()
+            isCreateButtonEnabled = nameValidationResult == null,
+            nameErrorMessage = nameValidationResult
         )
+    }
+    private fun validateInventoryName(name: String): String? {
+        if (name.isBlank()) {
+            return "El nombre del inventario no puede estar vacío."
+        }
+        if (name.length < 3) {
+            return "El nombre del inventario no puede tener menos de 3 caracteres."
+        }
+        return null
     }
 
     fun onInventoryDescriptionChange(newDescription: String) {
-        _uiState.value = _uiState.value.copy(
+        _vmState.value = vmState.copy(
             inventoryDescription = newDescription,
-            isCreateButtonEnabled = _uiState.value.inventoryName.isNotBlank() && newDescription.isNotBlank()
+            isCreateButtonEnabled = vmState.inventoryName.isNotBlank() && vmState.nameErrorMessage == null
         )
     }
+
     fun onInventoryIconChange(newIcon: InventoryIcon) {
-        _uiState.value = _uiState.value.copy(
-            inventoryIcon = newIcon
+        _vmState.value = _vmState.value.copy(
+            inventoryIcon = newIcon,
+            isCreateButtonEnabled = vmState.inventoryName.isNotBlank() && vmState.nameErrorMessage == null
+
+        )
+    }
+
+    fun onInventoryTypeChange(newType: InventoryType) {
+        _vmState.value = vmState.copy(
+            inventoryType = newType,
+            isCreateButtonEnabled = vmState.inventoryName.isNotBlank() && vmState.nameErrorMessage == null
         )
     }
 
     fun addInventory(inventory: Inventory) {
+        _vmState.value = vmState.copy(loading = true)
+
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+
+            delay(1000)
 
             try {
                 val newId = repository.addInventory(inventory)
                 if (newId > 0) {
-                    val updatedInventories = _uiState.value.inventories + inventory.copy(id = newId)
+                    val updatedInventories = _vmState.value.success + inventory.copy(id = newId)
 
-                    _uiState.value = _uiState.value.copy(
-                        inventories = updatedInventories,
-                        isLoading = false
+                    _vmState.value = vmState.copy(
+                        success = updatedInventories,
+                        loading = false
+                    )
+                } else {
+                    _vmState.value = vmState.copy(
+                        error = "Error al crear el inventario",
+                        loading = false
                     )
                 }
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    errorMessage = e.message ?: "Error desconocido al agregar el inventario",
-                    isLoading = false
+                _vmState.value = vmState.copy(
+                    error = e.message ?: "Error desconocido",
+                    loading = false
                 )
             }
         }
     }
-
-
 }
