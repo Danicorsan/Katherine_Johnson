@@ -62,4 +62,16 @@ data class Product(
     val tags : Tags = Tags(),
    // @ColumnInfo(name = "minimun_stock")
     var minimunStock : UInt? = null
-)
+){
+    override fun equals(other: Any?): Boolean {
+        if (other === this) return true
+        if (this.javaClass != other?.javaClass) return false
+
+        other as Product
+        return this.name == other.name
+    }
+
+    override fun hashCode(): Int {
+        return this.name.hashCode()
+    }
+}
