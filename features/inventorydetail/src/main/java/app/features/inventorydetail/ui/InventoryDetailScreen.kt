@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -127,12 +128,17 @@ fun InventoryDetailScreen(
                 HorizontalDivider(color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                TableRow(label = stringResource(R.string.id), value = inventory.id.toString())
-                TableRow(label = stringResource(R.string.tipo_de_inventario), value = inventory.inventoryType.name)
-                TableRow(label = stringResource(R.string.fecha_creacion), value = inventory.createdAt.toString())
-                TableRow(label = stringResource(R.string.fecha_actualizacion), value = inventory.updatedAt.toString())
-                TableRow(label = stringResource(R.string.estado), value = inventory.state.toString())
-                TableRow(label = stringResource(R.string.codigo), value = inventory.code)
+                LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    item { TableRow(label = stringResource(R.string.id), value = inventory.id.toString()) }
+                    item { TableRow(label = stringResource(R.string.tipo_de_inventario), value = inventory.inventoryType.name) }
+                    item { TableRow(label = stringResource(R.string.introducido_en_historico), value = inventory.historyDateAt.toString()) }
+                    item { TableRow(label = stringResource(R.string.introducido_en_activo), value = inventory.activeDateAt.toString()) }
+                    item { TableRow(label = stringResource(R.string.introducido_en_proceso), value = inventory.inProgressDateAt.toString()) }
+                    item { TableRow(label = stringResource(R.string.estado), value = inventory.state.toString()) }
+                    item { TableRow(label = stringResource(R.string.codigo), value = inventory.code) }
+}
             }
         }
     }

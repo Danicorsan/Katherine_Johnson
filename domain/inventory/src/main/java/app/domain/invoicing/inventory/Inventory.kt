@@ -3,8 +3,6 @@ package app.domain.invoicing.inventory
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import app.domain.invoicing.converters.DateTimeConverter
 import app.domain.invoicing.inventory.InventoryIcon.ELECTRONICS
 import app.domain.invoicing.inventory.InventoryIcon.MATERIALS
 import app.domain.invoicing.inventory.InventoryIcon.NONE
@@ -20,7 +18,7 @@ import app.domain.invoicing.inventory.InventoryType.PERMANENT
 import app.domain.invoicing.inventory.InventoryType.SEMESTRAL
 import app.domain.invoicing.inventory.InventoryType.TRIMESTRAL
 import app.domain.invoicing.inventory.InventoryType.WEEKLY
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 /**
  * Representa un inventario.
@@ -59,12 +57,14 @@ data class Inventory(
     @ColumnInfo(name = "inventory_type")
     val inventoryType: InventoryType,
 
-    @ColumnInfo(name = "created_at")
-    @TypeConverters(DateTimeConverter::class)
-    val createdAt: LocalDate,
+    @ColumnInfo(name = "history_date_at")
+    val historyDateAt: LocalDateTime? = null,
 
-    @ColumnInfo(name = "updated_at")
-    var updatedAt: LocalDate,
+    @ColumnInfo(name = "in_progress_date_at")
+    val inProgressDateAt: LocalDateTime? = null,
+
+    @ColumnInfo(name = "active_date_at")
+    val activeDateAt: LocalDateTime? = null,
 
     @ColumnInfo(name = "icon")
     var icon: InventoryIcon = NONE,

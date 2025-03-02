@@ -3,6 +3,7 @@ package app.domain.invoicing.converters
 import androidx.room.TypeConverter
 import kotlinx.datetime.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.Date
 
 class DateTimeConverter {
@@ -34,5 +35,13 @@ class DateTimeConverter {
     @TypeConverter
     fun toLocalDate(dateString: String?): LocalDate? {
         return dateString?.let { LocalDate.parse(it) }
+    }
+    @TypeConverter
+    fun fromLocalDateTime(localDateTime: LocalDateTime): String? {
+        return localDateTime.toString()
+    }
+    @TypeConverter
+    fun toLocalDateTime(dateString: String?): LocalDateTime? {
+        return dateString?.let { LocalDateTime.parse(it) }
     }
 }

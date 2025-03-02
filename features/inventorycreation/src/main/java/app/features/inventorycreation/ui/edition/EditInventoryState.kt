@@ -3,6 +3,7 @@ package app.features.inventorycreation.ui.edition
 import app.domain.invoicing.inventory.InventoryIcon
 import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
+import java.time.LocalDateTime
 
 data class EditInventoryState(
     val inventoryId: Int = 0,
@@ -25,5 +26,13 @@ data class EditInventoryState(
     val originalShortName: String = "",
     val originalState: InventoryState = InventoryState.IN_PROGRESS,
     val originalCode: String = "",
-    val noChangesMessage: String? = null
+    val noChangesMessage: String? = null,
+
+    val inventoryInProgressDateAt: LocalDateTime?,
+    val inventoryActiveDateAt: LocalDateTime?,
+    val inventoryHistoryDateAt: LocalDateTime?,
+
+    val  originalInProgressDateAt: LocalDateTime?,
+    val  originalActiveDateAt: LocalDateTime?,
+    val  originalHistoryDateAt: LocalDateTime?
 )

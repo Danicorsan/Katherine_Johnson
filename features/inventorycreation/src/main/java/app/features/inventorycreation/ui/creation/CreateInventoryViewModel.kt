@@ -11,6 +11,7 @@ import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,7 +33,12 @@ class CreateInventoryViewModel @Inject constructor(
             success = emptyList(),
             nameErrorMessage = null,
             shortNameErrorMessage = null,
-            descriptionErrorMessage = null
+            descriptionErrorMessage = null,
+            inventoryState = InventoryState.IN_PROGRESS,
+            inventoryCode = "",
+            inventoryHistoryDateTime = null,
+            inventoryInProgressDateTime = null,
+            inventoryActiveDateTime = null
         )
     )
     val vmState: CreateInventoryState get() = _vmState.value
@@ -103,26 +109,40 @@ class CreateInventoryViewModel @Inject constructor(
         _vmState.value = _vmState.value.copy(inventoryType = newType)
     }
 
-    fun onInventoryStateChange(newState: InventoryState) {
-        _vmState.value = _vmState.value.copy(inventoryState = newState)
-    }
     fun onInventoryCodeChange(newCode: String) {
         _vmState.value = _vmState.value.copy(inventoryCode = newCode)
     }
 
-    fun addInventory(inventory: Inventory) {
+    fun addInventory() {
         _vmState.value = _vmState.value.copy(loading = true)
 
         viewModelScope.launch {
-            delay(1000)
+            delay(1000) // Mantenemos el delay si es necesario
 
             try {
-                val newId = repository.addInventory(inventory)
+                val currentDateTime = LocalDateTime.now()
+                val newInventory = Inventory(
+                    id = 0, // El ID se asignará en la base de datos
+                    name = _vmState.value.inventoryName,
+                    shortName = _vmState.value.inventoryShortName,
+                    description = _vmState.value.inventoryDescription,
+                    icon = _vmState.value.inventoryIcon,
+                    itemsCount = 0, // Asumimos que un nuevo inventario comienza con 0 items
+                    inventoryType = _vmState.value.inventoryType,
+                    state = InventoryState.IN_PROGRESS,
+                    code = _vmState.value.inventoryCode,
+                    inProgressDateAt = currentDateTime,
+                    activeDateAt = null,
+                    historyDateAt = null
+                )
+
+                val newId = repository.addInventory(newInventory)
                 if (newId > 0) {
-                    val updatedInventories = _vmState.value.success + inventory.copy(id = newId)
+                    val createdInventory = newInventory.copy(id = newId)
                     _vmState.value = _vmState.value.copy(
-                        success = updatedInventories,
-                        loading = false
+                        success = _vmState.value.success + createdInventory,
+                        loading = false,
+                        inventoryInProgressDateTime = currentDateTime
                     )
                 } else {
                     _vmState.value = _vmState.value.copy(

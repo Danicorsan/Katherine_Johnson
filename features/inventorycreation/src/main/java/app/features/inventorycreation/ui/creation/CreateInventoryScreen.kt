@@ -43,14 +43,11 @@ import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
-import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
-import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
 import app.features.inventorycreation.ui.composables.CustomDropdownMenu
-import java.time.LocalDate
 
 @Composable
 fun CreateInventoryScreen(
@@ -288,54 +285,6 @@ fun CreateInventoryScreen(
                             )
                         }
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { isStateExpanded = true }
-                            .border(
-                                1.dp,
-                                MaterialTheme.colorScheme.onSurface,
-                                RoundedCornerShape(8.dp)
-                            )
-                            .padding(12.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = when (selectedState) {
-                                    InventoryState.HISTORY -> stringResource(R.string.historico)
-                                    InventoryState.ACTIVE -> stringResource(R.string.activo)
-                                    InventoryState.IN_PROGRESS -> stringResource(R.string.en_proceso)
-                                },
-                                modifier = Modifier.weight(1f),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-
-                            Icon(
-                                imageVector = Icons.Filled.ArrowDropDown,
-                                contentDescription = "Expand Menu",
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
-                            CustomDropdownMenu(
-                                expanded = isStateExpanded,
-                                onDismissRequest = { isStateExpanded = false },
-                                items = InventoryState.entries,
-                                onItemSelected = { state ->
-                                    selectedState = state
-                                    viewModel.onInventoryStateChange(state)
-                                },
-                                itemText = { state ->
-                                    when (state) {
-                                        InventoryState.HISTORY -> stringResource(R.string.historico)
-                                        InventoryState.ACTIVE -> stringResource(R.string.activo)
-                                        InventoryState.IN_PROGRESS -> stringResource(R.string.en_proceso)
-                                    }
-                                }
-                            )
-                        }
-                    }
 
                     uiState.error?.let {
                         Text(
@@ -347,21 +296,7 @@ fun CreateInventoryScreen(
                     }
                     Button(
                         onClick = {
-                            viewModel.addInventory(
-                                Inventory(
-                                    id = uiState.inventoryId,
-                                    name = uiState.inventoryName,
-                                    description = uiState.inventoryDescription,
-                                    createdAt = LocalDate.now(),
-                                    updatedAt = LocalDate.now(),
-                                    icon = uiState.inventoryIcon,
-                                    itemsCount = uiState.inventoryItemsCount,
-                                    inventoryType = uiState.inventoryType,
-                                    shortName = uiState.inventoryShortName,
-                                    state = uiState.inventoryState,
-                                    code = uiState.inventoryCode
-                                )
-                            )
+                            viewModel.addInventory()
                             showSuccessDialog = true
                         },
                         modifier = Modifier.fillMaxWidth(),
