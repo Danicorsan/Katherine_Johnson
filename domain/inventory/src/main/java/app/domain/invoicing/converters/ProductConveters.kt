@@ -32,4 +32,14 @@ class ProductConveters {
         }
         return null
     }
+
+    @TypeConverter
+    fun fromLongToUint(number : Long?) : UInt?{
+        return number?.toUInt()
+    }
+
+    @TypeConverter
+    fun fromUintToLong(number : UInt?) : Long?{
+        return number?.toLong()
+    }
 }

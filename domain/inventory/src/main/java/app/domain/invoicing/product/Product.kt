@@ -1,16 +1,16 @@
 package app.domain.invoicing.product
 
-
 import android.net.Uri
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.complements.ProductAlarm
 import app.domain.invoicing.product.complements.tags.Tags
 import app.domain.invoicing.section.Section
 import kotlinx.datetime.Instant
+
 
 /**
  * Representa un producto.
@@ -50,9 +50,7 @@ data class Product(
     var modelCode : String,
     @ColumnInfo(name = "product_type")
     var productType : String,
-    @Embedded
     var category : Category,
-    @Embedded
     var section : Section,
     var state : ProductState = ProductState.new,
     var image : Uri? = null,
@@ -68,9 +66,4 @@ data class Product(
     var minimunStock : UInt? = null
 )
 {
-    private var _minimunAlarmStock = ProductAlarm.MinimunStock(this)
-
-    val MinimunStockAlarm : ProductAlarm.MinimunStock
-        get() = _minimunAlarmStock
-
 }

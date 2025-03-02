@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.Resources
 import app.domain.invoicing.databases.InventoryDatabase
 import app.domain.invoicing.dependency.DependencyDao
+import app.domain.invoicing.product.Product
+import app.domain.invoicing.product.ProductDao
 import app.domain.invoicing.repository.AccountRepository
 import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.InventoryRepository
@@ -87,5 +89,11 @@ object AppModule {
     @Singleton
     fun provideDependencyDao(inventoryDatabase: InventoryDatabase) : DependencyDao {
         return inventoryDatabase.getDependencyDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductDao(inventoryDatabase: InventoryDatabase) : ProductDao {
+        return inventoryDatabase.getProductDao()
     }
 }
