@@ -1,8 +1,10 @@
 package app.features.categorylist.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -57,6 +60,9 @@ import kotlinx.coroutines.CoroutineScope
  * @property requestDeleteCategory
  * @property confirmDeleteCategory
  * @property cancelDeleteCategory
+ * @property onOpenDrawer
+ * @property onClickInventory
+ * @property onClickProduct
  * @constructor Create empty Category list events
  */
 data class CategoryListEvents(
@@ -68,7 +74,7 @@ data class CategoryListEvents(
     val cancelDeleteCategory: () -> Unit,
     val onOpenDrawer: (CoroutineScope) -> Unit,
     val onClickInventory: () -> Unit,
-    val onClicProduct: () -> Unit,
+    val onClickProduct: () -> Unit,
 )
 
 /**
@@ -78,6 +84,10 @@ data class CategoryListEvents(
  * @param onClickBack
  * @param onClickNewCategory
  * @param onClickDetails
+ * @param onClickInventory
+ * @param onClicProduct
+ * @receiver
+ * @receiver
  * @receiver
  * @receiver
  * @receiver
@@ -100,7 +110,7 @@ fun CategoryListScreen(
         cancelDeleteCategory = viewModel::cancelDeleteCategory,
         onOpenDrawer = viewModel::onOpenDrawer,
         onClickInventory = onClickInventory,
-        onClicProduct = onClicProduct
+        onClickProduct = onClicProduct
     )
     CategoryListScreen(viewModel.state, categoryListEvents)
 }
@@ -119,7 +129,7 @@ fun CategoryListScreen(
     val scopeCoroutine = rememberCoroutineScope()
     AppDrawer(
         drawerState = state.drawerState,
-        onNavigateProducts = { events.onClicProduct() },
+        onNavigateProducts = { events.onClickProduct() },
         onNavigateCategories = {},
         onNavigateInventory = { events.onClickInventory() },
         content = {
@@ -183,83 +193,115 @@ fun CategoryListContent(
         )
     }
 
-    Column(
-        modifier = modifier
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {
-            items(state.categories) { category ->
-                Card(
 
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .combinedClickable(
-                            onLongClick = {
-                                events.requestDeleteCategory(category.id)
-                            },
-                            onClick = {
-                                events.onClickDetails(category.id)
-                            }
-                        )
-                        .shadow(8.dp, shape = CircleShape), // Sombra con forma personalizada
-                    elevation = CardDefaults.elevatedCardElevation(3.dp) // Usa CardDefaults.elevation()
-                ) {
-                    Row(
+    if (state.categories.isNotEmpty()) {
+
+        Column(
+            modifier = modifier
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
+                items(state.categories) { category ->
+                    Card(
+
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                    ) {
-                        if (category.image == null) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.List,
-                                contentDescription = stringResource(R.string.icono_de_categoria),
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .padding(end = 8.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                            .combinedClickable(
+                                onLongClick = {
+                                    events.requestDeleteCategory(category.id)
+                                },
+                                onClick = {
+                                    events.onClickDetails(category.id)
+                                }
                             )
-                        } else {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                            ) {
-                                // Aquí es donde usas AsyncImage para cargar la URI
-                                AsyncImage(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(category.image) // URI de la imagen
-                                        .crossfade(true) // Añadir un efecto de desvanecimiento cuando se carga
-                                        .build(),
-                                    contentDescription = "Category Image",
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentScale = ContentScale.Crop, // Ajuste de la imagen
-                                    placeholder = painterResource(app.base.ui.R.drawable.ic_cactus), // Imagen de carga
-                                    error = painterResource(app.base.ui.R.drawable.ic_cactus) // Imagen de error
-                                )
-                            }
-                        }
-
-                        Text(
-                            text = category.name,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Medium,
+                            .shadow(8.dp, shape = CircleShape), // Sombra con forma personalizada
+                        elevation = CardDefaults.elevatedCardElevation(3.dp) // Usa CardDefaults.elevation()
+                    ) {
+                        Row(
                             modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .padding(12.dp)
-                        )
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        ) {
+                            if (category.image == null) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.List,
+                                    contentDescription = stringResource(R.string.icono_de_categoria),
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .padding(end = 8.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            } else {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .clip(CircleShape)
+                                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                                ) {
+                                    // Aquí es donde usas AsyncImage para cargar la URI
+                                    AsyncImage(
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(category.image) // URI de la imagen
+                                            .crossfade(true) // Añadir un efecto de desvanecimiento cuando se carga
+                                            .build(),
+                                        contentDescription = "Category Image",
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop, // Ajuste de la imagen
+                                        placeholder = painterResource(app.base.ui.R.drawable.ic_cactus), // Imagen de carga
+                                        error = painterResource(app.base.ui.R.drawable.ic_cactus) // Imagen de error
+                                    )
+                                }
+                            }
+
+                            Text(
+                                text = category.name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium,
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .padding(12.dp)
+                            )
+                        }
                     }
                 }
+            }
+        }
+
+    } else {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center // Centra la columna dentro del Box
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = "No Data",
+                    modifier = Modifier.size(64.dp), // Ajusta el tamaño del icono
+                    tint = MaterialTheme.colorScheme.error // Color de error para resaltar
+                )
+                Text(
+                    text = "No hay datos",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }
 }
 
+/**
+ * Preview category list screen
+ *
+ */
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewCategoryListScreen() {
