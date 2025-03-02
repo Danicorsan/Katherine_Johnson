@@ -33,7 +33,8 @@ Se ha implementado de forma general:
 ### Detalles a tener en cuenta
 El modelo de Productos solo guarda una Sección en un campo, sin embargo en las pantallas de edición y creación de productos,
 se podrá seleccionar la dependencia en un campo, este campo solo actua de filtro de sección, no es guardado directamente.
-![Imagen del lista de productos](READMEresources/ProductListScreen.png) 
+![Imagen de la lista de productos](READMEresources/ProductListScreen.png)
+![Imagen de creación de productos](READMEresources/ProductCreationScreen.png) 
 
 
 
@@ -69,6 +70,9 @@ Esta característica ha sido implementada por **Daniel Cortés Sánchez**. La fu
 
 - **Botón de acción flotante**: Se ha añadido un botón flotante que permite navegar a la pantalla de creación de nuevas categorías.
 
+![Imagen de la lista de categorias](READMEresources/CategoryListScreen.png)
+![Imagen de creación de categorias](READMEresources/CategoryCreationScreen.png) 
+
 ----------------
 ## Inventarios
 Caracteristica implementada por **Leandro Orellana Martos**. La funcionalidad permite gestionar inventarios de forma fácil al usuario, acompañado de tres pantallas como son la de listado de inventarios, detalles de inventario y creacion de inventario.
@@ -92,3 +96,6 @@ Caracteristica implementada por **Leandro Orellana Martos**. La funcionalidad pe
 - Nombre y descripcion del inventario
 #### Pantalla de listado de inventario
 - Cards con funcionalidades de edicion y eliminamiento de inventarios
+
+![Imagen de la lista de inventarios](READMEresources/InventoryListScreen.png)
+![Imagen de creación de inventarios](READMEresources/InventoryCreationScreen.png) 
