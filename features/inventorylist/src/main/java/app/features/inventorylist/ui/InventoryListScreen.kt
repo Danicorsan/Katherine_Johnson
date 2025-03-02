@@ -1,10 +1,8 @@
 package app.features.inventorylist.ui
 
 import NoDataAnimatedScreen
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +12,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -37,7 +34,8 @@ import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryState
 import app.features.inventorylist.R
-import app.features.inventorylist.ui.base.InventoryCard
+import app.features.inventorylist.ui.base.composables.InventoryCard
+import app.features.inventorylist.ui.base.composables.InventoryTypeHeader
 
 @Composable
 fun InventoryListScreen(
@@ -181,30 +179,3 @@ fun InventoryListContent(
         }
     }
 }
-
-@Composable
-fun InventoryTypeHeader(type: InventoryState) {
-    val typeNameResId = when (type) {
-        InventoryState.ACTIVE -> R.string.activo
-        InventoryState.HISTORY -> R.string.historico
-        InventoryState.IN_PROGRESS -> R.string.en_proceso
-    }
-
-    Text(
-        text = stringResource(typeNameResId),
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp)
-    )
-}
-/*
-@Preview(showSystemUi = true)
-@Composable
-fun InventoryListPreview() {
-    InventoryListScreen(
-        viewModel = InventoryListViewModel(InventoryRepository),
-        onInventoryClick = {},
-        onCreateInventoryClick = {},
-    )
-}*/

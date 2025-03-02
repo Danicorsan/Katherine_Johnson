@@ -119,7 +119,7 @@ class CreateInventoryViewModel @Inject constructor(
             try {
                 val currentDateTime = Date()
                 val newInventory = Inventory(
-                    id = 0, // The ID will be assigned by the database
+                    id = 0,
                     name = _vmState.value.inventoryName,
                     shortName = _vmState.value.inventoryShortName,
                     description = _vmState.value.inventoryDescription,

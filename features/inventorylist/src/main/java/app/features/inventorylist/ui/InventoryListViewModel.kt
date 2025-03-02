@@ -7,6 +7,7 @@ import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,6 +34,7 @@ class InventoryListViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)
             try {
+                delay(1000)
                 val inventories = repository.getAllInventories()
                 _uiState.value = uiState.copy(
                     success = inventories,

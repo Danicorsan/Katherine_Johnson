@@ -102,7 +102,7 @@ fun CreateInventoryScreen(
                             text = uiState.nameErrorMessage,
                             color = Color.Red,
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 8.dp) // Add some padding
+                            modifier = Modifier.padding(start = 8.dp)
                         )
                     }
                     TextField(
@@ -117,7 +117,7 @@ fun CreateInventoryScreen(
                             text = uiState.shortNameErrorMessage,
                             color = Color.Red,
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 8.dp) // Add some padding
+                            modifier = Modifier.padding(start = 8.dp)
                         )
                     }
 
@@ -133,7 +133,7 @@ fun CreateInventoryScreen(
                             text = uiState.descriptionErrorMessage,
                             color = Color.Red,
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 8.dp) // Add some padding
+                            modifier = Modifier.padding(start = 8.dp)
                         )
                     }
 
@@ -280,15 +280,6 @@ fun CreateInventoryScreen(
                                 }
                             )
                         }
-                    }
-
-                    uiState.error?.let {
-                        Text(
-                            text = it,
-                            color = Color.Red,
-                            modifier = Modifier.fillMaxWidth(),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
                     }
                     Button(
                         onClick = {

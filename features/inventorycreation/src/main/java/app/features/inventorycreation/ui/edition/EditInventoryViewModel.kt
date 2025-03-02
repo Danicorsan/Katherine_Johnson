@@ -230,38 +230,37 @@ class EditInventoryViewModel @Inject constructor(
             InventoryState.IN_PROGRESS -> {
                 if (vmState.value.originalState != InventoryState.IN_PROGRESS) {
                     inProgressDate = Date()
-                    activeDate = vmState.value.inventoryActiveDateAt // Reset active date if going to IN_PROGRESS
-                    historyDate = vmState.value.inventoryHistoryDateAt // Reset history date if going to IN_PROGRESS
-                    originalInProgressDate = inProgressDate // Update original date
-                    originalActiveDate = vmState.value.originalActiveDateAt // Reset original active date
-                    originalHistoryDate = vmState.value.originalHistoryDateAt // Reset original history date
+                    activeDate = vmState.value.inventoryActiveDateAt
+                    historyDate = vmState.value.inventoryHistoryDateAt
+                    originalInProgressDate = inProgressDate
+                    originalActiveDate = vmState.value.originalActiveDateAt
+                    originalHistoryDate = vmState.value.originalHistoryDateAt
                 }
             }
 
             InventoryState.ACTIVE -> {
                 if (vmState.value.originalState != InventoryState.ACTIVE) {
                     activeDate = Date()
-                    inProgressDate = vmState.value.inventoryInProgressDateAt // Reset inProgress date if going to ACTIVE
-                    historyDate = vmState.value.inventoryHistoryDateAt // Reset history date if going to ACTIVE
-                    originalActiveDate = activeDate // Update original date
-                    originalInProgressDate = vmState.value.originalInProgressDateAt // Reset original inProgress date
-                    originalHistoryDate = vmState.value.originalHistoryDateAt // Reset original history date
+                    inProgressDate = vmState.value.inventoryInProgressDateAt
+                    historyDate = vmState.value.inventoryHistoryDateAt
+                    originalActiveDate = activeDate
+                    originalInProgressDate = vmState.value.originalInProgressDateAt
+                    originalHistoryDate = vmState.value.originalHistoryDateAt
                 }
             }
 
             InventoryState.HISTORY -> {
                 if (vmState.value.originalState != InventoryState.HISTORY) {
                     historyDate = Date()
-                    inProgressDate = vmState.value.inventoryInProgressDateAt // Reset inProgress date if going to HISTORY
-                    activeDate = vmState.value.inventoryActiveDateAt // Reset active date if going to HISTORY
-                    originalHistoryDate = historyDate // Update original date
-                    originalInProgressDate = vmState.value.originalInProgressDateAt // Reset original inProgress date
-                    originalActiveDate = vmState.value.originalActiveDateAt // Reset original active date
+                    inProgressDate = vmState.value.inventoryInProgressDateAt
+                    activeDate = vmState.value.inventoryActiveDateAt
+                    originalHistoryDate = historyDate
+                    originalInProgressDate = vmState.value.originalInProgressDateAt
+                    originalActiveDate = vmState.value.originalActiveDateAt
                 }
             }
 
             else -> {
-                // No changes to dates for other states
             }
         }
 

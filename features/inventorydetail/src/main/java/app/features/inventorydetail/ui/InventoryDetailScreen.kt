@@ -133,7 +133,6 @@ fun InventoryDetailScreen(
                     item { TableRow(label = stringResource(R.string.introducido_en_activo), value = inventory.activeDateAt.toString()) }
                     item { TableRow(label = stringResource(R.string.introducido_en_proceso), value = inventory.inProgressDateAt.toString()) }
                     item { TableRow(label = stringResource(R.string.estado), value = inventory.state.toString()) }
-                    item { TableRow(label = stringResource(R.string.codigo), value = inventory.code) }
 }
             }
         }

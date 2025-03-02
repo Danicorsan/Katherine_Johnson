@@ -1,4 +1,4 @@
-package app.features.inventorylist.ui.base
+package app.features.inventorylist.ui.base.composables
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
