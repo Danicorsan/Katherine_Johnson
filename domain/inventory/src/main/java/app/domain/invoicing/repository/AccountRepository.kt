@@ -1,57 +1,26 @@
 package app.domain.invoicing.repository
 
-import app.domain.invoicing.account.Account
-import app.domain.invoicing.account.AccountException
-import app.domain.invoicing.account.Email
-import app.domain.invoicing.account.Password
+import app.domain.invoicing.account.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 /**
- * Account repository
- *
- * @constructor Create empty Account repository
+ * Repositorio para gestionar cuentas de usuario.
  */
-object AccountRepository {
-    // Simulación de un dataset en memoria
-    private val dataSet: MutableList<Account> = mutableListOf()
-
-    init {
-        initialize()
-    }
-
-    private fun initialize() {
-        dataSet.add(
-            Account(
-                id = 1,
-                email = Email("1"),
-                password = Password("1"),
-                name = "Prueba",
-                surname = "SdAASD",
-                username = "danasdasdics",
-                birthdate = "02/03/2003"
-            )
-        )
-        dataSet.add(
-            Account(
-                id = 1,
-                email = Email("admin"),
-                password = Password("admin"),
-                name = "admin",
-                surname = "admin",
-                username = "admin",
-                birthdate = "02/03/2003"
-            )
-        )
-    }
+class AccountRepository(
+    private val accountDao: AccountDao
+) {
 
     /**
      * Valida las credenciales de inicio de sesión.
      */
     fun login(email: String, password: String): Flow<Result<Account>> = flow {
-        delay(1000) // Agrega un retraso de 2 segundos antes de procesar la autenticación
-        val account = dataSet.firstOrNull { it.email.value == email && it.password.value == password }
+        delay(1000) // Simula un retraso antes de la autenticación
+        val accounts = accountDao.getAccount().first() // Obtener la lista de cuentas
+        val account = accounts.firstOrNull { it.email.value == email && it.password.value == password }
+
         if (account != null) {
             emit(Result.success(account))
         } else {
@@ -62,28 +31,32 @@ object AccountRepository {
     /**
      * Registra una nueva cuenta.
      */
-    fun register(
+    suspend fun register(
         name: String,
         surname: String,
         email: String,
         password: String
     ): Result<Unit> {
+        val accounts = accountDao.getAccount().first() // Obtener lista de cuentas
+
         // Verifica si el email ya está registrado
-        if (dataSet.any { it.email.value == email }) {
+        if (accounts.any { it.email.value == email }) {
             return Result.failure(AccountException.AccountExists)
         }
 
-        // Agrega la nueva cuenta al dataset
+        // Crea la nueva cuenta
         val newAccount = Account(
-            id = dataSet.size + 1,
+            id = accounts.size + 1,
             email = Email(email),
             password = Password(password),
             name = name,
             surname = surname,
-            username = "$name${surname.firstOrNull()}${dataSet.size + 1}",
+            username = "$name${surname.firstOrNull()}${accounts.size + 1}",
             birthdate = "01/01/2000" // Fecha ficticia por defecto
         )
-        dataSet.add(newAccount)
+
+        // Inserta la nueva cuenta en la base de datos
+        accountDao.insertAccount(newAccount)
         return Result.success(Unit)
     }
 }

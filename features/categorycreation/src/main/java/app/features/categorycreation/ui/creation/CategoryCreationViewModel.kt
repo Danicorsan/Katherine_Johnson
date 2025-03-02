@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryCreationViewModel @Inject constructor(
-    private val repository: CategoryRepository
+    private val repository: CategoryRepository,
 ) : ViewModel() {
 
     var state by mutableStateOf(CategoryCreationState())
@@ -78,6 +78,8 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On name change
+     *
+     * @param newName
      */
     fun onNameChange(newName: String) {
         state = state.copy(isNameError = false, isError = false, name = newName)
@@ -92,16 +94,26 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On description change
+     *
+     * @param newDescription
      */
     fun onDescriptionChange(newDescription: String) {
-        state = state.copy(isDescriptionError = false, isError = false, description = newDescription)
+        state =
+            state.copy(isDescriptionError = false, isError = false, description = newDescription)
     }
 
     /**
      * On short name change
+     *
+     * @param shortName
      */
     fun onShortNameChange(shortName: String) {
-        state = state.copy(isShortNameError = false, isError = false, shortNameErrorMessage = null, shortName = shortName)
+        state = state.copy(
+            isShortNameError = false,
+            isError = false,
+            shortNameErrorMessage = null,
+            shortName = shortName
+        )
 
         viewModelScope.launch {
             val categories = repository.getAllCategories().first()
@@ -109,10 +121,17 @@ class CategoryCreationViewModel @Inject constructor(
 
             when {
                 !shortNameRegex.matches(shortName) -> {
-                    state = state.copy(isShortNameError = true, shortNameErrorMessage = "Debe tener al menos 3 caracteres y solo letras o números.")
+                    state = state.copy(
+                        isShortNameError = true,
+                        shortNameErrorMessage = "Debe tener al menos 3 caracteres y solo letras o números."
+                    )
                 }
+
                 categories.any { it.shortName == shortName } -> {
-                    state = state.copy(isShortNameError = true, shortNameErrorMessage = "Este alias ya está en uso.")
+                    state = state.copy(
+                        isShortNameError = true,
+                        shortNameErrorMessage = "Este alias ya está en uso."
+                    )
                 }
             }
         }
@@ -120,6 +139,8 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On image change
+     *
+     * @param image
      */
     fun onImageChange(image: Uri) {
         state = state.copy(image = image)
@@ -127,6 +148,8 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On type category change
+     *
+     * @param typeCategory
      */
     fun onTypeCategoryChange(typeCategory: TypeCategory) {
         state = state.copy(typeCategory = typeCategory)
@@ -134,6 +157,7 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On discard changes
+     *
      */
     fun onDiscardChanges() {
         state = CategoryCreationState()
@@ -141,6 +165,8 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On fungible change
+     *
+     * @param fungible
      */
     fun onFungibleChange(fungible: Boolean) {
         state = state.copy(fungible = fungible)

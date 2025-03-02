@@ -1,6 +1,9 @@
 package app.features.categorylist.ui
 
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import app.domain.invoicing.category.Category
+import app.features.productlist.ui.base.OrdenationState
 
 /**
  * Category list state
@@ -10,6 +13,8 @@ import app.domain.invoicing.category.Category
  * @property isDeleteDialogVisible
  * @property isCategoryDeleted
  * @property categoryToDelete
+ * @property drawerState
+ * @property ordenationState
  * @constructor Create empty Category list state
  */
 data class CategoryListState(
@@ -17,5 +22,7 @@ data class CategoryListState(
     var isLoading: Boolean = false,
     var isDeleteDialogVisible: Boolean = false,
     var isCategoryDeleted: Boolean = false,
-    var categoryToDelete: Int? = null // Nueva propiedad para almacenar la categoría a eliminar
+    var categoryToDelete: Int? = null, // Nueva propiedad para almacenar la categoría a eliminar
+    val drawerState: DrawerState = DrawerState(initialValue = DrawerValue.Closed),
+    val ordenationState: OrdenationState = OrdenationState.DESCENDING,
 )

@@ -50,9 +50,7 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.category.TypeCategory
 import app.features.categorycreation.R
-import app.features.categorycreation.ui.base.CategoryImagePicker
 import app.features.categorycreation.ui.base.InputField
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 
 /**
@@ -142,7 +140,7 @@ fun CategoryEditionContent(
     onEvent: (CategoryEditionEvent) -> Unit,
     modifier: Modifier = Modifier,
     onFungibleChange: (Boolean) -> Unit,
-    onImageChange:(Uri) -> Unit
+    onImageChange: (Uri) -> Unit,
 ) {
     val scrollState = rememberScrollState() // Estado del scroll
 
@@ -176,6 +174,8 @@ fun CategoryEditionContent(
                     contentScale = ContentScale.Crop
                 )
             }
+            MediumSpace()
+
         }
 
 
