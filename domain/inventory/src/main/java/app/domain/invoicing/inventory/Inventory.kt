@@ -26,10 +26,10 @@ import java.time.LocalDateTime
  * @property id Identificador único del inventario.
  * @property name Nombre del inventario.
  * @property description Descripción del inventario.
- * @property itemsCount Número de artículos en el inventario, puede ser nulo.
  * @property inventoryType Tipo de inventario, definido por la enumeración InventoryType.
- * @property createdAt Fecha de creación del inventario.
- * @property updatedAt Fecha de la última actualización del inventario.
+ * @property historyDateAt Fecha en la que el inventario se colocó en histórico.
+ * @property inProgressDateAt Fecha en la que el inventario se encuentra en progreso.
+ * @property activeDateAt Fecha en la que el inventario se encuentra activo.
  * @property icon Icono representativo del inventario, definido por la enumeración InventoryIcon.
  */
 @Entity(
