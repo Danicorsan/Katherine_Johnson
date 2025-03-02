@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.repository.ProductRepository
+import app.features.productlist.ui.base.OrdenationState
 import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,22 +25,22 @@ import javax.inject.Inject
 class ProductListViewModel @Inject constructor() : ViewModel() {
 
     var productListState by mutableStateOf(ProductListState())
-    private set
+        private set
 
-    private var productToDelete : Product? = null
+    private var productToDelete: Product? = null
 
-    private lateinit var productListNavigationEvents : ProductListNavigationEvents
+    private lateinit var productListNavigationEvents: ProductListNavigationEvents
 
     /**
      * Carga todos los productos de la base de datos.
      *
      */
-    fun getAllProductList(){
+    fun getAllProductList() {
         productListState = productListState.copy(isLoading = true)
         viewModelScope.launch {
             val result = ProductRepository.getAllProducts()
-            if (result is BaseResult.Success){
-                result.data.collect{
+            if (result is BaseResult.Success) {
+                result.data.collect {
                     productListState = productListState.copy(
                         isLoading = false,
                         productList = it.values.toList()
@@ -60,7 +61,7 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
      * @param navigationsEvents El objeto [ProductListNavigationEvents]
      * con las acciones de navegación
      */
-    fun stablishNavigationEvents(navigationsEvents : ProductListNavigationEvents){
+    fun stablishNavigationEvents(navigationsEvents: ProductListNavigationEvents) {
         this.productListNavigationEvents = navigationsEvents
     }
 
@@ -68,7 +69,7 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
      * Evento cuando el usuario quiere crear un nuevo producto.
      *
      */
-    fun onCreateProduct(){
+    fun onCreateProduct() {
         productListNavigationEvents.onCreateProductNav()
     }
 
@@ -77,7 +78,7 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
      *
      * @param product El [Product] que se quiere eliminar.
      */
-    fun onDeleteProduct(product: Product){
+    fun onDeleteProduct(product: Product) {
         println("Producto siendo eliminado")
         productToDelete = product
         productListState = productListState.copy(
@@ -90,7 +91,7 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
      *
      * @param product El [Product] del cual el usuario quiere conocer los detalles.
      */
-    fun onSeeProductDetails(product: Product){
+    fun onSeeProductDetails(product: Product) {
         productListNavigationEvents.onSeeProductDetailsNav(product.id!!)
     }
 
@@ -98,7 +99,7 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
      * Evento cuando el usuario quiere volver a la pantalla anterior.
      *
      */
-    fun onGoBack(){
+    fun onGoBack() {
         productListNavigationEvents.onGoBackNav()
     }
 
@@ -107,7 +108,7 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
      *
      * @param Un [CoroutineScope] para poder abrir el drawer.
      */
-    fun onOpenDrawer(scope : CoroutineScope){
+    fun onOpenDrawer(scope: CoroutineScope) {
         scope.launch {
             productListState.drawerState.open()
         }
@@ -117,7 +118,7 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
      * Evento cuando el usuario confirma que quiere eliminar el producto seleccionado.
      *
      */
-    fun onConfirmDeleteProduct(){
+    fun onConfirmDeleteProduct() {
         productListState = productListState.copy(
             isLoading = true,
             productIsBeingDeleted = false
@@ -125,8 +126,8 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             ProductRepository.removeProduct(productToDelete!!.id!!)//Siempre habrá un producto con un id
             val result = ProductRepository.getAllProducts()
-            if (result is BaseResult.Success){
-                result.data.collect{
+            if (result is BaseResult.Success) {
+                result.data.collect {
                     productListState = productListState.copy(
                         isLoading = false,
                         productList = it.values.toList()
@@ -150,5 +151,23 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
         productListState = productListState.copy(
             productIsBeingDeleted = false
         )
+    }
+
+    /**
+     * Ordena la lista de [Product] ya sea de forma ascendento o descendente dependiendo de
+     * [ProductListState.ordenationState]
+     *
+     */
+    fun onSortList() {
+        productListState = if (productListState.ordenationState == OrdenationState.DESCENDING)
+            productListState.copy(
+                productList = productListState.productList.sortedBy { it.name },
+                ordenationState = OrdenationState.ASCENDING
+            )
+        else
+            productListState.copy(
+                productList = productListState.productList.sortedByDescending { it.name },
+                ordenationState = OrdenationState.DESCENDING
+            )
     }
 }
