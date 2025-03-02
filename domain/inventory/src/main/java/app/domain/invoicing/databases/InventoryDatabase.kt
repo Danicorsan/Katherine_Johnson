@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import app.domain.invoicing.converters.DateTimeConverter
+import app.domain.invoicing.converters.UriConverter
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
@@ -19,7 +20,7 @@ import java.util.concurrent.Executors
     entities = [],
     exportSchema = false
 )
-@TypeConverters(DateTimeConverter::class)
+@TypeConverters(DateTimeConverter::class, UriConverter::class)
 abstract class InventoryDatabase : RoomDatabase() {
 
     companion object {
