@@ -2,11 +2,14 @@ package app.example.inventory.inject
 
 import android.content.Context
 import android.content.res.Resources
+import app.domain.invoicing.dependency.DependencyDao
 import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.databases.InventoryDatabase
 import app.domain.invoicing.repository.AccountRepository
 import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.InventoryRepository
+import app.domain.invoicing.section.Section
+import app.domain.invoicing.section.SectionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +20,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideContext(@ApplicationContext context : Context) : Context{
+        return context
+    }
 
     /**
      * Provide resources
@@ -58,14 +67,6 @@ object AppModule {
         return database.categoryDao()
     }
 
-    @Provides
-    @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): InventoryDatabase {
-        return InventoryDatabase.getDatabase(context)
-    }
-
-
-
     /**
      * Provide inventory repository
      *
@@ -77,5 +78,21 @@ object AppModule {
         return InventoryRepository
     }
 
+    @Provides
+    @Singleton
+    fun provideInventoryDatabase(context: Context) : InventoryDatabase{
+        return InventoryDatabase.getDatabase(context)
+    }
 
+    @Provides
+    @Singleton
+    fun provideSectionDao(inventoryDatabase: InventoryDatabase) : SectionDao{
+        return inventoryDatabase.getSectionDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDependencyDao(inventoryDatabase: InventoryDatabase) : DependencyDao {
+        return inventoryDatabase.getDependencyDao()
+    }
 }

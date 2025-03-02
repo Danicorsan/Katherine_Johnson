@@ -9,7 +9,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.converters.DateTimeConverter
+import app.domain.invoicing.converters.DependencyConverter
 import app.domain.invoicing.converters.UriConverter
+import app.domain.invoicing.dependency.Dependency
+import app.domain.invoicing.dependency.DependencyDao
+import app.domain.invoicing.section.Section
+import app.domain.invoicing.section.SectionDao
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.product.Product
 import kotlinx.coroutines.runBlocking
@@ -22,11 +27,13 @@ import java.util.concurrent.Executors
  */
 @Database(
     version = 1,
-    entities = [Category::class, Inventory::class],
+    entities = [Section::class, Dependency::class, Category::class, Inventory::class],
     exportSchema = false
 )
-@TypeConverters(DateTimeConverter::class, UriConverter::class)
+@TypeConverters(DateTimeConverter::class, UriConverter::class, DependencyConverter::class)
 abstract class InventoryDatabase : RoomDatabase() {
+    abstract fun getSectionDao() : SectionDao
+    abstract fun getDependencyDao() : DependencyDao
 
     abstract fun categoryDao(): CategoryDao
 
