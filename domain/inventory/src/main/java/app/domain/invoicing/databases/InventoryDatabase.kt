@@ -6,8 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import app.domain.invoicing.account.Account
+import app.domain.invoicing.account.AccountDao
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.CategoryDao
+import app.domain.invoicing.converters.AccountConverters
 import app.domain.invoicing.converters.DateTimeConverter
 import app.domain.invoicing.converters.DependencyConverter
 import app.domain.invoicing.converters.UriConverter
@@ -26,16 +29,16 @@ import java.util.concurrent.Executors
  *
  */
 @Database(
-    version = 1,
-    entities = [Section::class, Dependency::class, Category::class, Inventory::class],
+    version = 3, // Incrementa la versión
+    entities = [Section::class, Dependency::class, Category::class, Inventory::class, Account::class],
     exportSchema = false
 )
-@TypeConverters(DateTimeConverter::class, UriConverter::class, DependencyConverter::class)
+@TypeConverters(DateTimeConverter::class, UriConverter::class, DependencyConverter::class, AccountConverters::class)
 abstract class InventoryDatabase : RoomDatabase() {
-    abstract fun getSectionDao() : SectionDao
-    abstract fun getDependencyDao() : DependencyDao
-
+    abstract fun getSectionDao(): SectionDao
+    abstract fun getDependencyDao(): DependencyDao
     abstract fun categoryDao(): CategoryDao
+    abstract fun accountDao(): AccountDao
 
     companion object {
         @Volatile
@@ -48,6 +51,7 @@ abstract class InventoryDatabase : RoomDatabase() {
                     InventoryDatabase::class.java,
                     "inventory_database.db"
                 )
+                    .fallbackToDestructiveMigration() // Borra la BD si hay cambios en el esquema
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
@@ -65,12 +69,18 @@ abstract class InventoryDatabase : RoomDatabase() {
         }
 
         private fun prepopulateDatabase(database: InventoryDatabase) {
-
             runBlocking {
                 val categoryDao = database.categoryDao()
-                // Crear categorías predeterminadas
                 categoryDao.insertAllCategory(
-                    Category(name = "Electronics", shortName = "Electronics", description = "Electronic items", image = null, createdAt = Date(), fungible = true),)
+                    Category(
+                        name = "Electronics",
+                        shortName = "Electronics",
+                        description = "Electronic items",
+                        image = null,
+                        createdAt = Date(),
+                        fungible = true
+                    )
+                )
             }
         }
     }

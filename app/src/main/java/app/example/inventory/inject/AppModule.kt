@@ -2,6 +2,7 @@ package app.example.inventory.inject
 
 import android.content.Context
 import android.content.res.Resources
+import app.domain.invoicing.account.AccountDao
 import app.domain.invoicing.dependency.DependencyDao
 import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.databases.InventoryDatabase
@@ -46,8 +47,8 @@ object AppModule {
      */
     @Provides
     @Singleton
-    fun provideAccountRepository(): AccountRepository {
-        return AccountRepository
+    fun provideAccountRepository(dao: AccountDao): AccountRepository {
+        return AccountRepository(dao)
     }
 
     /**
@@ -65,6 +66,12 @@ object AppModule {
     @Singleton
     fun provideCategoryDao(database: InventoryDatabase): CategoryDao {
         return database.categoryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountDao(database: InventoryDatabase): AccountDao {
+        return database.accountDao()
     }
 
     /**

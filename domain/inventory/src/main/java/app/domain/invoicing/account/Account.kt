@@ -1,6 +1,7 @@
 package app.domain.invoicing.account
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * Account
@@ -14,8 +15,9 @@ import androidx.room.Entity
  * @property birthdate
  * @constructor Create empty Account
  */
+@Entity
 data class Account(
-    val id:Int,
+    @PrimaryKey(autoGenerate = true) val id:Int = 0,
     val email: Email,
     val password: Password,
     val username: String,
