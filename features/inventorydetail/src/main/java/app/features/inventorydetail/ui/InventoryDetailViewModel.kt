@@ -40,7 +40,6 @@ class InventoryDetailViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(loading = true)
             val success = repository.deleteInventory(inventory.id)
             if (success) {
-                delay(1000)
                 loadInventoryDetails(inventory.id)
             } else {
                 _uiState.value = _uiState.value.copy(

@@ -35,6 +35,7 @@ import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorydetail.R
 import app.features.inventorydetail.ui.base.TableRow
@@ -51,6 +52,8 @@ fun InventoryDetailScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var cannotDeleteDialog by remember { mutableStateOf(false) }
+    var cannotEditDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(inventoryId) {
         viewModel.loadInventoryDetails(inventoryId)
@@ -68,12 +71,24 @@ fun InventoryDetailScreen(
                         Action(
                             icon = Icons.Filled.Delete,
                             contentDescription = "Eliminar inventario",
-                            onClick = { showDeleteDialog = true },
+                            onClick = { uiState.success?.let { inventory ->
+                                if (inventory.state != InventoryState.IN_PROGRESS) {
+                                    cannotDeleteDialog = true
+                                } else {
+                                    showDeleteDialog = true
+                                }
+                            } },
                         ),
                         Action(
                             icon = Icons.Filled.Edit,
                             contentDescription = "Editar inventario",
-                            onClick = { uiState.success?.let { onEditInventoryClick(it) } },
+                            onClick = { uiState.success?.let { inventory ->
+                                if (inventory.state != InventoryState.IN_PROGRESS) {
+                                    cannotEditDialog = true
+                                } else {
+                                    onEditInventoryClick(inventory)
+                                }
+                            } },
                         ),
                     )
                 )
@@ -103,6 +118,11 @@ fun InventoryDetailScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                Text(
+                    text = inventory.shortName,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 Spacer(modifier = Modifier.height(16.dp))
                 HorizontalDivider(color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(8.dp))
@@ -111,8 +131,33 @@ fun InventoryDetailScreen(
                 TableRow(label = stringResource(R.string.tipo_de_inventario), value = inventory.inventoryType.name)
                 TableRow(label = stringResource(R.string.fecha_creacion), value = inventory.createdAt.toString())
                 TableRow(label = stringResource(R.string.fecha_actualizacion), value = inventory.updatedAt.toString())
+                TableRow(label = stringResource(R.string.estado), value = inventory.state.toString())
+                TableRow(label = stringResource(R.string.codigo), value = inventory.code)
             }
         }
+    }
+    if (cannotEditDialog) {
+        AlertDialog(
+            onDismissRequest = { cannotEditDialog = false },
+            title = { Text(stringResource(R.string.no_puedes_editar_un_inventario_con_estado)) },
+            confirmButton = {
+                TextButton(onClick = { cannotEditDialog = false }) {
+                    Text(stringResource(R.string.aceptar))
+                }
+            }
+        )
+    }
+
+    if (cannotDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { cannotDeleteDialog = false },
+            title = { Text(stringResource(R.string.no_puedes_eliminar_un_inventario_con_estado)) },
+            confirmButton = {
+                TextButton(onClick = { cannotDeleteDialog = false }) {
+                    Text(stringResource(R.string.aceptar))
+                }
+            }
+        )
     }
 
     if (showDeleteDialog) {

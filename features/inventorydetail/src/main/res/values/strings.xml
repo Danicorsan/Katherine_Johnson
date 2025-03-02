@@ -17,4 +17,10 @@
     <string name="estas_seguro_de_que_quieres_eliminar_este_inventario">¿Estás seguro de que quieres eliminar este inventario?</string>
     <string name="si_eliminar">Sí, eliminar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="estado">Estado</string>
+    <string name="codigo">Código</string>
+    <string name="no_puedes_eliminar_un_inventario_en_proceso">No puedes eliminar un inventario en proceso</string>
+    <string name="aceptar">OK</string>
+    <string name="no_puedes_eliminar_un_inventario_con_estado">No puedes eliminar un inventario con ese estado</string>
+    <string name="no_puedes_editar_un_inventario_con_estado">No puedes editar un inventario con ese estado </string>
 </resources>

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,6 +40,8 @@ class EditInventoryViewModel @Inject constructor(
                     originalDescription = inventory.description,
                     originalIcon = inventory.icon,
                     originalType = inventory.inventoryType,
+                    originalShortName = inventory.shortName,
+                    originalState = inventory.state,
                     isLoading = false
                 )
             } else {
@@ -51,6 +54,12 @@ class EditInventoryViewModel @Inject constructor(
     }
 
     fun onInventoryNameChange(newName: String) {
+        if (vmState.value.originalState != InventoryState.IN_PROGRESS && vmState.value.inventoryName != vmState.value.originalName) {
+            _vmState.value = vmState.value.copy(
+                errorMessage = "No se puede editar el inventario si no está en estado INPROGRESS"
+            )
+            return
+        }
         val nameErrorMessage = validateInventoryName(newName)
         val isDifferent = newName != vmState.value.originalName
         _vmState.value = vmState.value.copy(
@@ -59,44 +68,130 @@ class EditInventoryViewModel @Inject constructor(
             isSaveButtonEnabled = isDifferent ||
                     vmState.value.inventoryDescription != vmState.value.originalDescription ||
                     vmState.value.inventoryIcon != vmState.value.originalIcon ||
-                    vmState.value.inventoryType != vmState.value.originalType,
+                    vmState.value.inventoryType != vmState.value.originalType ||
+                    vmState.value.inventoryShortName != vmState.value.originalShortName ||
+                    vmState.value.inventoryState != vmState.value.originalState,
             noChangesMessage = if (!isDifferent) "El nombre no ha cambiado" else null
         )
     }
 
     fun onInventoryDescriptionChange(newDescription: String) {
+        if (vmState.value.originalState != InventoryState.IN_PROGRESS && vmState.value.inventoryDescription != vmState.value.originalDescription) {
+            _vmState.value = vmState.value.copy(
+                errorMessage = "No se puede editar el inventario si no está en estado INPROGRESS"
+            )
+            return
+        }
         val isDifferent = newDescription != vmState.value.originalDescription
         _vmState.value = vmState.value.copy(
             inventoryDescription = newDescription,
             isSaveButtonEnabled = isDifferent ||
                     vmState.value.inventoryName != vmState.value.originalName ||
                     vmState.value.inventoryIcon != vmState.value.originalIcon ||
-                    vmState.value.inventoryType != vmState.value.originalType,
+                    vmState.value.inventoryType != vmState.value.originalType ||
+                    vmState.value.inventoryShortName != vmState.value.originalShortName ||
+                    vmState.value.inventoryState != vmState.value.originalState,
             noChangesMessage = if (!isDifferent) "La descripción no ha cambiado" else null
         )
     }
 
     fun onInventoryIconChange(newIcon: InventoryIcon) {
+        if (vmState.value.originalState != InventoryState.IN_PROGRESS && vmState.value.inventoryIcon != vmState.value.originalIcon) {
+            _vmState.value = vmState.value.copy(
+                errorMessage = "No se puede editar el inventario si no está en estado INPROGRESS"
+            )
+            return
+        }
         val isDifferent = newIcon != vmState.value.originalIcon
         _vmState.value = vmState.value.copy(
             inventoryIcon = newIcon,
             isSaveButtonEnabled = isDifferent ||
                     vmState.value.inventoryName != vmState.value.originalName ||
                     vmState.value.inventoryDescription != vmState.value.originalDescription ||
-                    vmState.value.inventoryType != vmState.value.originalType,
+                    vmState.value.inventoryType != vmState.value.originalType ||
+                    vmState.value.inventoryShortName != vmState.value.originalShortName ||
+                    vmState.value.inventoryState != vmState.value.originalState,
             noChangesMessage = if (!isDifferent) "El icono no ha cambiado" else null
         )
     }
 
     fun onInventoryTypeChange(newType: InventoryType) {
+        if (vmState.value.originalState != InventoryState.IN_PROGRESS && vmState.value.inventoryType != vmState.value.originalType) {
+            _vmState.value = vmState.value.copy(
+                errorMessage = "No se puede editar el inventario si no está en estado INPROGRESS"
+            )
+            return
+        }
         val isDifferent = newType != vmState.value.originalType
         _vmState.value = vmState.value.copy(
             inventoryType = newType,
             isSaveButtonEnabled = isDifferent ||
                     vmState.value.inventoryName != vmState.value.originalName ||
                     vmState.value.inventoryDescription != vmState.value.originalDescription ||
-                    vmState.value.inventoryIcon != vmState.value.originalIcon,
+                    vmState.value.inventoryIcon != vmState.value.originalIcon ||
+                    vmState.value.inventoryShortName != vmState.value.originalShortName ||
+                    vmState.value.inventoryState != vmState.value.originalState,
             noChangesMessage = if (!isDifferent) "El tipo de inventario no ha cambiado" else null
+        )
+    }
+
+    fun onInventoryShortNameChange(newShortName: String) {
+        if (vmState.value.originalState != InventoryState.IN_PROGRESS && vmState.value.inventoryShortName != vmState.value.originalShortName) {
+            _vmState.value = vmState.value.copy(
+                errorMessage = "No se puede editar el inventario si no está en estado INPROGRESS"
+            )
+            return
+        }
+        val isDifferent = newShortName != vmState.value.originalShortName
+        _vmState.value = vmState.value.copy(
+            inventoryShortName = newShortName,
+            isSaveButtonEnabled = isDifferent ||
+                    vmState.value.inventoryName != vmState.value.originalName ||
+                    vmState.value.inventoryDescription != vmState.value.originalDescription ||
+                    vmState.value.inventoryIcon != vmState.value.originalIcon ||
+                    vmState.value.inventoryType != vmState.value.originalType ||
+                    vmState.value.inventoryState != vmState.value.originalState,
+            noChangesMessage = if (!isDifferent) "El nombre corto no ha cambiado" else null
+        )
+    }
+
+    fun onInventoryStateChange(newState: InventoryState) {
+        if (vmState.value.originalState != InventoryState.IN_PROGRESS && vmState.value.inventoryState != vmState.value.originalState) {
+            _vmState.value = vmState.value.copy(
+                errorMessage = "No se puede editar el inventario si no está en estado INPROGRESS"
+            )
+            return
+        }
+        val isDifferent = newState != vmState.value.originalState
+        _vmState.value = vmState.value.copy(
+            inventoryState = newState,
+            isSaveButtonEnabled = isDifferent ||
+                    vmState.value.inventoryName != vmState.value.originalName ||
+                    vmState.value.inventoryDescription != vmState.value.originalDescription ||
+                    vmState.value.inventoryIcon != vmState.value.originalIcon ||
+                    vmState.value.inventoryType != vmState.value.originalType ||
+                    vmState.value.inventoryShortName != vmState.value.originalShortName,
+            noChangesMessage = if (!isDifferent) "El estado no ha cambiado" else null
+        )
+    }
+    fun onInventoryCodeChange(newCode: String) {
+        if (vmState.value.originalState != InventoryState.IN_PROGRESS && vmState.value.inventoryCode != vmState.value.originalCode) {
+            _vmState.value = vmState.value.copy(
+                errorMessage = "No se puede editar el inventario si no está en estado INPROGRESS"
+            )
+            return
+        }
+        val isDifferent = newCode != vmState.value.originalCode
+        _vmState.value = vmState.value.copy(
+            inventoryCode = newCode,
+            isSaveButtonEnabled = isDifferent ||
+                    vmState.value.inventoryName != vmState.value.originalName ||
+                    vmState.value.inventoryDescription != vmState.value.originalDescription ||
+                    vmState.value.inventoryIcon != vmState.value.originalIcon ||
+                    vmState.value.inventoryType != vmState.value.originalType ||
+                    vmState.value.inventoryShortName != vmState.value.originalShortName ||
+                    vmState.value.inventoryState != vmState.value.originalState,
+            noChangesMessage = if (!isDifferent) "El codigo no ha cambiado" else null
         )
     }
 
@@ -109,6 +204,12 @@ class EditInventoryViewModel @Inject constructor(
     }
 
     fun saveChanges() {
+        if (vmState.value.originalState != InventoryState.IN_PROGRESS) {
+            _vmState.value = vmState.value.copy(
+                errorMessage = "No se puede guardar el inventario si no está en estado INPROGRESS"
+            )
+            return
+        }
         val updatedInventory = Inventory(
             id = vmState.value.inventoryId,
             name = vmState.value.inventoryName,
@@ -117,7 +218,10 @@ class EditInventoryViewModel @Inject constructor(
             icon = vmState.value.inventoryIcon,
             itemsCount = vmState.value.inventoryItemsCount,
             inventoryType = vmState.value.inventoryType,
-            createdAt = LocalDate.now()
+            createdAt = LocalDate.now(),
+            shortName = vmState.value.inventoryShortName,
+            state = vmState.value.inventoryState,
+            code = vmState.value.inventoryCode
         )
 
         viewModelScope.launch {

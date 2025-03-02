@@ -42,6 +42,7 @@ import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
@@ -58,7 +59,9 @@ fun EditInventoryScreen(
     var selectedIcon by remember { mutableStateOf(uiState.inventoryIcon) }
     var isIconExpanded by remember { mutableStateOf(false) }
     var isTypeExpanded by remember { mutableStateOf(false) }
+    var isStateExpanded by remember { mutableStateOf(false) }
     var selectedType by remember { mutableStateOf(uiState.inventoryType) }
+    var selectedState by remember { mutableStateOf(uiState.inventoryState) }
 
     if (uiState.inventoryId != inventoryId) viewModel.loadInventory(inventoryId)
 
@@ -88,11 +91,23 @@ fun EditInventoryScreen(
                     label = { Text(stringResource(R.string.nuevo_nombre_del_inventario)) },
                     modifier = Modifier.fillMaxWidth()
                 )
+                TextField(
+                    value = uiState.inventoryShortName,
+                    onValueChange = { viewModel.onInventoryShortNameChange(it) },
+                    label = { Text(stringResource(R.string.nuevo_nombre_corto_del_inventario)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
                 TextField(
                     value = uiState.inventoryDescription,
                     onValueChange = { viewModel.onInventoryDescriptionChange(it) },
                     label = { Text(stringResource(R.string.nueva_descripcion_del_inventario)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                TextField(
+                    value = uiState.inventoryCode,
+                    onValueChange = { viewModel.onInventoryCodeChange(it) },
+                    label = { Text(stringResource(R.string.nuevo_codigo_del_inventario)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Box(
@@ -198,6 +213,7 @@ fun EditInventoryScreen(
                                 InventoryType.TRIMESTRAL -> stringResource(R.string.trimestral)
                                 InventoryType.SEMESTRAL -> stringResource(R.string.semestral)
                                 InventoryType.ANNUAL -> stringResource(R.string.anual)
+                                InventoryType.BIANNUAL -> stringResource(R.string.bianual)
                                 InventoryType.PERMANENT -> stringResource(R.string.permanente)
                             },
                             modifier = Modifier.weight(1f),
@@ -224,7 +240,56 @@ fun EditInventoryScreen(
                                     InventoryType.TRIMESTRAL -> stringResource(R.string.trimestral)
                                     InventoryType.SEMESTRAL -> stringResource(R.string.semestral)
                                     InventoryType.ANNUAL -> stringResource(R.string.anual)
+                                    InventoryType.BIANNUAL -> stringResource(R.string.bianual)
                                     InventoryType.PERMANENT -> stringResource(R.string.permanente)
+                                }
+                            }
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { isStateExpanded = true }
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.onSurface,
+                            RoundedCornerShape(8.dp)
+                        )
+                        .padding(12.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = when (selectedState) {
+                                InventoryState.HISTORY -> stringResource(R.string.historico)
+                                InventoryState.ACTIVE -> stringResource(R.string.activo)
+                                InventoryState.IN_PROGRESS -> stringResource(R.string.en_proceso)
+                            },
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+
+                        Icon(
+                            imageVector = Icons.Filled.ArrowDropDown,
+                            contentDescription = "Expand Menu",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                        CustomDropdownMenu(
+                            expanded = isStateExpanded,
+                            onDismissRequest = { isStateExpanded = false },
+                            items = InventoryState.entries,
+                            onItemSelected = { state ->
+                                selectedState = state
+                                viewModel.onInventoryStateChange(state)
+                            },
+                            itemText = { state ->
+                                when (state) {
+                                    InventoryState.HISTORY -> stringResource(R.string.historico)
+                                    InventoryState.ACTIVE -> stringResource(R.string.activo)
+                                    InventoryState.IN_PROGRESS -> stringResource(R.string.en_proceso)
                                 }
                             }
                         )

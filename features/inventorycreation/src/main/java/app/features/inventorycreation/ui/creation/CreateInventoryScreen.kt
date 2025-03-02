@@ -45,6 +45,7 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
@@ -64,8 +65,10 @@ fun CreateInventoryScreen(
 
     var selectedType by remember { mutableStateOf(uiState.inventoryType) }
     var selectedIcon by remember { mutableStateOf(uiState.inventoryIcon) }
+    var selectedState by remember { mutableStateOf(uiState.inventoryState) }
     var isIconExpanded by remember { mutableStateOf(false) }
     var isTypeExpanded by remember { mutableStateOf(false) }
+    var isStateExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -109,12 +112,43 @@ fun CreateInventoryScreen(
                             modifier = Modifier.padding(start = 8.dp) // Add some padding
                         )
                     }
+                    TextField(
+                        value = uiState.inventoryShortName,
+                        onValueChange = { viewModel.onInventoryShortNameChange(it) },
+                        label = { Text(stringResource(R.string.nombre_corto_del_inventario)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = uiState.shortNameErrorMessage != null
+                    )
+                    if (uiState.shortNameErrorMessage != null) {
+                        Text(
+                            text = uiState.shortNameErrorMessage,
+                            color = Color.Red,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(start = 8.dp) // Add some padding
+                        )
+                    }
 
                     TextField(
                         value = uiState.inventoryDescription,
                         onValueChange = { viewModel.onInventoryDescriptionChange(it) },
                         label = { Text(stringResource(R.string.descripcion_del_inventario)) },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = uiState.descriptionErrorMessage != null
+                    )
+                    if (uiState.descriptionErrorMessage != null) {
+                        Text(
+                            text = uiState.descriptionErrorMessage,
+                            color = Color.Red,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(start = 8.dp) // Add some padding
+                        )
+                    }
+
+                    TextField(
+                        value = uiState.inventoryCode,
+                        onValueChange = { viewModel.onInventoryCodeChange(it) },
+                        label = { Text(stringResource(R.string.codigo_del_inventario)) },
+                        modifier = Modifier.fillMaxWidth(),
                     )
 
                     Box(
@@ -220,6 +254,7 @@ fun CreateInventoryScreen(
                                     InventoryType.TRIMESTRAL -> stringResource(R.string.trimestral)
                                     InventoryType.SEMESTRAL -> stringResource(R.string.semestral)
                                     InventoryType.ANNUAL -> stringResource(R.string.anual)
+                                    InventoryType.BIANNUAL -> stringResource(R.string.bianual)
                                     InventoryType.PERMANENT -> stringResource(R.string.permanente)
                                 },
                                 modifier = Modifier.weight(1f),
@@ -246,7 +281,56 @@ fun CreateInventoryScreen(
                                         InventoryType.TRIMESTRAL -> stringResource(R.string.trimestral)
                                         InventoryType.SEMESTRAL -> stringResource(R.string.semestral)
                                         InventoryType.ANNUAL -> stringResource(R.string.anual)
+                                        InventoryType.BIANNUAL -> stringResource(R.string.bianual)
                                         InventoryType.PERMANENT -> stringResource(R.string.permanente)
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { isStateExpanded = true }
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.onSurface,
+                                RoundedCornerShape(8.dp)
+                            )
+                            .padding(12.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = when (selectedState) {
+                                    InventoryState.HISTORY -> stringResource(R.string.historico)
+                                    InventoryState.ACTIVE -> stringResource(R.string.activo)
+                                    InventoryState.IN_PROGRESS -> stringResource(R.string.en_proceso)
+                                },
+                                modifier = Modifier.weight(1f),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+
+                            Icon(
+                                imageVector = Icons.Filled.ArrowDropDown,
+                                contentDescription = "Expand Menu",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                            CustomDropdownMenu(
+                                expanded = isStateExpanded,
+                                onDismissRequest = { isStateExpanded = false },
+                                items = InventoryState.entries,
+                                onItemSelected = { state ->
+                                    selectedState = state
+                                    viewModel.onInventoryStateChange(state)
+                                },
+                                itemText = { state ->
+                                    when (state) {
+                                        InventoryState.HISTORY -> stringResource(R.string.historico)
+                                        InventoryState.ACTIVE -> stringResource(R.string.activo)
+                                        InventoryState.IN_PROGRESS -> stringResource(R.string.en_proceso)
                                     }
                                 }
                             )
@@ -272,7 +356,10 @@ fun CreateInventoryScreen(
                                     updatedAt = LocalDate.now(),
                                     icon = uiState.inventoryIcon,
                                     itemsCount = uiState.inventoryItemsCount,
-                                    inventoryType = uiState.inventoryType
+                                    inventoryType = uiState.inventoryType,
+                                    shortName = uiState.inventoryShortName,
+                                    state = uiState.inventoryState,
+                                    code = uiState.inventoryCode
                                 )
                             )
                             showSuccessDialog = true

@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
 import java.time.LocalDate
 
@@ -132,6 +133,9 @@ fun InventoryCardPreview() {
             updatedAt = LocalDate.now(),
             itemsCount = 10,
             inventoryType = InventoryType.SEMESTRAL,
+            shortName = "Inv1",
+            state = InventoryState.ACTIVE,
+            code = "INV-001",
         ),
         onClick = {},
         onLongClick = {},

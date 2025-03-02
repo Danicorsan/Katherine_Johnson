@@ -11,6 +11,9 @@ import app.domain.invoicing.inventory.InventoryIcon.NONE
 import app.domain.invoicing.inventory.InventoryIcon.SERVICES
 import app.domain.invoicing.inventory.InventoryIcon.TECHNOLOGY
 import app.domain.invoicing.inventory.InventoryIcon.WAREHOUSE
+import app.domain.invoicing.inventory.InventoryState.ACTIVE
+import app.domain.invoicing.inventory.InventoryState.HISTORY
+import app.domain.invoicing.inventory.InventoryState.IN_PROGRESS
 import app.domain.invoicing.inventory.InventoryType.ANNUAL
 import app.domain.invoicing.inventory.InventoryType.MONTHLY
 import app.domain.invoicing.inventory.InventoryType.PERMANENT
@@ -42,6 +45,11 @@ data class Inventory(
     @ColumnInfo(name = "name")
     val name: String,
 
+    @ColumnInfo(name = "short_name")
+    val shortName: String,
+    @ColumnInfo(name = "code")
+    val code: String,
+
     @ColumnInfo(name = "description")
     val description: String,
 
@@ -59,8 +67,12 @@ data class Inventory(
     var updatedAt: LocalDate,
 
     @ColumnInfo(name = "icon")
-    var icon: InventoryIcon = NONE
+    var icon: InventoryIcon = NONE,
+
+    @ColumnInfo(name = "state")
+    var state: InventoryState = IN_PROGRESS
 )
+
 /**
  * Enumeración que representa los diferentes iconos para las categorías de inventario.
  *
@@ -126,5 +138,26 @@ enum class InventoryType {
     TRIMESTRAL,
     SEMESTRAL,
     ANNUAL,
+    BIANNUAL,
     PERMANENT
+}
+/**
+ * Estados en los que puede estar un inventario.
+ *
+ * @property ACTIVE Activo, el inventario está actualmente en uso.
+ *
+ * El inventario se encuentra actualmente en uso y se puede realizar un conteo en él.
+ *
+ * @property IN_PROGRESS En progreso, el inventario se encuentra en conteo.
+ *
+ * El inventario se encuentra en conteo y no se puede realizar un conteo en él.
+ *
+ * @property HISTORY Histórico, el inventario no se encuentra en uso y se guardan los resultados del conteo.
+ *
+ * El inventario no se encuentra en uso y se guardan los resultados del conteo en histórico.
+ */
+enum class InventoryState {
+    ACTIVE,
+    IN_PROGRESS,
+    HISTORY
 }

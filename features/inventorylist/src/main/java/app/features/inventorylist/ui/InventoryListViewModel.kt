@@ -11,18 +11,25 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class SortOrder {
+    ASCENDING,
+    DESCENDING
+}
+
 @HiltViewModel
 class InventoryListViewModel @Inject constructor(
     private val repository: InventoryRepository
 ) : ViewModel() {
 
     private val _inventories = mutableListOf<Inventory>()
-    private val _uiState = mutableStateOf(InventoryListState(
-        success = _inventories,
-        loading = false,
-        error = null,
-        noData = false
-    ))
+    private val _uiState = mutableStateOf(
+        InventoryListState(
+            success = _inventories,
+            loading = false,
+            error = null,
+            noData = false,
+        )
+    )
     val uiState: InventoryListState get() = _uiState.value
 
     init {
@@ -33,22 +40,24 @@ class InventoryListViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)
             delay(1000)
+            val inventories = repository.getAllInventories()
             _inventories.clear()
-            _inventories.addAll(repository.getAllInventories())
+            _inventories.addAll(inventories)
             _uiState.value = uiState.copy(success = _inventories, loading = false)
         }
     }
-    fun onOpenDrawer(scope : CoroutineScope){
+
+    fun onOpenDrawer(scope: CoroutineScope) {
         scope.launch {
             uiState.drawerState.open()
         }
     }
+
     fun deleteInventory(inventory: Inventory) {
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)
             val success = repository.deleteInventory(inventory.id)
             if (success) {
-                delay(1000)
                 loadInventories()
             } else {
                 _uiState.value = uiState.copy(
@@ -57,5 +66,10 @@ class InventoryListViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+
+    fun refreshInventories() {
+        loadInventories()
     }
 }

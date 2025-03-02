@@ -3,7 +3,7 @@
 
     <string name="editar_inventario">Edit Inventory</string>
     <string name="nombre_del_inventario">Inventory Name*</string>
-    <string name="descripcion_del_inventario">Inventory Description</string>
+    <string name="descripcion_del_inventario">Inventory Description*</string>
     <string name="guardar_cambios">Save Changes</string>
     <string name="crear_inventario">Create Inventory</string>
     <string name="nueva_descripcion_del_inventario">New Inventory Description</string>
@@ -23,4 +23,11 @@
     <string name="anual">Annual</string>
     <string name="permanente">Permanent</string>
     <string name="tipo_de_inventario">Type of Inventory</string>
+    <string name="nombre_corto_del_inventario">Short Inventory Name*</string>
+    <string name="historico">History</string>
+    <string name="activo">Active</string>
+    <string name="en_proceso">In Progress</string>
+    <string name="codigo_del_inventario">Inventory Code</string>
+    <string name="nuevo_nombre_corto_del_inventario">New Short Inventory Name</string>
+    <string name="nuevo_codigo_del_inventario">New Inventory Code</string>
 </resources>

@@ -9,5 +9,5 @@ data class InventoryListState(
     var loading: Boolean,
     val error: String?,
     val noData: Boolean,
-    val drawerState : DrawerState = DrawerState(initialValue = DrawerValue.Closed)
+    val drawerState : DrawerState = DrawerState(initialValue = DrawerValue.Closed),
 )

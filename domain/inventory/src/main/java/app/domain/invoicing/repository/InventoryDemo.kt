@@ -2,6 +2,7 @@ package app.domain.invoicing.repository
 
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
+import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
 import java.time.LocalDate
 
@@ -16,7 +17,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             updatedAt = LocalDate.of(2022, 1, 1),
             icon = InventoryIcon.ELECTRONICS,
             itemsCount = 1,
-            inventoryType = InventoryType.SEMESTRAL
+            inventoryType = InventoryType.SEMESTRAL,
+            shortName = "Elec",
+            state = InventoryState.IN_PROGRESS,
+            code = "ELEC-001"
         ),
         Inventory(
             id = 2,
@@ -26,7 +30,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             updatedAt = LocalDate.now(),
             icon = InventoryIcon.TECHNOLOGY,
             itemsCount = 1,
-            inventoryType = InventoryType.TRIMESTRAL
+            inventoryType = InventoryType.TRIMESTRAL,
+            shortName = "Tech",
+            state = InventoryState.IN_PROGRESS,
+            code = "TECH-002"
         ),
         Inventory(
             id = 3,
@@ -36,7 +43,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
             itemsCount = 1,
-            inventoryType = InventoryType.PERMANENT
+            inventoryType = InventoryType.PERMANENT,
+            shortName = "Mat",
+            state = InventoryState.IN_PROGRESS,
+            code = "MAT-003"
         ),
         Inventory(
             id = 4,
@@ -46,7 +56,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             updatedAt = LocalDate.now(),
             icon = InventoryIcon.SERVICES,
             itemsCount = 1,
-            inventoryType = InventoryType.ANNUAL
+            inventoryType = InventoryType.ANNUAL,
+            shortName = "Serv",
+            state = InventoryState.IN_PROGRESS,
+            code = "SERV-004"
         ),
         Inventory(
             id = 5,
@@ -56,7 +69,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             updatedAt = LocalDate.now(),
             icon = InventoryIcon.WAREHOUSE,
             itemsCount = 1,
-            inventoryType = InventoryType.PERMANENT
+            inventoryType = InventoryType.PERMANENT,
+            shortName = "Mueb",
+            state = InventoryState.IN_PROGRESS,
+            code = "MUEB-005"
         ),
         Inventory(
             id = 6,
@@ -66,7 +82,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             updatedAt = LocalDate.now(),
             icon = InventoryIcon.NONE,
             itemsCount = 1,
-            inventoryType = InventoryType.WEEKLY
+            inventoryType = InventoryType.WEEKLY,
+            shortName = "Otro",
+            state = InventoryState.IN_PROGRESS,
+            code = "OTRO-006"
         ),
         Inventory(
             id = 7,
@@ -76,7 +95,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             updatedAt = LocalDate.now(),
             icon = InventoryIcon.TECHNOLOGY,
             itemsCount = 1,
-            inventoryType = InventoryType.PERMANENT
+            inventoryType = InventoryType.PERMANENT,
+            shortName = "Ofic",
+            state = InventoryState.IN_PROGRESS,
+            code = "OFIC-007"
         ),
         Inventory(
             id = 8,
@@ -86,7 +108,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             updatedAt = LocalDate.now(),
             icon = InventoryIcon.MATERIALS,
             itemsCount = 1,
-            inventoryType = InventoryType.MONTHLY
+            inventoryType = InventoryType.MONTHLY,
+            shortName = "Almac",
+            state = InventoryState.IN_PROGRESS,
+            code = "ALMAC-008"
         )
     )
 }
