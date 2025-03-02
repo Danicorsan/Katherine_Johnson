@@ -176,6 +176,8 @@ fun CategoryEditionContent(
                     contentScale = ContentScale.Crop
                 )
             }
+            MediumSpace()
+
         }
 
 

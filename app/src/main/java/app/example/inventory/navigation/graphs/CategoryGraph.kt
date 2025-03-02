@@ -47,7 +47,9 @@ private fun NavGraphBuilder.categoryListRoute(
             viewModel = hiltViewModel(),
             onClickBack = { navController.popBackStack() },
             onClickNewCategory = { navController.navigate(CategoryGraph.categoryCreationRoute()) },
-            onClickDetails = { id -> navController.navigate(CategoryGraph.categoryDetailRoute(id)) }
+            onClickDetails = { id -> navController.navigate(CategoryGraph.categoryDetailRoute(id)) },
+            onClickInventory = {navController.navigate(InventoryGraph.ROUTE)},
+            onClicProduct = {navController.navigate(ProductGraph.ROUTE)}
         )
     }
 }
