@@ -1,5 +1,5 @@
 package app.domain.invoicing.product
-
+/*
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -23,4 +23,4 @@ interface ProductDao {
 
     @Query("SELECT * FROM Product WHERE id = :productId")
     suspend fun getProductById(productId : Int)
-}
+}*/

@@ -33,20 +33,20 @@ import kotlinx.datetime.Instant
  * @property tags Las etiquetas del producto.
  * @property minimunStock El stock mínimo.
  */
-@Entity
+//@Entity
 data class Product(
-    @PrimaryKey
+   // @PrimaryKey
     val id : Int? = null,
     var code : String,
     var name : String,
-    @ColumnInfo(name = "short_name")
+   // @ColumnInfo(name = "short_name")
     var shortName : String,
     var description : String = "",
-    @ColumnInfo(name = "serial_number")
+   // @ColumnInfo(name = "serial_number")
     var serialNumber : String,
-    @ColumnInfo(name = "model_code")
+   // @ColumnInfo(name = "model_code")
     var modelCode : String,
-    @ColumnInfo(name = "product_type")
+   // @ColumnInfo(name = "product_type")
     var productType : String,
     var category : Category,
     var section : Section,
@@ -54,12 +54,12 @@ data class Product(
     var image : Uri? = null,
     var stock : UInt,
     var price : Double,
-    @ColumnInfo(name = "adquisition_date")
+   // @ColumnInfo(name = "adquisition_date")
     val acquisitionDate : Instant,
-    @ColumnInfo(name = "discontinuation_date")
+   // @ColumnInfo(name = "discontinuation_date")
     var discontinuationDate : Instant? = null,
     val notes : String = "",
     val tags : Tags = Tags(),
-    @ColumnInfo(name = "minimun_stock")
+   // @ColumnInfo(name = "minimun_stock")
     var minimunStock : UInt? = null
 )

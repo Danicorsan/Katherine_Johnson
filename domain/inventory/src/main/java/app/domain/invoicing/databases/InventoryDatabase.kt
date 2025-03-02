@@ -16,7 +16,6 @@ import app.domain.invoicing.converters.UriConverter
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.dependency.DependencyDao
 import app.domain.invoicing.product.Product
-import app.domain.invoicing.product.ProductDao
 import app.domain.invoicing.section.Section
 import app.domain.invoicing.section.SectionDao
 import kotlinx.coroutines.runBlocking
@@ -28,7 +27,7 @@ import java.util.concurrent.Executors
  */
 @Database(
     version = 1,
-    entities = [Section::class, Dependency::class, Product::class],
+    entities = [Section::class, Dependency::class],
     exportSchema = false
 )
 @TypeConverters(DateTimeConverter::class, UriConverter::class, DependencyConverter::class,
@@ -36,7 +35,7 @@ import java.util.concurrent.Executors
 abstract class InventoryDatabase : RoomDatabase() {
     abstract fun getSectionDao() : SectionDao
     abstract fun getDependencyDao() : DependencyDao
-    abstract fun getProductDao() : ProductDao
+    //abstract fun getProductDao() : ProductDao
 
     companion object {
         @Volatile
