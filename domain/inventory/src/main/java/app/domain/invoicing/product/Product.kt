@@ -2,14 +2,17 @@ package app.domain.invoicing.product
 
 
 import android.net.Uri
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.product.complements.ProductAlarm
 import app.domain.invoicing.product.complements.tags.Tags
 import app.domain.invoicing.section.Section
 import kotlinx.datetime.Instant
 
+@Entity
 data class Product(
-    val id : Int? = null,
+    @PrimaryKey(autoGenerate = true) val id : Int? = null,
     var code : String,
     var name : String,
     var shortName : String,

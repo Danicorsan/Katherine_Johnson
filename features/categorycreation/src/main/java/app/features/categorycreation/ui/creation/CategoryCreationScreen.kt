@@ -117,7 +117,7 @@ fun CategoryCreationContent(
 
     // Error Dialog
     if (viewModel.state.showDialog) {
-        ErrorDialog { viewModel.dimissDialog() }
+        ErrorDialog { viewModel.dismissDialog() }
     }
 }
 

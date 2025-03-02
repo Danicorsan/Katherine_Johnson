@@ -2,6 +2,7 @@ package app.features.productcreation.ui.creation
 
 import android.content.res.Resources
 import androidx.lifecycle.viewModelScope
+import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.InputDataState
@@ -16,8 +17,9 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ProductCreationViewModel @Inject constructor(
+    repository: CategoryRepository,
     resources: Resources
-) : ProductBaseCreationViewModel(resources) {
+) : ProductBaseCreationViewModel(repository,resources) {
 
     /**
      * Carga e inicializa los datos necesarios para [app.features.productcreation.ui.creation.ProductCreationScreen]

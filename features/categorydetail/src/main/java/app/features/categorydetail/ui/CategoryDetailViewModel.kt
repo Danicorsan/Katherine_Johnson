@@ -5,15 +5,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.domain.invoicing.category.Category
 import app.domain.invoicing.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryDetailViewModel @Inject constructor() : ViewModel() {
+class CategoryDetailViewModel @Inject constructor(
+    private val repository: CategoryRepository,
+) : ViewModel() {
+
     var state by mutableStateOf(CategoryDetailState())
         private set
 
@@ -25,16 +27,14 @@ class CategoryDetailViewModel @Inject constructor() : ViewModel() {
     fun loadCategory(id: Int) {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            delay(1000)
-            val categoria: Category? = CategoryRepository.getCategoryById(id)
-            state = if (categoria != null) {
-                state.copy(category = categoria, notFoundError = false)
-            } else {
-                state.copy(notFoundError = true)
-            }
-            state = state.copy(isLoading = false)
-        }
+            val categoria = repository.getCategoryById(id).firstOrNull()
 
+            state = if (categoria != null) {
+                state.copy(category = categoria, notFoundError = false, isLoading = false)
+            } else {
+                state.copy(notFoundError = true, isLoading = false)
+            }
+        }
     }
 
     /**
@@ -52,12 +52,16 @@ class CategoryDetailViewModel @Inject constructor() : ViewModel() {
      * @receiver
      */
     fun confirmDeleteCategory(onGoBack: () -> Unit) {
-        state.category?.let {
-            CategoryRepository.deleteCategory(it.id)
+        viewModelScope.launch {
+            state.category?.let { category ->
+
+                repository.deleteCategory(category)
+            }
+            state = state.copy(isDeleteDialogVisible = false)
+            onGoBack() // Navegación después de la eliminación
         }
-        state = state.copy(isDeleteDialogVisible = false)
-        onGoBack()
     }
+    
 
     /**
      * Cancel delete category
