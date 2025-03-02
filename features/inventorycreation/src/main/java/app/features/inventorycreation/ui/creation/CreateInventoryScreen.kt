@@ -62,10 +62,8 @@ fun CreateInventoryScreen(
 
     var selectedType by remember { mutableStateOf(uiState.inventoryType) }
     var selectedIcon by remember { mutableStateOf(uiState.inventoryIcon) }
-    var selectedState by remember { mutableStateOf(uiState.inventoryState) }
     var isIconExpanded by remember { mutableStateOf(false) }
     var isTypeExpanded by remember { mutableStateOf(false) }
-    var isStateExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {

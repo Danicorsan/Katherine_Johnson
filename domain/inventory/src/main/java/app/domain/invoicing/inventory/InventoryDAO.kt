@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import java.time.LocalDateTime
+import java.util.Date
 
 @Dao
 interface InventoryDAO {
@@ -29,9 +29,9 @@ interface InventoryDAO {
         code: String,
         description: String,
         type: InventoryType,
-        historyDateAt: LocalDateTime?,
-        inProgressDateAt: LocalDateTime?,
-        activeDateAt: LocalDateTime?,
+        historyDateAt: Date?,
+        inProgressDateAt: Date,
+        activeDateAt: Date?,
         icon: InventoryIcon,
         state: InventoryState
     )

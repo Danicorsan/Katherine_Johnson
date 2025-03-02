@@ -4,7 +4,7 @@ import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
 import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
-import java.time.LocalDateTime
+import java.util.Date
 
 fun initialiceInventoryDemo(): MutableList<Inventory> {
     initializeProductsDemo().values.toList()
@@ -17,8 +17,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             inventoryType = InventoryType.MONTHLY,
             shortName = "Elec",
             state = InventoryState.ACTIVE,
-            activeDateAt = LocalDateTime.now(),
-            code = "ELEC-001"
+            activeDateAt = Date(),
+            code = "ELEC-001",
+            historyDateAt = Date(0),
+            inProgressDateAt = Date(0)
         ),
         Inventory(
             id = 2,
@@ -28,8 +30,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             inventoryType = InventoryType.SEMESTRAL,
             shortName = "Tech",
             state = InventoryState.ACTIVE,
-            activeDateAt = LocalDateTime.now(),
-            code = "TECH-002"
+            activeDateAt = Date(),
+            code = "TECH-002",
+            historyDateAt = Date(0),
+            inProgressDateAt = Date(0)
         ),
         Inventory(
             id = 3,
@@ -39,8 +43,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             inventoryType = InventoryType.ANNUAL,
             shortName = "Mat",
             state = InventoryState.HISTORY,
-            historyDateAt = LocalDateTime.now(),
-            code = "MAT-003"
+            historyDateAt = Date(),
+            code = "MAT-003",
+            inProgressDateAt = Date(0),
+            activeDateAt = Date(0)
         ),
         Inventory(
             id = 4,
@@ -50,7 +56,7 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             inventoryType = InventoryType.WEEKLY,
             shortName = "Serv",
             state = InventoryState.IN_PROGRESS,
-            inProgressDateAt = LocalDateTime.now(),
+            inProgressDateAt = Date(),
             code = "SERV-004"
         ),
         Inventory(
@@ -61,8 +67,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             inventoryType = InventoryType.PERMANENT,
             shortName = "Mueb",
             state = InventoryState.ACTIVE,
-            activeDateAt = LocalDateTime.now(),
-            code = "MUEB-005"
+            activeDateAt = Date(),
+            code = "MUEB-005",
+            historyDateAt = Date(0),
+            inProgressDateAt = Date(0)
         ),
         Inventory(
             id = 6,
@@ -72,8 +80,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             inventoryType = InventoryType.TRIMESTRAL,
             shortName = "Otro",
             state = InventoryState.HISTORY,
-            historyDateAt = LocalDateTime.now(),
-            code = "OTRO-006"
+            historyDateAt = Date(),
+            code = "OTRO-006",
+            inProgressDateAt = Date(0),
+            activeDateAt = Date(0)
         ),
         Inventory(
             id = 7,
@@ -83,8 +93,10 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             inventoryType = InventoryType.MONTHLY,
             shortName = "Ofic",
             state = InventoryState.ACTIVE,
-            activeDateAt = LocalDateTime.now(),
-            code = "OFIC-007"
+            activeDateAt = Date(),
+            code = "OFIC-007",
+            historyDateAt = Date(0,),
+            inProgressDateAt = Date(0)
         ),
         Inventory(
             id = 8,
@@ -94,7 +106,7 @@ fun initialiceInventoryDemo(): MutableList<Inventory> {
             inventoryType = InventoryType.ANNUAL,
             shortName = "Almac",
             state = InventoryState.IN_PROGRESS,
-            inProgressDateAt = LocalDateTime.now(),
+            inProgressDateAt = Date(),
             code = "ALMAC-008"
         )
     )

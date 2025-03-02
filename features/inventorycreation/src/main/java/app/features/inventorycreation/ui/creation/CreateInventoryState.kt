@@ -4,7 +4,7 @@ import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
 import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
-import java.time.LocalDateTime
+import java.util.Date
 
 data class CreateInventoryState(
     val inventoryId: Int,
@@ -24,7 +24,7 @@ data class CreateInventoryState(
     val descriptionErrorMessage: String? = null,
     val shortNameErrorMessage: String? = null,
 
-    val inventoryHistoryDateTime: LocalDateTime?,
-    val inventoryInProgressDateTime: LocalDateTime?,
-    val inventoryActiveDateTime: LocalDateTime?
+    val inventoryHistoryDateTime: Date?,
+    val inventoryInProgressDateTime: Date?,
+    val inventoryActiveDateTime: Date?
 )

@@ -36,6 +36,7 @@ import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryIcon
 import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
+import java.util.Date
 
 /**
  * Obtiene el icono para un InventoryIcon
@@ -132,6 +133,9 @@ fun InventoryCardPreview() {
             shortName = "Inv1",
             state = InventoryState.ACTIVE,
             code = "INV-001",
+            historyDateAt = null,
+            inProgressDateAt = Date(),
+            activeDateAt = null,
         ),
         onClick = {},
         onLongClick = {},

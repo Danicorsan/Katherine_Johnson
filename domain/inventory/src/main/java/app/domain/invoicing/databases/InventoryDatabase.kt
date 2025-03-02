@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import app.domain.invoicing.converters.DateTimeConverter
 import app.domain.invoicing.converters.UriConverter
+import app.domain.invoicing.inventory.Inventory
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
@@ -17,7 +18,7 @@ import java.util.concurrent.Executors
  */
 @Database(
     version = 1,
-    entities = [],
+    entities = [Inventory::class],
     exportSchema = false
 )
 @TypeConverters(DateTimeConverter::class, UriConverter::class)

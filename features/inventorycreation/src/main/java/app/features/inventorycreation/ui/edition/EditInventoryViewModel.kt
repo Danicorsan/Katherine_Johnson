@@ -11,7 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,10 +41,10 @@ class EditInventoryViewModel @Inject constructor(
         originalState = InventoryState.IN_PROGRESS,
         originalCode = "",
         noChangesMessage = null,
-        inventoryInProgressDateAt = null,
+        inventoryInProgressDateAt = Date(),
         inventoryActiveDateAt = null,
         inventoryHistoryDateAt = null,
-        originalInProgressDateAt = null,
+        originalInProgressDateAt = Date(),
         originalActiveDateAt = null,
         originalHistoryDateAt = null
     ))
@@ -216,7 +216,7 @@ class EditInventoryViewModel @Inject constructor(
         when (newState) {
             InventoryState.IN_PROGRESS -> {
                 if (vmState.value.originalState != InventoryState.IN_PROGRESS) {
-                    inProgressDate = LocalDateTime.now()
+                    inProgressDate = Date()
                     activeDate = vmState.value.inventoryActiveDateAt // Reset active date if going to IN_PROGRESS
                     historyDate = vmState.value.inventoryHistoryDateAt // Reset history date if going to IN_PROGRESS
                     originalInProgressDate = inProgressDate // Update original date
@@ -226,7 +226,7 @@ class EditInventoryViewModel @Inject constructor(
             }
             InventoryState.ACTIVE -> {
                 if (vmState.value.originalState != InventoryState.ACTIVE) {
-                    activeDate = LocalDateTime.now()
+                    activeDate = Date()
                     inProgressDate = vmState.value.inventoryInProgressDateAt // Reset inProgress date if going to ACTIVE
                     historyDate = vmState.value.inventoryHistoryDateAt // Reset history date if going to ACTIVE
                     originalActiveDate = activeDate // Update original date
@@ -236,7 +236,7 @@ class EditInventoryViewModel @Inject constructor(
             }
             InventoryState.HISTORY -> {
                 if (vmState.value.originalState != InventoryState.HISTORY) {
-                    historyDate = LocalDateTime.now()
+                    historyDate = Date()
                     inProgressDate = vmState.value.inventoryInProgressDateAt // Reset inProgress date if going to HISTORY
                     activeDate = vmState.value.inventoryActiveDateAt // Reset active date if going to HISTORY
                     originalHistoryDate = historyDate // Update original date

@@ -18,7 +18,7 @@ import app.domain.invoicing.inventory.InventoryType.PERMANENT
 import app.domain.invoicing.inventory.InventoryType.SEMESTRAL
 import app.domain.invoicing.inventory.InventoryType.TRIMESTRAL
 import app.domain.invoicing.inventory.InventoryType.WEEKLY
-import java.time.LocalDateTime
+import java.util.Date
 
 /**
  * Representa un inventario.
@@ -55,13 +55,13 @@ data class Inventory(
     val inventoryType: InventoryType,
 
     @ColumnInfo(name = "history_date_at")
-    val historyDateAt: LocalDateTime? = null,
+    val historyDateAt: Date? = null,
 
     @ColumnInfo(name = "in_progress_date_at")
-    val inProgressDateAt: LocalDateTime? = null,
+    val inProgressDateAt: Date,
 
     @ColumnInfo(name = "active_date_at")
-    val activeDateAt: LocalDateTime? = null,
+    val activeDateAt: Date? = null,
 
     @ColumnInfo(name = "icon")
     var icon: InventoryIcon = NONE,

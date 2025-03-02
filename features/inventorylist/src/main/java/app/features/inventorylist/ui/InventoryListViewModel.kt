@@ -11,11 +11,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-enum class SortOrder {
-    ASCENDING,
-    DESCENDING
-}
-
 @HiltViewModel
 class InventoryListViewModel @Inject constructor(
     private val repository: InventoryRepository

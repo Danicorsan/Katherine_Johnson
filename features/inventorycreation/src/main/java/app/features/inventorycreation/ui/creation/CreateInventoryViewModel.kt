@@ -11,7 +11,7 @@ import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -120,7 +120,7 @@ class CreateInventoryViewModel @Inject constructor(
             delay(1000) // Mantenemos el delay si es necesario
 
             try {
-                val currentDateTime = LocalDateTime.now()
+                val currentDateTime = Date()
                 val newInventory = Inventory(
                     id = 0, // El ID se asignará en la base de datos
                     name = _vmState.value.inventoryName,
