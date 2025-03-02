@@ -51,9 +51,6 @@ data class Inventory(
     @ColumnInfo(name = "description")
     val description: String,
 
-    @ColumnInfo(name = "items_count")
-    val itemsCount: Int? = null,
-
     @ColumnInfo(name = "inventory_type")
     val inventoryType: InventoryType,
 

@@ -5,7 +5,7 @@ import app.domain.invoicing.inventory.Inventory
 object InventoryRepository {
 
     private val dataSet: MutableList<Inventory> = initialiceInventoryDemo()
-    private var nextId = dataSet.maxByOrNull { it.id!! }?.id ?: 0
+    private var nextId = dataSet.maxByOrNull { it.id }?.id ?: 0
 
     fun getAllInventories(): List<Inventory> = dataSet
 

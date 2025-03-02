@@ -127,7 +127,6 @@ class CreateInventoryViewModel @Inject constructor(
                     shortName = _vmState.value.inventoryShortName,
                     description = _vmState.value.inventoryDescription,
                     icon = _vmState.value.inventoryIcon,
-                    itemsCount = 0, // Asumimos que un nuevo inventario comienza con 0 items
                     inventoryType = _vmState.value.inventoryType,
                     state = InventoryState.IN_PROGRESS,
                     code = _vmState.value.inventoryCode,

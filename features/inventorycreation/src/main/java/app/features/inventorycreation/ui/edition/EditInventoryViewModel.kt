@@ -310,7 +310,6 @@ class EditInventoryViewModel @Inject constructor(
             name = vmState.value.inventoryName,
             description = vmState.value.inventoryDescription,
             icon = vmState.value.inventoryIcon,
-            itemsCount = vmState.value.inventoryItemsCount,
             inventoryType = vmState.value.inventoryType,
             shortName = vmState.value.inventoryShortName,
             state = vmState.value.inventoryState,
@@ -321,12 +320,12 @@ class EditInventoryViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            _vmState.value = vmState.value.copy(isLoading = true, errorMessage = null) // Clear any previous error
+            _vmState.value = vmState.value.copy(isLoading = true, errorMessage = null)
             val success = repository.updateInventory(updatedInventory)
             if (success) {
                 _vmState.value = _vmState.value.copy(
                     isLoading = false,
-                    errorMessage = null // Clear any previous error
+                    errorMessage = null
                 )
             } else {
                 _vmState.value = vmState.value.copy(

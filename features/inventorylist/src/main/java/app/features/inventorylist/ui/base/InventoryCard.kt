@@ -128,7 +128,6 @@ fun InventoryCardPreview() {
             name = "Inventario 1",
             description = "Descripción del inventario 1",
             icon = InventoryIcon.ELECTRONICS,
-            itemsCount = 10,
             inventoryType = InventoryType.SEMESTRAL,
             shortName = "Inv1",
             state = InventoryState.ACTIVE,
