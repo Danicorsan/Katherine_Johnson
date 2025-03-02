@@ -10,6 +10,7 @@ import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.TypeCategory
 import app.domain.invoicing.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -24,14 +25,12 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * Create category
-     *
      */
     fun createCategory() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             if (validateFields()) {
                 val newCategory = Category(
-                    id = repository.getAllCategories().size + 1,
                     name = state.name,
                     shortName = state.shortName,
                     description = state.description,
@@ -42,7 +41,6 @@ class CategoryCreationViewModel @Inject constructor(
                 )
                 repository.addCategory(newCategory)
                 state = CategoryCreationState()
-                state = state.copy(isError = false)
                 println("Categoría creada: $newCategory")
             } else {
                 state = state.copy(isError = true, showDialog = true)
@@ -53,15 +51,13 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * Validate fields
-     *
-     * @return
      */
-    private fun validateFields(): Boolean {
+    private suspend fun validateFields(): Boolean {
         var hasError = false
 
-        if (state.name.isEmpty() || CategoryRepository.getAllCategories()
-                .any { it.name == state.name }
-        ) {
+        val categories = repository.getAllCategories().first() // Recoge los datos antes de validar
+
+        if (state.name.isEmpty() || categories.any { it.name == state.name }) {
             state = state.copy(isNameError = true)
             hasError = true
         }
@@ -71,85 +67,59 @@ class CategoryCreationViewModel @Inject constructor(
             hasError = true
         }
 
-        val shortNameRegex = Regex("^[a-zA-Z0-9]{3,}\$")
-        if (!shortNameRegex.matches(state.shortName) || CategoryRepository.getAllCategories()
-                .any { it.shortName == state.shortName }
-        ) {
+        val shortNameRegex = Regex("^[a-zA-Z0-9]{3,}$")
+        if (!shortNameRegex.matches(state.shortName) || categories.any { it.shortName == state.shortName }) {
             state = state.copy(isShortNameError = true)
             hasError = true
         }
 
-        state = state.copy(isError = hasError)
         return !hasError
     }
 
     /**
      * On name change
-     *
-     * @param newName
      */
     fun onNameChange(newName: String) {
-        state = state.copy(isNameError = false, isError = false)
+        state = state.copy(isNameError = false, isError = false, name = newName)
 
-        if (newName == CategoryRepository.getAllCategories().find { it.name == newName }?.name) {
-            state = state.copy(
-                isNameError = true,
-            )
+        viewModelScope.launch {
+            val categories = repository.getAllCategories().first()
+            if (categories.any { it.name == newName }) {
+                state = state.copy(isNameError = true)
+            }
         }
-
-        state = state.copy(name = newName)
     }
 
     /**
      * On description change
-     *
-     * @param newDescription
      */
     fun onDescriptionChange(newDescription: String) {
-        state = state.copy(isDescriptionError = false, isError = false)
-
-        if (newDescription.isEmpty()) {
-            state = state.copy(
-                isDescriptionError = true,
-            )
-        }
-
-        state = state.copy(description = newDescription)
+        state = state.copy(isDescriptionError = false, isError = false, description = newDescription)
     }
 
     /**
      * On short name change
-     *
-     * @param shortName
      */
     fun onShortNameChange(shortName: String) {
-        state = state.copy(isShortNameError = false, isError = false, shortNameErrorMessage = null)
+        state = state.copy(isShortNameError = false, isError = false, shortNameErrorMessage = null, shortName = shortName)
 
-        val shortNameRegex = Regex("^[a-zA-Z0-9]{3,}\$")
+        viewModelScope.launch {
+            val categories = repository.getAllCategories().first()
+            val shortNameRegex = Regex("^[a-zA-Z0-9]{3,}$")
 
-        when {
-            !shortNameRegex.matches(shortName) -> {
-                state = state.copy(
-                    isShortNameError = true,
-                    shortNameErrorMessage = "1"
-                )
-            }
-
-            CategoryRepository.getAllCategories().any { it.shortName == shortName } -> {
-                state = state.copy(
-                    isShortNameError = true,
-                    shortNameErrorMessage = "2"
-                )
+            when {
+                !shortNameRegex.matches(shortName) -> {
+                    state = state.copy(isShortNameError = true, shortNameErrorMessage = "Debe tener al menos 3 caracteres y solo letras o números.")
+                }
+                categories.any { it.shortName == shortName } -> {
+                    state = state.copy(isShortNameError = true, shortNameErrorMessage = "Este alias ya está en uso.")
+                }
             }
         }
-
-        state = state.copy(shortName = shortName)
     }
 
     /**
      * On image change
-     *
-     * @param image
      */
     fun onImageChange(image: Uri) {
         state = state.copy(image = image)
@@ -157,8 +127,6 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On type category change
-     *
-     * @param typeCategory
      */
     fun onTypeCategoryChange(typeCategory: TypeCategory) {
         state = state.copy(typeCategory = typeCategory)
@@ -166,7 +134,6 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On discard changes
-     *
      */
     fun onDiscardChanges() {
         state = CategoryCreationState()
@@ -174,18 +141,15 @@ class CategoryCreationViewModel @Inject constructor(
 
     /**
      * On fungible change
-     *
-     * @param fungible
      */
     fun onFungibleChange(fungible: Boolean) {
         state = state.copy(fungible = fungible)
     }
 
     /**
-     * Dimiss dialog
-     *
+     * Dismiss dialog
      */
-    fun dimissDialog() {
+    fun dismissDialog() {
         state = state.copy(showDialog = false)
     }
 }

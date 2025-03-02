@@ -10,4 +10,5 @@ android {
 dependencies {
     implementation(projects.domain.inventory)
     implementation("io.coil-kt:coil-compose:2.5.0")
+
 }
