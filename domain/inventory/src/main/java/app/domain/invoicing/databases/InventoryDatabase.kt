@@ -84,6 +84,9 @@ abstract class InventoryDatabase : RoomDatabase() {
                         inventoryType = InventoryType.BIANNUAL,
                         inProgressDateAt = Date(),
                         historyDateAt = null,
+                        activeDateAt = null,
+                    )
+                )
             }
         }
     }

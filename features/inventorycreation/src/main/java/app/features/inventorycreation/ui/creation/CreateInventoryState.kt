@@ -7,7 +7,7 @@ import app.domain.invoicing.inventory.InventoryType
 import java.util.Date
 
 data class CreateInventoryState(
-    val inventoryId: Int,
+    val inventoryId: Int = 0,
     val inventoryName: String = "",
     val inventoryIcon: InventoryIcon = InventoryIcon.NONE,
     val inventoryDescription: String = "",

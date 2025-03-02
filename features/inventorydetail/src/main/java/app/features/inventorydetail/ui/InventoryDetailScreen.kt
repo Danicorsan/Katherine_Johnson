@@ -27,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.base.ui.components.LoadingUi
@@ -37,7 +36,6 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.inventory.InventoryState
-import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorydetail.R
 import app.features.inventorydetail.ui.base.TableRow
 
@@ -45,11 +43,9 @@ import app.features.inventorydetail.ui.base.TableRow
 fun InventoryDetailScreen(
     inventoryId: Int,
     onNavigateBack: () -> Unit,
-    onEditInventoryClick: (Inventory) -> Unit
+    onEditInventoryClick: (Inventory) -> Unit,
+    viewModel: InventoryDetailViewModel
 ) {
-    val viewModel = remember { InventoryDetailViewModel(
-        repository = InventoryRepository
-    ) }
 
     val uiState by viewModel.uiState.collectAsState()
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -191,16 +187,4 @@ fun InventoryDetailScreen(
             }
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewInventoryDetailScreen() {
-    InventoryDetailScreen(
-        inventoryId = 1,
-        onNavigateBack = {
-            println("Volver a la lista de inventarios")
-        },
-        onEditInventoryClick = {}
-    )
 }

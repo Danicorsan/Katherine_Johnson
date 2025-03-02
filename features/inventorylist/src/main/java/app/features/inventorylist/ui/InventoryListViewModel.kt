@@ -7,7 +7,6 @@ import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,10 +15,9 @@ class InventoryListViewModel @Inject constructor(
     private val repository: InventoryRepository
 ) : ViewModel() {
 
-    private val _inventories = mutableListOf<Inventory>()
     private val _uiState = mutableStateOf(
         InventoryListState(
-            success = _inventories,
+            success = emptyList(),
             loading = false,
             error = null,
             noData = false,
@@ -34,11 +32,19 @@ class InventoryListViewModel @Inject constructor(
     private fun loadInventories() {
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)
-            delay(1000)
-            val inventories = repository.getAllInventories()
-            _inventories.clear()
-            _inventories.addAll(inventories)
-            _uiState.value = uiState.copy(success = _inventories, loading = false)
+            try {
+                val inventories = repository.getAllInventories()
+                _uiState.value = uiState.copy(
+                    success = inventories,
+                    loading = false,
+                    noData = inventories.isEmpty()
+                )
+            } catch (e: Exception) {
+                _uiState.value = uiState.copy(
+                    error = "Error al cargar los inventarios: ${e.message}",
+                    loading = false
+                )
+            }
         }
     }
 
@@ -51,18 +57,24 @@ class InventoryListViewModel @Inject constructor(
     fun deleteInventory(inventory: Inventory) {
         viewModelScope.launch {
             _uiState.value = uiState.copy(loading = true)
-            val success = repository.deleteInventory(inventory.id)
-            if (success) {
-                loadInventories()
-            } else {
+            try {
+                val success = repository.deleteInventory(inventory.id)
+                if (success) {
+                    loadInventories()
+                } else {
+                    _uiState.value = uiState.copy(
+                        error = "No se pudo eliminar el inventario",
+                        loading = false
+                    )
+                }
+            } catch (e: Exception) {
                 _uiState.value = uiState.copy(
-                    error = "Error al eliminar el inventario",
+                    error = "Error al eliminar el inventario: ${e.message}",
                     loading = false
                 )
             }
         }
     }
-
 
     fun refreshInventories() {
         loadInventories()

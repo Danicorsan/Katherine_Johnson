@@ -36,9 +36,8 @@ import java.util.Date
     tableName = "inventories",
 )
 data class Inventory(
-    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
 
     @ColumnInfo(name = "name")
     val name: String,

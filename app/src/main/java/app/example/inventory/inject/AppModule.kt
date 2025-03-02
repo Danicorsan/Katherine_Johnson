@@ -2,13 +2,13 @@ package app.example.inventory.inject
 
 import android.content.Context
 import android.content.res.Resources
-import app.domain.invoicing.dependency.DependencyDao
 import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.databases.InventoryDatabase
+import app.domain.invoicing.dependency.DependencyDao
+import app.domain.invoicing.inventory.InventoryDAO
 import app.domain.invoicing.repository.AccountRepository
 import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.InventoryRepository
-import app.domain.invoicing.section.Section
 import app.domain.invoicing.section.SectionDao
 import dagger.Module
 import dagger.Provides
@@ -74,8 +74,13 @@ object AppModule {
      */
     @Provides
     @Singleton
-    fun provideInventoryRepository(): InventoryRepository {
-        return InventoryRepository
+    fun provideInventoryRepository(dao: InventoryDAO): InventoryRepository {
+        return InventoryRepository(dao)
+    }
+    @Provides
+    @Singleton
+    fun provideInventoryDao(inventoryDatabase: InventoryDatabase) : InventoryDAO {
+        return inventoryDatabase.inventoryDao()
     }
 
     @Provides

@@ -19,71 +19,79 @@ class EditInventoryViewModel @Inject constructor(
     private val repository: InventoryRepository
 ) : ViewModel() {
 
-    private val _vmState = MutableStateFlow(EditInventoryState(
-        inventoryId = 0, // Asegúrate de inicializarlo correctamente
-        inventoryName = "",
-        inventoryDescription = "",
-        inventoryIcon = InventoryIcon.NONE,
-        inventoryItemsCount = 0,
-        inventoryType = InventoryType.WEEKLY,
-        inventoryState = InventoryState.ACTIVE,
-        inventoryShortName = "",
-        inventoryCode = "",
-        isSaveButtonEnabled = false,
-        isLoading = false,
-        errorMessage = null,
-        nameErrorMessage = null,
-        originalName = "",
-        originalDescription = "",
-        originalIcon = InventoryIcon.NONE,
-        originalType = InventoryType.WEEKLY,
-        originalShortName = "",
-        originalState = InventoryState.IN_PROGRESS,
-        originalCode = "",
-        noChangesMessage = null,
-        inventoryInProgressDateAt = Date(),
-        inventoryActiveDateAt = null,
-        inventoryHistoryDateAt = null,
-        originalInProgressDateAt = Date(),
-        originalActiveDateAt = null,
-        originalHistoryDateAt = null
-    ))
+    private val _vmState = MutableStateFlow(
+        EditInventoryState(
+            inventoryId = 0,
+            inventoryName = "",
+            inventoryDescription = "",
+            inventoryIcon = InventoryIcon.NONE,
+            inventoryItemsCount = 0,
+            inventoryType = InventoryType.WEEKLY,
+            inventoryState = InventoryState.ACTIVE,
+            inventoryShortName = "",
+            inventoryCode = "",
+            isSaveButtonEnabled = false,
+            isLoading = false,
+            errorMessage = null,
+            nameErrorMessage = null,
+            originalName = "",
+            originalDescription = "",
+            originalIcon = InventoryIcon.NONE,
+            originalType = InventoryType.WEEKLY,
+            originalShortName = "",
+            originalState = InventoryState.IN_PROGRESS,
+            originalCode = "",
+            noChangesMessage = null,
+            inventoryInProgressDateAt = Date(),
+            inventoryActiveDateAt = null,
+            inventoryHistoryDateAt = null,
+            originalInProgressDateAt = Date(),
+            originalActiveDateAt = null,
+            originalHistoryDateAt = null
+        )
+    )
     val vmState: StateFlow<EditInventoryState> get() = _vmState
 
     fun loadInventory(inventoryId: Int) {
         viewModelScope.launch {
             _vmState.value = _vmState.value.copy(isLoading = true)
-
-            val inventory = repository.getInventoryById(inventoryId)
-
-            if (inventory != null) {
+            try {
+                val inventory = repository.getInventoryById(inventoryId)
+                if (inventory != null) {
+                    _vmState.value = _vmState.value.copy(
+                        inventoryId = inventory.id,
+                        inventoryName = inventory.name,
+                        inventoryDescription = inventory.description,
+                        inventoryIcon = inventory.icon,
+                        inventoryType = inventory.inventoryType,
+                        inventoryShortName = inventory.shortName,
+                        inventoryCode = inventory.code,
+                        inventoryState = inventory.state,
+                        inventoryInProgressDateAt = inventory.inProgressDateAt,
+                        inventoryActiveDateAt = inventory.activeDateAt,
+                        inventoryHistoryDateAt = inventory.historyDateAt,
+                        originalName = inventory.name,
+                        originalDescription = inventory.description,
+                        originalIcon = inventory.icon,
+                        originalType = inventory.inventoryType,
+                        originalShortName = inventory.shortName,
+                        originalCode = inventory.code,
+                        originalState = inventory.state,
+                        originalInProgressDateAt = inventory.inProgressDateAt,
+                        originalActiveDateAt = inventory.activeDateAt,
+                        originalHistoryDateAt = inventory.historyDateAt,
+                        isLoading = false,
+                        errorMessage = null
+                    )
+                } else {
+                    _vmState.value = _vmState.value.copy(
+                        errorMessage = "Inventario no encontrado",
+                        isLoading = false
+                    )
+                }
+            } catch (e: Exception) {
                 _vmState.value = _vmState.value.copy(
-                    inventoryId = inventory.id,
-                    inventoryName = inventory.name,
-                    inventoryDescription = inventory.description,
-                    inventoryIcon = inventory.icon,
-                    inventoryType = inventory.inventoryType,
-                    inventoryShortName = inventory.shortName,
-                    inventoryCode = inventory.code,
-                    inventoryState = inventory.state,
-                    inventoryInProgressDateAt = inventory.inProgressDateAt,
-                    inventoryActiveDateAt = inventory.activeDateAt,
-                    inventoryHistoryDateAt = inventory.historyDateAt,
-                    originalName = inventory.name,
-                    originalDescription = inventory.description,
-                    originalIcon = inventory.icon,
-                    originalType = inventory.inventoryType,
-                    originalShortName = inventory.shortName,
-                    originalCode = inventory.code,
-                    originalState = inventory.state,
-                    originalInProgressDateAt = inventory.inProgressDateAt,
-                    originalActiveDateAt = inventory.activeDateAt,
-                    originalHistoryDateAt = inventory.historyDateAt,
-                    isLoading = false
-                )
-            } else {
-                _vmState.value = _vmState.value.copy(
-                    errorMessage = "Inventario no encontrado",
+                    errorMessage = "Error al cargar el inventario: ${e.message}",
                     isLoading = false
                 )
             }
@@ -109,7 +117,8 @@ class EditInventoryViewModel @Inject constructor(
                     vmState.value.inventoryShortName != vmState.value.originalShortName ||
                     vmState.value.inventoryState != vmState.value.originalState ||
                     vmState.value.inventoryCode != vmState.value.originalCode,
-            noChangesMessage = if (!isDifferent) "El nombre no ha cambiado" else null
+            noChangesMessage = if (!isDifferent) "El nombre no ha cambiado" else null,
+            errorMessage = null
         )
     }
 
@@ -130,7 +139,8 @@ class EditInventoryViewModel @Inject constructor(
                     vmState.value.inventoryShortName != vmState.value.originalShortName ||
                     vmState.value.inventoryState != vmState.value.originalState ||
                     vmState.value.inventoryCode != vmState.value.originalCode,
-            noChangesMessage = if (!isDifferent) "La descripción no ha cambiado" else null
+            noChangesMessage = if (!isDifferent) "La descripción no ha cambiado" else null,
+            errorMessage = null
         )
     }
 
@@ -151,7 +161,8 @@ class EditInventoryViewModel @Inject constructor(
                     vmState.value.inventoryShortName != vmState.value.originalShortName ||
                     vmState.value.inventoryState != vmState.value.originalState ||
                     vmState.value.inventoryCode != vmState.value.originalCode,
-            noChangesMessage = if (!isDifferent) "El icono no ha cambiado" else null
+            noChangesMessage = if (!isDifferent) "El icono no ha cambiado" else null,
+            errorMessage = null
         )
     }
 
@@ -172,7 +183,8 @@ class EditInventoryViewModel @Inject constructor(
                     vmState.value.inventoryShortName != vmState.value.originalShortName ||
                     vmState.value.inventoryState != vmState.value.originalState ||
                     vmState.value.inventoryCode != vmState.value.originalCode,
-            noChangesMessage = if (!isDifferent) "El tipo de inventario no ha cambiado" else null
+            noChangesMessage = if (!isDifferent) "El tipo de inventario no ha cambiado" else null,
+            errorMessage = null
         )
     }
 
@@ -193,7 +205,8 @@ class EditInventoryViewModel @Inject constructor(
                     vmState.value.inventoryType != vmState.value.originalType ||
                     vmState.value.inventoryState != vmState.value.originalState ||
                     vmState.value.inventoryCode != vmState.value.originalCode,
-            noChangesMessage = if (!isDifferent) "El nombre corto no ha cambiado" else null
+            noChangesMessage = if (!isDifferent) "El nombre corto no ha cambiado" else null,
+            errorMessage = null
         )
     }
 
@@ -224,6 +237,7 @@ class EditInventoryViewModel @Inject constructor(
                     originalHistoryDate = vmState.value.originalHistoryDateAt // Reset original history date
                 }
             }
+
             InventoryState.ACTIVE -> {
                 if (vmState.value.originalState != InventoryState.ACTIVE) {
                     activeDate = Date()
@@ -234,6 +248,7 @@ class EditInventoryViewModel @Inject constructor(
                     originalHistoryDate = vmState.value.originalHistoryDateAt // Reset original history date
                 }
             }
+
             InventoryState.HISTORY -> {
                 if (vmState.value.originalState != InventoryState.HISTORY) {
                     historyDate = Date()
@@ -244,6 +259,7 @@ class EditInventoryViewModel @Inject constructor(
                     originalActiveDate = vmState.value.originalActiveDateAt // Reset original active date
                 }
             }
+
             else -> {
                 // No changes to dates for other states
             }
@@ -264,7 +280,8 @@ class EditInventoryViewModel @Inject constructor(
                     vmState.value.inventoryType != vmState.value.originalType ||
                     vmState.value.inventoryShortName != vmState.value.originalShortName ||
                     vmState.value.inventoryCode != vmState.value.originalCode,
-            noChangesMessage = if (!isDifferent) "El estado no ha cambiado" else null
+            noChangesMessage = if (!isDifferent) "El estado no ha cambiado" else null,
+            errorMessage = null
         )
     }
 
@@ -285,7 +302,8 @@ class EditInventoryViewModel @Inject constructor(
                     vmState.value.inventoryType != vmState.value.originalType ||
                     vmState.value.inventoryShortName != vmState.value.originalShortName ||
                     vmState.value.inventoryState != vmState.value.originalState,
-            noChangesMessage = if (!isDifferent) "El codigo no ha cambiado" else null
+            noChangesMessage = if (!isDifferent) "El codigo no ha cambiado" else null,
+            errorMessage = null
         )
     }
 
@@ -305,32 +323,54 @@ class EditInventoryViewModel @Inject constructor(
             return
         }
 
-        val updatedInventory = Inventory(
-            id = vmState.value.inventoryId,
-            name = vmState.value.inventoryName,
-            description = vmState.value.inventoryDescription,
-            icon = vmState.value.inventoryIcon,
-            inventoryType = vmState.value.inventoryType,
-            shortName = vmState.value.inventoryShortName,
-            state = vmState.value.inventoryState,
-            code = vmState.value.inventoryCode,
-            inProgressDateAt = vmState.value.inventoryInProgressDateAt,
-            historyDateAt = vmState.value.inventoryHistoryDateAt,
-            activeDateAt = vmState.value.inventoryActiveDateAt
-        )
-
         viewModelScope.launch {
-            _vmState.value = vmState.value.copy(isLoading = true, errorMessage = null)
-            val success = repository.updateInventory(updatedInventory)
-            if (success) {
+            _vmState.value = _vmState.value.copy(isLoading = true, errorMessage = null)
+
+            try {
+                val updatedInventory = Inventory(
+                    id = vmState.value.inventoryId,
+                    name = vmState.value.inventoryName,
+                    description = vmState.value.inventoryDescription,
+                    icon = vmState.value.inventoryIcon,
+                    inventoryType = vmState.value.inventoryType,
+                    shortName = vmState.value.inventoryShortName,
+                    state = vmState.value.inventoryState,
+                    code = vmState.value.inventoryCode,
+                    inProgressDateAt = vmState.value.inventoryInProgressDateAt,
+                    activeDateAt = vmState.value.inventoryActiveDateAt,
+                    historyDateAt = vmState.value.inventoryHistoryDateAt
+                )
+
+                val success = repository.updateInventory(updatedInventory)
+
+                if (success) {
+                    _vmState.value = _vmState.value.copy(
+                        isLoading = false,
+                        errorMessage = null,
+                        originalName = vmState.value.inventoryName,
+                        originalDescription = vmState.value.inventoryDescription,
+                        originalIcon = vmState.value.inventoryIcon,
+                        originalType = vmState.value.inventoryType,
+                        originalShortName = vmState.value.inventoryShortName,
+                        originalCode = vmState.value.inventoryCode,
+                        originalState = vmState.value.inventoryState,
+                        originalInProgressDateAt = vmState.value.inventoryInProgressDateAt,
+                        originalActiveDateAt = vmState.value.inventoryActiveDateAt,
+                        originalHistoryDateAt = vmState.value.inventoryHistoryDateAt,
+                        noChangesMessage = "Cambios guardados correctamente"
+                    )
+                } else {
+                    _vmState.value = _vmState.value.copy(
+                        isLoading = false,
+                        errorMessage = "Error al guardar los cambios",
+                        noChangesMessage = null
+                    )
+                }
+            } catch (e: Exception) {
                 _vmState.value = _vmState.value.copy(
                     isLoading = false,
-                    errorMessage = null
-                )
-            } else {
-                _vmState.value = vmState.value.copy(
-                    isLoading = false,
-                    errorMessage = "Error al guardar el inventario"
+                    errorMessage = "Error al guardar los cambios: ${e.message}",
+                    noChangesMessage = null
                 )
             }
         }

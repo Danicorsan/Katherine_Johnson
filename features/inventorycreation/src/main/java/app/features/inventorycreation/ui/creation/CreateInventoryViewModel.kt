@@ -9,7 +9,6 @@ import app.domain.invoicing.inventory.InventoryState
 import app.domain.invoicing.inventory.InventoryType
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -117,12 +116,10 @@ class CreateInventoryViewModel @Inject constructor(
         _vmState.value = _vmState.value.copy(loading = true)
 
         viewModelScope.launch {
-            delay(1000) // Mantenemos el delay si es necesario
-
             try {
                 val currentDateTime = Date()
                 val newInventory = Inventory(
-                    id = 0, // El ID se asignará en la base de datos
+                    id = 0, // The ID will be assigned by the database
                     name = _vmState.value.inventoryName,
                     shortName = _vmState.value.inventoryShortName,
                     description = _vmState.value.inventoryDescription,
@@ -151,7 +148,7 @@ class CreateInventoryViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _vmState.value = _vmState.value.copy(
-                    error = e.message ?: "Error desconocido",
+                    error = e.message ?: "Error desconocido al crear el inventario",
                     loading = false
                 )
             }

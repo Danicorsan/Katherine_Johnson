@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.inventory.Inventory
 import app.domain.invoicing.repository.InventoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,15 +21,25 @@ class InventoryDetailViewModel @Inject constructor(
     fun loadInventoryDetails(inventoryId: Int) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(loading = true)
-            delay(1000)
-            val inventory = repository.getInventoryById(inventoryId)
-            if (inventory != null) {
+            try {
+                val inventory = repository.getInventoryById(inventoryId)
+                if (inventory != null) {
+                    _uiState.value = _uiState.value.copy(
+                        success = inventory,
+                        loading = false,
+                        error = null
+                    )
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        error = "Inventario no encontrado",
+                        loading = false
+                    )
+                }
+            } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    success = inventory,
+                    error = "Error al cargar los detalles del inventario: ${e.message}",
                     loading = false
                 )
-            } else {
-                _uiState.value = _uiState.value.copy(loading = false)
             }
         }
     }
@@ -38,12 +47,23 @@ class InventoryDetailViewModel @Inject constructor(
     fun deleteInventory(inventory: Inventory) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(loading = true)
-            val success = repository.deleteInventory(inventory.id)
-            if (success) {
-                loadInventoryDetails(inventory.id)
-            } else {
+            try {
+                val success = repository.deleteInventory(inventory.id)
+                if (success) {
+                    _uiState.value = _uiState.value.copy(
+                        success = null,
+                        loading = false,
+                        error = null
+                    )
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        error = "Error al eliminar el inventario",
+                        loading = false
+                    )
+                }
+            } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = "Error al eliminar el inventario",
+                    error = "Error al eliminar el inventario: ${e.message}",
                     loading = false
                 )
             }

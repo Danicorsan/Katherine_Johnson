@@ -31,11 +31,11 @@ interface InventoryDAO {
         shortName: String,
         code: String,
         description: String,
-        type: InventoryType,
+        type: InventoryType?,
         historyDateAt: Date?,
         inProgressDateAt: Date,
         activeDateAt: Date?,
-        icon: InventoryIcon,
-        state: InventoryState
+        icon: InventoryIcon?,
+        state: InventoryState?
     )
 }

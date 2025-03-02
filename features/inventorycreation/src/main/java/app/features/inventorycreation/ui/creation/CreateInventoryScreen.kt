@@ -36,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.base.ui.components.LoadingUi
 import app.base.ui.composables.BaseAlertDialog
@@ -45,7 +44,6 @@ import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.domain.invoicing.inventory.InventoryIcon
 import app.domain.invoicing.inventory.InventoryType
-import app.domain.invoicing.repository.InventoryRepository
 import app.features.inventorycreation.R
 import app.features.inventorycreation.ui.composables.CustomDropdownMenu
 
@@ -326,15 +324,3 @@ fun CreateInventoryScreen(
         )
     }
 })}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewCreateScreen() {
-    CreateInventoryScreen(
-        onNavigateToList = {},
-        onBackClick = {},
-        viewModel = CreateInventoryViewModel(
-            repository = InventoryRepository
-        )
-    )
-}
