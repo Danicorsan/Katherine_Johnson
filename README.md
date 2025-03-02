@@ -31,16 +31,11 @@ Se ha implementado de forma general:
   los repositorios correspondientes.
 
 ### Detalles a tener en cuenta
-De cara a la clase productos se han ido implementado los campos correspondientes, sin embargo, cabe resaltar:
-1. El campo de la imagen del producto ha sido temporamente asignada como un String hasta que se introduzca una
-   clase correspodiente para el manejo de imagenes.
-   
-2. Dado que se prevee que para ciertos productos, cuando sus stocks se reduzca a cierto mínimo, "salte una alarma"
-   que avise de este suceso, se ha implementado una clase abracta ```ProductAlarm``` cuya intención es que en base
-   a un criterio se llamen a las funciones correspondientes mediante el uso del patrón observable-observador.
+El modelo de Productos solo guarda una Sección en un campo, sin embargo en las pantallas de edición y creación de productos,
+se podrá seleccionar la dependencia en un campo, este campo solo actua de filtro de sección, no es guardado directamente.
+![Imagen del lista de productos](READMEresources/ProductListScreen.png) 
 
-Tambien en comparación con la primera entrega se ha buscado mejorar considerablemente el diseño de las vistas,
-ademas de aplicar refactorizaciones para mejorar la limpieza y calidad de código.
+
 
 ----------------
 ## Categorias
