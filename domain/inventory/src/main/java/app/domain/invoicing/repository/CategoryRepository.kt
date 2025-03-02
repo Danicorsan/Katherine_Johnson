@@ -1,64 +1,25 @@
 package app.domain.invoicing.repository
 
 import app.domain.invoicing.category.Category
-import java.util.Date
+import app.domain.invoicing.category.CategoryDao
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Category repository
  *
+ * @property categoryDao
  * @constructor Create empty Category repository
  */
-object CategoryRepository {
-
-    // Simulación de un dataset en memoria
-    private val dataSet: MutableList<Category> = mutableListOf()
-
-    init {
-        initialize()
-    }
-
-    private fun initialize() {
-        dataSet.add(
-            Category(
-                id = 1,
-                name = "Electronics",
-                shortName = "ELEC",
-                description = "Category for electronic products",
-                image = null,
-                createdAt = Date(),
-                fungible = true
-            )
-        )
-        dataSet.add(
-            Category(
-                id = 2,
-                name = "Books",
-                shortName = "BOOK",
-                description = "Category for books and literature",
-                image = null,
-                createdAt = Date(),
-                fungible = false
-            )
-        )
-        dataSet.add(
-            Category(
-                id = 3,
-                name = "Services",
-                shortName = "SERV",
-                description = "Category for service offerings",
-                image = null,
-                createdAt = Date(),
-                fungible = false
-            )
-        )
-    }
+class CategoryRepository(
+    private val categoryDao: CategoryDao
+) {
 
     /**
      * Get all categories
      *
      * @return
      */
-    fun getAllCategories(): List<Category> = dataSet
+    fun getAllCategories(): Flow<List<Category>> = categoryDao.getCategories()
 
     /**
      * Get category by id
@@ -66,43 +27,32 @@ object CategoryRepository {
      * @param id
      * @return
      */
-    fun getCategoryById(id: Int): Category? {
-        return dataSet.find { it.id == id }
-    }
+    fun getCategoryById(id: Int): Flow<Category> = categoryDao.getCategoryFromId(id)
 
     /**
      * Add category
      *
      * @param category
-     * @return
      */
-    fun addCategory(category: Category): Boolean {
-        if (dataSet.any { it.id == category.id }) return false // ID duplicado
-        dataSet.add(category)
-        return true
+    suspend fun addCategory(category: Category) {
+        categoryDao.insertCategory(category)
     }
 
     /**
      * Update category
      *
      * @param updatedCategory
-     * @return
      */
-    fun updateCategory(updatedCategory: Category): Boolean {
-        val index = dataSet.indexOfFirst { it.id == updatedCategory.id }
-        if (index == -1) return false
-        dataSet[index] = updatedCategory
-        return true
+    suspend fun updateCategory(updatedCategory: Category) {
+        categoryDao.updateCategory(updatedCategory)
     }
 
     /**
      * Delete category
      *
-     * @param id
-     * @return
+     * @param category
      */
-    fun deleteCategory(id: Int): Boolean {
-        return dataSet.removeIf { it.id == id }
+    suspend fun deleteCategory(category: Category) {
+        categoryDao.deleteCategory(category)
     }
-
 }

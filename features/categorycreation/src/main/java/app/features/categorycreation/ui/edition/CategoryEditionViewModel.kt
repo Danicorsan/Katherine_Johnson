@@ -8,7 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.domain.invoicing.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,14 +23,12 @@ class CategoryEditionViewModel @Inject constructor(
 
     /**
      * Load category
-     *
-     * @param id
      */
     fun loadCategory(id: Int) {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            delay(1000)
-            val category = repository.getCategoryById(id)
+            val category = repository.getCategoryById(id).firstOrNull()
+
             state = if (category != null) {
                 CategoryEditionState(
                     category = category,
@@ -45,39 +44,33 @@ class CategoryEditionViewModel @Inject constructor(
             }
             state = state.copy(isLoading = false)
         }
-
     }
 
     /**
      * On event
-     *
-     * @param event
      */
     fun onEvent(event: CategoryEditionEvent) {
         when (event) {
-            is CategoryEditionEvent.OnNameChange -> state =
-                state.copy(name = event.name, isNameError = event.name.isEmpty())
-
-            is CategoryEditionEvent.OnShortNameChange -> state = state.copy(
-                shortName = event.shortName,
-                isShortNameError = event.shortName.isEmpty()
-            )
-
-            is CategoryEditionEvent.OnDescriptionChange -> state = state.copy(
-                description = event.description,
-                isDescriptionError = event.description.isEmpty()
-            )
-
-            is CategoryEditionEvent.OnTypeCategoryChange -> state =
-                state.copy(typeCategory = event.typeCategory)
-
+            is CategoryEditionEvent.OnNameChange -> {
+                state = state.copy(name = event.name, isNameError = false)
+                validateName(event.name)
+            }
+            is CategoryEditionEvent.OnShortNameChange -> {
+                state = state.copy(shortName = event.shortName, isShortNameError = false)
+                validateShortName(event.shortName)
+            }
+            is CategoryEditionEvent.OnDescriptionChange -> {
+                state = state.copy(description = event.description, isDescriptionError = event.description.isEmpty())
+            }
+            is CategoryEditionEvent.OnTypeCategoryChange -> {
+                state = state.copy(typeCategory = event.typeCategory)
+            }
             is CategoryEditionEvent.ConfirmChanges -> confirmChanges()
         }
     }
 
     /**
      * Confirm changes
-     *
      */
     private fun confirmChanges() {
         viewModelScope.launch {
@@ -87,7 +80,9 @@ class CategoryEditionViewModel @Inject constructor(
                     name = state.name,
                     shortName = state.shortName,
                     description = state.description,
-                    typeCategory = state.typeCategory
+                    typeCategory = state.typeCategory,
+                    fungible = state.fungible,
+                    image = state.image
                 )?.let {
                     repository.updateCategory(it)
                     state = state.copy(isError = false)
@@ -97,24 +92,53 @@ class CategoryEditionViewModel @Inject constructor(
             }
             state = state.copy(isLoading = false)
         }
-
     }
 
     /**
      * Validate fields
-     *
-     * @return
      */
-    private fun validateFields(): Boolean {
-        val hasError =
-            state.name.isEmpty() || state.shortName.isEmpty() || state.description.isEmpty()
+    private suspend fun validateFields(): Boolean {
+        val categories = repository.getAllCategories().first()
+
+        val isNameDuplicate = categories.any { it.id != state.category?.id && it.name == state.name }
+        val isShortNameDuplicate = categories.any { it.id != state.category?.id && it.shortName == state.shortName }
+
+        val hasError = state.name.isEmpty() || isNameDuplicate ||
+                state.shortName.isEmpty() || isShortNameDuplicate ||
+                state.description.isEmpty()
+
         state = state.copy(
-            isNameError = state.name.isEmpty(),
-            isShortNameError = state.shortName.isEmpty(),
+            isNameError = state.name.isEmpty() || isNameDuplicate,
+            isShortNameError = state.shortName.isEmpty() || isShortNameDuplicate,
             isDescriptionError = state.description.isEmpty(),
             isError = hasError
         )
+
         return !hasError
+    }
+
+    /**
+     * Validate Name
+     */
+    private fun validateName(name: String) {
+        viewModelScope.launch {
+            val categories = repository.getAllCategories().first()
+            if (categories.any { it.id != state.category?.id && it.name == name }) {
+                state = state.copy(isNameError = true)
+            }
+        }
+    }
+
+    /**
+     * Validate Short Name
+     */
+    private fun validateShortName(shortName: String) {
+        viewModelScope.launch {
+            val categories = repository.getAllCategories().first()
+            if (categories.any { it.id != state.category?.id && it.shortName == shortName }) {
+                state = state.copy(isShortNameError = true)
+            }
+        }
     }
 
     fun onFungibleChange(fungible: Boolean) {

@@ -6,9 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import app.domain.invoicing.category.Category
+import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.converters.DateTimeConverter
 import app.domain.invoicing.converters.UriConverter
+import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.product.Product
 import kotlinx.coroutines.runBlocking
+import java.util.Date
 import java.util.concurrent.Executors
 
 /**
@@ -17,11 +22,13 @@ import java.util.concurrent.Executors
  */
 @Database(
     version = 1,
-    entities = [],
+    entities = [Category::class, Inventory::class],
     exportSchema = false
 )
 @TypeConverters(DateTimeConverter::class, UriConverter::class)
 abstract class InventoryDatabase : RoomDatabase() {
+
+    abstract fun categoryDao(): CategoryDao
 
     companion object {
         @Volatile
@@ -53,7 +60,10 @@ abstract class InventoryDatabase : RoomDatabase() {
         private fun prepopulateDatabase(database: InventoryDatabase) {
 
             runBlocking {
-
+                val categoryDao = database.categoryDao()
+                // Crear categorías predeterminadas
+                categoryDao.insertAllCategory(
+                    Category(name = "Electronics", shortName = "Electronics", description = "Electronic items", image = null, createdAt = Date(), fungible = true),)
             }
         }
     }

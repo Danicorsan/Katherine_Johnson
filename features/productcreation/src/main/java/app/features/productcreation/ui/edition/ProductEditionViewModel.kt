@@ -6,6 +6,7 @@ import app.base.utils.format
 import app.domain.invoicing.network.BaseResult
 import app.domain.invoicing.product.Product
 import app.domain.invoicing.product.ProductState
+import app.domain.invoicing.repository.CategoryRepository
 import app.domain.invoicing.repository.ProductRepository
 import app.features.productcreation.R
 import app.features.productcreation.ui.base.ProductBaseCreationViewModel
@@ -21,8 +22,9 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ProductEditionViewModel @Inject constructor(
+    repository: CategoryRepository,
     resources: Resources
-) : ProductBaseCreationViewModel(resources) {
+) : ProductBaseCreationViewModel(repository,resources) {
 
     private var productToEditId : Int = -1
 
