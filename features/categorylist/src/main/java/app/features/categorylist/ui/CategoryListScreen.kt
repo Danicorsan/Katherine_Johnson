@@ -1,7 +1,6 @@
 package app.features.categorylist.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -288,7 +287,7 @@ fun CategoryListContent(
                     tint = MaterialTheme.colorScheme.error // Color de error para resaltar
                 )
                 Text(
-                    text = "No hay datos",
+                    text = stringResource(R.string.no_hay_datos),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface

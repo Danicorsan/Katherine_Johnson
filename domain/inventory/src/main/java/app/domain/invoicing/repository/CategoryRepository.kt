@@ -2,7 +2,9 @@ package app.domain.invoicing.repository
 
 import app.domain.invoicing.category.Category
 import app.domain.invoicing.category.CategoryDao
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 /**
  * Category repository
@@ -11,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  * @constructor Create empty Category repository
  */
 class CategoryRepository(
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
 ) {
 
     /**
@@ -35,7 +37,9 @@ class CategoryRepository(
      * @param category
      */
     suspend fun addCategory(category: Category) {
-        categoryDao.insertCategory(category)
+        withContext(Dispatchers.IO) {
+            categoryDao.insertCategory(category)
+        }
     }
 
     /**
@@ -44,7 +48,9 @@ class CategoryRepository(
      * @param updatedCategory
      */
     suspend fun updateCategory(updatedCategory: Category) {
-        categoryDao.updateCategory(updatedCategory)
+        withContext(Dispatchers.IO) {
+            categoryDao.updateCategory(updatedCategory)
+        }
     }
 
     /**
@@ -53,6 +59,8 @@ class CategoryRepository(
      * @param category
      */
     suspend fun deleteCategory(category: Category) {
-        categoryDao.deleteCategory(category)
+        withContext(Dispatchers.IO) {
+            categoryDao.deleteCategory(category)
+        }
     }
 }
