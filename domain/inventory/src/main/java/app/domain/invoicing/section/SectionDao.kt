@@ -23,5 +23,5 @@ interface SectionDao {
     suspend fun getAllSection() : List<Section>
 
     @Query("SELECT * FROM Section WHERE id = :sectionId")
-    suspend fun getSectionById(sectionId : Int) : Section?
+    suspend fun getSectionById(sectionId : Int?) : Section?
 }
