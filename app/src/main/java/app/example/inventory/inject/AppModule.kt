@@ -3,6 +3,7 @@ package app.example.inventory.inject
 import android.content.Context
 import android.content.res.Resources
 import app.domain.invoicing.account.AccountDao
+import app.domain.invoicing.dependency.DependencyDao
 import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.databases.InventoryDatabase
 import app.domain.invoicing.dependency.DependencyDao

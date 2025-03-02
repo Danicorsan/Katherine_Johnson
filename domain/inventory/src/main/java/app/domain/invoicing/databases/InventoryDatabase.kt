@@ -48,6 +48,7 @@ abstract class InventoryDatabase : RoomDatabase() {
     abstract fun getDependencyDao() : DependencyDao
     //abstract fun getProductDao() : ProductDao
     abstract fun inventoryDao(): InventoryDAO
+
     abstract fun categoryDao(): CategoryDao
     abstract fun accountDao(): AccountDao
 
@@ -91,7 +92,6 @@ abstract class InventoryDatabase : RoomDatabase() {
                         createdAt = Date(),
                         fungible = true
                     )
-
                 )
                 val inventoryDao = database.inventoryDao()
                 inventoryDao.addInventory(
@@ -107,6 +107,7 @@ abstract class InventoryDatabase : RoomDatabase() {
                         historyDateAt = null,
                         activeDateAt = null,
                     )
+
                 )
             }
         }
