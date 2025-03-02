@@ -6,12 +6,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import app.domain.invoicing.repository.InventoryRepository
+import app.example.inventory.navigation.graphs.drawerNavigation
 import app.features.inventorycreation.ui.creation.CreateInventoryScreen
 import app.features.inventorycreation.ui.creation.CreateInventoryViewModel
 import app.features.inventorycreation.ui.edition.EditInventoryScreen
 import app.features.inventorycreation.ui.edition.EditInventoryViewModel
 import app.features.inventorydetail.ui.InventoryDetailScreen
-import app.features.inventorydetail.ui.InventoryDetailViewModel
 import app.features.inventorylist.ui.InventoryListScreen
 import app.features.inventorylist.ui.InventoryListViewModel
 
@@ -41,21 +41,51 @@ private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
         val viewModel = remember { InventoryListViewModel(InventoryRepository) }
         InventoryListScreen(
             viewModel = viewModel,
-            onBackClick = {
-                navController.popBackStack()
-            },
             onInventoryClick = { inventory ->
                 navController.navigate(InventoryGraph.inventoryDetailsRoute(inventory.id.toString()))
             },
             onCreateInventoryClick = {
                 navController.navigate(InventoryGraph.inventoryCreationRoute())
             },
-            onEditInventoryClick = { inventory ->
-                navController.navigate(InventoryGraph.inventoryEditionRoute(inventory.id.toString()))
-            },
+            onNavigateProducts = { drawerNavigation(navController, ProductGraph.ROUTE) },
+            onNavigateCategories = { drawerNavigation(navController, CategoryGraph.ROUTE) },
+            onNavigateInventory = { drawerNavigation(navController, InventoryGraph.ROUTE) },
         )
     }
 }
+/*
+private fun NavGraphBuilder.inventoryListRoute(navController: NavController) {
+    composable(route = InventoryGraph.inventoryListRoute()) {
+        val context = LocalContext.current
+        val database = remember {
+            Room.databaseBuilder(
+                context,
+                InventoryDatabase::class.java,
+                "inventory_database"
+            ).build()
+        }
+        val inventoryDAO = remember { database.inventoryDAO() }
+        val viewModel = remember {
+            InventoryListViewModel(
+                InventoryRepositoryDB(inventoryDAO = inventoryDAO)
+            )
+        }
+
+        InventoryListScreen(
+            viewModel = viewModel,
+            onInventoryClick = { inventory ->
+                navController.navigate(InventoryGraph.inventoryDetailsRoute(inventory.id.toString()))
+            },
+            onCreateInventoryClick = {
+                navController.navigate(InventoryGraph.inventoryCreationRoute())
+            },
+            onNavigateProducts = { drawerNavigation(navController, ProductGraph.ROUTE) },
+            onNavigateCategories = { drawerNavigation(navController, CategoryGraph.ROUTE) },
+            onNavigateInventory = { drawerNavigation(navController, InventoryGraph.ROUTE) },
+        )
+    }
+}
+ */
 
 private fun NavGraphBuilder.inventoryCreationRoute(navController: NavController) {
     composable(route = InventoryGraph.inventoryCreationRoute()) {
@@ -102,6 +132,9 @@ private fun NavGraphBuilder.inventoryDetailsRoute(navController: NavController) 
             inventoryId = inventoryId,
             onNavigateBack = {
                 navController.popBackStack()
+            },
+            onEditInventoryClick = { inventory ->
+                navController.navigate(InventoryGraph.inventoryEditionRoute(inventory.id.toString()))
             },
         )
     }

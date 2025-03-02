@@ -16,6 +16,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+/**
+ * Componente que representa una fila de una tabla. La fila tiene un label y un value.
+ *
+ * @param label texto que se muestra en la parte izquierda de la fila.
+ * @param value texto que se muestra en la parte derecha de la fila.
+ */
 @Composable
 fun TableRow(label: String, value: String) {
     Row(

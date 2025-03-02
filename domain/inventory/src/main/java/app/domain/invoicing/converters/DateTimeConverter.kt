@@ -2,6 +2,7 @@ package app.domain.invoicing.converters
 
 import androidx.room.TypeConverter
 import kotlinx.datetime.Instant
+import java.time.LocalDate
 import java.util.Date
 
 class DateTimeConverter {
@@ -24,5 +25,14 @@ class DateTimeConverter {
     @TypeConverter
     fun instantToTimestamp(instant : Instant?) : Long?{
         return instant?.toEpochMilliseconds()
+    }
+    @TypeConverter
+    fun fromLocalDate(localDate: LocalDate?): String? {
+        return localDate?.toString()
+    }
+
+    @TypeConverter
+    fun toLocalDate(dateString: String?): LocalDate? {
+        return dateString?.let { LocalDate.parse(it) }
     }
 }

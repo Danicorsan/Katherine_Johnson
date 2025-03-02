@@ -10,4 +10,10 @@
     <string name="fecha_actualizacion">Updated on</string>
     <string name="info_inventario">Inventory Information</string>
     <string name="id">"ID"</string>
+    <string name="tipo_de_inventario">Inventory Type</string>
+    <string name="eliminar">Delete</string>
+    <string name="confirmar_eliminacion">Confirm Deletion</string>
+    <string name="estas_seguro_de_que_quieres_eliminar_este_inventario">Are you sure you want to delete this inventory?</string>
+    <string name="si_eliminar">Yes, delete</string>
+    <string name="cancelar">Cancel</string>
 </resources>
