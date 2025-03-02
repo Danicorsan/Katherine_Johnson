@@ -8,6 +8,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import app.domain.invoicing.converters.CategoryConverter
+import app.domain.invoicing.category.Category
+import app.domain.invoicing.category.CategoryDao
 import app.domain.invoicing.converters.DateTimeConverter
 import app.domain.invoicing.converters.DependencyConverter
 import app.domain.invoicing.converters.ProductConveters
@@ -15,10 +17,12 @@ import app.domain.invoicing.converters.SectionConverter
 import app.domain.invoicing.converters.UriConverter
 import app.domain.invoicing.dependency.Dependency
 import app.domain.invoicing.dependency.DependencyDao
-import app.domain.invoicing.product.Product
 import app.domain.invoicing.section.Section
 import app.domain.invoicing.section.SectionDao
+import app.domain.invoicing.inventory.Inventory
+import app.domain.invoicing.product.Product
 import kotlinx.coroutines.runBlocking
+import java.util.Date
 import java.util.concurrent.Executors
 
 /**
@@ -27,7 +31,7 @@ import java.util.concurrent.Executors
  */
 @Database(
     version = 1,
-    entities = [Section::class, Dependency::class],
+    entities = [Section::class, Dependency::class, Category::class, Inventory::class],
     exportSchema = false
 )
 @TypeConverters(DateTimeConverter::class, UriConverter::class, DependencyConverter::class,
@@ -36,6 +40,8 @@ abstract class InventoryDatabase : RoomDatabase() {
     abstract fun getSectionDao() : SectionDao
     abstract fun getDependencyDao() : DependencyDao
     //abstract fun getProductDao() : ProductDao
+
+    abstract fun categoryDao(): CategoryDao
 
     companion object {
         @Volatile
@@ -67,7 +73,10 @@ abstract class InventoryDatabase : RoomDatabase() {
         private fun prepopulateDatabase(database: InventoryDatabase) {
 
             runBlocking {
-
+                val categoryDao = database.categoryDao()
+                // Crear categorías predeterminadas
+                categoryDao.insertAllCategory(
+                    Category(name = "Electronics", shortName = "Electronics", description = "Electronic items", image = null, createdAt = Date(), fungible = true),)
             }
         }
     }
