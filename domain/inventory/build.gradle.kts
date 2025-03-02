@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.base.utils)
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlin.coroutines.core)
+    implementation(libs.hilt.library)
 
     // Dependencias de Room
     implementation(libs.room.runtime)
