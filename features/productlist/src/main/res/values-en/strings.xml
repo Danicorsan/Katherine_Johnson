@@ -10,4 +10,6 @@
     <string name="delete_alert_dialog_message">The product will be permanently deleted.</string>
     <string name="delete_alert_dialog_confirmation_text">Yes</string>
     <string name="delete_alert_dialog_dismiss_text">No</string>
+    <string name="sorting_icon_product_descending">Sort products on descending order</string>
+    <string name="sorting_icon_product_ascending">Sort products on ascending order</string>
 </resources>

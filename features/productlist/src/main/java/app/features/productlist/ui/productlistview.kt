@@ -17,14 +17,18 @@ import app.base.ui.components.LoadingUi
 import app.base.ui.composables.AppDrawer
 import app.base.ui.composables.BaseAlertDialog
 import app.base.ui.composables.MediumButton
+import app.base.ui.composables.baseappbar.Action
 import app.base.ui.composables.baseappbar.BaseAppBar
 import app.base.ui.composables.baseappbar.BaseAppBarIcons
 import app.base.ui.composables.baseappbar.BaseAppBarState
 import app.features.productlist.R
+import app.features.productlist.ui.base.OrdenationState
 import app.features.productlist.ui.base.ProductListEvents
 import app.features.productlist.ui.base.ProductListNavigationEvents
 import app.features.productlist.ui.base.ProductListState
 import app.features.productlist.ui.base.components.ListProducts
+import app.features.productlist.ui.base.composeicons.AscendSortIcon
+import app.features.productlist.ui.base.composeicons.DescendSortIcon
 
 
 @Composable
@@ -64,6 +68,12 @@ private fun ProductListHost(
                             title = stringResource(R.string.title_appbar_product_list),
                             navigationIcon = BaseAppBarIcons.drawerMenuIcon(
                                 onClick = { productListEvents.onOpenDrawer(scopeCoroutine) }
+                            ),
+                            listOf(
+                                getSortingAction(
+                                    ordenationState = productListState.ordenationState,
+                                    onSort = productListEvents.onSortList
+                                )
                             )
                         )
                     )
@@ -109,4 +119,20 @@ private fun ProductListContent(
     ) {
         ListProducts(productListState.productList, productListEvents)
     }
+}
+
+@Composable
+private fun getSortingAction(ordenationState: OrdenationState, onSort : () -> Unit) : Action{
+    return if (ordenationState == OrdenationState.DESCENDING)
+        Action(
+            icon = DescendSortIcon,
+            onClick = onSort,
+            contentDescription = stringResource(R.string.sorting_icon_product_descending)
+        )
+    else
+        Action(
+            icon = AscendSortIcon,
+            onClick = onSort,
+            contentDescription = stringResource(R.string.sorting_icon_product_ascending)
+        )
 }
