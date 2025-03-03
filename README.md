@@ -31,16 +31,12 @@ Se ha implementado de forma general:
   los repositorios correspondientes.
 
 ### Detalles a tener en cuenta
-De cara a la clase productos se han ido implementado los campos correspondientes, sin embargo, cabe resaltar:
-1. El campo de la imagen del producto ha sido temporamente asignada como un String hasta que se introduzca una
-   clase correspodiente para el manejo de imagenes.
-   
-2. Dado que se prevee que para ciertos productos, cuando sus stocks se reduzca a cierto mínimo, "salte una alarma"
-   que avise de este suceso, se ha implementado una clase abracta ```ProductAlarm``` cuya intención es que en base
-   a un criterio se llamen a las funciones correspondientes mediante el uso del patrón observable-observador.
+El modelo de Productos solo guarda una Sección en un campo, sin embargo en las pantallas de edición y creación de productos,
+se podrá seleccionar la dependencia en un campo, este campo solo actua de filtro de sección, no es guardado directamente.
+![Imagen de la lista de productos](READMEresources/ProductListScreen.png)
+![Imagen de creación de productos](READMEresources/ProductCreationScreen.png) 
 
-Tambien en comparación con la primera entrega se ha buscado mejorar considerablemente el diseño de las vistas,
-ademas de aplicar refactorizaciones para mejorar la limpieza y calidad de código.
+
 
 ----------------
 ## Categorias
@@ -74,6 +70,9 @@ Esta característica ha sido implementada por **Daniel Cortés Sánchez**. La fu
 
 - **Botón de acción flotante**: Se ha añadido un botón flotante que permite navegar a la pantalla de creación de nuevas categorías.
 
+![Imagen de la lista de categorias](READMEresources/CategoryListScreen.png)
+![Imagen de creación de categorias](READMEresources/CategoryCreationScreen.png) 
+
 ----------------
 ## Inventarios
 Caracteristica implementada por **Leandro Orellana Martos**. La funcionalidad permite gestionar inventarios de forma fácil al usuario, acompañado de tres pantallas como son la de listado de inventarios, detalles de inventario y creacion de inventario.
@@ -97,3 +96,18 @@ Caracteristica implementada por **Leandro Orellana Martos**. La funcionalidad pe
 - Nombre y descripcion del inventario
 #### Pantalla de listado de inventario
 - Cards con funcionalidades de edicion y eliminamiento de inventarios
+
+![Imagen de la lista de inventarios](READMEresources/InventoryListScreen.png)
+![Imagen de creación de inventarios](READMEresources/InventoryCreationScreen.png) 
+
+-----------------
+## Para tener en consideración
+Para poder usar animaciones Lottie y guardado de imagenes se han usado las siguientes librerias:
+
+```
+compose-coil = "2.5.0"
+compose-coil = {group= "io.coil-kt", name = "coil-compose", version.ref="compose-coil"}
+
+lottieAnimations = "6.1.0"
+animation-lottie = {group="com.airbnb.android", name="lottie-compose", version.ref="lottieAnimations"}
+```
