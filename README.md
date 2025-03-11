@@ -66,7 +66,7 @@ Esta característica ha sido implementada por **Daniel Cortés Sánchez**. La fu
     - El nombre corto debe cumplir con una expresión regular y no puede duplicarse con otras categorías.
 
 #### Pantalla de listado de categorías:
-- **Lista de categorías**: La pantalla muestra una lista de las categorías disponibles con un ícono y el nombre de cada una. Cada categoría puede ser seleccionada (aunque la funcionalidad de detalle aún está pendiente de implementación).
+- **Lista de categorías**: La pantalla muestra una lista de las categorías disponibles con un ícono y el nombre de cada una. Cada categoría puede ser seleccionada para ver los detalles.
 
 - **Botón de acción flotante**: Se ha añadido un botón flotante que permite navegar a la pantalla de creación de nuevas categorías.
 
